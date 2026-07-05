@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { fallbackProjects } from "@/sections/Projects";
 import HouseAnimation from "@/components/HouseAnimation";
+import Image from "@/components/Image";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -84,10 +85,10 @@ export default function ProjectDetail() {
         {/* Split Image Gallery */}
         <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[500px] lg:h-[550px] rounded-[32px] overflow-hidden mb-8 shadow-sm">
           <div className="w-full h-full">
-            <img src={mainImage} alt={activeProject.name} className="w-full h-full object-cover" />
+            <Image src={mainImage} alt={activeProject.name} className="w-full h-full object-cover" />
           </div>
           <div className="w-full h-full relative">
-            <img src={secondImage} alt={activeProject.name} className="w-full h-full object-cover" />
+            <Image src={secondImage} alt={activeProject.name} className="w-full h-full object-cover" />
             <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95">
               <Maximize2 className="w-4 h-4" />
               Show all {images.length > 2 ? images.length : 2} photos
@@ -278,7 +279,7 @@ export default function ProjectDetail() {
                   className="bg-white rounded-[24px] overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group block"
                 >
                   <div className="aspect-[4/3] relative overflow-hidden">
-                    <img 
+                    <Image 
                       src={opCover} 
                       alt={op.name} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

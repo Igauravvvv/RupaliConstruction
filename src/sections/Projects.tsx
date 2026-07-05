@@ -3,6 +3,7 @@ import { trpc } from "@/providers/trpc";
 import { MapPin, Maximize2, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
+import Image from "@/components/Image";
 
 const filterOptions = ["all", "residential", "commercial", "renovation"] as const;
 
@@ -90,7 +91,7 @@ export default function Projects() {
                 className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block"
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <div className="aspect-[4/3] relative overflow-hidden">
+                <div className="aspect-[4/3] relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--rc-dark)] via-transparent to-transparent z-10" />
                   <div className="w-full h-full bg-[var(--rc-blue)]/20 flex items-center justify-center">
                     <ProjectImage src={(project as any).coverImage} name={project.name} />
@@ -188,7 +189,7 @@ export default function Projects() {
 function ProjectImage({ src, name }: { src?: string; name: string }) {
   if (src) {
     return (
-      <img 
+      <Image 
         src={src} 
         alt={name} 
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 

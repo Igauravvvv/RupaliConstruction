@@ -1,18 +1,12 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.server.json"
-    }
-  ],
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "paths": {
       "@/*": [
         "./src/*"
@@ -24,5 +18,11 @@
         "./db/*"
       ]
     }
-  }
+  },
+  "include": [
+    "src",
+    "api",
+    "contracts",
+    "db"
+  ]
 }

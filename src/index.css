@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --rc-blue: #0B2E59;
+    --rc-orange: #FF6B1A;
+    --rc-dark: #071F3D;
+    --rc-white: #F8F7F5;
+    --rc-gray: #F8F9FC;
+    --rc-text: #16202C;
+    --rc-muted: #6B7280;
+    --rc-border: rgba(11, 46, 89, 0.15);
+
+    --background: 0 0% 98%;
+    --foreground: 220 40% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 40% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 40% 11%;
+    --primary: 220 100% 39%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 220 20% 96%;
+    --secondary-foreground: 220 40% 11%;
+    --muted: 220 20% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 24 100% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 20% 90%;
+    --input: 220 20% 90%;
+    --ring: 220 100% 39%;
+    --radius: 0.625rem;
+  }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--rc-white);
+    color: var(--rc-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-serif {
+    font-family: 'Instrument Serif', serif;
+  }
+}
+
+@layer components {
+  .container-rc {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .text-display-1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+  }
+
+  .text-display-2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+  }
+
+  .text-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .grid-rc {
+    display: grid;
+    gap: 1px;
+    background-color: var(--rc-border);
+  }
+
+  .grid-rc > * {
+    background-color: var(--rc-white);
+  }
+}
+
+@layer utilities {
+  .bg-rc-blue { background-color: var(--rc-blue); }
+  .bg-rc-dark { background-color: var(--rc-dark); }
+  .bg-rc-orange { background-color: var(--rc-orange); }
+  .bg-rc-gray { background-color: var(--rc-gray); }
+  .text-rc-blue { color: var(--rc-blue); }
+  .text-rc-orange { color: var(--rc-orange); }
+  .text-rc-dark { color: var(--rc-dark); }
+  .text-rc-muted { color: var(--rc-muted); }
+  .border-rc { border-color: var(--rc-border); }
+}

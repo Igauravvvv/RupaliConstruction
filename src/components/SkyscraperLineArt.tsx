@@ -16,7 +16,7 @@ export default function SkyscraperLineArt({ className = "opacity-10", colorClass
   }, []);
 
   return (
-    <div className={`absolute inset-0 pointer-events-none flex items-end justify-center overflow-hidden ${className}`}>
+    <div className={`absolute inset-0 pointer-events-none flex items-end justify-center overflow-visible ${className}`}>
       <motion.div
         animate={{
           x: mousePosition.x * -1,
@@ -50,7 +50,7 @@ export default function SkyscraperLineArt({ className = "opacity-10", colorClass
         {/* Architectural Line Art Skyscraper */}
         <svg
           viewBox="0 0 800 800"
-          className={`absolute inset-0 w-full h-full ${colorClass}`}
+          className={`absolute inset-0 w-full h-full ${colorClass} overflow-visible`}
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
@@ -80,16 +80,37 @@ export default function SkyscraperLineArt({ className = "opacity-10", colorClass
             transition={{ duration: 3, delay: 0.5, ease: "easeOut" }}
           >
             {/* Main Body */}
-            <rect x="350" y="150" width="160" height="650" />
-            <rect x="350" y="150" width="160" height="650" fill="url(#windows-grid)" stroke="none" />
+            <rect x="360" y="100" width="140" height="700" />
+            <rect x="360" y="100" width="140" height="700" fill="url(#windows-grid)" stroke="none" />
             
             {/* Tiers / Crown */}
-            <rect x="370" y="100" width="120" height="50" />
-            <rect x="390" y="50" width="80" height="50" />
+            <rect x="380" y="50" width="100" height="50" />
+            <rect x="400" y="10" width="60" height="40" />
             
             {/* Spire */}
-            <line x1="430" y1="50" x2="430" y2="-50" strokeWidth="2" />
+            <line x1="430" y1="10" x2="430" y2="-70" strokeWidth="2" />
+
+            {/* Tracing Blue Line (Left) */}
+            <motion.path 
+              d="M 360 800 L 360 100 L 380 100 L 380 50 L 400 50 L 400 10 L 430 10 L 430 -70"
+              stroke="var(--rc-blue)"
+              strokeWidth="4"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 4, ease: "easeInOut", repeat: Infinity, times: [0, 0.2, 0.8, 1] }}
+            />
             
+            {/* Tracing Blue Line (Right) */}
+            <motion.path 
+              d="M 500 800 L 500 100 L 480 100 L 480 50 L 460 50 L 460 10 L 430 10 L 430 -70"
+              stroke="var(--rc-blue)"
+              strokeWidth="4"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 4, ease: "easeInOut", repeat: Infinity, times: [0, 0.2, 0.8, 1] }}
+            />
           </motion.g>
 
           {/* Foreground Layer (Moves Fastest) - Base and Ground */}

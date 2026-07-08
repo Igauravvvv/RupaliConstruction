@@ -6,15 +6,17 @@
 
 @layer base {
   :root {
+    /* Base Brand Colors - Light Theme */
     --rc-blue: #0B2E59;
     --rc-orange: #FF6B1A;
     --rc-dark: #071F3D;
-    --rc-white: #F8F7F5;
+    --rc-white: #F8F7F5; /* Major white/off-white background */
     --rc-gray: #F8F9FC;
-    --rc-text: #16202C;
+    --rc-text: #16202C; /* Dark text */
     --rc-muted: #6B7280;
     --rc-border: rgba(11, 46, 89, 0.15);
 
+    /* Shadcn/UI for light mode */
     --background: 0 0% 98%;
     --foreground: 220 40% 11%;
     --card: 0 0% 100%;

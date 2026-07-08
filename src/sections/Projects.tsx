@@ -39,7 +39,7 @@ export default function Projects() {
   }, [projects]);
 
   return (
-    <section className="py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-hidden">
+    <section className="py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-x-clip overflow-y-visible z-20">
       <div className="absolute inset-0 flex items-center justify-start pointer-events-none opacity-[0.03] -translate-x-1/4">
         <img
           src="/logo-icon.png"
@@ -55,12 +55,11 @@ export default function Projects() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
-              className="text-4xl md:text-5xl font-serif italic tracking-wide text-[var(--rc-orange)] mb-4"
-              style={{ fontFamily: "cursive" }}
+              className="text-6xl lg:text-[8rem] leading-none font-serif italic text-[var(--rc-orange)] mb-2 drop-shadow-sm"
             >
               Portfolio
             </motion.p>
-            <h2 className="text-display-2 text-[var(--rc-dark)]">
+            <h2 className="text-xl md:text-2xl font-medium text-[var(--rc-dark)]">
               Featured Projects
             </h2>
           </div>

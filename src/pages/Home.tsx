@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/sections/Hero";
+import CinematicReveal from "@/sections/CinematicReveal";
 import TrustBar from "@/sections/TrustBar";
 import WhyUs from "@/sections/WhyUs";
 import Services from "@/sections/Services";
@@ -11,9 +12,10 @@ import Footer from "@/sections/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden">
       <Navbar />
       <Hero />
+      <CinematicReveal />
       <TrustBar />
       <WhyUs />
       <Services />

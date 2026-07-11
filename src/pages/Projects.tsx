@@ -8,24 +8,24 @@ import PortfolioSkyscraperRight from "@/components/PortfolioSkyscraperRight";
 
 export default function Projects() {
   return (
-    <div className="min-h-screen bg-[var(--rc-gray)] overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden">
       <Navbar />
       
       <main className="relative">
         <div className="relative z-10">
           <div className="pt-24 lg:pt-32">
-            <TrustBar />
+            <TrustBar variant="transparent" />
           </div>
 
           {/* Projects Grid from Section */}
-          <div className="py-8 bg-[var(--rc-gray)] pb-24 -mt-16">
+          <div className="py-8 bg-[var(--rc-white)] pb-24 -mt-16">
              <ProjectsSection />
           </div>
         </div>
 
         {/* Full-page Skyscrapers */}
-        <PortfolioSkyscraperLeft className="absolute left-0 top-0 bottom-0 opacity-20 z-50 pointer-events-none mix-blend-multiply" />
-        <PortfolioSkyscraperRight className="absolute right-0 top-0 bottom-0 opacity-20 z-50 pointer-events-none mix-blend-multiply" />
+        <PortfolioSkyscraperLeft className="absolute left-0 top-[14rem] lg:top-[16rem] bottom-0 opacity-20 z-50 pointer-events-none mix-blend-multiply" />
+        <PortfolioSkyscraperRight className="absolute right-0 top-[14rem] lg:top-[16rem] bottom-0 opacity-20 z-50 pointer-events-none mix-blend-multiply" />
       </main>
       
       <Footer />

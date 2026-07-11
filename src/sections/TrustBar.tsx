@@ -5,6 +5,7 @@ const stats = [
   { value: 60, suffix: "+", label: "Years Combined Experience" },
   { value: 12, suffix: "L+", label: "Sq. Ft. Built" },
   { value: 98, suffix: "%", label: "On-Time Delivery" },
+  { value: 120, suffix: "+", label: "Team Members" },
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
@@ -45,26 +46,39 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-export default function TrustBar() {
+export default function TrustBar({ variant = "default" }: { variant?: "default" | "transparent" }) {
+  const isTransparent = variant === "transparent";
+
   return (
-    <section className="bg-[var(--rc-white)] border-t border-[var(--rc-border)] py-16 lg:py-24 relative z-10 overflow-hidden">
+    <section className={`py-16 lg:py-24 relative z-10 overflow-hidden ${isTransparent ? "bg-transparent" : "bg-[var(--rc-blue)]"}`}>
       <div className="container-rc relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 lg:gap-8">
           {stats.map((stat, i) => (
             <div key={stat.label} className="text-center group flex flex-col items-center">
               <div className="relative inline-block mb-4">
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  whileInView={{ opacity: 1, scale: 1.5 }}
-                  transition={{ duration: 1.2, delay: i * 0.2, ease: "easeOut" }}
-                  viewport={{ once: true }}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[150%] bg-[var(--rc-orange)]/20 blur-2xl rounded-[100%] pointer-events-none"
-                />
-                <div className="relative text-6xl lg:text-8xl font-bold bg-[linear-gradient(90deg,var(--rc-blue)_35%,var(--rc-orange)_50%,var(--rc-blue)_65%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-shine drop-shadow-sm">
+                {!isTransparent && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1.5 }}
+                    transition={{ duration: 1.2, delay: i * 0.2, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[150%] bg-[var(--rc-orange)]/30 blur-2xl rounded-[100%] pointer-events-none"
+                  />
+                )}
+                {isTransparent && (
+                  <motion.div 
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    whileInView={{ scaleX: 1, opacity: 1 }}
+                    transition={{ duration: 0.8, delay: i * 0.2 + 0.3, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                    className="absolute -bottom-1 left-1/4 right-1/4 h-1 bg-[var(--rc-orange)] rounded-full origin-center shadow-[0_0_10px_rgba(240,113,43,0.5)]"
+                  />
+                )}
+                <div className={`relative text-6xl lg:text-8xl font-bold ${isTransparent ? "text-[var(--rc-blue)]" : "bg-[linear-gradient(90deg,#ffffff_35%,var(--rc-orange)_50%,#ffffff_65%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-shine drop-shadow-sm"}`}>
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
               </div>
-              <div className="text-label text-[var(--rc-text)]/70 font-bold tracking-widest uppercase">{stat.label}</div>
+              <div className={`text-label font-bold tracking-widest uppercase ${isTransparent ? "text-[var(--rc-dark)]" : "text-white/80"}`}>{stat.label}</div>
             </div>
           ))}
         </div>

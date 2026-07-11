@@ -21,6 +21,7 @@ export default function Navbar() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/projects" },
+    { label: "Leadership", href: "/leadership" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ];
@@ -34,7 +35,11 @@ export default function Navbar() {
       }`}
     >
       <div className="container-rc flex items-center justify-between h-20 lg:h-24">
-        <Link to="/" className="flex items-center py-2 hover:opacity-80 transition-opacity">
+        <Link 
+          to="/" 
+          onClick={() => window.scrollTo(0, 0)}
+          className="flex items-center py-2 hover:opacity-80 transition-opacity"
+        >
           <img
             src="/logo-main.png"
             alt="Rupali Construction"
@@ -49,6 +54,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 to={link.href}
+                onClick={() => window.scrollTo(0, 0)}
                 className={`text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 relative group ${
                   isActive ? "text-[var(--rc-blue)]" : "text-[var(--rc-text)] hover:text-[var(--rc-blue)]"
                 }`}

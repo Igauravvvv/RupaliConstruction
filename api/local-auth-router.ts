@@ -38,9 +38,10 @@ export const localAuthRouter = createRouter({
         passwordHash,
         displayName: input.displayName || input.username,
         email: input.email || null,
-      });
+        role: "admin",
+      }).returning({ id: localUsers.id });
 
-      const userId = Number(result[0]?.insertId);
+      const userId = result[0].id;
       const token = signLocalToken(userId);
 
       return { token, success: true };
@@ -55,28 +56,36 @@ export const localAuthRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
+      console.log("Login attempt for:", input.username);
 
-      const user = await db.query.localUsers.findFirst({
-        where: eq(localUsers.username, input.username),
-      });
-      if (!user) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Invalid username or password",
+      try {
+        const user = await db.query.localUsers.findFirst({
+          where: eq(localUsers.username, input.username),
         });
+        console.log("User query result:", !!user);
+        
+        if (!user) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Invalid username or password",
+          });
+        }
+
+        const valid = await bcrypt.compare(input.password, user.passwordHash);
+        if (!valid) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Invalid username or password",
+          });
+        }
+
+        const token = signLocalToken(user.id);
+        console.log("Login successful");
+        return { token, success: true };
+      } catch (err: any) {
+        console.error("Error during login:", err);
+        throw err;
       }
-
-      const valid = await bcrypt.compare(input.password, user.passwordHash);
-      if (!valid) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Invalid username or password",
-        });
-      }
-
-      const token = signLocalToken(user.id);
-
-      return { token, success: true };
     }),
 
   me: publicQuery.query(async ({ ctx }) => {

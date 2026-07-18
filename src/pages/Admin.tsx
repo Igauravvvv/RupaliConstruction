@@ -1,22 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
-import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
+import AdminOverview from "@/components/admin/AdminOverview";
+import AdminProjects from "@/components/admin/AdminProjects";
+import AdminAccount from "@/components/admin/AdminAccount";
+import AdminLeads from "@/components/admin/AdminLeads";
 import {
-  Users,
-  MessageSquare,
-  FileText,
+  LayoutDashboard,
   Briefcase,
-  Star,
-  Shield,
-  Trash2,
-  Mail,
+  UserCircle,
+  Menu,
+  X,
+  Users,
 } from "lucide-react";
 
 export default function Admin() {
   const { user, isAuthenticated, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
+  
+  const [activeTab, setActiveTab] = useState<"overview" | "projects" | "leads" | "account">("overview");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -37,222 +41,113 @@ export default function Admin() {
 
   if (!isAdmin) return null;
 
-  return (
-    <div className="min-h-screen bg-[var(--rc-gray)]">
-      <Navbar />
-
-      <div className="pt-24 pb-16">
-        <div className="container-rc">
-          <div className="flex items-center gap-3 mb-8">
-            <Shield className="w-6 h-6 text-[var(--rc-orange)]" />
-            <div>
-              <h1 className="text-2xl font-bold text-[var(--rc-dark)]">
-                Admin Dashboard
-              </h1>
-              <p className="text-sm text-[var(--rc-muted)]">
-                Welcome back, {user?.name}
-              </p>
-            </div>
-          </div>
-
-          <StatsCards />
-          <ContactSubmissions />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatsCards() {
-  const { data: stats } = trpc.admin.dashboardStats.useQuery();
-
-  const cards = [
-    {
-      label: "Total Users",
-      value: stats?.users.total || 0,
-      icon: Users,
-      color: "bg-blue-50 text-blue-600",
-    },
-    {
-      label: "Contact Submissions",
-      value: stats?.contacts || 0,
-      icon: MessageSquare,
-      color: "bg-orange-50 text-orange-600",
-    },
-    {
-      label: "Blog Posts",
-      value: stats?.blogPosts || 0,
-      icon: FileText,
-      color: "bg-green-50 text-green-600",
-    },
-    {
-      label: "Projects",
-      value: stats?.projects || 0,
-      icon: Briefcase,
-      color: "bg-purple-50 text-purple-600",
-    },
-    {
-      label: "Testimonials",
-      value: stats?.testimonials || 0,
-      icon: Star,
-      color: "bg-yellow-50 text-yellow-600",
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-      {cards.map((card) => (
-        <div
-          key={card.label}
-          className="bg-white rounded-xl p-5 border border-[var(--rc-border)]"
-        >
-          <div className={`w-10 h-10 rounded-lg ${card.color} flex items-center justify-center mb-3`}>
-            <card.icon className="w-5 h-5" />
-          </div>
-          <p className="text-2xl font-bold text-[var(--rc-dark)]">{card.value}</p>
-          <p className="text-xs text-[var(--rc-muted)] mt-1">{card.label}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ContactSubmissions() {
-  const { data: contacts, isLoading } = trpc.contact.list.useQuery();
-  const utils = trpc.useUtils();
-
-  const updateStatus = trpc.contact.updateStatus.useMutation({
-    onSuccess: () => {
-      utils.contact.list.invalidate();
-      utils.contact.stats.invalidate();
-    },
-  });
-
-  const deleteContact = trpc.contact.delete.useMutation({
-    onSuccess: () => {
-      utils.contact.list.invalidate();
-      utils.contact.stats.invalidate();
-    },
-  });
-
-  const statusColors: Record<string, string> = {
-    new: "bg-blue-100 text-blue-700",
-    read: "bg-yellow-100 text-yellow-700",
-    replied: "bg-green-100 text-green-700",
-    archived: "bg-gray-100 text-gray-700",
+  const renderContent = () => {
+    switch (activeTab) {
+      case "overview":
+        return <AdminOverview />;
+      case "projects":
+        return <AdminProjects />;
+      case "leads":
+        return <AdminLeads />;
+      case "account":
+        return <AdminAccount />;
+      default:
+        return <AdminOverview />;
+    }
   };
 
-  return (
-    <div className="bg-white rounded-xl border border-[var(--rc-border)] overflow-hidden">
-      <div className="px-6 py-4 border-b border-[var(--rc-border)] flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-[var(--rc-dark)]">
-          Contact Submissions
-        </h2>
-        <span className="text-sm text-[var(--rc-muted)]">
-          {contacts?.length || 0} total
-        </span>
-      </div>
+  const navItems = [
+    { id: "overview", label: "Dashboard Overview", icon: LayoutDashboard },
+    { id: "leads", label: "Lead Management", icon: Users },
+    { id: "projects", label: "Projects Portfolio", icon: Briefcase },
+    { id: "account", label: "Account Settings", icon: UserCircle },
+  ] as const;
 
-      {isLoading ? (
-        <div className="p-8 text-center text-[var(--rc-muted)]">Loading...</div>
-      ) : !contacts || contacts.length === 0 ? (
-        <div className="p-8 text-center text-[var(--rc-muted)]">
-          No contact submissions yet.
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-[var(--rc-border)] bg-[var(--rc-gray)]">
-                <th className="text-left px-6 py-3 font-medium text-[var(--rc-muted)]">
-                  Name
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-[var(--rc-muted)]">
-                  Email
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-[var(--rc-muted)]">
-                  Service
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-[var(--rc-muted)]">
-                  Status
-                </th>
-                <th className="text-left px-6 py-3 font-medium text-[var(--rc-muted)]">
-                  Date
-                </th>
-                <th className="text-right px-6 py-3 font-medium text-[var(--rc-muted)]">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.map((contact) => (
-                <tr
-                  key={contact.id}
-                  className="border-b border-[var(--rc-border)] hover:bg-[var(--rc-gray)]/50"
-                >
-                  <td className="px-6 py-4">
-                    <p className="font-medium text-[var(--rc-dark)]">
-                      {contact.name}
-                    </p>
-                    {contact.phone && (
-                      <p className="text-xs text-[var(--rc-muted)]">
-                        {contact.phone}
-                      </p>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <a
-                      href={`mailto:${contact.email}`}
-                      className="text-[var(--rc-blue)] hover:underline flex items-center gap-1"
-                    >
-                      <Mail className="w-3 h-3" />
-                      {contact.email}
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 capitalize text-[var(--rc-muted)]">
-                    {contact.service || "—"}
-                  </td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={contact.status}
-                      onChange={(e) =>
-                        updateStatus.mutate({
-                          id: contact.id,
-                          status: e.target.value as "new" | "read" | "replied" | "archived",
-                        })
-                      }
-                      className={`text-xs px-2 py-1 rounded-full border-0 cursor-pointer ${statusColors[contact.status]}`}
-                    >
-                      <option value="new">New</option>
-                      <option value="read">Read</option>
-                      <option value="replied">Replied</option>
-                      <option value="archived">Archived</option>
-                    </select>
-                  </td>
-                  <td className="px-6 py-4 text-[var(--rc-muted)]">
-                    {new Date(contact.createdAt).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                    })}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => {
-                        if (confirm("Delete this submission?")) {
-                          deleteContact.mutate({ id: contact.id });
-                        }
-                      }}
-                      className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+  return (
+    <div className="min-h-screen bg-[var(--rc-gray)] flex flex-col font-sans">
+      <Navbar />
+
+      <div className="flex-1 flex pt-[72px]">
+        {/* Mobile Sidebar Overlay */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <aside
+          className={`fixed lg:static top-[72px] left-0 h-[calc(100vh-72px)] w-64 bg-white border-r border-[var(--rc-border)] z-50 transform transition-transform duration-300 ease-in-out lg:transform-none ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="p-6 h-full flex flex-col">
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-[var(--rc-dark)] flex items-center gap-2">
+                <span className="w-2 h-6 bg-[var(--rc-orange)] rounded-full"></span>
+                Admin Panel
+              </h2>
+              <p className="text-sm text-[var(--rc-muted)] mt-1 ml-4">
+                Welcome, {user?.name?.split(" ")[0] || "Admin"}
+              </p>
+            </div>
+
+            <nav className="flex-1 space-y-2">
+              {navItems.map((item) => {
+                const isActive = activeTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-[var(--rc-blue)] text-white shadow-md shadow-[var(--rc-blue)]/20"
+                        : "text-[var(--rc-dark)] hover:bg-[var(--rc-gray)]"
+                    }`}
+                  >
+                    <item.icon className={`w-5 h-5 ${isActive ? "text-white" : "text-[var(--rc-muted)]"}`} />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-x-hidden min-h-[calc(100vh-72px)] bg-[var(--rc-gray)]">
+          <div className="p-6 lg:p-10">
+            {/* Mobile Header */}
+            <div className="flex items-center justify-between lg:hidden mb-8 bg-white p-4 rounded-xl border border-[var(--rc-border)]">
+              <h1 className="text-lg font-bold text-[var(--rc-dark)] capitalize">
+                {activeTab.replace("-", " ")}
+              </h1>
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="p-2 text-[var(--rc-dark)] hover:bg-[var(--rc-gray)] rounded-lg"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Desktop Header */}
+            <div className="hidden lg:block mb-8">
+              <h1 className="text-2xl font-bold text-[var(--rc-dark)] capitalize">
+                {activeTab.replace("-", " ")}
+              </h1>
+              <p className="text-[var(--rc-muted)] text-sm mt-1">
+                Manage your {activeTab.replace("-", " ")} data and settings
+              </p>
+            </div>
+
+            {renderContent()}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

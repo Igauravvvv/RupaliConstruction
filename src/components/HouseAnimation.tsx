@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 export default function HouseAnimation() {
-  const draw = {
+  const draw: any = {
     hidden: { pathLength: 0, opacity: 0 },
     visible: (i: number) => {
       const delay = 1 + i * 0.5;

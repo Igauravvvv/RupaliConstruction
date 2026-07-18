@@ -92,7 +92,7 @@ export default function BlogDetail() {
               <div className="mt-12 pt-8 border-t border-[var(--rc-border)]">
                 <p className="text-label text-[var(--rc-muted)] mb-3">Tags</p>
                 <div className="flex flex-wrap gap-2">
-                  {post.tags.split(",").map((tag) => (
+                  {post.tags.split(",").map((tag: string) => (
                     <span
                       key={tag}
                       className="px-3 py-1 bg-[var(--rc-gray)] text-[var(--rc-dark)] text-sm rounded-full"

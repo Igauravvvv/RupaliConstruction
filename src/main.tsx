@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router'
 import './index.css'
 import { TRPCProvider } from "@/providers/trpc"
 import LenisProvider from "@/providers/LenisProvider"
-import App from './App.tsx'
+import App from './App'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>

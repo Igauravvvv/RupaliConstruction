@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { useState } from "react";
 import { Link } from "react-router";
 import { trpc } from "@/providers/trpc";
@@ -82,7 +83,7 @@ export default function Login() {
           
           <div className="text-center mb-8">
             <img
-              src="/logo-main.png"
+              src="/logo-main.png?v=2"
               alt="Rupali Construction"
               className="h-14 w-auto mx-auto mb-6 object-contain mix-blend-multiply"
             />

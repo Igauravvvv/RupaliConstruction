@@ -9,6 +9,7 @@ import Testimonials from "@/sections/Testimonials";
 import EstimateSection from "@/sections/EstimateSection";
 import FAQ from "@/sections/FAQ";
 import Footer from "@/sections/Footer";
+import PromoPopup from "@/components/PromoPopup";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <EstimateSection />
       <FAQ />
       <Footer />
+      <PromoPopup />
     </div>
   );
 }

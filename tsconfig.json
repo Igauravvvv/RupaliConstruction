@@ -7,6 +7,9 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["node", "vite/client", "react", "react-dom"],
     "paths": {
       "@/*": [
         "./src/*"

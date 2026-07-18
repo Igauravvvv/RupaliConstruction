@@ -1,12 +1,28 @@
-import { motion } from "framer-motion";
-import { Check, MessageSquare, Award, ArrowRight } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Check, MessageSquare, Award, ArrowRight, HardHat, Hammer, Ruler, Wrench, Cone, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
+
+const FloatingIcon = ({ icon: Icon, delay, x, y, duration, size = 120 }: any) => (
+  <motion.div
+    initial={{ y: 0, opacity: 0.6 }}
+    animate={{ 
+      y: [0, -40, 0], 
+      rotate: [0, 15, -15, 0],
+      scale: [1, 1.1, 1],
+      opacity: [0.6, 0.9, 0.6]
+    }}
+    transition={{ duration: duration, repeat: Infinity, delay: delay, ease: "easeInOut" }}
+    className="absolute text-[var(--rc-orange)] z-0 pointer-events-none drop-shadow-[0_0_20px_rgba(242,101,34,0.5)]"
+    style={{ left: x, top: y }}
+  >
+    <Icon size={size} strokeWidth={2} />
+  </motion.div>
+);
 
 const leaders = [
   {
     name: "S.P. Tyagi",
-    role: "Owner",
     experience: "25+ Years in Construction",
     description:
       "A visionary leader who laid the foundation of Rupali Construction. With over 25 years of hands-on experience, he has overseen the transformation of countless architectural dreams into concrete realities, ensuring every project meets the highest standards of quality and integrity.",
@@ -20,8 +36,7 @@ const leaders = [
     imageShape: "circle" as const,
   },
   {
-    name: "R.S. Sharma",
-    role: "Partner",
+    name: "N.K. Sharma",
     experience: "35+ Years in Construction",
     description:
       "Bringing over three and a half decades of invaluable industry expertise. His deep understanding of structural engineering, project management, and large-scale development has been the driving force behind the company's most ambitious and successful endeavors.",
@@ -35,7 +50,6 @@ const leaders = [
   },
   {
     name: "Ujjwal Tyagi",
-    role: "Director",
     experience: "Driving Innovation",
     description:
       "Spearheading the modern growth of Rupali Construction. Combining fresh perspectives with core traditional values, he is focused on integrating innovative building technologies, sustainable practices, and expanding the company's footprint into new luxury segments.",
@@ -51,21 +65,37 @@ const leaders = [
 ];
 
 export default function Leadership() {
+  const { scrollYProgress } = useScroll();
+  const yOffset = useTransform(scrollYProgress, [0, 1], [0, -400]);
+
   return (
-    <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden flex flex-col font-sans">
+    <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden flex flex-col font-sans relative">
       <Navbar />
+
+      {/* Funny Construction Background Elements */}
+      <motion.div style={{ y: yOffset }} className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <FloatingIcon icon={HardHat} x="5%" y="15%" delay={0} duration={6} size={150} />
+        <FloatingIcon icon={Hammer} x="85%" y="25%" delay={1} duration={7} size={120} />
+        <FloatingIcon icon={Cone} x="8%" y="45%" delay={2} duration={5} size={140} />
+        <FloatingIcon icon={Ruler} x="85%" y="60%" delay={0.5} duration={6.5} size={160} />
+        <FloatingIcon icon={Truck} x="10%" y="80%" delay={1.5} duration={8} size={180} />
+        <FloatingIcon icon={Wrench} x="80%" y="85%" delay={0.8} duration={5.5} size={130} />
+      </motion.div>
 
       <main className="flex-1 relative z-10 pt-32 pb-32">
         <div className="container-rc relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-24 text-center"
+            initial={{ opacity: 0, scale: 0.5, y: -50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 150, damping: 15 }}
+            className="mb-24 text-center relative z-10"
           >
-            <h1 className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] drop-shadow-sm mb-6">
+            <motion.h1 
+              whileHover={{ scale: 1.05, rotate: -2 }}
+              className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] drop-shadow-xl mb-6 inline-block cursor-default"
+            >
               Our Leadership
-            </h1>
+            </motion.h1>
             <p className="text-xl md:text-2xl text-[var(--rc-text)]/80 max-w-3xl mx-auto font-light">
               The visionary minds driving engineering precision and architectural excellence.
             </p>
@@ -86,20 +116,26 @@ export default function Leadership() {
                   {/* Text Section */}
                   <div className="w-full lg:w-1/2 flex flex-col justify-center">
                     <motion.div
-                      initial={{ opacity: 0, x: isImageRight ? -50 : 50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, x: isImageRight ? -100 : 100, rotate: isImageRight ? -5 : 5 }}
+                      whileInView={{ opacity: 1, x: 0, rotate: 0 }}
                       viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
+                      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                      className="relative z-10 bg-white/50 backdrop-blur-sm p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white"
                     >
-                      <span className="text-[var(--rc-blue)] font-bold tracking-widest uppercase text-xs mb-3 block">
+                      <motion.span 
+                        whileHover={{ x: 10 }}
+                        className="text-[var(--rc-blue)] font-bold tracking-widest uppercase text-xs mb-3 inline-block cursor-pointer"
+                      >
                         {leader.experience}
-                      </span>
-                      <h2 className="text-4xl lg:text-5xl font-bold text-[var(--rc-dark)] tracking-tight mb-4 leading-[1.1]">
-                        {leader.name}{" "}
-                        <span className="text-[var(--rc-orange)] block font-serif italic font-normal mt-2">
-                          {leader.role}
-                        </span>
-                      </h2>
+                      </motion.span>
+                      <motion.h2 
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                        className="text-4xl lg:text-6xl font-bold text-[var(--rc-dark)] tracking-tight mb-4 leading-[1.1] drop-shadow-md"
+                      >
+                        {leader.name}
+                      </motion.h2>
                       
                       <p className="text-base lg:text-lg text-[var(--rc-text)]/70 leading-relaxed mb-8">
                         {leader.description}
@@ -109,25 +145,26 @@ export default function Leadership() {
                         {leader.specialties.map((specialty, i) => (
                           <motion.div 
                             key={i}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, x: -50, scale: 0.8 }}
+                            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                            whileHover={{ scale: 1.05, x: 10, backgroundColor: "var(--rc-orange)", color: "white" }}
                             viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.5, delay: i * 0.1 + 0.3 }}
-                            className="flex items-center gap-4"
+                            transition={{ type: "spring", stiffness: 200, delay: i * 0.1 + 0.3 }}
+                            className="flex items-center gap-4 p-3 rounded-xl transition-colors cursor-pointer group shadow-sm bg-white hover:shadow-md border border-gray-50"
                           >
-                            <div className="w-6 h-6 rounded-full bg-[var(--rc-blue)]/10 flex items-center justify-center shrink-0">
-                              <Check className="w-4 h-4 text-[var(--rc-blue)]" strokeWidth={3} />
+                            <div className="w-8 h-8 rounded-full bg-[var(--rc-blue)]/10 group-hover:bg-white flex items-center justify-center shrink-0 shadow-inner">
+                              <Check className="w-5 h-5 text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)]" strokeWidth={3} />
                             </div>
-                            <span className="text-[var(--rc-dark)] font-bold text-base lg:text-lg">{specialty}</span>
+                            <span className="text-[var(--rc-dark)] group-hover:text-white font-bold text-base lg:text-lg drop-shadow-sm">{specialty}</span>
                           </motion.div>
                         ))}
                       </div>
 
                       <motion.a
                         href="/contact"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center gap-3 bg-[var(--rc-blue)] text-white px-7 py-3.5 rounded-full font-bold uppercase tracking-wider text-xs shadow-lg shadow-[var(--rc-blue)]/20 hover:bg-[var(--rc-dark)] transition-colors self-start"
+                        whileHover={{ scale: 1.1, rotate: -3 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="inline-flex items-center gap-3 bg-[var(--rc-blue)] text-white px-8 py-4 rounded-full font-bold uppercase tracking-wider text-sm shadow-[0_10px_30px_rgba(10,37,64,0.4)] hover:bg-[var(--rc-orange)] hover:shadow-[0_10px_30px_rgba(242,101,34,0.4)] transition-all self-start"
                       >
                         Book a Consultation
                         <ArrowRight className="w-4 h-4" />
@@ -136,24 +173,31 @@ export default function Leadership() {
                   </div>
 
                   {/* Image Section */}
-                  <div className="w-full lg:w-1/2 relative flex justify-center items-center mt-12 lg:mt-0 pt-8">
+                  <div className={`w-full lg:w-1/2 relative flex justify-center items-center mt-8 lg:-mt-10 ${index === 0 ? "lg:-mt-16" : ""}`}>
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-                      whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                      initial={{ opacity: 0, scale: 0.5, rotate: isImageRight ? 15 : -15 }}
+                      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                      whileHover={{ scale: 1.05 }}
                       viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 1, ease: "easeOut" }}
-                      className="relative w-72 lg:w-[380px] aspect-square flex items-center justify-center"
+                      transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                      className="relative w-72 lg:w-[420px] aspect-square flex items-center justify-center z-10"
                     >
                       {/* Solid Rotating Background Shape in Brand Colors */}
-                      <div className="absolute inset-0 z-0 shadow-2xl rounded-full bg-[var(--rc-blue)]" />
-                      <div className="absolute -inset-4 z-0 rounded-full border-2 border-dashed border-[var(--rc-orange)]/60 animate-[spin_20s_linear_infinite]" />
+                      <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 z-0 shadow-[0_20px_50px_rgba(10,37,64,0.3)] rounded-full bg-gradient-to-br from-[var(--rc-blue)] to-[var(--rc-dark)]" 
+                      />
+                      <div className="absolute -inset-6 z-0 rounded-full border-4 border-dashed border-[var(--rc-orange)]/60 animate-[spin_15s_linear_infinite]" />
 
                       {/* Main Image Container - Perfectly circular */}
-                      <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-4 border-white shadow-inner bg-[var(--rc-gray)]">
-                        <img
+                      <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-8 border-white shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] bg-[var(--rc-gray)]">
+                        <motion.img
+                          whileHover={{ scale: 1.15, rotate: 3 }}
+                          transition={{ type: "spring", stiffness: 200 }}
                           src={leader.image}
                           alt={leader.name}
-                          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                          className="w-full h-full object-cover"
                           style={{ objectPosition: 'center top' }}
                         />
                       </div>
@@ -162,20 +206,25 @@ export default function Leadership() {
                       {leader.badges.map((badge, i) => (
                         <motion.div
                           key={i}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
+                          initial={{ opacity: 0, y: 50, scale: 0.5 }}
+                          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                          whileHover={{ scale: 1.15, y: -10 }}
                           viewport={{ once: true }}
-                          transition={{ duration: 0.6, delay: 0.6 + (i * 0.2) }}
-                          className={`absolute bg-white px-4 py-2 rounded-full shadow-xl shadow-black/10 flex items-center gap-2 border border-gray-100 z-20 ${
+                          transition={{ type: "spring", stiffness: 300, delay: 0.4 + (i * 0.2) }}
+                          className={`absolute bg-white px-5 py-3 rounded-full shadow-[0_15px_30px_rgba(0,0,0,0.15)] flex items-center gap-3 border-2 border-[var(--rc-orange)]/20 z-20 cursor-pointer ${
                             i === 0 
-                              ? "-left-12 top-1/4"
-                              : "-right-8 bottom-1/4"
+                              ? "-left-16 top-1/4"
+                              : "-right-12 bottom-1/4"
                           }`}
                         >
-                          <div className="bg-[var(--rc-orange)] p-1.5 rounded-full text-white">
+                          <motion.div 
+                            animate={{ rotate: [0, 15, -15, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: i }}
+                            className="bg-gradient-to-br from-[var(--rc-orange)] to-orange-600 p-2 rounded-full text-white shadow-lg"
+                          >
                             {badge.icon}
-                          </div>
-                          <span className="font-bold text-xs text-[var(--rc-dark)]">{badge.text}</span>
+                          </motion.div>
+                          <span className="font-bold text-sm text-[var(--rc-dark)] tracking-wide">{badge.text}</span>
                         </motion.div>
                       ))}
                     </motion.div>

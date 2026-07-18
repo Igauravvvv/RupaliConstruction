@@ -63,7 +63,7 @@ function ModernVilla() {
   const groupRef = useRef<THREE.Group>(null);
   
   // Refs for animation
-  const foundationRef = useRef<THREE.Group>(null);
+  const foundationRef: any = useRef<THREE.Group>(null);
   const poolRef = useRef<THREE.Group>(null);
   const garageRef = useRef<THREE.Group>(null);
   const groundFloorRef = useRef<THREE.Group>(null);
@@ -217,7 +217,7 @@ function ModernVilla() {
         <group position={[8.5, 5.5, 4]}>
           <mesh>
             <boxGeometry args={[3, 1.5, 6]} />
-            <meshPhysicalMaterial color={baseColor} transmission={0.9} opacity={1} roughness={0.1} />
+            <mesh castShadow receiveShadow />
           </mesh>
           <mesh>
             <boxGeometry args={[3.05, 1.55, 6.05]} />
@@ -271,7 +271,7 @@ export default function Villa3D() {
           <PresentationControls 
             global 
             config={{ mass: 2, tension: 500 }} 
-            snap={{ mass: 4, tension: 1500 }} 
+            snap={true} 
             rotation={[0, 0, 0]} 
             polar={[-Math.PI / 4, Math.PI / 4]} 
             azimuth={[-Math.PI / 2, Math.PI / 2]}

@@ -59,9 +59,9 @@ export default function Testimonials() {
         </motion.div>
 
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-4">
-          <div className="group flex overflow-hidden p-2 [--gap:2rem] [gap:var(--gap)] flex-row [--duration:120s]">
+          <div className="group flex overflow-hidden p-2 [--gap:2rem] [gap:var(--gap)] flex-row [--duration:25s]">
             {/* First Set */}
-            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row">
+            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
               {mappedTestimonials.map((testimonial, i) => (
                 <TestimonialCard
                   key={`set1-${i}`}
@@ -71,7 +71,7 @@ export default function Testimonials() {
             </div>
 
             {/* Second Set (identical duplicate for seamless loop) */}
-            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row" aria-hidden="true">
+            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]" aria-hidden="true">
               {mappedTestimonials.map((testimonial, i) => (
                 <TestimonialCard
                   key={`set2-${i}`}
@@ -89,7 +89,7 @@ export default function Testimonials() {
   );
 }
 
-const fallbackTestimonials = [
+export const fallbackTestimonials = [
   {
     name: "Rajesh Sharma",
     location: "Sector 45, Gurgaon",

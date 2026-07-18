@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { ArrowRight, ChevronDown, Activity, MapPin } from "lucide-react";
+import { ArrowRight, ChevronDown, Activity, MapPin, HardHat, Wrench, Hammer, Ruler } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Hero3DBackground from "@/components/Hero3DBackground";
 import Villa3D from "@/components/Villa3D";
@@ -16,7 +16,7 @@ const staggerContainer = {
   },
 };
 
-const fadeUp = {
+const fadeUp: any = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
@@ -139,16 +139,24 @@ export default function Hero() {
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-6">
-              <Link
-                to="/contact"
-                className="group relative px-8 py-4 bg-[var(--rc-blue)] text-white font-bold rounded-full hover:bg-[var(--rc-dark)] shadow-[0_0_20px_rgba(11,36,71,0.3)] hover:shadow-[0_0_30px_rgba(240,113,43,0.4)] focus:ring-2 focus:ring-offset-2 focus:ring-[var(--rc-orange)] focus:outline-none transition-all duration-300 flex items-center gap-3 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
-                <span className="relative z-10 flex items-center gap-2 tracking-widest uppercase text-xs">
-                  Start a Project
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-[var(--rc-orange)] transition-all" />
-                </span>
-              </Link>
+              <div className="relative group">
+                <Link
+                  to="/contact"
+                  className="relative px-8 py-4 bg-[var(--rc-blue)] text-white font-bold rounded-full hover:bg-[var(--rc-dark)] shadow-[0_0_20px_rgba(11,36,71,0.3)] hover:shadow-[0_0_30px_rgba(240,113,43,0.4)] focus:ring-2 focus:ring-offset-2 focus:ring-[var(--rc-orange)] focus:outline-none transition-all duration-300 flex items-center gap-3 overflow-hidden z-10"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+                  <span className="relative z-10 flex items-center gap-2 tracking-widest uppercase text-xs">
+                    Start a Project
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-[var(--rc-orange)] transition-all" />
+                  </span>
+                </Link>
+                
+                {/* Tiny Animated Construction Icons */}
+                <HardHat className="absolute top-2 left-6 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-6 group-hover:-translate-x-6 transition-all duration-500 ease-out z-0 -rotate-12 scale-50 group-hover:scale-100 pointer-events-none" />
+                <Hammer className="absolute top-2 left-10 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-7 group-hover:-translate-x-1 transition-all duration-500 delay-75 ease-out z-0 -rotate-45 scale-50 group-hover:scale-100 pointer-events-none" />
+                <Wrench className="absolute top-2 right-6 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-6 group-hover:translate-x-6 transition-all duration-500 delay-100 ease-out z-0 rotate-12 scale-50 group-hover:scale-100 pointer-events-none" />
+                <Ruler className="absolute top-2 right-10 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-7 group-hover:translate-x-1 transition-all duration-500 delay-150 ease-out z-0 rotate-45 scale-50 group-hover:scale-100 pointer-events-none" />
+              </div>
               
               <Link
                 to="/projects"
@@ -162,7 +170,7 @@ export default function Hero() {
 
       </div>
 
-      <div className="absolute bottom-6 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
+      <div className="absolute bottom-2 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

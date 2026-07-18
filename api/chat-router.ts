@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "./middleware";
 import { getDb } from "./queries/connection";
-import { chatMessages } from "@db/schema";
+import { chatMessages, constructionLeads, costCalculatorRequests, projects } from "@db/schema";
 import { eq, desc } from "drizzle-orm";
 
 const SYSTEM_PROMPT = `You are the AI assistant for Rupali Construction, a premium construction company based in Gurgaon, India. You help visitors with questions about residential and commercial construction, renovation, interior design, project timelines, pricing estimates, and company services. Be professional, helpful, and knowledgeable about construction in India. Always encourage visitors to fill out the contact form or call for detailed consultations. Keep responses concise and helpful.`;
@@ -85,6 +85,82 @@ export const chatRouter = createRouter({
       });
 
       return { response: assistantContent };
+    }),
+
+  submitLead: publicQuery
+    .input(
+      z.object({
+        name: z.string().optional(),
+        phone: z.string().optional(),
+        email: z.string().optional(),
+        state: z.string().optional(),
+        city: z.string().optional(),
+        area: z.string().optional(),
+        pinCode: z.string().optional(),
+        projectType: z.string().optional(),
+        residentialType: z.string().optional(),
+        plotSize: z.string().optional(),
+        constructionStage: z.string().optional(),
+        budget: z.string().optional(),
+        timeline: z.string().optional(),
+        preferredCallTime: z.string().optional(),
+        enquiryType: z.string().default("construction"),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const db = getDb();
+      
+      // Generate a unique reference ID
+      const timestamp = new Date().getTime().toString().slice(-6);
+      const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+      const referenceId = `RPC-${timestamp}${random}`;
+      
+      await db.insert(constructionLeads).values({
+        referenceId,
+        ...input,
+      });
+      
+      return { success: true, referenceId };
+    }),
+
+  submitCostRequest: publicQuery
+    .input(
+      z.object({
+        city: z.string().optional(),
+        propertyType: z.string().optional(),
+        plotSize: z.string().optional(),
+        floors: z.number().optional(),
+        quality: z.string().optional(),
+        estimatedCost: z.string().optional(),
+        name: z.string().optional(),
+        phone: z.string().optional(),
+        email: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const db = getDb();
+      
+      // Generate reference ID
+      const timestamp = new Date().getTime().toString().slice(-6);
+      const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+      const referenceId = `RPC-C${timestamp}${random}`;
+      
+      await db.insert(costCalculatorRequests).values({
+        referenceId,
+        ...input,
+      });
+      
+      return { success: true, referenceId };
+    }),
+
+  getProjects: publicQuery
+    .query(async () => {
+      const db = getDb();
+      return db
+        .select()
+        .from(projects)
+        .where(eq(projects.featured, true))
+        .limit(5);
     }),
 
   history: publicQuery

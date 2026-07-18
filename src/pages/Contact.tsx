@@ -29,6 +29,9 @@ export default function Contact() {
     submitMutation.mutate(form);
   };
 
+  const inputClasses = "w-full px-4 py-3.5 border border-[var(--rc-border)] rounded-xl bg-white focus:border-[var(--rc-orange)] focus:ring-1 focus:ring-[var(--rc-orange)] focus:outline-none transition-all placeholder:text-[var(--rc-muted)]/70";
+
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -75,7 +78,7 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="text-label text-[var(--rc-muted)] mb-2 block">
+                      <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
                         Full Name *
                       </label>
                       <input
@@ -83,12 +86,12 @@ export default function Contact() {
                         required
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors"
+                        className={inputClasses}
                         placeholder="Your name"
                       />
                     </div>
                     <div>
-                      <label className="text-label text-[var(--rc-muted)] mb-2 block">
+                      <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
                         Email *
                       </label>
                       <input
@@ -96,7 +99,7 @@ export default function Contact() {
                         required
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors"
+                        className={inputClasses}
                         placeholder="your@email.com"
                       />
                     </div>
@@ -104,26 +107,26 @@ export default function Contact() {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="text-label text-[var(--rc-muted)] mb-2 block">
-                        Phone
+                      <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
+                        Phone (Optional)
                       </label>
                       <input
                         type="tel"
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors"
+                        className={inputClasses}
                         placeholder="+91 98765 43210"
                       />
                     </div>
                     <div>
-                      <label className="text-label text-[var(--rc-muted)] mb-2 block">
-                        City
+                      <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
+                        City (Optional)
                       </label>
                       <input
                         type="text"
                         value={form.city}
                         onChange={(e) => setForm({ ...form, city: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors"
+                        className={inputClasses}
                         placeholder="Gurgaon / Delhi NCR"
                       />
                     </div>
@@ -131,13 +134,13 @@ export default function Contact() {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="text-label text-[var(--rc-muted)] mb-2 block">
-                        Service Required
+                      <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
+                        Service Required (Optional)
                       </label>
                       <select
                         value={form.service}
                         onChange={(e) => setForm({ ...form, service: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors"
+                        className={inputClasses}
                       >
                         <option value="">Select a service</option>
                         <option value="residential">Residential Construction</option>
@@ -149,13 +152,13 @@ export default function Contact() {
                       </select>
                     </div>
                     <div>
-                      <label className="text-label text-[var(--rc-muted)] mb-2 block">
-                        Budget Range
+                      <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
+                        Budget Range (Optional)
                       </label>
                       <select
                         value={form.budget}
                         onChange={(e) => setForm({ ...form, budget: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors"
+                        className={inputClasses}
                       >
                         <option value="">Select budget</option>
                         <option value="below-50l">Below 50 Lakhs</option>
@@ -168,14 +171,14 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="text-label text-[var(--rc-muted)] mb-2 block">
-                      Message
+                    <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
+                      Message (Optional)
                     </label>
                     <textarea
                       rows={4}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-0 py-3 border-0 border-b border-[var(--rc-border)] bg-transparent focus:border-[var(--rc-orange)] focus:outline-none focus:border-b-2 transition-colors resize-none"
+                      className={`${inputClasses} resize-none`}
                       placeholder="Tell us about your project..."
                     />
                   </div>
@@ -183,7 +186,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={submitMutation.isPending}
-                    className="w-full py-4 bg-[var(--rc-orange)] text-white font-medium rounded-2xl hover:bg-[var(--rc-dark)] transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full py-4 bg-[var(--rc-orange)] text-white font-medium rounded-xl hover:bg-[var(--rc-dark)] transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {submitMutation.isPending ? (
                       <>

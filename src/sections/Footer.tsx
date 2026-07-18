@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="py-4">
             <Link to="/" className="inline-flex items-center justify-center mb-6 hover:opacity-90 transition-opacity bg-white px-6 pt-6 pb-2 rounded-2xl shadow-lg">
               <img
-                src="/logo-main.png"
+                src="/logo-main.png?v=2"
                 alt="Rupali Construction"
                 className="w-72 md:w-80 object-contain block translate-y-1"
               />

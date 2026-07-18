@@ -38,6 +38,19 @@ export default function Projects() {
     return () => observer.disconnect();
   }, [projects]);
 
+  const getProjectImage = (project: any) => {
+    if (project.images) {
+      try {
+        const imgs = JSON.parse(project.images);
+        if (imgs.length > 0) return imgs[0];
+      } catch {
+        return project.images.split(",")[0];
+      }
+    }
+    const fallback = fallbackProjects.find((p) => p.name === project.name);
+    return fallback?.coverImage || undefined;
+  };
+
   return (
     <section className="py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-x-clip overflow-y-visible z-20">
       <div className="absolute inset-0 flex items-center justify-start pointer-events-none opacity-[0.03] -translate-x-1/4">
@@ -48,31 +61,31 @@ export default function Projects() {
         />
       </div>
       <div className="container-rc relative z-10">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-12">
-          <div>
-            <motion.p 
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, margin: "-50px" }}
-              transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
-              className="text-6xl lg:text-[8rem] leading-none font-serif italic text-[var(--rc-orange)] mb-2 drop-shadow-sm"
-            >
+        <div className="flex flex-col items-center justify-center text-center mb-12">
+          <motion.div 
+            initial={{ opacity: 0, x: "-50vw" }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "100px" }}
+            transition={{ duration: 1.2, type: "spring", bounce: 0.2 }}
+            className="flex flex-col items-center"
+          >
+            <p className="text-5xl lg:text-[6rem] leading-none font-serif italic text-[var(--rc-orange)] mb-3 drop-shadow-sm">
               Portfolio
-            </motion.p>
+            </p>
             <h2 className="text-xl md:text-2xl font-medium text-[var(--rc-dark)]">
               Featured Projects
             </h2>
-          </div>
+          </motion.div>
 
-          <div className="flex gap-2 mt-6 lg:mt-0">
+          <div className="flex gap-3 mt-8 justify-center flex-wrap">
             {filterOptions.map((filter) => (
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`px-4 py-2 text-sm font-medium rounded-full capitalize transition-all ${
+                className={`px-6 py-2.5 text-base font-medium rounded-full capitalize transition-all shadow-sm ${
                   activeFilter === filter
-                    ? "bg-[var(--rc-blue)] text-white"
-                    : "bg-[var(--rc-gray)] text-[var(--rc-muted)] hover:text-[var(--rc-blue)]"
+                    ? "bg-[var(--rc-orange)] text-white shadow-md shadow-[var(--rc-orange)]/20"
+                    : "bg-white border border-[var(--rc-gray)] text-[var(--rc-muted)] hover:text-[var(--rc-orange)] hover:border-[var(--rc-orange)]/30 hover:bg-[var(--rc-orange)]/5"
                 }`}
               >
                 {filter}
@@ -93,7 +106,7 @@ export default function Projects() {
                 <div className="aspect-[4/3] relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--rc-dark)] via-transparent to-transparent z-10" />
                   <div className="w-full h-full bg-[var(--rc-blue)]/20 flex items-center justify-center">
-                    <ProjectImage src={(project as any).coverImage} name={project.name} />
+                    <ProjectImage src={getProjectImage(project)} name={project.name} />
                   </div>
                 </div>
 

@@ -7,8 +7,17 @@ const t = initTRPC.context<TrpcContext>().create({
   transformer: superjson,
 });
 
+const errorLogger = t.middleware(async (opts) => {
+  try {
+    return await opts.next();
+  } catch (err) {
+    console.error("TRPC Error in", opts.path, ":", err);
+    throw err;
+  }
+});
+
 export const createRouter = t.router;
-export const publicQuery = t.procedure;
+export const publicQuery = t.procedure.use(errorLogger);
 
 const requireAuth = t.middleware(async (opts) => {
   const { ctx, next } = opts;

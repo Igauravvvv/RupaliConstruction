@@ -139,7 +139,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
 
             {/* Content Area */}
             <div className="flex-1 overflow-y-auto relative p-6 md:p-8">
-              <div className="max-w-6xl mx-auto h-full">
+              <div className="max-w-6xl mx-auto">
                 <AnimatePresence mode="wait">
                   
                   {/* STEP 1: Subcategories List */}

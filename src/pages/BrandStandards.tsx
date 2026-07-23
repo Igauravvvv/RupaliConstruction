@@ -24,7 +24,7 @@ export default function BrandStandards() {
       <Navbar />
 
       {/* ─── UNIFIED HERO & CATEGORY SECTION ─── */}
-      <section className="relative min-h-[90vh] bg-[#F4F6F8] pt-32 pb-24 overflow-hidden dark-nav-trigger">
+      <section className="relative min-h-[90vh] bg-[#F4F6F8] pt-32 pb-24 overflow-hidden">
         {/* Background Image with Gradient Fade */}
         <div className="absolute top-0 left-0 w-full h-[65%] z-0">
           <img 

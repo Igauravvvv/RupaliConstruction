@@ -24,10 +24,6 @@ export default function Navbar() {
         const darkSections = document.querySelectorAll('.dark-nav-trigger, #cinematic-reveal-section');
         let isDark = false;
         
-        if (location.pathname === '/brand-standards' && currentScrollY < 500) {
-          isDark = true;
-        }
-        
         darkSections.forEach((section) => {
           const rect = section.getBoundingClientRect();
           if (rect.top <= 80 && rect.bottom >= 80) {
@@ -111,7 +107,7 @@ export default function Navbar() {
             className={`px-8 py-3 text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-xl ${
               isDarkSection 
                 ? "bg-white text-[var(--rc-blue)] hover:bg-[var(--rc-orange)] hover:text-white shadow-white/10 hover:shadow-[var(--rc-orange)]/30"
-                : "bg-[var(--rc-orange)] text-white hover:bg-[var(--rc-dark)] shadow-orange-500/30 hover:shadow-orange-500/40"
+                : "bg-[var(--rc-blue)] text-white hover:bg-[var(--rc-dark)] shadow-[var(--rc-blue)]/30 hover:shadow-[var(--rc-blue)]/40"
             }`}
           >
             Get Estimate

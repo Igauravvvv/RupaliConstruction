@@ -151,26 +151,35 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                       className="max-w-full space-y-4 pb-6"
                     >
                       {/* Banner */}
-                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50/30 rounded-2xl p-6 md:p-8 flex items-center justify-between overflow-hidden relative mb-6 border border-gray-100">
-                        <div className="relative z-10 max-w-sm">
-                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-blue-600 border border-blue-100">
-                            <ShieldCheck className="w-6 h-6" />
-                          </div>
-                          <h2 className="text-xl md:text-2xl font-bold text-[#0A1D3A] mb-2">
-                            Build with Strength. Build with Trust.
-                          </h2>
-                          <p className="text-gray-600 text-sm">
-                            Explore premium structural materials from trusted brands.
-                          </p>
+                      <div className="relative mb-6 mt-8">
+                        {/* Floating Shield Icon */}
+                        <div className="absolute -top-6 left-6 md:left-8 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-sm text-blue-600 border border-blue-50 z-20">
+                          <ShieldCheck className="w-7 h-7" />
                         </div>
-                        {/* Right Graphic Pattern */}
-                        <div className="absolute right-0 top-0 bottom-0 w-1/2 flex justify-end">
-                           <img src="https://images.unsplash.com/photo-1541888087425-ce81dfc46928?w=400&q=80" alt="Construction Banner" className="h-full object-cover rounded-l-full" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 100%)", maskImage: "linear-gradient(to right, transparent, black 100%)" }} />
-                           <div className="absolute top-0 right-0 w-48 h-full bg-[#FF6A00]/20 mix-blend-multiply rounded-l-full" />
-                           {/* Graphic circle accent */}
-                           <div className="absolute -top-10 -right-10 w-40 h-40 border border-[#FF6A00]/20 rounded-full" />
-                           <div className="absolute top-10 right-20 w-2 h-2 bg-[#FF6A00] rounded-full opacity-50" />
-                           <div className="absolute bottom-10 right-10 w-3 h-3 bg-[#0A1D3A] rounded-full opacity-30" />
+                        
+                        <div className="bg-[#f8faff] rounded-2xl p-6 md:p-8 pt-8 md:pt-10 flex items-center justify-between overflow-hidden relative border border-gray-100">
+                          <div className="relative z-10 max-w-[280px] sm:max-w-sm">
+                            <h2 className="text-xl md:text-[22px] font-bold text-[#0A1D3A] mb-3 leading-tight">
+                              Build with Strength. Build with Trust.
+                            </h2>
+                            <p className="text-gray-500 text-sm">
+                              Explore premium structural materials from trusted brands.
+                            </p>
+                          </div>
+                          
+                          {/* Right Graphic Pattern */}
+                          <div className="absolute right-0 top-0 bottom-0 w-[55%] md:w-1/2 flex justify-end">
+                             {/* The image */}
+                             <div className="absolute inset-0 w-full h-full opacity-40 mix-blend-multiply" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 100%)", maskImage: "linear-gradient(to right, transparent, black 100%)" }}>
+                               <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" alt="Construction Banner" className="w-full h-full object-cover" />
+                             </div>
+                             
+                             {/* Decorative Shapes */}
+                             <div className="absolute top-0 right-0 w-[120%] h-[200%] -translate-y-1/4 translate-x-1/4 bg-orange-100/80 rounded-full mix-blend-multiply" />
+                             <div className="absolute -top-10 -right-10 w-48 h-48 border border-orange-200/60 rounded-full" />
+                             <div className="absolute top-10 right-20 w-2 h-2 bg-orange-400 rounded-full opacity-50" />
+                             <div className="absolute bottom-10 right-24 w-3 h-3 bg-gray-400 rounded-full opacity-50" />
+                          </div>
                         </div>
                       </div>
 

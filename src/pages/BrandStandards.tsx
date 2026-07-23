@@ -12,7 +12,8 @@ import {
   ArrowRight,
   MessageSquare,
   BadgeCheck,
-  Clock
+  Clock,
+  Truck
 } from "lucide-react";
 
 export default function BrandStandards() {
@@ -22,145 +23,150 @@ export default function BrandStandards() {
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* ─── 1. HERO SECTION ─── */}
-      <section className="bg-[#0A1D3A] pt-40 pb-28 lg:pt-48 lg:pb-36 relative overflow-hidden dark-nav-trigger min-h-[70vh] flex items-center">
-        <div className="container-rc relative z-10 w-full">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
-            
-            {/* Left Content */}
-            <div className="lg:w-1/2 text-white space-y-8">
-              <div>
-                <p className="text-[#FF6A00] font-bold text-sm tracking-widest uppercase mb-4">
-                  Our Brand Standards
-                </p>
-                <h1 className="text-5xl lg:text-[4rem] font-bold leading-[1.1] mb-6">
-                  STANDARDS THAT <br />
-                  <span className="text-[#FF6A00]">BUILD TRUST.</span>
-                </h1>
-                <p className="text-gray-300 text-lg max-w-lg leading-relaxed">
-                  We work with premium and verified brands to deliver quality, safety, and excellence in every project.
-                </p>
-              </div>
-
-              {/* Trust Metrics */}
-              <div className="flex flex-wrap items-center gap-8 pt-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
-                    <ShieldCheck className="w-6 h-6 text-[#FF6A00]" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-xl leading-none">30+</p>
-                    <p className="text-xs text-gray-400 mt-1">Premium Brands</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
-                    <LayoutGrid className="w-6 h-6 text-[#FF6A00]" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-xl leading-none">4</p>
-                    <p className="text-xs text-gray-400 mt-1">Category Groups</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
-                    <CheckCircle2 className="w-6 h-6 text-[#FF6A00]" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-xl leading-none">100%</p>
-                    <p className="text-xs text-gray-400 mt-1">Quality Verified</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Image */}
-            <div className="lg:w-1/2 w-full">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[16/10]">
-                <img 
-                  src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80" 
-                  alt="Modern Luxury Home at Dusk"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#0A1D3A]/40 to-transparent" />
-              </div>
-            </div>
-          </div>
+      {/* ─── UNIFIED HERO & CATEGORY SECTION ─── */}
+      <section className="relative min-h-[90vh] bg-[#F4F6F8] pt-32 pb-24 overflow-hidden dark-nav-trigger">
+        {/* Background Image with Gradient Fade */}
+        <div className="absolute top-0 left-0 w-full h-[65%] z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1541888087425-ce81dfc46928?auto=format&fit=crop&w=1920&q=80" 
+            alt="Construction Site"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F4F6F8]/20 via-[#F4F6F8]/60 to-[#F4F6F8]" />
         </div>
-      </section>
 
-      {/* ─── 2. EXPLORE BY CATEGORY ─── */}
-      <section className="py-24 bg-[#F4F6F8]">
-        <div className="container-rc">
-          <div className="mb-12">
-            <p className="text-[#FF6A00] font-bold text-sm tracking-widest uppercase mb-2">
+        <div className="container-rc relative z-10">
+          
+          {/* Top Content */}
+          <div className="max-w-2xl mb-16">
+            <p className="text-[#FF6A00] font-bold text-sm tracking-widest uppercase mb-4">
               Explore By Category
             </p>
-            <h2 className="text-4xl font-bold text-[#0A1D3A]">
-              Choose a Category to Explore<br />Our Trusted Brands
-            </h2>
+            <h1 className="text-4xl lg:text-[2.8rem] font-bold leading-[1.1] mb-6 text-[#0A1D3A]">
+              Choose a Category to Explore <br />
+              <span className="text-[#FF6A00]">Our Trusted Brands</span>
+            </h1>
+            <p className="text-gray-600 text-lg mb-8">
+              Handpicked brands. Premium quality. Built for every step of your construction journey.
+            </p>
+
+            {/* Badges */}
+            <div className="flex flex-wrap gap-4">
+              <div className="bg-white rounded-xl p-3 flex items-center gap-3 shadow-sm border border-gray-100 flex-1 min-w-[200px]">
+                <div className="w-10 h-10 rounded-full border border-orange-200 flex items-center justify-center bg-orange-50 shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-[#FF6A00]" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#0A1D3A]">100% Authentic</p>
+                  <p className="text-[10px] text-gray-500">Genuine & Verified Brands</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl p-3 flex items-center gap-3 shadow-sm border border-gray-100 flex-1 min-w-[200px]">
+                <div className="w-10 h-10 rounded-full border border-orange-200 flex items-center justify-center bg-orange-50 shrink-0">
+                  <BadgeCheck className="w-5 h-5 text-[#FF6A00]" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#0A1D3A]">Expert Approved</p>
+                  <p className="text-[10px] text-gray-500">Recommended by Experts</p>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl p-3 flex items-center gap-3 shadow-sm border border-gray-100 flex-1 min-w-[200px]">
+                <div className="w-10 h-10 rounded-full border border-orange-200 flex items-center justify-center bg-orange-50 shrink-0">
+                  <Truck className="w-5 h-5 text-[#FF6A00]" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#0A1D3A]">Nationwide Delivery</p>
+                  <p className="text-[10px] text-gray-500">Fast & Reliable Service</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category, index) => (
-              <motion.div
-                key={category.name}
-                initial="hidden"
-                whileInView="visible"
-                exit="hidden"
-                viewport={{ once: false, amount: 0.1, margin: "50px" }}
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: { opacity: 1 }
-                }}
-                transition={{ delay: index * 0.35 }}
-                className="h-full"
-              >
-                <motion.div 
-                  variants={{
-                    hidden: { x: "-100vw", y: 300, opacity: 0 },
-                    visible: { x: 0, y: 0, opacity: 1, transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 hover:bg-[#FF6A00] transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer h-full"
-                  onClick={() => setActiveCategory(category)}
+            {categories.map((category, index) => {
+              const borderColor = category.name === 'Structural' ? 'border-[#0A1D3A]' : 
+                                  category.name === 'MEP' ? 'border-[#FF6A00]' : 
+                                  category.name === 'Interior' ? 'border-[#16a34a]' : 'border-[#9333ea]';
+              
+              return (
+                <motion.div
+                  key={category.name}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "50px" }}
+                  transition={{ delay: index * 0.15 }}
+                  className="h-full"
                 >
-                {/* Top Image */}
-                <div className="h-48 relative overflow-hidden bg-gray-100 shrink-0">
-                  <img 
-                    src={category.image} 
-                    alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1541888087425-ce81dfc46928?w=600&q=80"; // Fallback texture
-                    }}
-                  />
-                  
-                  {/* Floating Circle Icon */}
                   <div 
-                    className="absolute -bottom-6 left-6 w-14 h-14 rounded-full border-4 border-white flex items-center justify-center text-white shadow-md z-10 transition-colors duration-300 group-hover:border-[#FF6A00]"
-                    style={{ backgroundColor: category.color }}
+                    className={`bg-white rounded-3xl overflow-visible shadow-lg border border-gray-100 flex flex-col cursor-pointer h-full border-b-[6px] ${borderColor} hover:-translate-y-2 transition-transform duration-300`}
+                    onClick={() => setActiveCategory(category)}
                   >
-                    <category.icon className="w-6 h-6" />
-                  </div>
-                </div>
+                    {/* Top Image */}
+                    <div className="h-48 relative overflow-visible shrink-0 rounded-t-3xl">
+                      <img 
+                        src={category.image} 
+                        alt={category.name}
+                        className="w-full h-full object-cover rounded-t-3xl"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1541888087425-ce81dfc46928?w=600&q=80";
+                        }}
+                      />
+                      
+                      {/* Floating Circle Icon */}
+                      <div 
+                        className="absolute -bottom-7 left-6 w-14 h-14 rounded-full border-4 border-white flex items-center justify-center text-white shadow-md z-10"
+                        style={{ backgroundColor: category.color }}
+                      >
+                        <category.icon className="w-6 h-6" />
+                      </div>
+                    </div>
 
-                {/* Content */}
-                <div className="pt-10 pb-6 px-6 flex-1 flex flex-col">
-                  <h3 className="text-2xl font-bold text-[#0A1D3A] mb-1 transition-colors duration-300 group-hover:text-white">{category.name}</h3>
-                  <p className="text-xs font-semibold text-gray-500 mb-4 transition-colors duration-300 group-hover:text-white/80">{category.subcategories.length} Sub-Categories</p>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1 transition-colors duration-300 group-hover:text-white/90">
-                    {category.description}
-                  </p>
-                  
-                  <div className="mt-auto flex justify-end">
-                    <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 transition-colors duration-300 group-hover:bg-white group-hover:border-white group-hover:text-[#FF6A00]">
-                      <ArrowRight className="w-5 h-5" />
-                    </button>
+                    {/* Content */}
+                    <div className="pt-12 pb-6 px-6 flex-1 flex flex-col bg-white rounded-b-3xl relative z-0">
+                      <h3 className="text-2xl font-bold text-[#0A1D3A] mb-1">{category.name}</h3>
+                      <p className="text-xs font-bold text-[#FF6A00] mb-4 uppercase tracking-wide">{category.subcategories.length} Sub-Categories</p>
+                      <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-1">
+                        {category.description}
+                      </p>
+                      
+                      <div className="mt-auto flex justify-end">
+                        <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#0A1D3A] hover:border-[#0A1D3A] transition-colors">
+                          <ArrowRight className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
                 </motion.div>
-              </motion.div>
-            ))}
+              );
+            })}
+          </div>
+
+          {/* Footer Stats Pill */}
+          <div className="mt-16 mx-auto max-w-4xl bg-white rounded-full shadow-lg border border-gray-100 p-4 px-8 flex flex-wrap md:flex-nowrap items-center justify-center md:justify-between gap-6 md:gap-4 relative z-10">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-[#FF6A00]">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <span className="font-bold text-[#0A1D3A] text-sm whitespace-nowrap">Building Trust, Constructing Futures</span>
+            </div>
+            
+            <div className="hidden md:block w-px h-6 bg-gray-200"></div>
+            
+            <div className="flex items-center gap-4 text-xs md:text-sm whitespace-nowrap">
+              <span className="font-bold text-[#FF6A00]">500+ <span className="text-gray-500 font-medium">Trusted Brands</span></span>
+            </div>
+            
+            <div className="hidden md:block w-px h-6 bg-gray-200"></div>
+            
+            <div className="flex items-center gap-4 text-xs md:text-sm whitespace-nowrap">
+              <span className="font-bold text-[#FF6A00]">10,000+ <span className="text-gray-500 font-medium">Quality Products</span></span>
+            </div>
+            
+            <div className="hidden md:block w-px h-6 bg-gray-200"></div>
+            
+            <div className="flex items-center gap-4 text-xs md:text-sm whitespace-nowrap">
+              <span className="font-bold text-[#FF6A00]">50,000+ <span className="text-gray-500 font-medium">Happy Customers</span></span>
+            </div>
           </div>
         </div>
       </section>

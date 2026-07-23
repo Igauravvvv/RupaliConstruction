@@ -85,24 +85,21 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
     <AnimatePresence>
       {isOpen && category && (
         <>
-          {/* Backdrop */}
+          {/* Combined Backdrop + Centered Modal Container */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-[#0A1D3A]/60 backdrop-blur-sm z-40"
-          />
-
-          {/* Modal Wrapper for Centering */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+            onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+            className="fixed inset-0 z-50 bg-[#0A1D3A]/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+          >
             {/* Modal Container */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="pointer-events-auto w-full sm:w-[800px] bg-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[100dvh] sm:max-h-[90vh]"
+              className="w-full sm:w-[800px] bg-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[100dvh] sm:max-h-[90vh]"
             >
             {/* Header */}
             <div className="bg-white px-6 py-5 border-b border-gray-100 flex items-center justify-between z-10 shrink-0">
@@ -533,7 +530,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
               </div>
             </div>
             </motion.div>
-          </div>
+          </motion.div>
         </>
       )}
     </AnimatePresence>

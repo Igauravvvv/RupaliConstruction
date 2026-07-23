@@ -79,17 +79,19 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#0A1D3A]/60 backdrop-blur-sm z-50 p-4 md:p-12 lg:p-16 flex items-center justify-center overflow-y-auto"
+            className="fixed inset-0 bg-[#0A1D3A]/60 backdrop-blur-sm z-40"
           />
 
-          {/* Modal Container */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[800px] bg-white sm:rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden max-h-[100dvh] sm:max-h-[90vh]"
-          >
+          {/* Modal Wrapper for Centering */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+            {/* Modal Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="pointer-events-auto w-full sm:w-[800px] bg-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[100dvh] sm:max-h-[90vh]"
+            >
             {/* Header */}
             <div className="bg-white px-6 py-5 border-b border-gray-100 flex items-center justify-between z-10 shrink-0">
               <div className="flex items-center gap-4">
@@ -518,7 +520,8 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                 </AnimatePresence>
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

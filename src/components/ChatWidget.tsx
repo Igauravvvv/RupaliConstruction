@@ -13,9 +13,9 @@ function getSessionId() {
 }
 
 const EXPRESSIONS = [
-  { id: "welcome", image: "/CHAT-MODEL-WELCOME.png", messages: ["Hi 👋", "Hello!", "Namaskar 🙏", "Welcome!", "Hey there!"] },
-  { id: "happy", image: "/CHAT-MODEL-HAPPY.png", messages: ["How are you doing today?", "Looking for your dream home?", "Excited to help you today!"] },
-  { id: "talk", image: "/CHAT-MODEL-TALK.png", messages: ["Wanna talk to me about constructing your dream home?", "Let's build your dream together."] }
+  { id: "welcome", image: "/CHAT-MODEL-WELCOME.png", messages: ["hiii", "Goodmoning"] },
+  { id: "happy", image: "/CHAT-MODEL-HAPPY.png", messages: ["hiii", "Goodmoning"] },
+  { id: "talk", image: "/CHAT-MODEL-TALK.png", messages: ["hiii", "Goodmoning"] }
 ];
 
 const TypingText = ({ text, onComplete }: { text: string, onComplete?: () => void }) => {
@@ -73,7 +73,19 @@ export default function ChatWidget() {
   const submitCostRequest = trpc.chat.submitCostRequest.useMutation();
   const freeChat = trpc.chat.send.useMutation({
     onSuccess: (data) => {
-      addMessage("assistant", data.response);
+      addMessage("assistant", (
+        <div className="space-y-3">
+          <div className="leading-relaxed">{data.response}</div>
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100 mt-2">
+            <button onClick={() => handleMenuSelect('Talk to Expert', 'expert')} className="text-xs bg-[var(--rc-blue)] text-white px-3 py-1.5 rounded-full hover:bg-opacity-90 transition-colors shadow-sm font-medium flex items-center gap-1">
+              <PhoneCall className="w-3 h-3" /> Call Us
+            </button>
+            <button onClick={() => handleMenuSelect('I want to Construct', 'construct_form')} className="text-xs bg-[var(--rc-orange)] text-white px-3 py-1.5 rounded-full hover:bg-opacity-90 transition-colors shadow-sm font-medium flex items-center gap-1">
+              <Building2 className="w-3 h-3" /> Contact Form
+            </button>
+          </div>
+        </div>
+      ));
       setBotExpression("happy");
       setTimeout(() => setBotExpression("idle"), 3000);
     }
@@ -303,7 +315,7 @@ export default function ChatWidget() {
         setCurrentMessage(EXPRESSIONS[nextIndex].messages[Math.floor(Math.random() * EXPRESSIONS[nextIndex].messages.length)]);
         setIsChanging(false);
       }, 300);
-    }, 3000);
+    }, 1500);
     return () => clearInterval(interval);
   }, [hasMounted, isHovered, exprIndex, isOpen]);
 
@@ -439,7 +451,7 @@ export default function ChatWidget() {
                 
                 {flowState === "welcome" && (
                   <div className="flex flex-wrap gap-2">
-                    {["👋 Hi", "😊 Hello", "🙏 Namaste", "👋 Good Morning", "🌇 Good Evening"].map(g => (
+                    {["😊 Hello", "🙏 Namaste"].map(g => (
                       <button key={g} onClick={() => handleGreetingClick(g)} className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium hover:border-[var(--rc-orange)] hover:text-[var(--rc-orange)] transition-colors shadow-sm">{g}</button>
                     ))}
                   </div>
@@ -451,9 +463,7 @@ export default function ChatWidget() {
                       { icon: <Home className="w-4 h-4 md:w-4 md:h-4"/>, text: "I want to Construct", next: "construct_form" },
                       { icon: <Calculator className="w-4 h-4 md:w-4 md:h-4"/>, text: "Know Cost", next: "cost_form" },
                       { icon: <ImageIcon className="w-4 h-4 md:w-4 md:h-4"/>, text: "View Projects", next: "redirect_projects" },
-                      { icon: <Ruler className="w-4 h-4 md:w-4 md:h-4"/>, text: "Architecture", next: "architecture" },
                       { icon: <Building2 className="w-4 h-4 md:w-4 md:h-4"/>, text: "Interior Design", next: "interior" },
-                      { icon: <Wrench className="w-4 h-4 md:w-4 md:h-4"/>, text: "Renovation", next: "renovation" },
                       { icon: <PhoneCall className="w-4 h-4 md:w-4 md:h-4"/>, text: "Talk to Expert", next: "expert" },
                       { icon: <Info className="w-4 h-4 md:w-4 md:h-4"/>, text: "Other Questions", next: "free_chat" },
                     ].map(opt => (

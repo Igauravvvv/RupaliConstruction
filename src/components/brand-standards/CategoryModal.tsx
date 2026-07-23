@@ -244,7 +244,60 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                      {/* Brands Section */}
+                      <div>
+                        <div className="flex items-center justify-between mb-8">
+                          <div>
+                            <h3 className="text-2xl font-bold text-[#0A1D3A]">Approved Brands</h3>
+                            <p className="text-gray-500">Industry-leading manufacturers we trust.</p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {activeSubcategory.brands.map((brand) => (
+                            <div
+                              key={brand.name}
+                              className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-lg transition-shadow group cursor-pointer"
+                              onClick={() => setActiveBrand(brand)}
+                            >
+                              <div className="h-32 bg-gray-50 rounded-xl mb-6 p-4 flex items-center justify-center relative overflow-hidden group-hover:bg-gray-100 transition-colors">
+                                {(() => {
+                                  const logoSrc = brand.image || (brandDomains[brand.name] ? `https://logo.clearbit.com/${brandDomains[brand.name]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`);
+                                  return (
+                                    <img 
+                                      src={logoSrc} 
+                                      alt={brand.name}
+                                      className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:scale-105 transition-transform"
+                                      onError={(e) => {
+                                        const img = e.currentTarget;
+                                        if (img.src.includes('clearbit')) {
+                                          img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
+                                        }
+                                      }}
+                                    />
+                                  );
+                                })()}
+                              </div>
+                              <div className="flex-1 flex flex-col">
+                                <div className="flex items-center justify-between mb-2">
+                                  <h5 className="font-bold text-[#0A1D3A] text-xl">{brand.name}</h5>
+                                  {brand.confirmed && (
+                                    <ShieldCheck className="w-5 h-5 text-green-500" />
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-500 line-clamp-3 mb-6 flex-1 leading-relaxed">
+                                  {brand.description}
+                                </p>
+                                <button className="w-full py-3 bg-gray-50 group-hover:bg-[#0A1D3A] text-[#0A1D3A] group-hover:text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-2">
+                                  View Brand Profile <ArrowRight className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-8 border-t border-gray-200">
                         {/* Left Column: Educational Content */}
                         <div className="lg:col-span-2 space-y-10">
                           
@@ -357,59 +410,6 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                               </div>
                             </div>
                           )}
-                        </div>
-                      </div>
-
-                      {/* Brands Section */}
-                      <div className="pt-8 border-t border-gray-200">
-                        <div className="flex items-center justify-between mb-8">
-                          <div>
-                            <h3 className="text-2xl font-bold text-[#0A1D3A]">Approved Brands</h3>
-                            <p className="text-gray-500">Industry-leading manufacturers we trust.</p>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {activeSubcategory.brands.map((brand) => (
-                            <div
-                              key={brand.name}
-                              className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-lg transition-shadow group cursor-pointer"
-                              onClick={() => setActiveBrand(brand)}
-                            >
-                              <div className="h-32 bg-gray-50 rounded-xl mb-6 p-4 flex items-center justify-center relative overflow-hidden group-hover:bg-gray-100 transition-colors">
-                                {(() => {
-                                  const logoSrc = brand.image || (brandDomains[brand.name] ? `https://logo.clearbit.com/${brandDomains[brand.name]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`);
-                                  return (
-                                    <img 
-                                      src={logoSrc} 
-                                      alt={brand.name}
-                                      className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:scale-105 transition-transform"
-                                      onError={(e) => {
-                                        const img = e.currentTarget;
-                                        if (img.src.includes('clearbit')) {
-                                          img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
-                                        }
-                                      }}
-                                    />
-                                  );
-                                })()}
-                              </div>
-                              <div className="flex-1 flex flex-col">
-                                <div className="flex items-center justify-between mb-2">
-                                  <h5 className="font-bold text-[#0A1D3A] text-xl">{brand.name}</h5>
-                                  {brand.confirmed && (
-                                    <ShieldCheck className="w-5 h-5 text-green-500" />
-                                  )}
-                                </div>
-                                <p className="text-sm text-gray-500 line-clamp-3 mb-6 flex-1 leading-relaxed">
-                                  {brand.description}
-                                </p>
-                                <button className="w-full py-3 bg-gray-50 group-hover:bg-[#0A1D3A] text-[#0A1D3A] group-hover:text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-2">
-                                  View Brand Profile <ArrowRight className="w-4 h-4" />
-                                </button>
-                              </div>
-                            </div>
-                          ))}
                         </div>
                       </div>
                     </motion.div>

@@ -8,7 +8,12 @@ import {
   Download, 
   CheckCircle2, 
   ArrowRight,
-  FileText
+  FileText,
+  Package,
+  LayoutTemplate,
+  Grid,
+  Droplets,
+  Box
 } from "lucide-react";
 import type { Category, SubCategory, Brand, Product } from "@/data/brandStandardsData";
 
@@ -83,7 +88,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-12 lg:inset-y-16 lg:inset-x-32 bg-[#F8FAFC] rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden max-w-7xl mx-auto"
+            className="fixed inset-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[800px] bg-white sm:rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden max-h-[100dvh] sm:max-h-[90vh]"
           >
             {/* Header */}
             <div className="bg-white px-6 py-5 border-b border-gray-100 flex items-center justify-between z-10 shrink-0">
@@ -124,14 +129,14 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
 
               <button
                 onClick={onClose}
-                className="p-2 text-gray-400 hover:text-gray-900 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2 border border-gray-200 text-gray-400 hover:text-gray-900 rounded-xl hover:bg-gray-50 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto relative p-6 md:p-10">
+            <div className="flex-1 overflow-y-auto relative p-6 md:p-8">
               <div className="max-w-6xl mx-auto h-full">
                 <AnimatePresence mode="wait">
                   
@@ -143,37 +148,80 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                       initial="initial"
                       animate="animate"
                       exit="exit"
-                      className="max-w-2xl mx-auto space-y-4"
+                      className="max-w-full space-y-4 pb-6"
                     >
-                      {category.subcategories.map((sub) => (
-                        <button
-                          key={sub.name}
-                          onClick={() => setActiveSubcategory(sub)}
-                          className="w-full flex items-center justify-between p-6 bg-white rounded-2xl shadow-sm border border-transparent hover:border-[#FF6A00]/30 hover:shadow-md transition-all group"
-                        >
-                          <div className="flex items-center gap-4">
-                            {/* Placeholder for subcategory icon/image if we had one, using generic box for now */}
-                            <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden p-2 border border-gray-100 flex items-center justify-center">
-                              <img 
-                                src={sub.brands[0]?.image || "https://images.unsplash.com/photo-1541888087425-ce81dfc46928?w=100&q=80"} 
-                                alt={sub.name}
-                                className="max-w-full max-h-full object-contain mix-blend-multiply"
-                              />
-                            </div>
-                            <div className="text-left">
-                              <span className="block font-bold text-[#0A1D3A] text-xl group-hover:text-[#FF6A00] transition-colors mb-1">
-                                {sub.name}
-                              </span>
-                              <span className="text-sm text-gray-500 line-clamp-1">
-                                {sub.brands[0]?.description || "High quality materials for durable construction."}
-                              </span>
-                            </div>
+                      {/* Banner */}
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50/30 rounded-2xl p-6 md:p-8 flex items-center justify-between overflow-hidden relative mb-6 border border-gray-100">
+                        <div className="relative z-10 max-w-sm">
+                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-blue-600 border border-blue-100">
+                            <ShieldCheck className="w-6 h-6" />
                           </div>
-                          <div className="w-10 h-10 rounded-full bg-[#FF6A00]/10 flex items-center justify-center text-[#FF6A00] group-hover:bg-[#FF6A00] group-hover:text-white transition-colors shrink-0">
-                            <ArrowRight className="w-5 h-5" />
-                          </div>
-                        </button>
-                      ))}
+                          <h2 className="text-xl md:text-2xl font-bold text-[#0A1D3A] mb-2">
+                            Build with Strength. Build with Trust.
+                          </h2>
+                          <p className="text-gray-600 text-sm">
+                            Explore premium structural materials from trusted brands.
+                          </p>
+                        </div>
+                        {/* Right Graphic Pattern */}
+                        <div className="absolute right-0 top-0 bottom-0 w-1/2 flex justify-end">
+                           <img src="https://images.unsplash.com/photo-1541888087425-ce81dfc46928?w=400&q=80" alt="Construction Banner" className="h-full object-cover rounded-l-full" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 100%)", maskImage: "linear-gradient(to right, transparent, black 100%)" }} />
+                           <div className="absolute top-0 right-0 w-48 h-full bg-[#FF6A00]/20 mix-blend-multiply rounded-l-full" />
+                           {/* Graphic circle accent */}
+                           <div className="absolute -top-10 -right-10 w-40 h-40 border border-[#FF6A00]/20 rounded-full" />
+                           <div className="absolute top-10 right-20 w-2 h-2 bg-[#FF6A00] rounded-full opacity-50" />
+                           <div className="absolute bottom-10 right-10 w-3 h-3 bg-[#0A1D3A] rounded-full opacity-30" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {category.subcategories.map((sub) => {
+                          // Dynamic Icon mapping based on subcategory name
+                          let SubIcon = Box;
+                          let iconColorClass = "text-gray-500 bg-gray-50 border-gray-100";
+                          let nameColor = "text-[#0A1D3A]";
+                          
+                          const lowerName = sub.name.toLowerCase();
+                          if (lowerName.includes('cement')) {
+                            SubIcon = Package; 
+                            iconColorClass = "text-blue-500 bg-blue-50 border-blue-100";
+                          } else if (lowerName.includes('steel')) {
+                            SubIcon = LayoutTemplate; 
+                            iconColorClass = "text-orange-500 bg-orange-50 border-orange-100";
+                          } else if (lowerName.includes('brick') || lowerName.includes('block')) {
+                            SubIcon = Grid; 
+                            iconColorClass = "text-green-500 bg-green-50 border-green-100";
+                          } else if (lowerName.includes('waterproof')) {
+                            SubIcon = Droplets; 
+                            iconColorClass = "text-purple-500 bg-purple-50 border-purple-100";
+                          }
+                          
+                          return (
+                            <button
+                              key={sub.name}
+                              onClick={() => setActiveSubcategory(sub)}
+                              className="w-full flex items-center justify-between p-5 bg-white rounded-2xl border border-gray-200 hover:border-[#FF6A00]/30 hover:shadow-md transition-all group"
+                            >
+                              <div className="flex items-center gap-5">
+                                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 border ${iconColorClass}`}>
+                                  <SubIcon className="w-8 h-8 stroke-[1.5]" />
+                                </div>
+                                <div className="text-left">
+                                  <span className={`block font-bold text-xl group-hover:text-[#FF6A00] transition-colors mb-1 ${nameColor}`}>
+                                    {sub.name}
+                                  </span>
+                                  <span className="text-sm text-gray-500 line-clamp-1">
+                                    {sub.brands[0]?.description || "High quality materials for durable construction."}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-[#FF6A00] shrink-0 border border-orange-100 group-hover:bg-[#FF6A00] group-hover:text-white transition-colors">
+                                <ArrowRight className="w-5 h-5" />
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </motion.div>
                   )}
 

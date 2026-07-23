@@ -69,9 +69,9 @@ export default function Footer() {
         />
       </div>
 
-      <div className="container-rc relative z-10 pt-12 md:pt-20 pb-8">
+      <div className="container-rc relative z-10 pt-8 md:pt-12 pb-6">
         {/* Desktop Footer - hidden on mobile */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
           
           {/* Brand & Speech Section */}
           <div className="lg:col-span-5">
@@ -102,11 +102,11 @@ export default function Footer() {
 
           {/* Links Section */}
           <div className="lg:col-span-3 lg:col-start-7">
-            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-8 flex items-center gap-2">
+            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-5 flex items-center gap-2">
               <span className="w-8 h-[1px] bg-[var(--rc-orange)]" />
               Services
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {[
                 "Residential Construction",
                 "Commercial Construction",
@@ -119,11 +119,11 @@ export default function Footer() {
               ))}
             </ul>
 
-            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-8 mt-12 flex items-center gap-2">
+            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-5 mt-8 flex items-center gap-2">
               <span className="w-8 h-[1px] bg-[var(--rc-orange)]" />
               Company
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               <li><LinkItem href="/" isRouterLink>Home</LinkItem></li>
               <li><LinkItem href="/blog" isRouterLink>Blog</LinkItem></li>
               <li><LinkItem href="/contact" isRouterLink>Contact</LinkItem></li>
@@ -133,11 +133,11 @@ export default function Footer() {
 
           {/* Contact Section */}
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-8 flex items-center gap-2">
+            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-5 flex items-center gap-2">
               <span className="w-8 h-[1px] bg-[var(--rc-orange)]" />
               Get in Touch
             </h4>
-            <ul className="space-y-6">
+            <ul className="space-y-4">
               <li className="flex items-start gap-4 group">
                 <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--rc-orange)] group-hover:border-[var(--rc-orange)] transition-colors">
                   <MapPin className="w-4 h-4 text-white/70 group-hover:text-white" />
@@ -167,46 +167,46 @@ export default function Footer() {
         </div>
 
         {/* Mobile Footer - hidden on md+ */}
-        <div className="md:hidden mb-10">
+        <div className="md:hidden mb-6">
           {/* Logo - compact */}
-          <div className="flex justify-center mb-6">
-            <Link to="/" className="inline-block bg-white/5 border border-white/10 p-4 rounded-2xl">
+          <div className="flex justify-center mb-4">
+            <Link to="/" className="inline-block bg-white/5 border border-white/10 p-3 rounded-2xl">
               <img
                 src="/logo-main.png?v=2"
                 alt="Rupali Construction"
-                className="w-44 object-contain brightness-[1.2]"
+                className="w-40 object-contain brightness-[1.2]"
               />
             </Link>
           </div>
 
           {/* Tagline */}
-          <p className="text-white/60 text-xs text-center leading-relaxed mb-6 px-4">
+          <p className="text-white/60 text-[11px] text-center leading-relaxed mb-4 px-2">
             Premium construction solutions engineered for quality, transparency, and timely delivery across Gurgaon and Delhi NCR.
           </p>
 
           {/* Contact Info - horizontal row */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <a href="tel:+919311830088" className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 text-xs font-medium">
-              <Phone className="w-3.5 h-3.5 text-[var(--rc-orange)]" />
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <a href="tel:+919311830088" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/80 text-[11px] font-medium">
+              <Phone className="w-3 h-3 text-[var(--rc-orange)]" />
               +91 9311830088
             </a>
-            <a href="mailto:ujjwalt.rg@rupalihomes.com" className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/80 text-xs font-medium">
-              <Mail className="w-3.5 h-3.5 text-[var(--rc-orange)]" />
+            <a href="mailto:ujjwalt.rg@rupalihomes.com" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/80 text-[11px] font-medium">
+              <Mail className="w-3 h-3 text-[var(--rc-orange)]" />
               Email Us
             </a>
           </div>
 
           {/* Address */}
-          <div className="flex items-center justify-center gap-2 mb-8 text-white/50 text-xs">
-            <MapPin className="w-3.5 h-3.5 text-[var(--rc-orange)]" />
+          <div className="flex items-center justify-center gap-1.5 mb-5 text-white/50 text-[11px]">
+            <MapPin className="w-3 h-3 text-[var(--rc-orange)]" />
             <span>5th floor, M3M Broadway, Sector 71, Gurgaon</span>
           </div>
 
           {/* Links - Horizontal flex wrap instead of vertical lists */}
-          <div className="mb-8 px-2 space-y-6">
+          <div className="mb-6 px-2 space-y-4">
             <div>
-              <h4 className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/30 mb-3 text-center">Services</h4>
-              <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+              <h4 className="text-[9px] font-bold tracking-[0.15em] uppercase text-white/30 mb-2 text-center">Services</h4>
+              <div className="flex flex-wrap justify-center gap-x-2 gap-y-1.5">
                 {[
                   "Residential",
                   "Commercial",
@@ -215,31 +215,31 @@ export default function Footer() {
                   "Architecture",
                   "Structural",
                 ].map((s) => (
-                  <a key={s} href="/#services" className="text-[11px] text-white/50 hover:text-white transition-colors bg-white/5 px-3 py-1.5 rounded-full border border-white/10">{s}</a>
+                  <a key={s} href="/#services" className="text-[10px] text-white/50 hover:text-white transition-colors bg-white/5 px-2.5 py-1 rounded-full border border-white/10">{s}</a>
                 ))}
               </div>
             </div>
             
             <div>
-              <h4 className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/30 mb-3 text-center">Company</h4>
-              <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+              <h4 className="text-[9px] font-bold tracking-[0.15em] uppercase text-white/30 mb-2 text-center">Company</h4>
+              <div className="flex flex-wrap justify-center gap-x-2 gap-y-1.5">
                 {[
                   { label: "Home", href: "/" },
                   { label: "Projects", href: "/projects" },
                   { label: "Blog", href: "/blog" },
                   { label: "Contact", href: "/contact" },
-                  { label: "Get Estimate", href: "/#estimate" },
+                  { label: "Estimate", href: "/#estimate" },
                 ].map((l) => (
-                  <Link key={l.label} to={l.href} onClick={() => window.scrollTo(0, 0)} className="text-[11px] text-white/50 hover:text-white transition-colors bg-white/5 px-3 py-1.5 rounded-full border border-white/10">{l.label}</Link>
+                  <Link key={l.label} to={l.href} onClick={() => window.scrollTo(0, 0)} className="text-[10px] text-white/50 hover:text-white transition-colors bg-white/5 px-2.5 py-1 rounded-full border border-white/10">{l.label}</Link>
                 ))}
               </div>
             </div>
           </div>
 
           {/* Social - horizontal */}
-          <div className="flex items-center justify-center gap-6 mb-6">
+          <div className="flex items-center justify-center gap-5 mb-2">
             {["LinkedIn", "Instagram", "Facebook"].map((social) => (
-              <a key={social} href="#" className="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-[var(--rc-orange)] transition-colors">
+              <a key={social} href="#" className="text-[9px] font-bold uppercase tracking-widest text-white/30 hover:text-[var(--rc-orange)] transition-colors">
                 {social}
               </a>
             ))}
@@ -247,7 +247,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 relative">
           <p className="text-xs font-medium text-white/40 tracking-wider">
             &copy; {new Date().getFullYear()} Rupali Construction. All rights reserved.
           </p>

@@ -69,8 +69,19 @@ export default function Leadership() {
   const yOffset = useTransform(scrollYProgress, [0, 1], [0, -400]);
 
   return (
-    <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden flex flex-col font-sans relative">
+    <div className="min-h-screen overflow-x-hidden flex flex-col font-sans relative">
       <Navbar />
+
+      {/* Background Image with Premium Gradient Fade */}
+      <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none">
+        <img 
+          src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1920&q=80" 
+          alt="Construction Leadership and Planning"
+          className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"
+        />
+        <div className="absolute inset-0 bg-[var(--rc-white)]/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--rc-white)]/60 to-[var(--rc-white)]" />
+      </div>
 
       {/* Funny Construction Background Elements */}
       <motion.div style={{ y: yOffset }} className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -88,8 +99,9 @@ export default function Leadership() {
             initial={{ opacity: 0, scale: 0.5, y: -50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 150, damping: 15 }}
-            className="mb-24 text-center relative z-10"
+            className="text-center mb-24 max-w-4xl mx-auto relative z-10"
           >
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0)_70%)] blur-2xl -z-10 scale-150" />
             <motion.h1 
               whileHover={{ scale: 1.05, rotate: -2 }}
               className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] drop-shadow-xl mb-6 inline-block cursor-default"

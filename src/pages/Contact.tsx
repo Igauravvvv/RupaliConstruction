@@ -29,21 +29,32 @@ export default function Contact() {
     submitMutation.mutate(form);
   };
 
-  const inputClasses = "w-full px-4 py-3.5 border border-[var(--rc-border)] rounded-xl bg-white focus:border-[var(--rc-orange)] focus:ring-1 focus:ring-[var(--rc-orange)] focus:outline-none transition-all placeholder:text-[var(--rc-muted)]/70";
+  const inputClasses = "w-full px-4 py-3.5 border border-white/60 rounded-xl bg-white/50 backdrop-blur-md focus:border-[var(--rc-orange)] focus:ring-1 focus:ring-[var(--rc-orange)] focus:outline-none transition-all placeholder:text-[var(--rc-muted)]/70";
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Navbar />
 
-      <section className="pt-32 pb-16 bg-[var(--rc-gray)]">
+      {/* Background Image with Premium Gradient Fade */}
+      <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none">
+        <img 
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80" 
+          alt="Welcoming Modern Home Entrance"
+          className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"
+        />
+        <div className="absolute inset-0 bg-[var(--rc-white)]/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--rc-white)]/60 to-[var(--rc-white)]" />
+      </div>
+
+      <section className="pt-32 pb-16 relative z-10">
         <div className="container-rc">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl bg-white/50 backdrop-blur-md p-8 sm:p-10 rounded-3xl border border-white/60 shadow-xl">
             <p className="text-label text-[var(--rc-orange)] mb-4">Get in Touch</p>
             <h1 className="text-display-2 text-[var(--rc-dark)] mb-4">
               Contact Us
             </h1>
-            <p className="text-lg text-[var(--rc-muted)]">
+            <p className="text-lg text-[var(--rc-dark)]/80 font-medium">
               Ready to start your construction project? Fill out the form below
               and our team will get back to you within 24 hours.
             </p>
@@ -51,7 +62,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24 bg-[var(--rc-white)]">
+      <section className="py-16 lg:py-24 relative z-10">
         <div className="container-rc">
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
@@ -211,7 +222,7 @@ export default function Contact() {
             </div>
 
             <div className="space-y-8">
-              <div className="p-6 rounded-2xl bg-[var(--rc-gray)]">
+              <div className="p-6 rounded-2xl bg-white/50 backdrop-blur-md border border-white/60 shadow-xl">
                 <h3 className="text-lg font-semibold text-[var(--rc-dark)] mb-4">
                   Contact Information
                 </h3>

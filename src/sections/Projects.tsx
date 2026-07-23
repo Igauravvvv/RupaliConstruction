@@ -74,7 +74,7 @@ export default function Projects() {
   };
 
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-x-clip overflow-y-visible z-20">
+    <section className="py-16 md:py-24 lg:py-32 bg-transparent relative overflow-x-clip overflow-y-visible z-20">
       <div className="absolute inset-0 flex items-center justify-start pointer-events-none opacity-[0.03] -translate-x-1/4">
         <img
           src="/logo-icon.png"

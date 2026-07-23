@@ -3,19 +3,32 @@ import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
+import { fallbackPosts } from "./Blog";
 
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: post, isLoading } = trpc.blog.bySlug.useQuery(
+  const { data: dbPost, isLoading } = trpc.blog.bySlug.useQuery(
     { slug: slug || "" },
     { enabled: !!slug }
   );
 
+  const post = dbPost || fallbackPosts.find(p => p.slug === slug);
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Navbar />
 
-      <section className="pt-32 pb-16 bg-[var(--rc-gray)]">
+      {/* Background Image with Premium Gradient Fade */}
+      <div className="absolute top-0 left-0 w-full h-[70vh] z-0 pointer-events-none">
+        <img 
+          src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?auto=format&fit=crop&w=1920&q=80" 
+          alt="Construction Planning and Blog"
+          className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--rc-white)] via-[var(--rc-white)]/90 to-transparent" />
+      </div>
+
+      <section className="pt-32 pb-16 relative z-10">
         <div className="container-rc max-w-4xl">
           <Link
             to="/blog"
@@ -75,7 +88,7 @@ export default function BlogDetail() {
       </section>
 
       {post && (
-        <section className="py-16 bg-[var(--rc-white)]">
+        <section className="py-16 bg-[var(--rc-white)] relative z-10">
           <div className="container-rc max-w-4xl">
             <div className="prose prose-lg max-w-none text-[var(--rc-dark)]">
               {post.excerpt && (

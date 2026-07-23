@@ -329,16 +329,16 @@ export default function ChatWidget() {
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: -10, scale: 0.95, transition: { duration: 0.2 } }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="absolute bottom-8 md:bottom-12 left-[70%] md:left-[90%] w-max max-w-[280px] md:max-w-[550px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-1 md:p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/50 transition-colors z-10 overflow-hidden"
+                    className="absolute bottom-8 md:bottom-12 left-[60%] md:left-[90%] w-max max-w-[240px] md:max-w-[550px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/50 transition-colors z-10 overflow-hidden"
                     onClick={() => setIsOpen(true)}
                   >
-                    <div className="pl-3 md:pl-4 pr-1 md:pr-3 flex-1 flex items-center gap-2 md:gap-3 overflow-hidden">
-                      <svg className="w-4 h-4 md:w-5 md:h-5 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
-                      <span className="text-gray-200 text-[10px] md:text-[13px] font-medium leading-tight max-w-[100px] md:max-w-none md:whitespace-nowrap pr-1 md:pr-2">
+                    <div className="pl-2 md:pl-4 pr-1 md:pr-3 flex items-center gap-1.5 md:gap-3 overflow-hidden">
+                      <svg className="w-3.5 h-3.5 md:w-5 md:h-5 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
+                      <span className="text-gray-200 text-[9px] md:text-[13px] font-medium leading-tight max-w-[80px] md:max-w-none md:whitespace-nowrap pr-1">
                         <TypingText text={currentMessage} />
                       </span>
                     </div>
-                    <button className="flex-shrink-0 bg-[#0A2647] text-white px-3 md:px-5 py-1.5 md:py-2.5 rounded-full text-[9px] md:text-xs font-bold tracking-widest uppercase flex items-center gap-1 md:gap-2 shadow-inner border border-white/5 hover:bg-[var(--rc-orange)] hover:border-transparent transition-all duration-300">
+                    <button className="flex-shrink-0 bg-[#0A2647] text-white px-2.5 md:px-5 py-1.5 md:py-2.5 rounded-full text-[9px] md:text-xs font-bold tracking-wide md:tracking-widest uppercase flex items-center gap-1 md:gap-2 shadow-inner border border-white/5 hover:bg-[var(--rc-orange)] hover:border-transparent transition-all duration-300">
                       Let's Talk
                       <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     </button>
@@ -446,24 +446,24 @@ export default function ChatWidget() {
                 )}
 
                 {flowState === "main_menu" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                  <div className="grid grid-cols-2 gap-2 mt-2">
                     {[
-                      { icon: <Home className="w-4 h-4"/>, text: "I want to Construct Property", next: "construct_form" },
-                      { icon: <Calculator className="w-4 h-4"/>, text: "Know Construction Cost", next: "cost_form" },
-                      { icon: <ImageIcon className="w-4 h-4"/>, text: "View Our Projects", next: "redirect_projects" },
-                      { icon: <Ruler className="w-4 h-4"/>, text: "Architecture & Planning", next: "architecture" },
-                      { icon: <Building2 className="w-4 h-4"/>, text: "Interior Design", next: "interior" },
-                      { icon: <Wrench className="w-4 h-4"/>, text: "Renovation", next: "renovation" },
-                      { icon: <PhoneCall className="w-4 h-4"/>, text: "Talk to an Expert", next: "expert" },
-                      { icon: <Info className="w-4 h-4"/>, text: "Other Questions", next: "free_chat" },
+                      { icon: <Home className="w-4 h-4 md:w-4 md:h-4"/>, text: "I want to Construct", next: "construct_form" },
+                      { icon: <Calculator className="w-4 h-4 md:w-4 md:h-4"/>, text: "Know Cost", next: "cost_form" },
+                      { icon: <ImageIcon className="w-4 h-4 md:w-4 md:h-4"/>, text: "View Projects", next: "redirect_projects" },
+                      { icon: <Ruler className="w-4 h-4 md:w-4 md:h-4"/>, text: "Architecture", next: "architecture" },
+                      { icon: <Building2 className="w-4 h-4 md:w-4 md:h-4"/>, text: "Interior Design", next: "interior" },
+                      { icon: <Wrench className="w-4 h-4 md:w-4 md:h-4"/>, text: "Renovation", next: "renovation" },
+                      { icon: <PhoneCall className="w-4 h-4 md:w-4 md:h-4"/>, text: "Talk to Expert", next: "expert" },
+                      { icon: <Info className="w-4 h-4 md:w-4 md:h-4"/>, text: "Other Questions", next: "free_chat" },
                     ].map(opt => (
                       <button 
                         key={opt.text} 
                         onClick={() => handleMenuSelect(opt.text, opt.next as FlowState)}
-                        className="flex items-center gap-2 p-3 bg-white border border-gray-200 rounded-xl hover:border-[var(--rc-blue)] hover:shadow-md transition-all text-left text-sm font-medium text-gray-700 hover:text-[var(--rc-blue)]"
+                        className="flex flex-col items-center justify-center gap-1.5 p-2 md:p-3 bg-white border border-gray-200 rounded-xl hover:border-[var(--rc-blue)] hover:shadow-md transition-all text-center text-[10px] md:text-sm font-medium text-gray-700 hover:text-[var(--rc-blue)]"
                       >
-                        <div className="bg-blue-50 p-1.5 rounded-lg text-[var(--rc-blue)]">{opt.icon}</div>
-                        {opt.text}
+                        <div className="bg-blue-50 p-1.5 md:p-1.5 rounded-lg text-[var(--rc-blue)]">{opt.icon}</div>
+                        <span className="leading-tight">{opt.text}</span>
                       </button>
                     ))}
                   </div>

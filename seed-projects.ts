@@ -1,4 +1,4 @@
-import { getDb } from "./api/queries/connection";
+import { getDb } from "./server/queries/connection";
 import { projects } from "./db/schema";
 import { fallbackProjects } from "./src/sections/Projects";
 

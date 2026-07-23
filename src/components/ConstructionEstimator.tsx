@@ -190,12 +190,12 @@ export default function ConstructionEstimator() {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[var(--rc-border)] w-full max-w-[1400px] mx-auto">
+    <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden border border-[var(--rc-border)] w-full max-w-[1400px] mx-auto">
       {/* HEADER */}
-      <div className="bg-[var(--rc-dark)] p-6 lg:p-8 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[var(--rc-dark)] p-4 md:p-6 lg:p-8 text-white flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-[var(--rc-orange)]/20 flex items-center justify-center text-[var(--rc-orange)]">
+          <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[var(--rc-orange)]/20 flex items-center justify-center text-[var(--rc-orange)] shrink-0">
               <Calculator className="w-5 h-5" />
             </div>
             <h3 className="text-2xl font-semibold">Cost Estimator</h3>
@@ -219,15 +219,15 @@ export default function ConstructionEstimator() {
 
       {/* SETUP MODE */}
       {mode === "setup" && (
-        <div className="p-6 lg:p-10 space-y-8 animate-in fade-in slide-in-from-bottom-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-3">
-              <label className="text-label text-[var(--rc-muted)] block">City</label>
-              <div className="grid grid-cols-2 gap-3">
+        <div className="p-4 md:p-6 lg:p-10 space-y-5 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+            <div className="space-y-2 md:space-y-3">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">City</label>
+              <div className="grid grid-cols-2 gap-2 md:gap-3">
                 {["Gurgaon", "Delhi", "Noida", "Faridabad"].map(c => (
                   <button key={c}
                     onClick={() => setInputs(p => ({ ...p, city: c }))}
-                    className={`p-3 rounded-xl border text-center transition-all ${
+                    className={`p-2.5 md:p-3 rounded-xl border text-center text-sm transition-all ${
                       inputs.city === c 
                         ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
                         : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
@@ -239,13 +239,13 @@ export default function ConstructionEstimator() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <label className="text-label text-[var(--rc-muted)] block">Foundation Type</label>
-              <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2 md:space-y-3">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Foundation Type</label>
+              <div className="grid grid-cols-2 gap-2 md:gap-3">
                 {["Standard / Strip", "Deep/Raft", "Pile"].map(f => (
                   <button key={f}
                     onClick={() => setInputs(p => ({ ...p, foundation: f }))}
-                    className={`p-3 rounded-xl border text-center text-sm transition-all ${
+                    className={`p-2.5 md:p-3 rounded-xl border text-center text-xs md:text-sm transition-all ${
                       inputs.foundation === f 
                         ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
                         : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
@@ -257,26 +257,26 @@ export default function ConstructionEstimator() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <label className="text-label text-[var(--rc-muted)] block">Plot Area (Sq.Ft.)</label>
+            <div className="space-y-2 md:space-y-3">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Plot Area (Sq.Ft.)</label>
               <input 
                 type="number"
                 value={inputs.plotArea}
                 onChange={(e) => setInputs(p => ({ ...p, plotArea: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] outline-none text-lg"
+                className="w-full px-4 py-2.5 md:py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] outline-none text-base md:text-lg"
                 placeholder="e.g. 2000"
               />
             </div>
 
-            <div className="space-y-3">
-              <label className="text-label text-[var(--rc-muted)] block">Number of Floors</label>
+            <div className="space-y-2 md:space-y-3">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Number of Floors</label>
               <div className="flex gap-2">
                 {['1', '2', '3', '4'].map((num) => (
                   <button
                     key={num}
                     type="button"
                     onClick={() => setInputs(p => ({ ...p, floors: num }))}
-                    className={`flex-1 py-3 rounded-xl font-bold transition-all border ${
+                    className={`flex-1 py-2.5 md:py-3 rounded-xl font-bold transition-all border ${
                       inputs.floors === num
                         ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
                         : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
@@ -288,7 +288,7 @@ export default function ConstructionEstimator() {
                 <button
                   type="button"
                   onClick={() => setInputs(p => ({ ...p, floors: parseInt(inputs.floors) > 4 ? inputs.floors : '5' }))}
-                  className={`flex-1 py-3 rounded-xl font-bold transition-all border ${
+                  className={`flex-1 py-2.5 md:py-3 rounded-xl font-bold transition-all border text-sm md:text-base ${
                     parseInt(inputs.floors || '1') > 4
                       ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
                       : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"

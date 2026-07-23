@@ -8,7 +8,7 @@ import { env } from "./lib/env";
 import { createOAuthCallbackHandler } from "./kimi/auth";
 import { Paths } from "@contracts/constants";
 import { googleAuth } from "./google-auth-router";
-import "../seed-admin";
+import "../seed-admin.ts";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 

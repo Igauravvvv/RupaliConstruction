@@ -1,4 +1,4 @@
-import { getDb } from "./api/queries/connection";
+import { getDb } from "./server/queries/connection";
 import { localUsers } from "./db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";

@@ -15,9 +15,11 @@ async function seedAdmin() {
     if (!existing) {
       const passwordHash = await bcrypt.hash("admin123", 12);
       await db.insert(localUsers).values({
+        uniqueId: "RC-ADMIN001",
         username: "admin",
         passwordHash,
         displayName: "Administrator",
+        authProvider: "local",
         role: "admin",
       });
       console.log("Admin user created successfully!");

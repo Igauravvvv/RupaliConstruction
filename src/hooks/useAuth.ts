@@ -8,6 +8,7 @@ export type AuthUser = {
   avatar?: string | null;
   role: string;
   authType: "oauth" | "local";
+  uniqueId?: string;
 };
 
 export function useAuth() {
@@ -51,8 +52,10 @@ export function useAuth() {
         id: localUser.id,
         name: localUser.name || "User",
         email: localUser.email,
+        avatar: localUser.avatar,
         role: localUser.role,
         authType: "local" as const,
+        uniqueId: localUser.uniqueId,
       };
     }
     return null;

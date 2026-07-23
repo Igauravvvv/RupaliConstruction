@@ -309,7 +309,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-6 z-50 flex flex-col items-start pointer-events-none">
+      <div className="fixed bottom-0 -left-2 md:left-6 z-50 flex flex-col items-start pointer-events-none">
         <AnimatePresence>
           {hasMounted && !isOpen && (
             <motion.div
@@ -329,18 +329,18 @@ export default function ChatWidget() {
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: -10, scale: 0.95, transition: { duration: 0.2 } }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="absolute bottom-12 left-[90%] w-max max-w-[550px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/50 transition-colors z-10 overflow-hidden"
+                    className="absolute bottom-8 md:bottom-12 left-[70%] md:left-[90%] w-max max-w-[280px] md:max-w-[550px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-1 md:p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/50 transition-colors z-10 overflow-hidden"
                     onClick={() => setIsOpen(true)}
                   >
-                    <div className="pl-4 pr-3 flex-1 flex items-center gap-3 overflow-hidden">
-                      <svg className="w-5 h-5 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
-                      <span className="text-gray-200 text-[11px] md:text-[13px] font-medium whitespace-nowrap pr-2">
+                    <div className="pl-3 md:pl-4 pr-1 md:pr-3 flex-1 flex items-center gap-2 md:gap-3 overflow-hidden">
+                      <svg className="w-4 h-4 md:w-5 md:h-5 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
+                      <span className="text-gray-200 text-[10px] md:text-[13px] font-medium leading-tight max-w-[100px] md:max-w-none md:whitespace-nowrap pr-1 md:pr-2">
                         <TypingText text={currentMessage} />
                       </span>
                     </div>
-                    <button className="flex-shrink-0 bg-[#0A2647] text-white px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold tracking-widest uppercase flex items-center gap-2 shadow-inner border border-white/5 hover:bg-[var(--rc-orange)] hover:border-transparent transition-all duration-300">
+                    <button className="flex-shrink-0 bg-[#0A2647] text-white px-3 md:px-5 py-1.5 md:py-2.5 rounded-full text-[9px] md:text-xs font-bold tracking-widest uppercase flex items-center gap-1 md:gap-2 shadow-inner border border-white/5 hover:bg-[var(--rc-orange)] hover:border-transparent transition-all duration-300">
                       Let's Talk
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     </button>
                   </motion.div>
                 )}
@@ -350,7 +350,7 @@ export default function ChatWidget() {
                 onClick={() => setIsOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9, y: -10 }}
-                className="relative w-48 h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
+                className="relative w-32 md:w-48 h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
                 animate={isHovered ? {} : { y: [0, -6, 0], scale: [1, 1.01, 1] }}
                 transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" }, scale: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
               >

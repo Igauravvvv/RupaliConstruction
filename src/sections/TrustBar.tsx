@@ -50,12 +50,12 @@ export default function TrustBar({ variant = "default" }: { variant?: "default" 
   const isTransparent = variant === "transparent";
 
   return (
-    <section className={`py-16 lg:py-24 relative z-10 overflow-hidden ${isTransparent ? "bg-transparent" : "bg-[var(--rc-blue)]"}`}>
+    <section className={`py-10 md:py-16 lg:py-24 relative z-10 overflow-hidden ${isTransparent ? "bg-transparent" : "bg-[var(--rc-blue)]"}`}>
       <div className="container-rc relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 lg:gap-8">
+        <div className="grid grid-cols-4 gap-2 md:gap-12 lg:gap-8">
           {stats.map((stat, i) => (
             <div key={stat.label} className="text-center group flex flex-col items-center">
-              <div className="relative inline-block mb-4">
+              <div className="relative inline-block mb-1 md:mb-4">
                 {!isTransparent && (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.5 }}
@@ -74,11 +74,11 @@ export default function TrustBar({ variant = "default" }: { variant?: "default" 
                     className="absolute -bottom-1 left-1/4 right-1/4 h-1 bg-[var(--rc-orange)] rounded-full origin-center shadow-[0_0_10px_rgba(240,113,43,0.5)]"
                   />
                 )}
-                <div className={`relative text-6xl lg:text-8xl font-bold ${isTransparent ? "text-[var(--rc-blue)]" : "bg-[linear-gradient(90deg,#ffffff_35%,var(--rc-orange)_50%,#ffffff_65%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-shine drop-shadow-sm"}`}>
+                <div className={`relative text-2xl md:text-6xl lg:text-8xl font-bold ${isTransparent ? "text-[var(--rc-blue)]" : "bg-[linear-gradient(90deg,#ffffff_35%,var(--rc-orange)_50%,#ffffff_65%)] bg-[length:200%_auto] text-transparent bg-clip-text animate-shine drop-shadow-sm"}`}>
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
               </div>
-              <div className={`text-label font-bold tracking-widest uppercase ${isTransparent ? "text-[var(--rc-dark)]" : "text-white/80"}`}>{stat.label}</div>
+              <div className={`text-[8px] md:text-xs font-bold tracking-wider md:tracking-widest uppercase ${isTransparent ? "text-[var(--rc-dark)]" : "text-white/80"}`}>{stat.label}</div>
             </div>
           ))}
         </div>

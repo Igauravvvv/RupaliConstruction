@@ -83,7 +83,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
               mixBlendMode: 'multiply',
               filter: 'brightness(1.15) contrast(1.3)',
               willChange: 'transform',
-              transform: expanded ? 'scale(1)' : 'scale(0.4)',
+              transform: expanded ? 'scale(1.2)' : 'scale(0.75)',
               transition: 'transform 1.4s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
           >

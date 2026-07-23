@@ -6,12 +6,24 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+export interface Product {
+  name: string;
+  image: string;
+  description?: string;
+  features: string[];
+  grade?: string;
+  type?: string;
+  standard?: string;
+  strength?: string;
+}
+
 export interface Brand {
   name: string;
   image?: string;
   description: string;
   confirmed: boolean;
   keyBenefits?: string[];
+  products?: Product[];
 }
 
 export interface SubCategory {
@@ -23,6 +35,7 @@ export interface Category {
   name: string;
   icon: LucideIcon;
   color: string;
+  image: string;
   subcategories: SubCategory[];
   description: string;
 }
@@ -33,6 +46,7 @@ export const categories: Category[] = [
     name: "Structural",
     icon: Landmark,
     color: "#0A1D3A", // Image UI Blue
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80",
     description: "High-strength materials that build the foundation of trust.",
     subcategories: [
       {
@@ -44,6 +58,54 @@ export const categories: Category[] = [
             description: "The Engineer's Choice. Engineered for unparalleled compressive strength and consistency.",
             confirmed: true,
             keyBenefits: ["High Strength", "Durability", "Sustainability"],
+            products: [
+              {
+                name: "UltraTech OPC 53 Grade Cement",
+                image: "/assets/brand-standards/structural/ultratech.webp",
+                description: "UltraTech OPC 53 is a high-strength cement ideal for all types of construction. It delivers superior early strength and long-term durability.",
+                features: [
+                  "53 Grade Ordinary Portland Cement",
+                  "High early strength",
+                  "Ideal for RMC, precast & general construction",
+                  "Consistent quality and performance",
+                  "IS 12269 Certified"
+                ],
+                grade: "53 Grade",
+                type: "OPC",
+                standard: "IS 12269",
+                strength: "High Early Strength"
+              },
+              {
+                name: "UltraTech PPC Cement",
+                image: "/assets/brand-standards/structural/ultratech.webp",
+                description: "Portland Pozzolana Cement for highly durable structures.",
+                features: ["Sulphate resistant", "Low heat of hydration", "Excellent surface finish"],
+                grade: "PPC",
+                type: "PPC",
+                standard: "IS 1489",
+                strength: "High Long-term Strength"
+              },
+              {
+                name: "UltraTech PSC Cement",
+                image: "/assets/brand-standards/structural/ultratech.webp",
+                description: "Portland Slag Cement offering enhanced resistance to chemical attacks.",
+                features: ["Resists chloride and sulphate attacks", "Ideal for coastal areas", "High long term strength"],
+                grade: "PSC",
+                type: "PSC",
+                standard: "IS 455",
+                strength: "Durable"
+              },
+              {
+                name: "UltraTech Super Cement",
+                image: "/assets/brand-standards/structural/ultratech.webp",
+                description: "Premium Portland Pozzolana Cement with advanced tech.",
+                features: ["Micro particle strength", "Corrosion protection", "Superior finish"],
+                grade: "Super PPC",
+                type: "PPC",
+                standard: "IS 1489",
+                strength: "Premium Strength"
+              }
+            ]
           },
           {
             name: "Ambuja Cement",
@@ -112,6 +174,7 @@ export const categories: Category[] = [
     name: "MEP",
     icon: Zap,
     color: "#FF6A00", // Image UI Orange
+    image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80",
     description: "Advanced systems for seamless and efficient performance.",
     subcategories: [
       {
@@ -193,6 +256,7 @@ export const categories: Category[] = [
     name: "Interior",
     icon: Paintbrush,
     color: "#2BA745", // Image UI Green
+    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80",
     description: "Premium finishes and materials that define your space.",
     subcategories: [
       {
@@ -239,6 +303,7 @@ export const categories: Category[] = [
     name: "Finishing",
     icon: Sparkles,
     color: "#6C5CE7", // Image UI Purple
+    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800&q=80",
     description: "The final touch that brings perfection to every detail.",
     subcategories: [
       {

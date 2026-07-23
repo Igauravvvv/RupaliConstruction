@@ -31,13 +31,20 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// Local auth users (username/password)
+// Auth provider enum
+export const authProviderEnum = pgEnum("auth_provider", ["local", "google"]);
+
+// Local auth users (username/password + Google OAuth)
 export const localUsers = pgTable("local_users", {
   id: serial("id").primaryKey(),
+  uniqueId: varchar("uniqueId", { length: 20 }).notNull().unique(),
   username: varchar("username", { length: 255 }).notNull().unique(),
   displayName: varchar("displayName", { length: 255 }),
   email: varchar("email", { length: 320 }),
-  passwordHash: varchar("passwordHash", { length: 255 }).notNull(),
+  passwordHash: varchar("passwordHash", { length: 255 }),
+  googleId: varchar("googleId", { length: 255 }).unique(),
+  avatar: text("avatar"),
+  authProvider: authProviderEnum("authProvider").default("local").notNull(),
   role: roleEnum("role").default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),

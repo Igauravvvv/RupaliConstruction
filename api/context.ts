@@ -10,6 +10,7 @@ export type UnifiedUser = {
   avatar?: string | null;
   role: "user" | "admin";
   authType: "oauth" | "local";
+  uniqueId?: string;
 };
 
 export type TrpcContext = {
@@ -34,9 +35,10 @@ function localToUnified(u: LocalUser): UnifiedUser {
     id: u.id + 100000,
     name: u.displayName || u.username,
     email: u.email,
-    avatar: null,
+    avatar: u.avatar || null,
     role: u.role as "user" | "admin",
     authType: "local",
+    uniqueId: u.uniqueId,
   };
 }
 

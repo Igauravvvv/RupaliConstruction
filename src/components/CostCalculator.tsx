@@ -141,19 +141,46 @@ export default function CostCalculator() {
               </div>
               
               <div>
-                <label className="text-label text-[var(--rc-muted)] block mb-2">Number of Floors</label>
-                <div className="flex items-center gap-4">
-                  <input 
-                    type="range"
-                    min="1" max="10"
-                    value={formData.floors || 1}
-                    onChange={(e) => setFormData({ ...formData, floors: e.target.value })}
-                    className="flex-1 accent-[var(--rc-orange)] focus:outline-none rounded-full"
-                  />
-                  <span className="font-semibold text-lg text-[var(--rc-dark)] w-8 text-center">
-                    {formData.floors || 1}
-                  </span>
+                <label className="text-label text-[var(--rc-muted)] block mb-3">Number of Floors</label>
+                <div className="flex gap-2 mb-3">
+                  {['1', '2', '3', '4'].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, floors: num })}
+                      className={`flex-1 py-2.5 rounded-lg font-bold transition-all border ${
+                        formData.floors === num
+                          ? "bg-[var(--rc-orange)] border-[var(--rc-orange)] text-white shadow-md"
+                          : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-orange)] hover:text-[var(--rc-orange)]"
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, floors: parseInt(formData.floors) > 4 ? formData.floors : '5' })}
+                    className={`flex-1 py-2.5 rounded-lg font-bold transition-all border ${
+                      parseInt(formData.floors || '1') > 4
+                        ? "bg-[var(--rc-orange)] border-[var(--rc-orange)] text-white shadow-md"
+                        : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-orange)] hover:text-[var(--rc-orange)]"
+                    }`}
+                  >
+                    More
+                  </button>
                 </div>
+                {parseInt(formData.floors || '1') > 4 && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                    <input 
+                      type="number"
+                      min="5" max="100"
+                      value={formData.floors}
+                      onChange={(e) => setFormData({ ...formData, floors: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] focus:outline-none transition-all"
+                      placeholder="Enter number of floors (e.g. 5)"
+                    />
+                  </motion.div>
+                )}
               </div>
             </div>
           </div>

@@ -108,4 +108,27 @@
   .text-rc-dark { color: var(--rc-dark); }
   .text-rc-muted { color: var(--rc-muted); }
   .border-rc { border-color: var(--rc-border); }
+
+  .will-change-transform {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }

@@ -2,13 +2,35 @@ import { useEffect, useRef, useState } from "react";
 import { trpc } from "@/providers/trpc";
 import { MapPin, Maximize2, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import Image from "@/components/Image";
 
 const filterOptions = ["all", "residential", "commercial", "renovation"] as const;
 
 export default function Projects() {
-  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const typeFromUrl = searchParams.get("type");
+  const [activeFilter, setActiveFilter] = useState<string>(
+    typeFromUrl && filterOptions.includes(typeFromUrl as any) ? typeFromUrl : "all"
+  );
+
+  useEffect(() => {
+    if (typeFromUrl && filterOptions.includes(typeFromUrl as any)) {
+      setActiveFilter(typeFromUrl);
+    } else if (!typeFromUrl) {
+      setActiveFilter("all");
+    }
+  }, [typeFromUrl]);
+
+  const handleFilterClick = (filter: string) => {
+    setActiveFilter(filter);
+    if (filter === "all") {
+      setSearchParams(new URLSearchParams());
+    } else {
+      setSearchParams(new URLSearchParams({ type: filter }));
+    }
+  };
+
   const gridRef = useRef<HTMLDivElement>(null);
 
   const { data } = trpc.project.list.useQuery({
@@ -52,7 +74,7 @@ export default function Projects() {
   };
 
   return (
-    <section className="py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-x-clip overflow-y-visible z-20">
+    <section className="py-16 md:py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-x-clip overflow-y-visible z-20">
       <div className="absolute inset-0 flex items-center justify-start pointer-events-none opacity-[0.03] -translate-x-1/4">
         <img
           src="/logo-icon.png"
@@ -81,7 +103,7 @@ export default function Projects() {
             {filterOptions.map((filter) => (
               <button
                 key={filter}
-                onClick={() => setActiveFilter(filter)}
+                onClick={() => handleFilterClick(filter)}
                 className={`px-6 py-2.5 text-base font-medium rounded-full capitalize transition-all shadow-sm ${
                   activeFilter === filter
                     ? "bg-[var(--rc-orange)] text-white shadow-md shadow-[var(--rc-orange)]/20"
@@ -94,7 +116,8 @@ export default function Projects() {
           </div>
         </div>
 
-        <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Desktop Grid - hidden on mobile */}
+        <div ref={gridRef} className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.length > 0 ? (
             projects.map((project, i) => (
               <Link
@@ -185,12 +208,70 @@ export default function Projects() {
             </>
           )}
         </div>
+
+        {/* Mobile 2-Column Grid - hidden on md+ */}
+        <div className="md:hidden grid grid-cols-2 gap-2.5">
+          {(projects.length > 0 ? projects : fallbackProjects.filter(p => activeFilter === "all" || p.type === activeFilter)).map((project: any, i: number) => (
+            <motion.div
+              key={project.id || project.name}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+            >
+              <Link
+                to={`/projects/${project.slug || project.name?.toLowerCase().replace(/\s+/g, '-')}`}
+                className="group block rounded-2xl overflow-hidden relative bg-[var(--rc-dark)] active:scale-[0.97] transition-transform"
+              >
+                {/* Image */}
+                <div className="aspect-[3/4] relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                  <ProjectImage 
+                    src={project.images ? (() => { try { const imgs = JSON.parse(project.images); return imgs[0]; } catch { return project.images?.split(",")[0]; } })() : (project as any).coverImage} 
+                    name={project.name} 
+                  />
+                </div>
+
+                {/* Overlay Content */}
+                <div className="absolute top-3 left-3 z-20">
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--rc-orange)] bg-black/40 backdrop-blur-sm px-2 py-1 rounded-md">
+                    {project.type}
+                  </span>
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-3 z-20">
+                  <h3 className="text-sm font-bold text-white leading-tight mb-1">
+                    {project.name}
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-white/60">
+                    {project.location && (
+                      <span className="flex items-center gap-0.5">
+                        <MapPin className="w-2.5 h-2.5" />
+                        {project.location}
+                      </span>
+                    )}
+                    {project.area && (
+                      <span className="flex items-center gap-0.5">
+                        <Maximize2 className="w-2.5 h-2.5" />
+                        {project.area}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       <style>{`
+        .project-card {
+          will-change: transform, opacity;
+          transform: translateZ(0);
+        }
         .project-card.animate-in {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateY(0) translateZ(0);
           transition: opacity 0.6s ease, transform 0.6s ease;
         }
       `}</style>

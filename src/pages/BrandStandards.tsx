@@ -2,7 +2,9 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { categories, Category } from "@/data/brandStandardsData";
-import BrandDrawer from "@/components/brand-standards/BrandDrawer";
+import CategoryModal from "@/components/brand-standards/CategoryModal";
+import ContactModal from "@/components/brand-standards/ContactModal";
+import { motion } from "framer-motion";
 import { 
   ShieldCheck, 
   LayoutGrid, 
@@ -21,8 +23,8 @@ export default function BrandStandards() {
       <Navbar />
 
       {/* ─── 1. HERO SECTION ─── */}
-      <section className="bg-[#0A1D3A] pt-32 pb-20 relative overflow-hidden dark-nav-trigger">
-        <div className="container-rc relative z-10">
+      <section className="bg-[#0A1D3A] pt-40 pb-28 lg:pt-48 lg:pb-36 relative overflow-hidden dark-nav-trigger min-h-[70vh] flex items-center">
+        <div className="container-rc relative z-10 w-full">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
             
             {/* Left Content */}
@@ -100,16 +102,32 @@ export default function BrandStandards() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <div 
+            {categories.map((category, index) => (
+              <motion.div
                 key={category.name}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer"
-                onClick={() => setActiveCategory(category)}
+                initial="hidden"
+                whileInView="visible"
+                exit="hidden"
+                viewport={{ once: false, amount: 0.1, margin: "50px" }}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 }
+                }}
+                transition={{ delay: index * 0.35 }}
+                className="h-full"
               >
+                <motion.div 
+                  variants={{
+                    hidden: { x: "-100vw", y: 300, opacity: 0 },
+                    visible: { x: 0, y: 0, opacity: 1, transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 hover:bg-[#FF6A00] transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer h-full"
+                  onClick={() => setActiveCategory(category)}
+                >
                 {/* Top Image */}
-                <div className="h-48 relative overflow-hidden bg-gray-100">
+                <div className="h-48 relative overflow-hidden bg-gray-100 shrink-0">
                   <img 
-                    src={`/assets/brand-standards/${category.name.toLowerCase()}/${category.subcategories[0]?.brands[0]?.name.toLowerCase().replace(' ', '-') || 'default'}.webp`} 
+                    src={category.image} 
                     alt={category.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
@@ -119,7 +137,7 @@ export default function BrandStandards() {
                   
                   {/* Floating Circle Icon */}
                   <div 
-                    className="absolute -bottom-6 left-6 w-14 h-14 rounded-full border-4 border-white flex items-center justify-center text-white shadow-md z-10"
+                    className="absolute -bottom-6 left-6 w-14 h-14 rounded-full border-4 border-white flex items-center justify-center text-white shadow-md z-10 transition-colors duration-300 group-hover:border-[#FF6A00]"
                     style={{ backgroundColor: category.color }}
                   >
                     <category.icon className="w-6 h-6" />
@@ -128,19 +146,20 @@ export default function BrandStandards() {
 
                 {/* Content */}
                 <div className="pt-10 pb-6 px-6 flex-1 flex flex-col">
-                  <h3 className="text-2xl font-bold text-[#0A1D3A] mb-1">{category.name}</h3>
-                  <p className="text-xs font-semibold text-gray-500 mb-4">{category.subcategories.length} Sub-Categories</p>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1">
+                  <h3 className="text-2xl font-bold text-[#0A1D3A] mb-1 transition-colors duration-300 group-hover:text-white">{category.name}</h3>
+                  <p className="text-xs font-semibold text-gray-500 mb-4 transition-colors duration-300 group-hover:text-white/80">{category.subcategories.length} Sub-Categories</p>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1 transition-colors duration-300 group-hover:text-white/90">
                     {category.description}
                   </p>
                   
                   <div className="mt-auto flex justify-end">
-                    <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 group-hover:bg-[#FF6A00] group-hover:border-[#FF6A00] group-hover:text-white transition-colors">
+                    <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 transition-colors duration-300 group-hover:bg-white group-hover:border-white group-hover:text-[#FF6A00]">
                       <ArrowRight className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -163,23 +182,29 @@ export default function BrandStandards() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
             {[
-              "UltraTech", "Ambuja Cement", "Tata Tiscon", "Finolex", "Legrand", "Havells",
-              "Jaquar", "Asian Paints", "Kohler", "Schneider", "Cera"
+              "UltraTech", "Ambuja Cement", "ACC Cement", "Shree Cement", 
+              "Tata Tiscon", "Finolex", "Legrand", "Havells", 
+              "Jaquar", "Asian Paints", "Kohler", "Schneider", 
+              "Cera", "Dr Fixit"
             ].map((brand) => (
-              <div key={brand} className="bg-white rounded-xl h-24 flex items-center justify-center p-4 shadow-sm hover:scale-105 transition-transform cursor-pointer">
-                {/* Fallback to text since we don't have SVGs for all */}
-                <span className="font-bold text-[#0A1D3A] text-center text-sm md:text-base leading-tight">
+              <div key={brand} className="bg-white rounded-xl h-24 flex items-center justify-center p-4 shadow-sm hover:scale-105 transition-transform cursor-pointer border-2 border-[#FF6A00] relative group">
+                <img 
+                  src={`/assets/logos/${brand.replace(/ /g, '_')}.png`} 
+                  alt={brand}
+                  className="max-w-full max-h-full object-contain transition-opacity duration-300 p-2"
+                  onError={(e) => {
+                    // Fallback to text if logo fails to load
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+                <span className="hidden font-bold text-[#0A1D3A] text-center text-sm md:text-base leading-tight">
                   {brand}
                 </span>
               </div>
             ))}
-            <div className="bg-white/10 rounded-xl h-24 flex items-center justify-center p-4 border border-white/20 cursor-pointer hover:bg-white/20 transition-colors">
-              <span className="font-bold text-[#FF6A00] text-center text-sm">
-                +20<br />More Brands
-              </span>
-            </div>
           </div>
           <div className="mt-8 text-center md:text-left text-gray-400 text-sm flex items-center justify-center md:justify-start gap-2">
             Every brand is carefully selected and verified to meet our strict quality standards.
@@ -197,7 +222,7 @@ export default function BrandStandards() {
               <img 
                 src="/assets/brand-standards/mascot.png" 
                 alt="Expert Guide" 
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-8 h-[120%] object-contain"
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-8 h-full object-contain"
               />
             </div>
 
@@ -212,12 +237,16 @@ export default function BrandStandards() {
                   Our experts are here to guide you.
                 </p>
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
-                  <button className="bg-transparent border border-white hover:bg-white hover:text-[#0A1D3A] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5" /> LET'S TALK
-                  </button>
-                  <button className="bg-[#FF6A00] hover:bg-[#E65F00] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2 shadow-lg shadow-[#FF6A00]/20">
-                    REQUEST INFO <ArrowRight className="w-5 h-5" />
-                  </button>
+                  <ContactModal defaultService="Brand Standards Consultation">
+                    <button className="bg-transparent border border-white hover:bg-white hover:text-[#0A1D3A] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5" /> LET'S TALK
+                    </button>
+                  </ContactModal>
+                  <ContactModal defaultService="Brand Material Request">
+                    <button className="bg-[#FF6A00] hover:bg-[#E65F00] text-white font-bold py-3 px-8 rounded-full transition-colors flex items-center gap-2 shadow-lg shadow-[#FF6A00]/20">
+                      REQUEST INFO <ArrowRight className="w-5 h-5" />
+                    </button>
+                  </ContactModal>
                 </div>
               </div>
 
@@ -244,8 +273,8 @@ export default function BrandStandards() {
 
       <Footer />
 
-      {/* ─── Persistent Drawer ─── */}
-      <BrandDrawer 
+      {/* ─── Category Modal ─── */}
+      <CategoryModal 
         isOpen={!!activeCategory} 
         onClose={() => setActiveCategory(null)} 
         category={activeCategory} 

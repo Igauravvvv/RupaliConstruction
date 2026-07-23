@@ -17,6 +17,7 @@ export default function Image({ src, alt, className, containerClassName, ...prop
         src={src}
         alt={alt}
         loading="lazy"
+        decoding="async"
         onLoad={() => setIsLoaded(true)}
         className={cn(
           "w-full h-full object-cover transition-opacity duration-500",

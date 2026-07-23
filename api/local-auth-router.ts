@@ -7,6 +7,15 @@ import bcrypt from "bcryptjs";
 import { signLocalToken, verifyLocalToken } from "./local-auth-utils";
 import { TRPCError } from "@trpc/server";
 
+function generateUniqueId(): string {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "RC-";
+  for (let i = 0; i < 8; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 export const localAuthRouter = createRouter({
   register: publicQuery
     .input(
@@ -32,19 +41,22 @@ export const localAuthRouter = createRouter({
       }
 
       const passwordHash = await bcrypt.hash(input.password, 12);
+      const uniqueId = generateUniqueId();
 
       const result = await db.insert(localUsers).values({
+        uniqueId,
         username: input.username,
         passwordHash,
         displayName: input.displayName || input.username,
         email: input.email || null,
+        authProvider: "local",
         role: "admin",
-      }).returning({ id: localUsers.id });
+      }).returning({ id: localUsers.id, uniqueId: localUsers.uniqueId });
 
       const userId = result[0].id;
       const token = signLocalToken(userId);
 
-      return { token, success: true };
+      return { token, uniqueId: result[0].uniqueId, success: true };
     }),
 
   login: publicQuery
@@ -101,6 +113,8 @@ export const localAuthRouter = createRouter({
       username: user.username,
       email: user.email,
       role: user.role,
+      uniqueId: user.uniqueId,
+      avatar: user.avatar,
       authType: "local" as const,
     };
   }),

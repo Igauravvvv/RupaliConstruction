@@ -270,18 +270,45 @@ export default function ConstructionEstimator() {
 
             <div className="space-y-3">
               <label className="text-label text-[var(--rc-muted)] block">Number of Floors</label>
-              <div className="flex items-center gap-6 p-2">
-                <input 
-                  type="range"
-                  min="1" max="10"
-                  value={inputs.floors}
-                  onChange={(e) => setInputs(p => ({ ...p, floors: e.target.value }))}
-                  className="flex-1 accent-[var(--rc-orange)] h-2 bg-[var(--rc-border)] rounded-lg appearance-none cursor-pointer"
-                />
-                <span className="text-3xl font-semibold text-[var(--rc-blue)] min-w-[2rem] text-center">
-                  {inputs.floors}
-                </span>
+              <div className="flex gap-2">
+                {['1', '2', '3', '4'].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setInputs(p => ({ ...p, floors: num }))}
+                    className={`flex-1 py-3 rounded-xl font-bold transition-all border ${
+                      inputs.floors === num
+                        ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
+                        : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setInputs(p => ({ ...p, floors: parseInt(inputs.floors) > 4 ? inputs.floors : '5' }))}
+                  className={`flex-1 py-3 rounded-xl font-bold transition-all border ${
+                    parseInt(inputs.floors || '1') > 4
+                      ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
+                      : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
+                  }`}
+                >
+                  More
+                </button>
               </div>
+              {parseInt(inputs.floors || '1') > 4 && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
+                  <input 
+                    type="number"
+                    min="5" max="100"
+                    value={inputs.floors}
+                    onChange={(e) => setInputs(p => ({ ...p, floors: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-blue)] focus:ring-2 focus:ring-[var(--rc-blue)] outline-none text-lg mt-2 transition-all"
+                    placeholder="Enter number of floors (e.g. 5)"
+                  />
+                </motion.div>
+              )}
             </div>
           </div>
 

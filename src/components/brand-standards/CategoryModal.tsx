@@ -45,6 +45,18 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
     setActiveProduct(null);
   }, [category]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   // Handle Back Navigation
   const handleBack = () => {
     if (activeProduct) {
@@ -138,7 +150,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto relative p-6 md:p-8">
+            <div className="flex-1 overflow-y-auto overscroll-contain min-h-0 relative p-6 md:p-8">
               <div className="max-w-6xl mx-auto">
                 <AnimatePresence mode="wait">
                   

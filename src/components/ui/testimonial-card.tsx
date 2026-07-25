@@ -28,13 +28,13 @@ export function TestimonialCard({
       className={cn(
         "group/card flex flex-col justify-between rounded-2xl border border-[var(--rc-border)]",
         "bg-white shadow-sm",
-        "p-6",
+        "p-5 md:p-6 lg:p-8",
         "hover:bg-[var(--rc-orange)] hover:border-[var(--rc-orange)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300",
-        "w-[400px] max-w-[85vw] shrink-0 cursor-pointer",
+        "w-[350px] sm:w-[450px] md:w-[550px] lg:w-[650px] max-w-[85vw] shrink-0 cursor-pointer",
         className
       )}
     >
-      <p className="mb-6 text-lg md:text-xl font-serif italic font-medium text-[var(--rc-dark)] leading-relaxed group-hover/card:text-white transition-colors">
+      <p className="mb-6 text-base md:text-lg font-serif italic font-medium text-[var(--rc-dark)] leading-relaxed group-hover/card:text-white transition-colors">
         "{text}"
       </p>
       <div className="flex items-center gap-4 mt-auto">

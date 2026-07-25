@@ -81,6 +81,8 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
               willChange: 'transform',
               transform: expanded ? 'scale(1.2)' : 'scale(0.65)',
               transition: 'transform 1.4s cubic-bezier(0.22, 1, 0.36, 1)',
+              WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)',
+              maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)',
             }}
           >
             <source src="/intro-video.mp4" type="video/mp4" />

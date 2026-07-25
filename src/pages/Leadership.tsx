@@ -46,6 +46,7 @@ const leaders = [
     imageBg: "bg-white",
     badges: [
       { text: "Expert Engineering", icon: <Award className="w-4 h-4" /> },
+      { text: "35+ Years Expertise", icon: <Check className="w-4 h-4" /> },
     ],
     imageShape: "circle" as const,
   },
@@ -223,7 +224,7 @@ export default function Leadership() {
                           transition={{ type: "spring", stiffness: 300, delay: 0.4 + (i * 0.2) }}
                           className={`absolute bg-white px-2 py-1 md:px-5 md:py-3 rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] md:shadow-[0_15px_30px_rgba(0,0,0,0.15)] flex items-center gap-1 md:gap-3 border md:border-2 border-[var(--rc-orange)]/20 z-20 cursor-pointer ${
                             i === 0 
-                              ? "-left-4 md:-left-16 lg:-left-28 top-[10%] md:top-[15%]"
+                              ? "-left-4 md:-left-16 lg:-left-28 -top-6 md:-top-8 lg:-top-12"
                               : "-right-4 md:-right-10 lg:-right-20 bottom-[10%] md:bottom-[15%]"
                           }`}
                         >

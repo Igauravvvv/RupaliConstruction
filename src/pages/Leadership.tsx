@@ -28,7 +28,7 @@ const leaders = [
       "A visionary leader who laid the foundation of Rupali Construction. With over 25 years of hands-on experience, he has overseen the transformation of countless architectural dreams into concrete realities, ensuring every project meets the highest standards of quality and integrity.",
     specialties: ["Strategic Vision & Planning", "Quality Assurance & Control", "End-to-End Project Management"],
     image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800&h=1000",
+      "/images/Sptyagi.png",
     badges: [
       { text: "Proven Leadership", icon: <Award className="w-4 h-4" /> },
       { text: "25+ Years Experience", icon: <Check className="w-4 h-4" /> },
@@ -42,7 +42,8 @@ const leaders = [
       "Bringing over three and a half decades of invaluable industry expertise. His deep understanding of structural engineering, project management, and large-scale development has been the driving force behind the company's most ambitious and successful endeavors.",
     specialties: ["Structural Engineering Mastery", "Large-scale Development", "Operational Excellence"],
     image:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=800&h=1000",
+      "/images/Nksharma.png",
+    imageBg: "bg-white",
     badges: [
       { text: "Expert Engineering", icon: <Award className="w-4 h-4" /> },
     ],
@@ -55,7 +56,7 @@ const leaders = [
       "Spearheading the modern growth of Rupali Construction. Combining fresh perspectives with core traditional values, he is focused on integrating innovative building technologies, sustainable practices, and expanding the company's footprint into new luxury segments.",
     specialties: ["Innovative Technologies", "Sustainable Practices", "Luxury & Modern Segments"],
     image:
-      "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=800&h=1000",
+      "/images/ujjwal tyagi.png",
     badges: [
       { text: "Innovation Driven", icon: <MessageSquare className="w-4 h-4" /> },
       { text: "Modern Growth", icon: <Check className="w-4 h-4" /> },
@@ -121,22 +122,22 @@ export default function Leadership() {
               return (
                   <div
                   key={leader.name}
-                  className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ${
-                    isImageRight ? "" : "lg:flex-row-reverse"
+                  className={`flex flex-row items-center gap-4 md:gap-12 lg:gap-20 ${
+                    isImageRight ? "" : "flex-row-reverse"
                   }`}
                 >
                   {/* Text Section */}
-                  <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                  <div className="w-1/2 flex flex-col justify-center">
                     <motion.div
-                      initial={{ opacity: 0, x: isImageRight ? -100 : 100, rotate: isImageRight ? -5 : 5 }}
+                      initial={{ opacity: 0, x: isImageRight ? -50 : 50, rotate: isImageRight ? -2 : 2 }}
                       whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
+                      viewport={{ once: true, margin: "-50px" }}
                       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                      className="relative z-10 bg-white/50 backdrop-blur-sm p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white"
+                      className="relative z-10 bg-white/50 backdrop-blur-sm p-3 sm:p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white"
                     >
                       <motion.span 
-                        whileHover={{ x: 10 }}
-                        className="text-[var(--rc-blue)] font-bold tracking-widest uppercase text-xs mb-3 inline-block cursor-pointer"
+                        whileHover={{ x: 5 }}
+                        className="text-[var(--rc-blue)] font-bold tracking-widest uppercase text-[8px] sm:text-[10px] md:text-xs mb-1 md:mb-3 inline-block cursor-pointer"
                       >
                         {leader.experience}
                       </motion.span>
@@ -144,73 +145,70 @@ export default function Leadership() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                        className="text-4xl lg:text-6xl font-bold text-[var(--rc-dark)] tracking-tight mb-4 leading-[1.1] drop-shadow-md"
+                        className="text-lg sm:text-2xl md:text-4xl lg:text-6xl font-bold text-[var(--rc-dark)] tracking-tight mb-2 md:mb-4 leading-[1.1] drop-shadow-md"
                       >
                         {leader.name}
                       </motion.h2>
                       
-                      <p className="text-base lg:text-lg text-[var(--rc-text)]/70 leading-relaxed mb-8">
+                      <p className="text-[10px] sm:text-xs md:text-base lg:text-lg text-[var(--rc-text)]/70 leading-relaxed mb-4 md:mb-8">
                         {leader.description}
                       </p>
 
-                      <div className="flex flex-col gap-4 mb-10">
+                      <div className="flex flex-col gap-2 md:gap-4 mb-4 md:mb-10">
                         {leader.specialties.map((specialty, i) => (
                           <motion.div 
                             key={i}
-                            initial={{ opacity: 0, x: -50, scale: 0.8 }}
+                            initial={{ opacity: 0, x: -20, scale: 0.8 }}
                             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                            whileHover={{ scale: 1.05, x: 10, backgroundColor: "var(--rc-orange)", color: "white" }}
-                            viewport={{ once: true, margin: "-100px" }}
+                            whileHover={{ scale: 1.05, x: 5, backgroundColor: "var(--rc-orange)", color: "white" }}
+                            viewport={{ once: true, margin: "-50px" }}
                             transition={{ type: "spring", stiffness: 200, delay: i * 0.1 + 0.3 }}
-                            className="flex items-center gap-4 p-3 rounded-xl transition-colors cursor-pointer group shadow-sm bg-white hover:shadow-md border border-gray-50"
+                            className="flex items-center gap-2 md:gap-4 p-1.5 md:p-3 rounded-lg md:rounded-xl transition-colors cursor-pointer group shadow-sm bg-white hover:shadow-md border border-gray-50"
                           >
-                            <div className="w-8 h-8 rounded-full bg-[var(--rc-blue)]/10 group-hover:bg-white flex items-center justify-center shrink-0 shadow-inner">
-                              <Check className="w-5 h-5 text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)]" strokeWidth={3} />
+                            <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-[var(--rc-blue)]/10 group-hover:bg-white flex items-center justify-center shrink-0 shadow-inner">
+                              <Check className="w-3 h-3 md:w-5 md:h-5 text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)]" strokeWidth={3} />
                             </div>
-                            <span className="text-[var(--rc-dark)] group-hover:text-white font-bold text-base lg:text-lg drop-shadow-sm">{specialty}</span>
+                            <span className="text-[var(--rc-dark)] group-hover:text-white font-bold text-[9px] sm:text-[10px] md:text-base lg:text-lg drop-shadow-sm line-clamp-1">{specialty}</span>
                           </motion.div>
                         ))}
                       </div>
 
                       <motion.a
                         href="/contact"
-                        whileHover={{ scale: 1.1, rotate: -3 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="inline-flex items-center gap-3 bg-[var(--rc-blue)] text-white px-8 py-4 rounded-full font-bold uppercase tracking-wider text-sm shadow-[0_10px_30px_rgba(10,37,64,0.4)] hover:bg-[var(--rc-orange)] hover:shadow-[0_10px_30px_rgba(242,101,34,0.4)] transition-all self-start"
+                        whileHover={{ scale: 1.05, rotate: -1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex items-center gap-1 md:gap-3 bg-[var(--rc-blue)] text-white px-3 py-2 md:px-8 md:py-4 rounded-full font-bold uppercase tracking-wider text-[8px] sm:text-[10px] md:text-sm shadow-[0_5px_15px_rgba(10,37,64,0.4)] md:shadow-[0_10px_30px_rgba(10,37,64,0.4)] hover:bg-[var(--rc-orange)] hover:shadow-[0_10px_30px_rgba(242,101,34,0.4)] transition-all self-start"
                       >
-                        Book a Consultation
-                        <ArrowRight className="w-4 h-4" />
+                        <span className="hidden sm:inline">Book a Consultation</span>
+                        <span className="sm:hidden">Consult</span>
+                        <ArrowRight className="w-2 h-2 md:w-4 md:h-4" />
                       </motion.a>
                     </motion.div>
                   </div>
 
                   {/* Image Section */}
-                  <div className={`w-full lg:w-1/2 relative flex justify-center items-center mt-8 lg:-mt-10 ${index === 0 ? "lg:-mt-16" : ""}`}>
+                  <div className={`w-1/2 relative flex justify-center items-center mt-4 md:mt-8 lg:-mt-10 ${index === 0 ? "lg:-mt-16" : ""}`}>
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.5, rotate: isImageRight ? 15 : -15 }}
+                      initial={{ opacity: 0, scale: 0.8, rotate: isImageRight ? 5 : -5 }}
                       whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                      whileHover={{ scale: 1.05 }}
-                      viewport={{ once: true, margin: "-100px" }}
+                      whileHover={{ scale: 1.02 }}
+                      viewport={{ once: true, margin: "-50px" }}
                       transition={{ type: "spring", stiffness: 100, damping: 15 }}
-                      className="relative w-72 lg:w-[420px] aspect-square flex items-center justify-center z-10"
+                      className="relative w-full max-w-[160px] sm:max-w-[220px] md:max-w-72 lg:max-w-none lg:w-[380px] aspect-[3/4] flex items-center justify-center z-10"
                     >
-                      {/* Solid Rotating Background Shape in Brand Colors */}
-                      <motion.div 
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-0 z-0 shadow-[0_20px_50px_rgba(10,37,64,0.3)] rounded-full bg-gradient-to-br from-[var(--rc-blue)] to-[var(--rc-dark)]" 
-                      />
-                      <div className="absolute -inset-6 z-0 rounded-full border-4 border-dashed border-[var(--rc-orange)]/60 animate-[spin_15s_linear_infinite]" />
+                      {/* Architectural Background Accents */}
+                      <div className="absolute inset-0 z-0 rounded-3xl bg-[var(--rc-blue)] translate-x-4 translate-y-4 opacity-10" />
+                      <div className="absolute -inset-4 z-0 rounded-3xl border border-[var(--rc-orange)]/30 -translate-x-2 -translate-y-2" />
 
-                      {/* Main Image Container - Perfectly circular */}
-                      <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-8 border-white shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] bg-[var(--rc-gray)]">
+                      {/* Main Image Container - Portrait */}
+                      <div className={`relative z-10 w-full h-full rounded-xl md:rounded-3xl overflow-hidden border-4 md:border-[6px] border-white shadow-[0_10px_30px_rgba(10,37,64,0.15)] md:shadow-[0_20px_50px_rgba(10,37,64,0.15)] ${leader.removeBg ? 'bg-transparent border-none shadow-none' : (leader.imageBg || 'bg-[var(--rc-gray)]/50')}`}>
                         <motion.img
-                          whileHover={{ scale: 1.15, rotate: 3 }}
+                          whileHover={{ scale: 1.05 }}
                           transition={{ type: "spring", stiffness: 200 }}
                           src={leader.image}
                           alt={leader.name}
-                          className="w-full h-full object-cover"
-                          style={{ objectPosition: 'center top' }}
+                          className={`w-full h-full ${leader.removeBg ? 'mix-blend-multiply object-contain' : 'object-cover'}`}
+                          style={{ objectPosition: 'center top', ...(leader.imageStyle || {}) }}
                         />
                       </div>
 
@@ -218,25 +216,27 @@ export default function Leadership() {
                       {leader.badges.map((badge, i) => (
                         <motion.div
                           key={i}
-                          initial={{ opacity: 0, y: 50, scale: 0.5 }}
+                          initial={{ opacity: 0, y: 20, scale: 0.8 }}
                           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                          whileHover={{ scale: 1.15, y: -10 }}
+                          whileHover={{ scale: 1.05, y: -5 }}
                           viewport={{ once: true }}
                           transition={{ type: "spring", stiffness: 300, delay: 0.4 + (i * 0.2) }}
-                          className={`absolute bg-white px-5 py-3 rounded-full shadow-[0_15px_30px_rgba(0,0,0,0.15)] flex items-center gap-3 border-2 border-[var(--rc-orange)]/20 z-20 cursor-pointer ${
+                          className={`absolute bg-white px-2 py-1 md:px-5 md:py-3 rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] md:shadow-[0_15px_30px_rgba(0,0,0,0.15)] flex items-center gap-1 md:gap-3 border md:border-2 border-[var(--rc-orange)]/20 z-20 cursor-pointer ${
                             i === 0 
-                              ? "-left-16 top-1/4"
-                              : "-right-12 bottom-1/4"
+                              ? "-left-4 md:-left-16 lg:-left-28 top-[10%] md:top-[15%]"
+                              : "-right-4 md:-right-10 lg:-right-20 bottom-[10%] md:bottom-[15%]"
                           }`}
                         >
                           <motion.div 
                             animate={{ rotate: [0, 15, -15, 0] }}
                             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: i }}
-                            className="bg-gradient-to-br from-[var(--rc-orange)] to-orange-600 p-2 rounded-full text-white shadow-lg"
+                            className="bg-gradient-to-br from-[var(--rc-orange)] to-orange-600 p-1 md:p-2 rounded-full text-white shadow-md md:shadow-lg"
                           >
-                            {badge.icon}
+                            <div className="w-3 h-3 md:w-auto md:h-auto flex items-center justify-center">
+                              {badge.icon}
+                            </div>
                           </motion.div>
-                          <span className="font-bold text-sm text-[var(--rc-dark)] tracking-wide">{badge.text}</span>
+                          <span className="font-bold text-[8px] sm:text-[10px] md:text-sm text-[var(--rc-dark)] tracking-tight md:tracking-wide">{badge.text}</span>
                         </motion.div>
                       ))}
                     </motion.div>

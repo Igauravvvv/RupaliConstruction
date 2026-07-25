@@ -328,13 +328,13 @@ export default function ConstructionEstimator() {
       {mode === "quick" && (
         <div className="p-6 lg:p-10 bg-[var(--rc-gray)] animate-in fade-in slide-in-from-right-8">
           <h4 className="text-center text-xl font-medium text-[var(--rc-dark)] mb-8">Choose a starting package to view costs</h4>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0">
             {(['normal', 'premium', 'luxury'] as Tier[]).map((tier) => {
               const packageTotal = calculateTotal(TIER_DEFAULTS[tier]);
               const perSqFt = packageTotal / (parseInt(inputs.plotArea) * parseInt(inputs.floors));
               
               return (
-                <div key={tier} className="bg-white rounded-2xl p-6 shadow-sm border border-[var(--rc-border)] flex flex-col group hover:border-[var(--rc-orange)] hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                <div key={tier} className="w-[85vw] max-w-[320px] sm:w-[calc(50%-12px)] sm:max-w-none lg:w-[calc(33.333%-16px)] shrink-0 snap-center bg-white rounded-2xl p-6 shadow-sm border border-[var(--rc-border)] flex flex-col group hover:border-[var(--rc-orange)] hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                   {tier === 'premium' && (
                     <div className="absolute top-0 right-0 bg-[var(--rc-orange)] text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-bl-lg z-10 shadow-sm">
                       Most Popular
@@ -435,7 +435,7 @@ export default function ConstructionEstimator() {
                 <p className="text-[var(--rc-muted)] text-sm mt-1">Select the brand and quality tier for this material.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0">
                 <AnimatePresence mode="popLayout">
                   {PRODUCTS.filter(p => p.categoryId === activeCategory).map(product => {
                     const isSelected = cart[activeCategory] === product.id;
@@ -447,7 +447,7 @@ export default function ConstructionEstimator() {
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
                         transition={{ duration: 0.2 }}
                         key={product.id}
-                        className={`rounded-2xl border-2 p-5 transition-all flex flex-col ${
+                        className={`w-[85vw] max-w-[320px] sm:w-[calc(50%-12px)] sm:max-w-none lg:w-[calc(33.333%-16px)] shrink-0 snap-center rounded-2xl border-2 p-5 transition-all flex flex-col ${
                           isSelected 
                             ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/5 shadow-[0_4px_20px_-4px_rgba(217,119,6,0.15)]" 
                             : "border-[var(--rc-border)] hover:border-[var(--rc-blue)]/50 hover:shadow-md cursor-pointer"

@@ -13,6 +13,7 @@ import {
   Clock,
   Truck
 } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function BrandStandards() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -23,10 +24,11 @@ export default function BrandStandards() {
     categories.flatMap(c => c.subcategories.flatMap(s => s.brands.map(b => b.name)))
   )).filter(name => !name.includes("Local") && !name.includes("Custom"));
   
-  const displayedBrands = showAllBrands ? allBrands : allBrands.slice(0, 14);
+  const displayedBrands = showAllBrands ? allBrands : allBrands.slice(0, 15);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
+      <SEO title="Brand Standards | Rupali Construction" />
       <Navbar />
 
       {/* ─── UNIFIED HERO & CATEGORY SECTION ─── */}

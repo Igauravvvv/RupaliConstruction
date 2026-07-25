@@ -3,6 +3,7 @@ import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function Blog() {
   const { data, isLoading } = trpc.blog.list.useQuery({ limit: 12 });
@@ -11,6 +12,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen relative">
+      <SEO title="Blog & Insights | Rupali Construction" />
       <Navbar />
 
       {/* Background Image with Premium Gradient Fade */}

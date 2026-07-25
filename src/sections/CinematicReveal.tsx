@@ -69,19 +69,19 @@ export default function CinematicReveal() {
           <p className="text-[var(--rc-orange)] font-mono text-sm tracking-[0.2em] uppercase mb-4 font-bold drop-shadow-md">
             Uncompromising Excellence
           </p>
-          <h3 className="text-4xl md:text-6xl font-serif text-white leading-tight mb-6 drop-shadow-lg">
+          <h3 className="text-3xl md:text-5xl font-serif text-white leading-tight mb-6 drop-shadow-lg">
             Where architecture meets <span className="italic font-light">art.</span>
           </h3>
-          <p className="text-gray-100 text-lg md:text-xl mb-10 max-w-2xl leading-relaxed drop-shadow-md">
+          <p className="text-gray-100 text-base md:text-lg mb-10 max-w-2xl leading-relaxed drop-shadow-md">
             We don't just build structures; we craft iconic landmarks. Explore our portfolio of ultra-luxury residences and cutting-edge commercial spaces designed to leave a lasting legacy.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="px-8 py-4 rounded-full font-bold uppercase tracking-wider text-sm transition-all duration-300 bg-[var(--rc-orange)] text-white hover:brightness-110 shadow-lg hover:shadow-[0_0_20px_rgba(255,90,31,0.5)] pointer-events-auto">
+            <a href="/projects" className="px-8 py-4 rounded-full font-bold uppercase tracking-wider text-sm transition-all duration-300 bg-[var(--rc-orange)] text-white hover:brightness-110 shadow-lg hover:shadow-[0_0_20px_rgba(255,90,31,0.5)] pointer-events-auto inline-block text-center">
               Explore Projects
-            </button>
-            <button className="px-8 py-4 rounded-full font-bold uppercase tracking-wider text-sm transition-all duration-300 border border-white/50 text-white hover:bg-white hover:text-black pointer-events-auto shadow-lg">
+            </a>
+            <a href="/contact" className="px-8 py-4 rounded-full font-bold uppercase tracking-wider text-sm transition-all duration-300 border border-white/50 text-white hover:bg-white hover:text-black pointer-events-auto shadow-lg inline-block text-center">
               Start A Project
-            </button>
+            </a>
           </div>
         </div>
       </div>

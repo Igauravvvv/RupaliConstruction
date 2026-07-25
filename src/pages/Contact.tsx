@@ -3,6 +3,7 @@ import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Loader2 } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -19,6 +20,7 @@ export default function Contact() {
   const submitMutation = trpc.contact.submit.useMutation({
     onSuccess: () => {
       setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setForm({ name: "", email: "", phone: "", city: "", service: "", budget: "", message: "" });
     },
   });
@@ -34,6 +36,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen relative">
+      <SEO title="Contact Us | Rupali Construction" />
       <Navbar />
 
       {/* Background Image with Premium Gradient Fade */}
@@ -87,7 +90,7 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-4 md:gap-6">
                     <div>
                       <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
                         Full Name *
@@ -116,7 +119,7 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-4 md:gap-6">
                     <div>
                       <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
                         Phone (Optional)
@@ -143,7 +146,7 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-4 md:gap-6">
                     <div>
                       <label className="text-label text-[var(--rc-dark)] font-semibold mb-2 block">
                         Service Required (Optional)
@@ -226,47 +229,47 @@ export default function Contact() {
                 <h3 className="text-lg font-semibold text-[var(--rc-dark)] mb-4">
                   Contact Information
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-[var(--rc-orange)] mt-0.5 flex-shrink-0" />
+                <div className="grid grid-cols-2 gap-6 lg:grid-cols-1 lg:gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
+                    <MapPin className="w-5 h-5 text-[var(--rc-orange)] sm:mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-[var(--rc-dark)]">Office Address</p>
-                      <p className="text-sm text-[var(--rc-muted)]">
+                      <p className="font-medium text-[var(--rc-dark)] text-sm sm:text-base">Office Address</p>
+                      <p className="text-xs sm:text-sm text-[var(--rc-muted)] mt-0.5">
                         5th floor, M3M broadway,
                         <br />
                         Sector 71
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <Phone className="w-5 h-5 text-[var(--rc-orange)] mt-0.5 flex-shrink-0" />
+                  <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
+                    <Phone className="w-5 h-5 text-[var(--rc-orange)] sm:mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-[var(--rc-dark)]">Phone</p>
+                      <p className="font-medium text-[var(--rc-dark)] text-sm sm:text-base">Phone</p>
                       <a
                         href="tel:+919311830088"
-                        className="text-sm text-[var(--rc-muted)] hover:text-[var(--rc-blue)]"
+                        className="text-xs sm:text-sm text-[var(--rc-muted)] hover:text-[var(--rc-blue)] mt-0.5 block"
                       >
                         +91 9311830088
                       </a>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <Mail className="w-5 h-5 text-[var(--rc-orange)] mt-0.5 flex-shrink-0" />
+                  <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
+                    <Mail className="w-5 h-5 text-[var(--rc-orange)] sm:mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-[var(--rc-dark)]">Email</p>
+                      <p className="font-medium text-[var(--rc-dark)] text-sm sm:text-base">Email</p>
                       <a
                         href="mailto:ujjwalt.rg@rupalihomes.com"
-                        className="text-sm text-[var(--rc-muted)] hover:text-[var(--rc-blue)]"
+                        className="text-[10px] sm:text-sm text-[var(--rc-muted)] hover:text-[var(--rc-blue)] mt-0.5 block break-all"
                       >
                         ujjwalt.rg@rupalihomes.com
                       </a>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-[var(--rc-orange)] mt-0.5 flex-shrink-0" />
+                  <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
+                    <Clock className="w-5 h-5 text-[var(--rc-orange)] sm:mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-[var(--rc-dark)]">Working Hours</p>
-                      <p className="text-sm text-[var(--rc-muted)]">
+                      <p className="font-medium text-[var(--rc-dark)] text-sm sm:text-base">Working Hours</p>
+                      <p className="text-xs sm:text-sm text-[var(--rc-muted)] mt-0.5">
                         Mon - Sat: 9:00 AM - 7:00 PM
                       </p>
                     </div>

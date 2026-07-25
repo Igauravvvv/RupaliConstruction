@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { HelmetProvider } from 'react-helmet-async'
 import Home from './pages/Home'
 import Blog from './pages/Blog'
 import BlogDetail from './pages/BlogDetail'
@@ -17,6 +18,7 @@ import ChatWidget from './components/ChatWidget'
 import FloatingActions from './components/FloatingActions'
 import SplashScreen from './components/SplashScreen'
 import AuthGuard from './components/AuthGuard'
+import SEO from './components/SEO'
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -39,7 +41,8 @@ export default function App() {
   };
 
   return (
-    <>
+    <HelmetProvider>
+      <SEO />
       {showSplash ? (
         <SplashScreen onFinish={handleSplashFinish} />
       ) : (
@@ -67,6 +70,6 @@ export default function App() {
           <ChatWidget />
         </motion.div>
       )}
-    </>
+    </HelmetProvider>
   )
 }

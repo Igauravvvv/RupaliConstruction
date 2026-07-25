@@ -5,10 +5,12 @@ import TrustBar from "@/sections/TrustBar";
 
 import PortfolioSkyscraperLeft from "@/components/PortfolioSkyscraperLeft";
 import PortfolioSkyscraperRight from "@/components/PortfolioSkyscraperRight";
+import SEO from "@/components/SEO";
 
 export default function Projects() {
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden relative">
+      <SEO title="Our Projects | Rupali Construction" />
       <Navbar />
       
       {/* Background Image with Premium Gradient Fade */}

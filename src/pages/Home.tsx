@@ -11,9 +11,12 @@ import FAQ from "@/sections/FAQ";
 import Footer from "@/sections/Footer";
 import PromoPopup from "@/components/PromoPopup";
 
+import SEO from "@/components/SEO";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden">
+      <SEO />
       <Navbar />
       <Hero />
       <CinematicReveal />

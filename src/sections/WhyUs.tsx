@@ -1,7 +1,7 @@
 import { DollarSign, Layers, ShieldCheck, Radio, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import SkyscraperLineArt from "@/components/SkyscraperLineArt";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const features = [
@@ -39,6 +39,17 @@ const features = [
 
 export default function WhyUs() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered) return;
+    
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % features.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   return (
     <section className="py-24 lg:py-32 bg-[var(--rc-white)] relative overflow-x-clip overflow-y-visible z-20">
@@ -73,7 +84,13 @@ export default function WhyUs() {
       </div>
 
       <div className="w-full relative z-10 px-2 md:px-4 lg:px-8">
-        <div className="flex h-[450px] lg:h-[550px] w-full gap-2 md:gap-4">
+        <div 
+          className="flex flex-col md:flex-row h-[600px] md:h-[450px] lg:h-[550px] w-full gap-2 md:gap-4"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={() => setIsHovered(true)}
+          onTouchEnd={() => setIsHovered(false)}
+        >
           {features.map((feature, i) => {
             const isActive = activeIndex === i;
             return (
@@ -105,21 +122,21 @@ export default function WhyUs() {
 
                 <div className="absolute bottom-6 left-2 lg:left-6 right-2 lg:right-6 flex flex-col justify-end">
                   
-                  {/* Horizontal title for inactive state */}
+                  {/* Horizontal title for inactive state (Desktop Only) */}
                   <div 
                     className={cn(
-                      "absolute bottom-[60px] lg:bottom-[80px] left-0 right-0 flex items-center justify-center pointer-events-none transition-opacity duration-500",
+                      "absolute inset-0 md:inset-auto md:bottom-[60px] lg:bottom-[80px] md:left-0 md:right-0 hidden md:flex items-center justify-center pointer-events-none transition-opacity duration-500",
                       isActive ? "opacity-0" : "opacity-100 delay-300"
                     )}
                   >
-                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-serif text-white/90 tracking-wider lg:tracking-[0.1em] uppercase shadow-black drop-shadow-md whitespace-normal text-center leading-snug px-1">
+                    <h3 className="text-xs lg:text-sm font-serif text-white/90 tracking-wider lg:tracking-[0.1em] uppercase shadow-black drop-shadow-md whitespace-normal text-center leading-snug px-2">
                       {feature.title}
                     </h3>
                   </div>
 
                   <div className={cn(
                     "flex items-center relative z-10 transition-all duration-700",
-                    isActive ? "gap-4 justify-start" : "gap-0 justify-center"
+                    isActive ? "gap-4 justify-start" : "gap-3 justify-start md:gap-0 md:justify-center"
                   )}>
                     <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl bg-black/40 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-black/60 transition-colors">
                       <feature.icon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
@@ -127,17 +144,20 @@ export default function WhyUs() {
                     
                     <div className={cn(
                       "overflow-hidden whitespace-nowrap transition-all duration-700 flex-1",
-                      isActive ? "opacity-100 max-w-[400px] ml-4" : "opacity-0 max-w-0 ml-0"
+                      isActive ? "opacity-100 max-w-[400px] ml-1 md:ml-4" : "opacity-100 md:opacity-0 max-w-[400px] md:max-w-0 ml-0"
                     )}>
-                      <h3 className="text-lg lg:text-2xl font-serif text-white tracking-wide">{feature.title}</h3>
+                      <h3 className={cn(
+                        "font-serif text-white transition-all",
+                        isActive ? "text-lg lg:text-2xl tracking-wide" : "text-xs sm:text-sm md:text-lg uppercase md:normal-case tracking-widest md:tracking-wide shadow-black drop-shadow-md md:drop-shadow-none"
+                      )}>{feature.title}</h3>
                     </div>
                   </div>
 
                   <div className={cn(
                     "overflow-hidden transition-all duration-700 relative z-10",
-                    isActive ? "max-h-[150px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
+                    isActive ? "max-h-[150px] opacity-100 mt-2 md:mt-4" : "max-h-0 opacity-0 mt-0"
                   )}>
-                    <p className="text-white/90 text-xs lg:text-base line-clamp-3 leading-relaxed whitespace-normal min-w-[200px] lg:min-w-[250px]">
+                    <p className="text-white/90 text-[11px] md:text-xs lg:text-base line-clamp-3 md:line-clamp-none leading-relaxed whitespace-normal min-w-[200px] lg:min-w-[250px]">
                       {feature.desc}
                     </p>
                   </div>

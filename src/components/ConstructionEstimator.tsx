@@ -219,15 +219,15 @@ export default function ConstructionEstimator() {
 
       {/* SETUP MODE */}
       {mode === "setup" && (
-        <div className="p-4 md:p-6 lg:p-10 space-y-5 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+        <div className="p-4 md:p-6 lg:p-10 space-y-4 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             <div className="space-y-2 md:space-y-3">
               <label className="text-label text-[var(--rc-muted)] block text-sm">City</label>
               <div className="grid grid-cols-2 gap-2 md:gap-3">
                 {["Gurgaon", "Delhi", "Noida", "Faridabad"].map(c => (
                   <button key={c}
                     onClick={() => setInputs(p => ({ ...p, city: c }))}
-                    className={`p-2.5 md:p-3 rounded-xl border text-center text-sm transition-all ${
+                    className={`p-2 md:p-3 rounded-xl border text-center text-sm transition-all ${
                       inputs.city === c 
                         ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
                         : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
@@ -245,7 +245,7 @@ export default function ConstructionEstimator() {
                 {["Standard / Strip", "Deep/Raft", "Pile"].map(f => (
                   <button key={f}
                     onClick={() => setInputs(p => ({ ...p, foundation: f }))}
-                    className={`p-2.5 md:p-3 rounded-xl border text-center text-xs md:text-sm transition-all ${
+                    className={`p-2 md:p-3 rounded-xl border text-center text-xs md:text-sm transition-all ${
                       inputs.foundation === f 
                         ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
                         : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
@@ -263,7 +263,7 @@ export default function ConstructionEstimator() {
                 type="number"
                 value={inputs.plotArea}
                 onChange={(e) => setInputs(p => ({ ...p, plotArea: e.target.value }))}
-                className="w-full px-4 py-2.5 md:py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] outline-none text-base md:text-lg"
+                className="w-full px-4 py-2 md:py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] outline-none text-base md:text-lg"
                 placeholder="e.g. 2000"
               />
             </div>
@@ -276,7 +276,7 @@ export default function ConstructionEstimator() {
                     key={num}
                     type="button"
                     onClick={() => setInputs(p => ({ ...p, floors: num }))}
-                    className={`flex-1 py-2.5 md:py-3 rounded-xl font-bold transition-all border ${
+                    className={`flex-1 py-2 md:py-3 rounded-xl font-bold transition-all border ${
                       inputs.floors === num
                         ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
                         : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
@@ -288,7 +288,7 @@ export default function ConstructionEstimator() {
                 <button
                   type="button"
                   onClick={() => setInputs(p => ({ ...p, floors: parseInt(inputs.floors) > 4 ? inputs.floors : '5' }))}
-                  className={`flex-1 py-2.5 md:py-3 rounded-xl font-bold transition-all border text-sm md:text-base ${
+                  className={`flex-1 py-2 md:py-3 rounded-xl font-bold transition-all border text-sm md:text-base ${
                     parseInt(inputs.floors || '1') > 4
                       ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
                       : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
@@ -304,7 +304,7 @@ export default function ConstructionEstimator() {
                     min="5" max="100"
                     value={inputs.floors}
                     onChange={(e) => setInputs(p => ({ ...p, floors: e.target.value }))}
-                    className="w-full px-4 py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-blue)] focus:ring-2 focus:ring-[var(--rc-blue)] outline-none text-lg mt-2 transition-all"
+                    className="w-full px-4 py-2 md:py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-blue)] focus:ring-2 focus:ring-[var(--rc-blue)] outline-none text-base md:text-lg mt-2 transition-all"
                     placeholder="Enter number of floors (e.g. 5)"
                   />
                 </motion.div>
@@ -313,11 +313,11 @@ export default function ConstructionEstimator() {
           </div>
 
           <div className="flex justify-end pt-6 border-t border-[var(--rc-border)]">
-            <button
-              disabled={!inputs.city || !inputs.plotArea || !inputs.foundation}
-              onClick={() => setMode("quick")}
-              className="px-8 py-4 bg-[var(--rc-orange)] text-white rounded-full font-medium text-lg hover:bg-[var(--rc-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
+              <button
+                disabled={!inputs.city || !inputs.plotArea || !inputs.foundation}
+                onClick={() => setMode("quick")}
+                className="px-6 py-3 md:px-8 md:py-4 bg-[var(--rc-orange)] text-white rounded-full font-medium text-base md:text-lg hover:bg-[var(--rc-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
               See Estimate <ArrowRight className="w-5 h-5" />
             </button>
           </div>

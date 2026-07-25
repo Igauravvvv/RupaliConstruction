@@ -62,7 +62,7 @@ export default function Hero() {
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto"
+            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto pb-24 md:pb-0"
           >
             <motion.div variants={fadeUp} className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--rc-blue)]/20 bg-white/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[var(--rc-orange)]/50 transition-all duration-300 cursor-default">
               <span className="w-2 h-2 rounded-full bg-[var(--rc-orange)] animate-pulse"></span>
@@ -88,7 +88,7 @@ export default function Hero() {
                 </motion.div>
 
                 {/* Looping Word - Premium Copper/Orange Shimmer */}
-                <motion.div className="flex flex-col items-center justify-center relative my-2 z-20 h-[6rem] md:h-[8rem] lg:h-[10rem]">
+                <motion.div className="flex flex-col items-center justify-center relative my-2 z-20 h-[4rem] md:h-[8rem] lg:h-[10rem]">
                   <AnimatePresence mode="wait">
                     <motion.span 
                       key={wordIndex}

@@ -9,7 +9,8 @@ console.log('Input:', input);
 console.log('Output:', output);
 
 try {
-  execSync(`ffmpeg -i "${input}" -c:v libx264 -preset fast -crf 23 -c:a aac -movflags +faststart -y "${output}"`, {
+  // Optimized for web delivery - lower CRF, fast start, scale to 720p
+  execSync(`ffmpeg -i "${input}" -vf scale=-2:720 -c:v libx264 -preset veryfast -crf 28 -c:a aac -b:a 128k -movflags +faststart -y "${output}"`, {
     stdio: 'inherit'
   });
   console.log('✅ Conversion complete! File saved to:', output);

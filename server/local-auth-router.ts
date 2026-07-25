@@ -116,6 +116,7 @@ export const localAuthRouter = createRouter({
       uniqueId: user.uniqueId,
       avatar: user.avatar,
       authType: "local" as const,
+      phoneNumber: user.phoneNumber,
     };
   }),
 });

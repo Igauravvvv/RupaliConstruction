@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createRouter, publicQuery } from "./middleware";
+import { createRouter, authedQuery, publicQuery } from "./middleware";
 import { getDb } from "./queries/connection";
 import { chatMessages, constructionLeads, costCalculatorRequests, projects } from "@db/schema";
 import { eq, desc } from "drizzle-orm";
@@ -7,7 +7,7 @@ import { eq, desc } from "drizzle-orm";
 const SYSTEM_PROMPT = `You are the AI assistant for Rupali Construction, a premium construction company based in Gurgaon, India. You help visitors with questions about residential and commercial construction, renovation, interior design, project timelines, pricing estimates, and company services. Be professional, helpful, and knowledgeable about construction in India. Always encourage visitors to fill out the contact form or call for detailed consultations. Keep responses concise and helpful.`;
 
 export const chatRouter = createRouter({
-  send: publicQuery
+  send: authedQuery
     .input(
       z.object({
         sessionId: z.string(),
@@ -87,7 +87,7 @@ export const chatRouter = createRouter({
       return { response: assistantContent };
     }),
 
-  submitLead: publicQuery
+  submitLead: authedQuery
     .input(
       z.object({
         name: z.string().optional(),
@@ -107,8 +107,13 @@ export const chatRouter = createRouter({
         enquiryType: z.string().default("construction"),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const db = getDb();
+      
+      // Auto-fill user details if not provided
+      const finalName = input.name || ctx.user.name;
+      const finalEmail = input.email || ctx.user.email || undefined;
+      const finalPhone = input.phone || ctx.user.phoneNumber || undefined;
       
       // Generate a unique reference ID
       const timestamp = new Date().getTime().toString().slice(-6);
@@ -118,12 +123,15 @@ export const chatRouter = createRouter({
       await db.insert(constructionLeads).values({
         referenceId,
         ...input,
+        name: finalName,
+        email: finalEmail,
+        phone: finalPhone,
       });
       
       return { success: true, referenceId };
     }),
 
-  submitCostRequest: publicQuery
+  submitCostRequest: authedQuery
     .input(
       z.object({
         city: z.string().optional(),
@@ -137,8 +145,12 @@ export const chatRouter = createRouter({
         email: z.string().optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const db = getDb();
+      
+      const finalName = input.name || ctx.user.name;
+      const finalEmail = input.email || ctx.user.email || undefined;
+      const finalPhone = input.phone || ctx.user.phoneNumber || undefined;
       
       // Generate reference ID
       const timestamp = new Date().getTime().toString().slice(-6);
@@ -148,6 +160,9 @@ export const chatRouter = createRouter({
       await db.insert(costCalculatorRequests).values({
         referenceId,
         ...input,
+        name: finalName,
+        email: finalEmail,
+        phone: finalPhone,
       });
       
       return { success: true, referenceId };
@@ -163,7 +178,7 @@ export const chatRouter = createRouter({
         .limit(5);
     }),
 
-  history: publicQuery
+  history: authedQuery
     .input(z.object({ sessionId: z.string() }))
     .query(async ({ input }) => {
       const db = getDb();

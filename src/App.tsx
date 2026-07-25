@@ -11,10 +11,12 @@ import Leadership from './pages/Leadership'
 import BrandStandards from './pages/BrandStandards'
 import Admin from './pages/Admin'
 import Login from './pages/Login'
+import CompleteProfile from './pages/CompleteProfile'
 import NotFound from './pages/NotFound'
 import ChatWidget from './components/ChatWidget'
 import FloatingActions from './components/FloatingActions'
 import SplashScreen from './components/SplashScreen'
+import AuthGuard from './components/AuthGuard'
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,6 +60,7 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <FloatingActions />

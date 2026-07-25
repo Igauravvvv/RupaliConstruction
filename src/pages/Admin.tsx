@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router";
+import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
 import AdminOverview from "@/components/admin/AdminOverview";
 import AdminProjects from "@/components/admin/AdminProjects";
@@ -17,6 +18,7 @@ import {
   Shield,
   Bell,
   ChevronRight,
+  Download,
 } from "lucide-react";
 
 export default function Admin() {
@@ -25,6 +27,27 @@ export default function Admin() {
   
   const [activeTab, setActiveTab] = useState<"overview" | "projects" | "leads" | "account">("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const exportUsers = trpc.admin.exportUsersToExcel.useMutation({
+    onSuccess: (data) => {
+      // Decode base64 to Blob and trigger download
+      const byteCharacters = atob(data.data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Rupali_Users_${new Date().toISOString().split("T")[0]}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  });
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -251,7 +274,15 @@ export default function Admin() {
                   Manage your {activeTab.replace("-", " ")} data and settings
                 </p>
               </div>
-              <div className="text-right">
+              <div className="flex items-center gap-4 text-right">
+                <button
+                  onClick={() => exportUsers.mutate()}
+                  disabled={exportUsers.isPending}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                >
+                  <Download className="w-4 h-4" />
+                  {exportUsers.isPending ? "Exporting..." : "Export Users"}
+                </button>
                 <p className="text-xs text-[var(--rc-muted)]">
                   {new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
                 </p>

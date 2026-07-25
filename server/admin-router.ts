@@ -3,6 +3,7 @@ import { getDb } from "./queries/connection";
 import { users, localUsers, contacts, blogPosts, projects, testimonials, constructionLeads, costCalculatorRequests } from "@db/schema";
 import { sql, eq, desc } from "drizzle-orm";
 import { z } from "zod";
+import ExcelJS from "exceljs";
 
 export const adminRouter = createRouter({
   dashboardStats: adminQuery.query(async () => {
@@ -107,5 +108,51 @@ export const adminRouter = createRouter({
   costRequests: adminQuery.query(async () => {
     const db = getDb();
     return db.select().from(costCalculatorRequests).orderBy(desc(costCalculatorRequests.createdAt));
+  }),
+
+  exportUsersToExcel: adminQuery.mutation(async () => {
+    const db = getDb();
+    const oauthUsers = await db.select().from(users);
+    const localUsersList = await db.select().from(localUsers);
+
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Users");
+    
+    sheet.columns = [
+      { header: "ID", key: "id", width: 10 },
+      { header: "Type", key: "type", width: 15 },
+      { header: "Name", key: "name", width: 30 },
+      { header: "Email", key: "email", width: 35 },
+      { header: "Phone Number", key: "phone", width: 20 },
+      { header: "Role", key: "role", width: 15 },
+      { header: "Created At", key: "createdAt", width: 25 },
+    ];
+
+    oauthUsers.forEach(u => {
+      sheet.addRow({
+        id: u.id,
+        type: "OAuth",
+        name: u.name,
+        email: u.email,
+        phone: u.phoneNumber,
+        role: u.role,
+        createdAt: new Date(u.createdAt).toLocaleString(),
+      });
+    });
+
+    localUsersList.forEach(u => {
+      sheet.addRow({
+        id: u.id,
+        type: u.authProvider === "google" ? "Google OAuth" : "Local",
+        name: u.displayName || u.username,
+        email: u.email,
+        phone: u.phoneNumber,
+        role: u.role,
+        createdAt: new Date(u.createdAt).toLocaleString(),
+      });
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return { data: Buffer.from(buffer).toString("base64") };
   }),
 });

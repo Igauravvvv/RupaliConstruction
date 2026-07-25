@@ -71,7 +71,7 @@ export default function Navbar() {
           <img
             src="/logo-main.png?v=2"
             alt="Rupali Construction"
-            className={`h-14 md:h-24 lg:h-32 w-auto object-contain scale-[2.2] md:scale-[1.8] origin-left translate-y-1 md:translate-y-2 lg:translate-y-4 transition-all duration-500 ${
+            className={`w-48 h-auto md:w-auto md:h-24 lg:h-32 object-contain md:scale-[1.8] origin-left translate-y-1 md:translate-y-2 lg:translate-y-4 transition-all duration-500 ${
               isDarkSection ? "drop-shadow-lg" : "md:mix-blend-multiply"
             }`}
           />
@@ -186,83 +186,111 @@ export default function Navbar() {
           {/* Hamburger Menu */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2"
+            className="p-2 group relative z-50 w-12 h-12 flex flex-col items-end justify-center gap-[6px]"
+            aria-label="Toggle Menu"
           >
-            {mobileOpen ? (
-              <X className={`w-6 h-6 ${isDarkSection ? "text-white" : "text-[var(--rc-blue)]"}`} />
-            ) : (
-              <Menu className={`w-6 h-6 ${isDarkSection ? "text-white" : "text-[var(--rc-blue)]"}`} />
-            )}
+            <span className={`block h-[1.5px] bg-current transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] origin-center ${
+              mobileOpen ? 'w-6 rotate-45 translate-y-[7.5px]' : 'w-7 group-hover:w-5'
+            } ${isDarkSection ? "text-white" : "text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)]"}`} />
+            
+            <span className={`block h-[1.5px] bg-current transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] ${
+              mobileOpen ? 'w-0 opacity-0 translate-x-4' : 'w-5 group-hover:w-7'
+            } ${isDarkSection ? "text-white" : "text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)]"}`} />
+            
+            <span className={`block h-[1.5px] bg-current transition-all duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] origin-center ${
+              mobileOpen ? 'w-6 -rotate-45 -translate-y-[7.5px]' : 'w-6 group-hover:w-4'
+            } ${isDarkSection ? "text-white" : "text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)]"}`} />
           </button>
         </div>
       </div>
 
-      {mobileOpen && (
-        <div className={`md:hidden absolute w-full border-t ${isDarkSection ? "bg-[var(--rc-blue)] border-white/10" : "bg-white border-[var(--rc-border)]"}`}>
-          <nav className="container-rc py-6 flex flex-col gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`text-base font-bold uppercase tracking-[0.2em] transition-colors ${
-                  isDarkSection ? "text-white/90 hover:text-[var(--rc-orange)]" : "text-[var(--rc-text)] hover:text-[var(--rc-blue)]"
-                }`}
-              >
+      <div 
+        className={`md:hidden fixed inset-0 top-[80px] h-[calc(100vh-80px)] overflow-y-auto backdrop-blur-2xl transition-all duration-700 ease-[cubic-bezier(0.85,0,0.15,1)] flex flex-col z-40 ${
+          mobileOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-8"
+        } ${isDarkSection ? "bg-[var(--rc-blue)]/95" : "bg-white/95"}`}
+      >
+        <nav className="container-rc py-10 flex flex-col gap-6 flex-grow">
+          {navLinks.map((link, i) => (
+            <Link
+              key={link.href}
+              to={link.href}
+              onClick={() => {
+                setMobileOpen(false);
+                window.scrollTo(0, 0);
+              }}
+              className={`group flex items-center justify-between text-3xl sm:text-4xl font-light tracking-tight transition-all duration-300 ${
+                isDarkSection ? "text-white/90 hover:text-[var(--rc-orange)]" : "text-[var(--rc-dark)]/80 hover:text-[var(--rc-blue)]"
+              }`}
+              style={{ transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms' }}
+            >
+              <span className={`transform transition-all duration-500 ${mobileOpen ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} style={{ transitionDelay: mobileOpen ? `${i * 50 + 100}ms` : '0ms' }}>
                 {link.label}
-              </Link>
-            ))}
-            <div className={`pt-6 flex flex-col gap-3 border-t ${isDarkSection ? "border-white/10" : "border-[var(--rc-border)]"}`}>
-              <Link
-                to="/contact"
-                className={`px-6 py-4 text-sm font-bold tracking-widest uppercase rounded-full text-center ${
-                  isDarkSection 
-                    ? "bg-white text-[var(--rc-blue)]" 
-                    : "bg-[var(--rc-orange)] text-white"
-                }`}
-              >
-                Get Estimate
-              </Link>
+              </span>
+              <span className={`h-[2px] w-12 transition-all duration-500 origin-right scale-x-0 group-hover:scale-x-100 ${
+                isDarkSection ? "bg-[var(--rc-orange)]" : "bg-[var(--rc-blue)]"
+              }`} />
+            </Link>
+          ))}
 
-              {isAuthenticated ? (
-                <>
-                  <Link
-                    to={user?.role === "admin" ? "/admin" : "/"}
-                    className={`px-6 py-4 text-sm font-bold tracking-widest uppercase rounded-full text-center flex items-center justify-center gap-2 border ${
-                      isDarkSection ? "border-white/20 text-white" : "border-[var(--rc-border)] text-[var(--rc-dark)]"
-                    }`}
-                  >
-                    {user?.avatar ? (
-                      <img src={user.avatar} alt="" className="w-5 h-5 rounded-full" />
-                    ) : (
-                      <User className="w-4 h-4" />
-                    )}
-                    {user?.name}
-                  </Link>
-                  <button
-                    onClick={logout}
-                    className={`px-6 py-4 text-sm font-bold tracking-widest uppercase rounded-full text-center flex items-center justify-center gap-2 ${
-                      isDarkSection ? "text-red-300" : "text-red-500"
-                    }`}
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </button>
-                </>
-              ) : (
+          <div className={`mt-auto pt-10 flex flex-col gap-4 w-full transition-all duration-700 delay-300 ${mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <Link
+              to="/contact"
+              onClick={() => setMobileOpen(false)}
+              className={`w-full py-5 text-sm font-bold tracking-[0.2em] uppercase text-center transition-all duration-300 rounded-2xl shadow-xl hover:-translate-y-1 ${
+                isDarkSection 
+                  ? "bg-white text-[var(--rc-blue)] hover:bg-[var(--rc-orange)] hover:text-white shadow-black/10 hover:shadow-[var(--rc-orange)]/20"
+                  : "bg-[var(--rc-orange)] text-white hover:bg-[var(--rc-blue)] shadow-[var(--rc-orange)]/20 hover:shadow-[var(--rc-blue)]/30"
+              }`}
+            >
+              Get Estimate
+            </Link>
+
+            {isAuthenticated ? (
+              <div className="grid grid-cols-2 gap-4">
                 <Link
-                  to="/login"
-                  className={`px-6 py-4 text-sm font-bold tracking-widest uppercase rounded-full text-center flex items-center justify-center gap-2 border ${
-                    isDarkSection ? "border-white/20 text-white" : "border-[var(--rc-border)] text-[var(--rc-dark)]"
+                  to={user?.role === "admin" ? "/admin" : "/"}
+                  onClick={() => setMobileOpen(false)}
+                  className={`py-4 text-sm font-bold tracking-wider uppercase rounded-2xl text-center flex items-center justify-center gap-2 border transition-colors ${
+                    isDarkSection ? "border-white/20 text-white hover:bg-white/10" : "border-[var(--rc-border)] text-[var(--rc-dark)] hover:bg-[var(--rc-gray)]"
                   }`}
                 >
-                  <User className="w-4 h-4" />
-                  Login
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt="" className="w-5 h-5 rounded-full" />
+                  ) : (
+                    <User className="w-4 h-4" />
+                  )}
+                  <span className="truncate max-w-[80px]">{user?.name?.split(' ')[0]}</span>
                 </Link>
-              )}
-            </div>
-          </nav>
-        </div>
-      )}
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileOpen(false);
+                  }}
+                  className={`py-4 text-sm font-bold tracking-wider uppercase rounded-2xl text-center flex items-center justify-center gap-2 border transition-colors ${
+                    isDarkSection ? "border-red-400/30 text-red-300 hover:bg-red-500/10" : "border-red-200 text-red-500 hover:bg-red-50"
+                  }`}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileOpen(false)}
+                className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase rounded-2xl text-center flex items-center justify-center gap-2 border transition-all duration-300 hover:-translate-y-1 ${
+                  isDarkSection 
+                    ? "border-white/30 text-white hover:bg-white/10 hover:border-white/50" 
+                    : "border-[var(--rc-blue)]/30 text-[var(--rc-blue)] hover:bg-[var(--rc-blue)]/5 hover:border-[var(--rc-blue)]/50"
+                }`}
+              >
+                <User className="w-4 h-4" />
+                Login
+              </Link>
+            )}
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }

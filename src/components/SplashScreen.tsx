@@ -75,15 +75,11 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
             preload="auto"
             onEnded={handleVideoEnd}
             onError={() => handleVideoEnd()}
+            className="w-full h-full max-w-[100vw] max-h-[100vh] object-contain md:object-cover mix-blend-multiply"
             style={{
-              width: '100vw',
-              height: '100vh',
-              objectFit: 'cover',
-              display: 'block',
-              mixBlendMode: 'multiply',
               filter: 'brightness(1.15) contrast(1.3)',
               willChange: 'transform',
-              transform: expanded ? 'scale(1.2)' : 'scale(0.75)',
+              transform: expanded ? 'scale(1.2)' : 'scale(0.65)',
               transition: 'transform 1.4s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
           >

@@ -11,6 +11,7 @@ export type UnifiedUser = {
   role: "user" | "admin";
   authType: "oauth" | "local";
   uniqueId?: string;
+  phoneNumber?: string | null;
 };
 
 export type TrpcContext = {
@@ -27,6 +28,7 @@ function oauthToUnified(u: User): UnifiedUser {
     avatar: u.avatar,
     role: u.role as "user" | "admin",
     authType: "oauth",
+    phoneNumber: u.phoneNumber,
   };
 }
 
@@ -39,6 +41,7 @@ function localToUnified(u: LocalUser): UnifiedUser {
     role: u.role as "user" | "admin",
     authType: "local",
     uniqueId: u.uniqueId,
+    phoneNumber: u.phoneNumber,
   };
 }
 

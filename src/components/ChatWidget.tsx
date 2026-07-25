@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { trpc } from "@/providers/trpc";
 import { X, Send, User, ChevronLeft, Building2, Calculator, Image as ImageIcon, Ruler, Home, Wrench, PhoneCall, MessageCircle, Info } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Skeleton } from "./ui/skeleton";
 
 function getSessionId() {
   let id = sessionStorage.getItem("chat_session_id");
@@ -698,7 +699,23 @@ export default function ChatWidget() {
                         </div>
                       </div>
                     ))}
-                    {!projects?.length && <p className="text-sm text-gray-500">Loading projects...</p>}
+                    {!projects?.length && (
+                      <>
+                        {[1,2,3].map(i => (
+                          <div key={i} className="min-w-[240px] bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 snap-center shrink-0">
+                            <Skeleton className="h-32 w-full rounded-none" />
+                            <div className="p-3">
+                              <Skeleton className="h-4 w-3/4 mb-2" />
+                              <Skeleton className="h-3 w-1/2 mb-3" />
+                              <div className="flex justify-between items-center mt-3">
+                                <Skeleton className="h-3 w-1/4" />
+                                <Skeleton className="h-6 w-12 rounded-md" />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    )}
                   </div>
                 )}
 

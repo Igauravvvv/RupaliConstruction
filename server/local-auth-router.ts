@@ -50,7 +50,7 @@ export const localAuthRouter = createRouter({
         displayName: input.displayName || input.username,
         email: input.email || null,
         authProvider: "local",
-        role: "admin",
+        role: "user",
       }).returning({ id: localUsers.id, uniqueId: localUsers.uniqueId });
 
       const userId = result[0].id;

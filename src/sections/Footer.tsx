@@ -85,12 +85,11 @@ export default function Footer() {
           
           {/* Column 1: Brand & Speech */}
           <div className="md:col-span-12 lg:col-span-4">
-            <Link to="/" className="inline-block hover:opacity-90 transition-opacity bg-white/5 backdrop-blur-sm border border-white/10 p-5 rounded-2xl shadow-2xl relative group">
-              <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+            <Link to="/" className="inline-block hover:opacity-80 transition-opacity relative group mb-4">
               <img
-                src="/logo-main.webp?v=2"
+                src="/logo-icon.webp"
                 alt="Rupali Construction"
-                className="w-56 object-contain relative z-10 brightness-[1.2]"
+                className="w-24 object-contain relative z-10 brightness-[1.2]"
               />
             </Link>
             
@@ -188,11 +187,11 @@ export default function Footer() {
           
           {/* Top Row: Logo & Quick Contact */}
           <div className="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
-            <Link to="/" className="inline-block bg-white/5 border border-white/10 p-2 rounded-xl">
+            <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
               <img
-                src="/logo-main.webp?v=2"
+                src="/logo-icon.webp"
                 alt="Rupali Construction"
-                className="w-32 object-contain brightness-[1.2]"
+                className="w-16 object-contain brightness-[1.2]"
               />
             </Link>
             

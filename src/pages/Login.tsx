@@ -223,14 +223,6 @@ export default function Login() {
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--rc-border)] to-transparent" />
             </div>
 
-            {/* Admin badge for password login */}
-            <div className="flex items-center gap-2 mb-5 p-3 bg-blue-50 rounded-xl border border-blue-100">
-              <Shield className="w-4 h-4 text-[var(--rc-blue)] flex-shrink-0" />
-              <p className="text-xs text-[var(--rc-blue)]">
-                Password login is for <strong>administrators only</strong>
-              </p>
-            </div>
-
             {/* Username/Password Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <AnimatePresence>

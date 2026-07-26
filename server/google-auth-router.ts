@@ -20,7 +20,7 @@ const googleAuth = new Hono();
 
 // Step 1: Redirect to Google OAuth consent screen
 googleAuth.get("/api/auth/google", (c) => {
-  const clientId = import.meta.env?.VITE_GOOGLE_CLIENT_ID || env.googleClientId;
+  const clientId = process.env.VITE_GOOGLE_CLIENT_ID || env.googleClientId;
   const baseUrl = env.isProduction ? "https://www.rupaliconstruction.com" : new URL(c.req.url).origin;
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
@@ -45,8 +45,8 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
   try {
     const baseUrl = env.isProduction ? "https://www.rupaliconstruction.com" : new URL(c.req.url).origin;
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
-    const clientId = import.meta.env?.VITE_GOOGLE_CLIENT_ID || env.googleClientId;
-    const clientSecret = import.meta.env?.VITE_GOOGLE_CLIENT_SECRET || env.googleClientSecret;
+    const clientId = process.env.VITE_GOOGLE_CLIENT_ID || env.googleClientId;
+    const clientSecret = process.env.VITE_GOOGLE_CLIENT_SECRET || env.googleClientSecret;
 
     // Exchange code for tokens
     const tokenRes = await fetch("https://oauth2.googleapis.com/token", {

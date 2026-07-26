@@ -74,8 +74,8 @@ export const projectRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(projects).values(input);
-      return { id: Number(result[0]?.insertId), success: true };
+      const result = await db.insert(projects).values(input).returning({ id: projects.id });
+      return { id: result[0]?.id, success: true };
     }),
 
   update: adminQuery

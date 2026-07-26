@@ -122,8 +122,8 @@ export const blogRouter = createRouter({
         coverImage: input.coverImage || null,
         published: false, // Always false for public submissions
         featured: false,
-      });
-      return { id: Number(result[0]?.insertId), success: true };
+      }).returning({ id: blogPosts.id });
+      return { id: result[0]?.id, success: true };
     }),
 
   create: adminQuery
@@ -154,8 +154,8 @@ export const blogRouter = createRouter({
         author: input.author || null,
         published: input.published,
         featured: input.featured,
-      });
-      return { id: Number(result[0]?.insertId), success: true };
+      }).returning({ id: blogPosts.id });
+      return { id: result[0]?.id, success: true };
     }),
 
   update: adminQuery

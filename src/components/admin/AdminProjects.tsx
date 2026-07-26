@@ -15,7 +15,7 @@ const projectSchema = z.object({
   type: z.enum(["residential", "commercial", "renovation", "interior"]),
   status: z.enum(["ongoing", "completed"]),
   images: z.string().optional(),
-  featured: z.boolean().default(false),
+  featured: z.boolean().optional(),
 });
 
 type ProjectFormData = z.infer<typeof projectSchema>;

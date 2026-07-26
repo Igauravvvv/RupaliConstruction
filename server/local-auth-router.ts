@@ -76,7 +76,7 @@ export const localAuthRouter = createRouter({
         });
         console.log("User query result:", !!user);
         
-        if (!user) {
+        if (!user || !user.passwordHash) {
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "Invalid username or password",

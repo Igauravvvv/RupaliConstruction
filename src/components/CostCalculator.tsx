@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Calculator, ArrowRight, Home, ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function CostCalculator() {
   const [step, setStep] = useState(1);

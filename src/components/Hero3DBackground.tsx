@@ -165,8 +165,7 @@ export default function Hero3DBackground() {
           
           <PresentationControls 
             global 
-            config={{ mass: 2, tension: 500 }} 
-            snap={{ mass: 4, tension: 1500 }} 
+            snap={true} 
             rotation={[0, -0.5, 0]} 
             polar={[-Math.PI / 3, Math.PI / 3]} 
             azimuth={[-Math.PI / 1.4, Math.PI / 2]}

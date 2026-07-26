@@ -270,7 +270,6 @@ export default function Villa3D() {
           
           <PresentationControls 
             global 
-            config={{ mass: 2, tension: 500 }} 
             snap={true} 
             rotation={[0, 0, 0]} 
             polar={[-Math.PI / 4, Math.PI / 4]} 

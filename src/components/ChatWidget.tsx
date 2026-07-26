@@ -190,7 +190,7 @@ export default function ChatWidget() {
   };
 
   const handleConstructAnswer = (field: string, value: string, nextStep: number) => {
-    setConstructData(prev => ({ ...prev, [field]: value }));
+    setConstructData((prev: any) => ({ ...prev, [field]: value }));
     addMessage("user", value);
     setTimeout(() => setConstructStep(nextStep), 300);
   };
@@ -225,7 +225,7 @@ export default function ChatWidget() {
 
   // Cost Form Logic
   const handleCostAnswer = (field: string, value: any, nextStep: number) => {
-    setCostData(prev => ({ ...prev, [field]: value }));
+    setCostData((prev: any) => ({ ...prev, [field]: value }));
     addMessage("user", value.toString());
     setTimeout(() => setCostStep(nextStep), 300);
   };
@@ -629,7 +629,7 @@ export default function ChatWidget() {
                           const size = (document.getElementById('cost_size') as HTMLInputElement).value;
                           const floors = (document.getElementById('cost_floors') as HTMLInputElement).value;
                           if(size && floors) {
-                            setCostData(prev => ({...prev, plotSize: size, floors: parseInt(floors)}));
+                            setCostData((prev: any) => ({...prev, plotSize: size, floors: parseInt(floors)}));
                             addMessage("user", `${size} sq ft, ${floors} floors`);
                             setTimeout(() => setCostStep(4), 300);
                           }
@@ -647,7 +647,7 @@ export default function ChatWidget() {
                             { name: "Luxury", desc: "Imported materials, bespoke finishes" }
                           ].map(opt => (
                             <button key={opt.name} onClick={() => {
-                              setCostData(prev => ({...prev, quality: opt.name}));
+                              setCostData((prev: any) => ({...prev, quality: opt.name}));
                               addMessage("user", opt.name);
                               setTimeout(() => setCostStep(5), 300);
                             }} className="p-3 border rounded-lg text-left hover:border-[var(--rc-blue)] hover:bg-blue-50 transition-colors">

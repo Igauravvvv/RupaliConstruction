@@ -23,7 +23,8 @@ import {
   CheckSquare,
   Star,
   Zap,
-  Hammer
+  Hammer,
+  Clock
 } from "lucide-react";
 import { brandDomains } from "@/data/brandStandardsData";
 import type { Category, SubCategory, Brand, Product } from "@/data/brandStandardsData";

@@ -37,7 +37,7 @@ export default function AdminAccount() {
           <div className="grid grid-cols-3 py-3 border-b border-[var(--rc-border)]">
             <div className="text-sm font-medium text-[var(--rc-muted)]">Username</div>
             <div className="col-span-2 text-sm text-[var(--rc-dark)]">
-              {user?.username || "N/A"}
+              {(user as any)?.username || "N/A"}
             </div>
           </div>
           <div className="grid grid-cols-3 py-3 border-b border-[var(--rc-border)]">

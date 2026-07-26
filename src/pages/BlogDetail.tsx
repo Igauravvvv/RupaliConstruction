@@ -12,7 +12,7 @@ export default function BlogDetail() {
     { enabled: !!slug }
   );
 
-  const post = dbPost || fallbackPosts.find(p => p.slug === slug);
+  const post: any = dbPost || fallbackPosts.find(p => p.slug === slug);
 
   return (
     <div className="min-h-screen relative">

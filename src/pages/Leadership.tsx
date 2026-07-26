@@ -20,7 +20,20 @@ const FloatingIcon = ({ icon: Icon, delay, x, y, duration, size = 120 }: any) =>
   </motion.div>
 );
 
-const leaders = [
+interface Leader {
+  name: string;
+  experience: string;
+  description: string;
+  specialties: string[];
+  image: string;
+  badges: { text: string; icon: any }[];
+  imageShape: "circle";
+  imageBg?: string;
+  removeBg?: boolean;
+  imageStyle?: React.CSSProperties;
+}
+
+const leaders: Leader[] = [
   {
     name: "S.P. Tyagi",
     experience: "25+ Years in Construction",

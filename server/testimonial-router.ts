@@ -48,8 +48,8 @@ export const testimonialRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(testimonials).values(input);
-      return { id: Number(result[0]?.insertId), success: true };
+      const result = await db.insert(testimonials).values(input).returning({ id: testimonials.id });
+      return { id: result[0]?.id, success: true };
     }),
 
   update: adminQuery

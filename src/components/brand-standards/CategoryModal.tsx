@@ -176,7 +176,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                               <div className="flex items-start gap-4 mb-4">
                                 <div className="w-20 h-20 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 overflow-hidden border border-gray-100">
                                   {sub.image ? (
-                                    <img src={sub.image} alt={sub.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img loading="lazy" src={sub.image} alt={sub.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                   ) : (
                                     <Box className="w-8 h-8 text-gray-400" />
                                   )}
@@ -235,7 +235,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                         </div>
                         <div className="md:w-1/2 h-64 md:h-auto relative">
                           {activeSubcategory.image ? (
-                            <img src={activeSubcategory.image} alt={activeSubcategory.name} className="absolute inset-0 w-full h-full object-cover" />
+                            <img loading="lazy" src={activeSubcategory.image} alt={activeSubcategory.name} className="absolute inset-0 w-full h-full object-cover" />
                           ) : (
                             <div className="absolute inset-0 bg-gray-100 flex items-center justify-center"><Box className="w-16 h-16 text-gray-300" /></div>
                           )}
@@ -264,7 +264,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                 {(() => {
                                   const logoSrc = brand.image || (brandDomains[brand.name] ? `https://logo.clearbit.com/${brandDomains[brand.name]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`);
                                   return (
-                                    <img 
+                                    <img loading="lazy" 
                                       src={logoSrc} 
                                       alt={brand.name}
                                       className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:scale-105 transition-transform"
@@ -435,7 +435,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                            {(() => {
                              const logoSrc = activeBrand.image || (brandDomains[activeBrand.name] ? `https://logo.clearbit.com/${brandDomains[activeBrand.name]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(activeBrand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`);
                              return (
-                               <img 
+                               <img loading="lazy" 
                                   src={logoSrc} 
                                   alt={activeBrand.name}
                                   className="max-w-full max-h-full object-contain drop-shadow-md mix-blend-multiply"
@@ -545,7 +545,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                               <div key={product.name} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all group flex flex-col h-full cursor-pointer" onClick={() => setActiveProduct(product)}>
                                 <div className="bg-gray-50 rounded-xl p-6 h-48 flex items-center justify-center mb-6 group-hover:bg-gray-100 transition-colors relative">
                                   {product.image ? (
-                                    <img 
+                                    <img loading="lazy" 
                                       src={product.image} 
                                       alt={product.name}
                                       className="max-w-full max-h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
@@ -587,7 +587,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                           <div className="bg-white border border-gray-100 rounded-3xl p-10 flex items-center justify-center h-[400px] shadow-sm relative overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-tr from-gray-50 to-white z-0" />
                             {activeProduct.image ? (
-                              <img 
+                              <img loading="lazy" 
                                 src={activeProduct.image} 
                                 alt={activeProduct.name}
                                 className="max-w-full max-h-full object-contain drop-shadow-2xl mix-blend-multiply relative z-10"

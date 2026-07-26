@@ -6,7 +6,7 @@ export default function NotFound() {
     <div className="min-h-screen bg-[var(--rc-gray)] flex items-center justify-center p-4">
       <div className="text-center">
         <img
-          src="/logo-icon.png"
+          src="/logo-icon.webp"
           alt="Rupali Construction"
           className="h-20 w-auto mx-auto mb-8 opacity-30"
         />

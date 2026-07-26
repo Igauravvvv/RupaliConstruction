@@ -70,7 +70,7 @@ export default function Footer() {
         <div className="absolute -top-1/2 -right-1/4 w-[1000px] h-[1000px] rounded-full bg-[var(--rc-blue)]/10 blur-[120px]" />
         <div className="absolute -bottom-1/2 -left-1/4 w-[800px] h-[800px] rounded-full bg-[var(--rc-orange)]/5 blur-[100px]" />
         <img
-          src="/logo-icon.png"
+          src="/logo-icon.webp"
           alt=""
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] object-contain opacity-[0.03] rotate-12"
         />
@@ -88,7 +88,7 @@ export default function Footer() {
             <Link to="/" className="inline-block hover:opacity-90 transition-opacity bg-white/5 backdrop-blur-sm border border-white/10 p-5 rounded-2xl shadow-2xl relative group">
               <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
               <img
-                src="/logo-main.png?v=2"
+                src="/logo-main.webp?v=2"
                 alt="Rupali Construction"
                 className="w-56 object-contain relative z-10 brightness-[1.2]"
               />
@@ -190,7 +190,7 @@ export default function Footer() {
           <div className="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
             <Link to="/" className="inline-block bg-white/5 border border-white/10 p-2 rounded-xl">
               <img
-                src="/logo-main.png?v=2"
+                src="/logo-main.webp?v=2"
                 alt="Rupali Construction"
                 className="w-32 object-contain brightness-[1.2]"
               />

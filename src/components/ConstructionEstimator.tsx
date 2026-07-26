@@ -23,14 +23,14 @@ export interface Product {
 }
 
 export const CATEGORIES: Category[] = [
-  { id: "c_cement", name: "Cement", iconImage: "/icons/icon_cement.png", weightPercent: 15 },
-  { id: "c_steel", name: "Steel / TMT", iconImage: "/icons/icon_steel.png", weightPercent: 20 },
-  { id: "c_bricks", name: "Bricks / Blocks", iconImage: "/icons/icon_bricks.png", weightPercent: 12 },
-  { id: "c_electrical", name: "Electrical", iconImage: "/icons/icon_electrical.png", weightPercent: 10 },
-  { id: "c_plumbing", name: "Plumbing", iconImage: "/icons/icon_plumbing.png", weightPercent: 10 },
-  { id: "c_paint", name: "Paint", iconImage: "/icons/icon_paint.png", weightPercent: 6 },
-  { id: "c_putty", name: "Wall Putty", iconImage: "/icons/icon_putty.png", weightPercent: 5 },
-  { id: "c_labor", name: "Labor & Finish", iconImage: "/icons/icon_labor.png", weightPercent: 22 },
+  { id: "c_cement", name: "Cement", iconImage: "/icons/icon_cement.webp", weightPercent: 15 },
+  { id: "c_steel", name: "Steel / TMT", iconImage: "/icons/icon_steel.webp", weightPercent: 20 },
+  { id: "c_bricks", name: "Bricks / Blocks", iconImage: "/icons/icon_bricks.webp", weightPercent: 12 },
+  { id: "c_electrical", name: "Electrical", iconImage: "/icons/icon_electrical.webp", weightPercent: 10 },
+  { id: "c_plumbing", name: "Plumbing", iconImage: "/icons/icon_plumbing.webp", weightPercent: 10 },
+  { id: "c_paint", name: "Paint", iconImage: "/icons/icon_paint.webp", weightPercent: 6 },
+  { id: "c_putty", name: "Wall Putty", iconImage: "/icons/icon_putty.webp", weightPercent: 5 },
+  { id: "c_labor", name: "Labor & Finish", iconImage: "/icons/icon_labor.webp", weightPercent: 22 },
 ];
 
 export const PRODUCTS: Product[] = [
@@ -412,7 +412,7 @@ export default function ConstructionEstimator() {
                         }`}
                       >
                         <div className={`w-10 h-10 lg:w-14 lg:h-14 mb-2 rounded-lg overflow-hidden flex items-center justify-center p-1 transition-colors ${isSelected ? "bg-[var(--rc-orange)]/10" : "bg-[var(--rc-dark)]/5"}`}>
-                          <img src={cat.iconImage} alt={cat.name} className="w-full h-full object-contain mix-blend-multiply" />
+                          <img loading="lazy" src={cat.iconImage} alt={cat.name} className="w-full h-full object-contain mix-blend-multiply" />
                         </div>
                         <span className={`text-xs lg:text-sm font-medium ${isSelected ? "text-[var(--rc-orange)]" : "text-[var(--rc-muted)]"}`}>
                           {cat.name}
@@ -527,7 +527,7 @@ export default function ConstructionEstimator() {
                   <div key={cat.id} className="flex justify-between items-center py-3 border-b border-white/10 last:border-0">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded bg-white/5 p-1 shrink-0 flex items-center justify-center">
-                        <img src={cat.iconImage} alt="" className="w-full h-full object-contain mix-blend-screen opacity-80" />
+                        <img loading="lazy" src={cat.iconImage} alt="" className="w-full h-full object-contain mix-blend-screen opacity-80" />
                       </div>
                       <div>
                         <div className="text-sm font-medium text-white/90">{cat.name}</div>

@@ -47,6 +47,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
     { label: "Projects", href: "/projects" },
     { label: "Leadership", href: "/leadership" },
     { label: "Brand Standards", href: "/brand-standards" },
@@ -69,7 +70,7 @@ export default function Navbar() {
           className="flex items-center py-2 hover:opacity-80 transition-opacity -ml-2 md:-ml-8 lg:-ml-16"
         >
           <img
-            src="/logo-main.png?v=2"
+            src="/logo-main.webp?v=2"
             alt="Rupali Construction"
             className={`w-48 h-auto md:w-auto md:h-24 lg:h-32 object-contain md:scale-[1.8] origin-left translate-y-1 md:translate-y-2 lg:translate-y-4 transition-all duration-500 ${
               isDarkSection ? "drop-shadow-lg" : "md:mix-blend-multiply"

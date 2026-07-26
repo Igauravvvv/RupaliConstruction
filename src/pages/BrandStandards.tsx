@@ -35,7 +35,7 @@ export default function BrandStandards() {
       <section className="relative min-h-[90vh] bg-white pt-32 pb-24 overflow-hidden">
         {/* Background Image with Premium Gradient Fade */}
         <div className="absolute top-0 left-0 w-full h-[70%] z-0">
-          <img 
+          <img loading="lazy" 
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80" 
             alt="Modern Construction"
             className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
@@ -121,7 +121,7 @@ export default function BrandStandards() {
                   >
                     {/* Top Image */}
                     <div className="h-56 relative overflow-hidden shrink-0 bg-gray-100">
-                      <img 
+                      <img loading="lazy" 
                         src={category.image} 
                         alt={category.name}
                         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -236,7 +236,7 @@ export default function BrandStandards() {
                   className="bg-white rounded-2xl h-40 flex flex-col items-center justify-center p-6 hover:shadow-xl transition-all cursor-pointer border border-transparent hover:border-[#FF6A00]/30 relative group hover:-translate-y-1"
                 >
                   <div className="h-20 w-full flex items-center justify-center mb-3">
-                    <img 
+                    <img loading="lazy" 
                       src={brandDomains[brand] ? `https://logo.clearbit.com/${brandDomains[brand]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`} 
                       alt={brand}
                       className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
@@ -273,7 +273,7 @@ export default function BrandStandards() {
                     className="w-56 shrink-0 bg-white rounded-2xl h-40 flex flex-col items-center justify-center p-6 hover:shadow-xl transition-all cursor-pointer border border-transparent hover:border-[#FF6A00]/30 relative group hover:-translate-y-1"
                   >
                     <div className="h-20 w-full flex items-center justify-center mb-3">
-                      <img 
+                      <img loading="lazy" 
                         src={brandDomains[brand] ? `https://logo.clearbit.com/${brandDomains[brand]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`} 
                         alt={brand}
                         className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
@@ -307,8 +307,8 @@ export default function BrandStandards() {
             {/* Left: Mascot Image */}
             <div className="lg:w-2/5 relative h-[350px] lg:h-auto bg-white flex items-end justify-center z-10">
               <div className="absolute inset-y-0 -right-12 w-24 bg-white skew-x-[-15deg] hidden lg:block z-0 origin-bottom" />
-              <img 
-                src="/assets/brand-standards/mascot.png" 
+              <img loading="lazy" 
+                src="/assets/brand-standards/mascot.webp" 
                 alt="Expert Guide" 
                 className="h-[95%] lg:h-[90%] w-auto object-contain relative z-10 mix-blend-multiply"
               />

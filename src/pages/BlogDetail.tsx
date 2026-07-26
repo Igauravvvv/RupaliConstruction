@@ -20,7 +20,7 @@ export default function BlogDetail() {
 
       {/* Background Image with Premium Gradient Fade */}
       <div className="absolute top-0 left-0 w-full h-[70vh] z-0 pointer-events-none">
-        <img 
+        <img loading="lazy" 
           src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?auto=format&fit=crop&w=1920&q=80" 
           alt="Construction Planning and Blog"
           className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { ArrowRight, ChevronDown, Activity, MapPin, HardHat, Wrench, Hammer, Ruler } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import Hero3DBackground from "@/components/Hero3DBackground";
-import Villa3D from "@/components/Villa3D";
+import { lazy, Suspense } from "react";
+const CombinedHero3D = lazy(() => import("@/components/CombinedHero3D"));
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -51,9 +51,9 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[100dvh] flex items-center overflow-hidden bg-transparent text-[var(--rc-text)] pt-20">
-      {/* 3D Background - now positioned more to the right */}
-      <Hero3DBackground />
-      <Villa3D />
+      <Suspense fallback={null}>
+        <CombinedHero3D />
+      </Suspense>
 
       <div className="relative z-10 container-rc w-full h-full flex items-center justify-center pointer-events-none">
           
@@ -92,19 +92,25 @@ export default function Hero() {
                   <AnimatePresence mode="wait">
                     <motion.span 
                       key={wordIndex}
-                      className="text-6xl md:text-8xl lg:text-[9rem] font-black uppercase tracking-tighter text-transparent block leading-none px-4 drop-shadow-[0_4px_10px_rgba(240,113,43,0.2)] cursor-default"
+                      className={`font-black uppercase tracking-tighter text-transparent block leading-none px-4 drop-shadow-[0_4px_10px_rgba(240,113,43,0.2)] cursor-default ${
+                        words[wordIndex] === "ARCHITECTURE" 
+                          ? "text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem]" 
+                          : "text-6xl md:text-8xl lg:text-[9rem]"
+                      }`}
                       style={{ WebkitTextStroke: "2px var(--rc-orange)", WebkitTextFillColor: "transparent" }}
-                      initial={{ y: 20, opacity: 0, filter: "blur(5px)" }}
+                      initial={{ y: 30, opacity: 0, scale: 0.95, rotateX: 15 }}
                       animate={{ 
                         y: 0, 
                         opacity: 1, 
-                        filter: "blur(0px)"
+                        scale: 1,
+                        rotateX: 0
                       }}
-                      exit={{ y: -20, opacity: 0, filter: "blur(5px)" }}
+                      exit={{ y: -30, opacity: 0, scale: 1.05, rotateX: -15 }}
                       transition={{ 
-                        y: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.2 },
-                        filter: { duration: 0.2 }
+                        y: { type: "spring", stiffness: 400, damping: 30 },
+                        opacity: { duration: 0.3 },
+                        scale: { duration: 0.3 },
+                        rotateX: { duration: 0.3 }
                       }}
                       whileHover={{ scale: 1.05, textShadow: "0 0 20px rgba(240,113,43,0.5)" }}
                     >
@@ -113,8 +119,9 @@ export default function Hero() {
                   </AnimatePresence>
                   {/* Very soft glow, not overpowering */}
                   <motion.div 
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[60%] bg-[var(--rc-orange)]/10 -z-10 blur-3xl rounded-full"
-                    animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 rounded-full"
+                    style={{ background: 'radial-gradient(ellipse at center, rgba(240,113,43,0.15) 0%, transparent 60%)' }}
+                    animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.9, 1.05, 0.9] }}
                     transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                   />
                 </motion.div>
@@ -171,13 +178,14 @@ export default function Hero() {
       </div>
 
       <div className="absolute bottom-2 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 1, type: "spring" }}
-          className="flex flex-col items-center gap-2 pointer-events-auto cursor-pointer group"
-          onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-        >
+        <div className="transform scale-[0.5] md:scale-100 origin-bottom">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 1, type: "spring" }}
+            className="flex flex-col items-center gap-2 pointer-events-auto cursor-pointer group"
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+          >
         <span className="text-xs uppercase tracking-[0.25em] font-bold text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)] transition-colors duration-300 animate-pulse">Scroll to explore</span>
         <div className="flex flex-col items-center">
           <div className="w-7 h-11 border-2 border-[var(--rc-blue)] group-hover:border-[var(--rc-orange)] rounded-full flex justify-center p-1 transition-colors duration-300 bg-white/40 backdrop-blur-sm shadow-[0_4px_10px_rgba(0,0,0,0.05)]">
@@ -202,8 +210,9 @@ export default function Hero() {
             <ChevronDown className="w-5 h-5 text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)] transition-colors" />
           </motion.div>
         </div>
-      </motion.div>
-    </div>
+        </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,46 +1,68 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, PenLine } from "lucide-react";
 import SEO from "@/components/SEO";
+import SubmitBlogModal from "@/components/SubmitBlogModal";
 
 export default function Blog() {
-  const { data, isLoading } = trpc.blog.list.useQuery({ limit: 12 });
+  const { data, isLoading, refetch } = trpc.blog.list.useQuery({ limit: 12 });
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
 
   const posts = data?.items?.length ? data.items : fallbackPosts;
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative bg-[var(--rc-white)]">
       <SEO title="Blog & Insights | Rupali Construction" />
       <Navbar />
 
-      {/* Background Image with Premium Gradient Fade */}
-      <div className="absolute top-0 left-0 w-full h-[70vh] z-0 pointer-events-none">
-        <img 
+      {/* Full Page Background Image */}
+      <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none">
+        <img loading="lazy" 
           src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?auto=format&fit=crop&w=1920&q=80" 
           alt="Construction Planning and Blog"
-          className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"
+          className="w-full h-full object-cover object-[center_20%] opacity-[0.15] mix-blend-luminosity"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--rc-white)] via-[var(--rc-white)]/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--rc-white)]/30 to-[var(--rc-white)]/90" />
       </div>
 
       <section className="pt-32 pb-16 relative z-10">
         <div className="container-rc">
-          <div className="max-w-2xl">
-            <p className="text-label text-[var(--rc-orange)] mb-4">Insights</p>
-            <h1 className="text-display-2 text-[var(--rc-dark)] mb-4">
-              Construction Blog
-            </h1>
-            <p className="text-lg text-[var(--rc-muted)]">
-              Expert insights, construction tips, and industry updates from the
-              Rupali Construction team.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="max-w-2xl">
+              <p className="text-label text-[var(--rc-orange)] mb-4">Insights</p>
+              <h1 className="text-display-2 text-[var(--rc-dark)] mb-4">
+                Construction Blog
+              </h1>
+              <p className="text-lg text-[var(--rc-muted)]">
+                Expert insights, construction tips, and industry updates from the
+                Rupali Construction team.
+              </p>
+            </div>
+            
+            <button
+              onClick={() => setIsSubmitModalOpen(true)}
+              className="group w-full md:w-auto justify-center px-8 py-4 rounded-full font-bold text-base text-white bg-gradient-to-r from-[var(--rc-orange)] to-orange-500 border-2 border-white/50 hover:border-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-400 shadow-[0_0_15px_rgba(240,113,43,0.5)] hover:shadow-[0_0_30px_rgba(240,113,43,0.8)] active:scale-95 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 md:mb-0 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <PenLine className="w-5 h-5 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 relative z-10" />
+              <span className="relative z-10">Write a Post</span>
+            </button>
           </div>
         </div>
       </section>
 
-      <section className="py-16 lg:py-24 bg-[var(--rc-white)] relative z-10">
+      <SubmitBlogModal 
+        isOpen={isSubmitModalOpen} 
+        onClose={() => {
+          setIsSubmitModalOpen(false);
+          refetch();
+        }} 
+      />
+
+      <section className="py-16 lg:py-24 relative z-10">
         <div className="container-rc">
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -60,7 +82,7 @@ export default function Blog() {
                 >
                   <div className="aspect-[16/10] bg-[var(--rc-blue)]/10 flex items-center justify-center relative overflow-hidden">
                     {post.coverImage ? (
-                      <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <img loading="lazy" src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     ) : (
                       <span className="text-4xl font-bold text-[var(--rc-blue)]/20">
                         {(post.title || "B").charAt(0)}

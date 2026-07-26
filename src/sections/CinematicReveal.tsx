@@ -43,7 +43,7 @@ export default function CinematicReveal() {
       {/* Architecture Image (Initially hidden) */}
       <img
         ref={imageRef}
-        src="/assets/images/cinematic_architecture.png"
+        src="/assets/images/cinematic_architecture.webp"
         alt="Modern Architecture"
         className="absolute inset-0 w-full h-full object-cover object-[center_40%] origin-center opacity-0 scale-100"
       />

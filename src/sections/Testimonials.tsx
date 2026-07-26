@@ -27,7 +27,7 @@ export default function Testimonials() {
     <section className="py-24 lg:py-32 bg-[var(--rc-gray)] relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-end pointer-events-none opacity-[0.03] translate-x-1/4">
         <img
-          src="/logo-icon.png"
+          src="/logo-icon.webp"
           alt=""
           className="w-full max-w-[800px] object-contain"
         />

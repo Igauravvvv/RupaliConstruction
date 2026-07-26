@@ -12,7 +12,7 @@ export default function SEO({
   title = "Rupali Construction | Crafting Architecture into Reality", 
   description = "Rupali Construction is a premium Gurgaon-based company specializing in residential construction, luxury villas, real estate resale, and architectural design.", 
   type = "website",
-  image = "/logo-main.png", // Or a specific OG image if provided
+  image = "/logo-main.webp", // Or a specific OG image if provided
   url = "https://rupaliconstruction.com" 
 }: SEOProps) {
   return (

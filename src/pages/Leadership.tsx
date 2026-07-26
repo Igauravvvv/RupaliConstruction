@@ -28,7 +28,7 @@ const leaders = [
       "A visionary leader who laid the foundation of Rupali Construction. With over 25 years of hands-on experience, he has overseen the transformation of countless architectural dreams into concrete realities, ensuring every project meets the highest standards of quality and integrity.",
     specialties: ["Strategic Vision & Planning", "Quality Assurance & Control", "End-to-End Project Management"],
     image:
-      "/images/Sptyagi.png",
+      "/images/Sptyagi.webp",
     badges: [
       { text: "Proven Leadership", icon: <Award className="w-4 h-4" /> },
       { text: "25+ Years Experience", icon: <Check className="w-4 h-4" /> },
@@ -42,7 +42,7 @@ const leaders = [
       "Bringing over three and a half decades of invaluable industry expertise. His deep understanding of structural engineering, project management, and large-scale development has been the driving force behind the company's most ambitious and successful endeavors.",
     specialties: ["Structural Engineering Mastery", "Large-scale Development", "Operational Excellence"],
     image:
-      "/images/Nksharma.png",
+      "/images/Nksharma.webp",
     imageBg: "bg-white",
     badges: [
       { text: "Expert Engineering", icon: <Award className="w-4 h-4" /> },
@@ -57,7 +57,7 @@ const leaders = [
       "Spearheading the modern growth of Rupali Construction. Combining fresh perspectives with core traditional values, he is focused on integrating innovative building technologies, sustainable practices, and expanding the company's footprint into new luxury segments.",
     specialties: ["Innovative Technologies", "Sustainable Practices", "Luxury & Modern Segments"],
     image:
-      "/images/ujjwal tyagi.png",
+      "/images/ujjwal tyagi.webp",
     badges: [
       { text: "Innovation Driven", icon: <MessageSquare className="w-4 h-4" /> },
       { text: "Modern Growth", icon: <Check className="w-4 h-4" /> },
@@ -76,7 +76,7 @@ export default function Leadership() {
 
       {/* Background Image with Premium Gradient Fade */}
       <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none">
-        <img 
+        <img loading="lazy" 
           src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1920&q=80" 
           alt="Construction Leadership and Planning"
           className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"

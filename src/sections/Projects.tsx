@@ -77,7 +77,7 @@ export default function Projects() {
     <section className="py-16 md:py-24 lg:py-32 bg-transparent relative overflow-x-clip overflow-y-visible z-20">
       <div className="absolute inset-0 flex items-center justify-start pointer-events-none opacity-[0.03] -translate-x-1/4">
         <img
-          src="/logo-icon.png"
+          src="/logo-icon.webp"
           alt=""
           className="w-full max-w-[800px] object-contain"
         />

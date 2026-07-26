@@ -66,6 +66,66 @@ export const blogRouter = createRouter({
       return post;
     }),
 
+  adminList: adminQuery
+    .input(
+      z
+        .object({
+          limit: z.number().min(1).max(50).default(50),
+          offset: z.number().min(0).default(0),
+        })
+        .optional()
+    )
+    .query(async ({ input }) => {
+      const db = getDb();
+      const items = await db
+        .select()
+        .from(blogPosts)
+        .orderBy(desc(blogPosts.createdAt))
+        .limit(input?.limit || 50)
+        .offset(input?.offset || 0);
+
+      const countResult = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(blogPosts);
+
+      return {
+        items,
+        total: countResult[0]?.count || 0,
+      };
+    }),
+
+  submit: publicQuery
+    .input(
+      z.object({
+        title: z.string().min(1),
+        content: z.string(),
+        excerpt: z.string().optional(),
+        author: z.string().optional(),
+        category: z.string().optional(),
+        coverImage: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const db = getDb();
+      // Generate safe slug
+      const baseSlug = input.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const uniqueSuffix = Math.random().toString(36).substring(2, 6);
+      const slug = `${baseSlug}-${uniqueSuffix}`;
+
+      const result = await db.insert(blogPosts).values({
+        title: input.title,
+        slug,
+        content: input.content,
+        excerpt: input.excerpt || null,
+        author: input.author || "Guest User",
+        category: input.category || null,
+        coverImage: input.coverImage || null,
+        published: false, // Always false for public submissions
+        featured: false,
+      });
+      return { id: Number(result[0]?.insertId), success: true };
+    }),
+
   create: adminQuery
     .input(
       z.object({

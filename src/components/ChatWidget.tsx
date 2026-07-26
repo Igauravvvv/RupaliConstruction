@@ -14,9 +14,9 @@ function getSessionId() {
 }
 
 const EXPRESSIONS = [
-  { id: "welcome", image: "/CHAT-MODEL-WELCOME.png", messages: ["hiii", "Goodmoning"] },
-  { id: "happy", image: "/CHAT-MODEL-HAPPY.png", messages: ["hiii", "Goodmoning"] },
-  { id: "talk", image: "/CHAT-MODEL-TALK.png", messages: ["hiii", "Goodmoning"] }
+  { id: "welcome", image: "/CHAT-MODEL-WELCOME.webp", messages: ["hiii", "Goodmoning"] },
+  { id: "happy", image: "/CHAT-MODEL-HAPPY.webp", messages: ["hiii", "Goodmoning"] },
+  { id: "talk", image: "/CHAT-MODEL-TALK.webp", messages: ["hiii", "Goodmoning"] }
 ];
 
 const TypingText = ({ text, onComplete }: { text: string, onComplete?: () => void }) => {
@@ -95,9 +95,9 @@ export default function ChatWidget() {
 
   const getChatWindowBotImage = () => {
     switch (botExpression) {
-      case "thinking": return "/CHAT-MODEL-TALK.png";
-      case "happy": return "/CHAT-MODEL-HAPPY.png";
-      default: return "/CHAT-MODEL-WELCOME.png";
+      case "thinking": return "/CHAT-MODEL-TALK.webp";
+      case "happy": return "/CHAT-MODEL-HAPPY.webp";
+      default: return "/CHAT-MODEL-WELCOME.webp";
     }
   };
 
@@ -363,7 +363,7 @@ export default function ChatWidget() {
                 onClick={() => setIsOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9, y: -10 }}
-                className="relative w-32 md:w-48 h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
+                className="relative w-28 md:w-40 h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
                 animate={isHovered ? {} : { y: [0, -6, 0], scale: [1, 1.01, 1] }}
                 transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" }, scale: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
               >
@@ -396,7 +396,7 @@ export default function ChatWidget() {
             <div className="px-5 py-4 bg-[#0B2D5C] flex items-center justify-between shadow-md z-10 relative">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 flex-shrink-0 bg-white/10 rounded-full overflow-hidden border border-white/20">
-                   <img src={getChatWindowBotImage()} alt="Rupali" className="w-full h-full object-cover translate-y-2 scale-110" />
+                   <img loading="lazy" src={getChatWindowBotImage()} alt="Rupali" className="w-full h-full object-cover translate-y-2 scale-110" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -423,7 +423,7 @@ export default function ChatWidget() {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
                   <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${msg.role === "user" ? "bg-[var(--rc-orange)] rounded-full" : "bg-white rounded-full shadow-sm border border-gray-100"}`}>
-                    {msg.role === "user" ? <User className="w-4 h-4 text-white" /> : <img src="/CHAT-MODEL-WELCOME.png" alt="Rupali" className="w-full h-full object-cover translate-y-1 scale-110 rounded-full" />}
+                    {msg.role === "user" ? <User className="w-4 h-4 text-white" /> : <img loading="lazy" src="/CHAT-MODEL-WELCOME.webp" alt="Rupali" className="w-full h-full object-cover translate-y-1 scale-110 rounded-full" />}
                   </div>
                   <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed shadow-sm ${msg.role === "user" ? "bg-[#0B2D5C] text-white rounded-tr-sm" : "bg-white text-gray-800 rounded-tl-sm border border-gray-100"}`}>
                     {msg.content}
@@ -435,7 +435,7 @@ export default function ChatWidget() {
               {freeChat.isPending && (
                 <div className="flex gap-2">
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100">
-                    <img src="/CHAT-MODEL-TALK.png" alt="Rupali" className="w-full h-full object-cover translate-y-1 scale-110 rounded-full" />
+                    <img loading="lazy" src="/CHAT-MODEL-TALK.webp" alt="Rupali" className="w-full h-full object-cover translate-y-1 scale-110 rounded-full" />
                   </div>
                   <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-sm border border-gray-100 flex items-center h-[44px]">
                     <div className="flex gap-1.5">
@@ -686,7 +686,7 @@ export default function ChatWidget() {
                     {projects?.map(project => (
                       <div key={project.id} className="min-w-[240px] bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 snap-center shrink-0">
                         <div className="h-32 bg-gray-200 relative">
-                           {project.images && <img src={JSON.parse(project.images)[0]} alt={project.name} className="w-full h-full object-cover" />}
+                           {project.images && <img loading="lazy" src={JSON.parse(project.images)[0]} alt={project.name} className="w-full h-full object-cover" />}
                            <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-full">{project.type}</div>
                         </div>
                         <div className="p-3">

@@ -6,6 +6,7 @@ import AdminOverview from "@/components/admin/AdminOverview";
 import AdminProjects from "@/components/admin/AdminProjects";
 import AdminAccount from "@/components/admin/AdminAccount";
 import AdminLeads from "@/components/admin/AdminLeads";
+import AdminBlogs from "@/components/admin/AdminBlogs";
 import {
   LayoutDashboard,
   Briefcase,
@@ -19,13 +20,14 @@ import {
   Bell,
   ChevronRight,
   Download,
+  FileText,
 } from "lucide-react";
 
 export default function Admin() {
   const { user, isAuthenticated, isAdmin, isLoading, logout } = useAuth();
   const navigate = useNavigate();
   
-  const [activeTab, setActiveTab] = useState<"overview" | "projects" | "leads" | "account">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "projects" | "leads" | "blogs" | "account">("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const exportUsers = trpc.admin.exportUsersToExcel.useMutation({
@@ -79,6 +81,8 @@ export default function Admin() {
         return <AdminProjects />;
       case "leads":
         return <AdminLeads />;
+      case "blogs":
+        return <AdminBlogs />;
       case "account":
         return <AdminAccount />;
       default:
@@ -90,6 +94,7 @@ export default function Admin() {
     { id: "overview", label: "Dashboard Overview", icon: LayoutDashboard },
     { id: "leads", label: "Lead Management", icon: Users },
     { id: "projects", label: "Projects Portfolio", icon: Briefcase },
+    { id: "blogs", label: "Blog Moderation", icon: FileText },
     { id: "account", label: "Account Settings", icon: UserCircle },
   ] as const;
 
@@ -104,7 +109,7 @@ export default function Admin() {
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img
-              src="/logo-main.png?v=2"
+              src="/logo-main.webp?v=2"
               alt="Rupali Construction"
               className="h-10 w-auto object-contain brightness-0 invert"
             />
@@ -137,7 +142,7 @@ export default function Admin() {
           {/* Admin Profile */}
           <div className="flex items-center gap-3">
             {user?.avatar ? (
-              <img src={user.avatar} alt="" className="w-9 h-9 rounded-full object-cover ring-2 ring-white/30" />
+              <img loading="lazy" src={user.avatar} alt="" className="w-9 h-9 rounded-full object-cover ring-2 ring-white/30" />
             ) : (
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--rc-orange)] to-orange-600 flex items-center justify-center ring-2 ring-white/30">
                 <span className="text-white text-xs font-bold">{adminInitials}</span>
@@ -191,7 +196,7 @@ export default function Admin() {
             <div className="mb-6 p-4 rounded-2xl bg-gradient-to-br from-[var(--rc-blue)]/5 to-[var(--rc-orange)]/5 border border-[var(--rc-border)]">
               <div className="flex items-center gap-3">
                 {user?.avatar ? (
-                  <img src={user.avatar} alt="" className="w-11 h-11 rounded-xl object-cover shadow-sm" />
+                  <img loading="lazy" src={user.avatar} alt="" className="w-11 h-11 rounded-xl object-cover shadow-sm" />
                 ) : (
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[var(--rc-blue)] to-[var(--rc-blue)]/80 flex items-center justify-center shadow-sm">
                     <span className="text-white text-sm font-bold">{adminInitials}</span>

@@ -15,7 +15,7 @@ export default function Projects() {
       
       {/* Background Image with Premium Gradient Fade */}
       <div className="absolute top-0 left-0 w-full h-[70vh] z-0 pointer-events-none">
-        <img 
+        <img loading="lazy" 
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80" 
           alt="Luxury Construction Projects"
           className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"

@@ -1,25 +1,26 @@
 import { Routes, Route, useLocation } from 'react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { HelmetProvider } from 'react-helmet-async'
-import Home from './pages/Home'
-import Blog from './pages/Blog'
-import BlogDetail from './pages/BlogDetail'
-import Contact from './pages/Contact'
-import Projects from './pages/Projects'
-import ProjectDetail from './pages/ProjectDetail'
-import Leadership from './pages/Leadership'
-import BrandStandards from './pages/BrandStandards'
-import Admin from './pages/Admin'
-import Login from './pages/Login'
-import CompleteProfile from './pages/CompleteProfile'
-import NotFound from './pages/NotFound'
+
+const Home = lazy(() => import('./pages/Home'))
+const Services = lazy(() => import('./pages/Services'))
+const Blog = lazy(() => import('./pages/Blog'))
+const BlogDetail = lazy(() => import('./pages/BlogDetail'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Projects = lazy(() => import('./pages/Projects'))
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
+const Leadership = lazy(() => import('./pages/Leadership'))
+const BrandStandards = lazy(() => import('./pages/BrandStandards'))
+const Admin = lazy(() => import('./pages/Admin'))
+const Login = lazy(() => import('./pages/Login'))
+const CompleteProfile = lazy(() => import('./pages/CompleteProfile'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 import ChatWidget from './components/ChatWidget'
 import FloatingActions from './components/FloatingActions'
-import SplashScreen from './components/SplashScreen'
 import AuthGuard from './components/AuthGuard'
 import SEO from './components/SEO'
-
+import GlobalLoader from './components/GlobalLoader'
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -29,31 +30,19 @@ function ScrollToTop() {
 }
 
 export default function App() {
-  const [showSplash, setShowSplash] = useState(() => {
-    // Check if we've already shown the splash screen in this session
-    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
-    return !hasSeenSplash;
-  });
-
-  const handleSplashFinish = () => {
-    sessionStorage.setItem('hasSeenSplash', 'true');
-    setShowSplash(false);
-  };
-
   return (
     <HelmetProvider>
       <SEO />
-      {showSplash ? (
-        <SplashScreen onFinish={handleSplashFinish} />
-      ) : (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
         >
           <ScrollToTop />
-          <Routes>
+          <Suspense fallback={<GlobalLoader />}>
+            <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/projects" element={<Projects />} />
@@ -65,11 +54,11 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
+            </Routes>
+          </Suspense>
           <FloatingActions />
           <ChatWidget />
         </motion.div>
-      )}
     </HelmetProvider>
   )
 }

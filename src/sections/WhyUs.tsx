@@ -9,31 +9,31 @@ const features = [
     icon: DollarSign,
     title: "Value-Driven Pricing",
     desc: "No hidden costs. Complete clarity on every rupee spent. Our transparent and reasonable pricing model ensures you get the best value for your investment.",
-    image: "/images/whyus_pricing.png",
+    image: "/images/whyus_pricing.webp",
   },
   {
     icon: Layers,
     title: "Stage-wise Payments",
     desc: "Pay only as construction progresses. Milestone-based payment structure keeps you in control of your investment.",
-    image: "/images/whyus_payments.png",
+    image: "/images/whyus_payments.webp",
   },
   {
     icon: ShieldCheck,
     title: "Quality Checks",
     desc: "Multiple inspections at every milestone. Our rigorous quality assurance process ensures structural integrity at every phase.",
-    image: "/images/whyus_quality.png",
+    image: "/images/whyus_quality.webp",
   },
   {
     icon: Radio,
     title: "Live Tracking",
     desc: "Track your project in real-time. Get daily photo updates, material logs, and progress reports directly on your device.",
-    image: "/images/whyus_tracking.png",
+    image: "/images/whyus_tracking.webp",
   },
   {
     icon: Users,
     title: "Expert Team",
     desc: "Led by industry veterans bringing together a powerful combined experience of 60 years in premium construction across NCR.",
-    image: "/images/whyus_team.png",
+    image: "/images/whyus_team.webp",
   },
 ];
 
@@ -104,7 +104,7 @@ export default function WhyUs() {
                 style={{ flex: isActive ? 4 : 1 }}
                 className="relative rounded-2xl lg:rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer group bg-[var(--rc-gray)]"
               >
-                <img 
+                <img loading="lazy" 
                   src={feature.image} 
                   alt={feature.title} 
                   className={cn(

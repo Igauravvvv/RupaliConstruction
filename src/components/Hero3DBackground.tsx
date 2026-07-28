@@ -11,10 +11,10 @@ function TwistedTower({ position, scale }: { position: [number, number, number],
       {/* Central Core */}
       <mesh position={[0, numFloors * 0.5, 0]}>
         <cylinderGeometry args={[0.8, 0.8, numFloors, 8]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       <mesh position={[0, numFloors * 0.5, 0]}>
-        <cylinderGeometry args={[0.85, 0.85, numFloors + 0.1, 8]} />
+        <cylinderGeometry args={[0.8, 0.8, numFloors, 8]} />
         <meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.2} />
       </mesh>
       {/* Twisting Floors */}
@@ -26,10 +26,10 @@ function TwistedTower({ position, scale }: { position: [number, number, number],
           <group key={`floor-${i}`} position={[0, yPos, 0]} rotation={[0, rotationY, 0]}>
             <mesh>
               <boxGeometry args={[s, 0.8, s]} />
-              <meshStandardMaterial color="#ffffff" transparent opacity={0.85} />
+              <meshStandardMaterial color="#ffffff" transparent opacity={0.85}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
             </mesh>
             <mesh>
-              <boxGeometry args={[s + 0.05, 0.85, s + 0.05]} />
+              <boxGeometry args={[s, 0.8, s]} />
               <meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.4} />
             </mesh>
           </group>
@@ -52,17 +52,17 @@ function BlockTower({ position, scale }: { position: [number, number, number], s
         <group key={`block-${i}`} position={[0, block.y, 0]}>
           <mesh>
             <boxGeometry args={[block.w, block.h, block.w]} />
-            <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+            <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
           </mesh>
           <mesh>
-            <boxGeometry args={[block.w + 0.1, block.h + 0.1, block.w + 0.1]} />
+            <boxGeometry args={[block.w, block.h, block.w]} />
             <meshBasicMaterial color="#ff6b1a" wireframe transparent opacity={0.3} />
           </mesh>
         </group>
       ))}
       <mesh position={[0, 16, 0]}>
         <cylinderGeometry args={[0.05, 0.1, 4, 8]} />
-        <meshStandardMaterial color="#ff6b1a" />
+        <meshStandardMaterial color="#ff6b1a"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
     </group>
   );
@@ -74,19 +74,19 @@ function SpireTower({ position, scale }: { position: [number, number, number], s
     <group position={position} scale={[scale, scale, scale]}>
       <mesh position={[0, 7, 0]}>
         <cylinderGeometry args={[1.5, 2.5, 14, 16]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       <mesh position={[0, 7, 0]}>
-        <cylinderGeometry args={[1.55, 2.55, 14.1, 16]} />
+        <cylinderGeometry args={[1.5, 2.5, 14, 16]} />
         <meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.3} />
       </mesh>
       <mesh position={[0, 16, 0]}>
         <cylinderGeometry args={[0.1, 1.5, 4, 16]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       <mesh position={[0, 20, 0]}>
         <cylinderGeometry args={[0, 0.1, 4, 8]} />
-        <meshStandardMaterial color="#ff6b1a" />
+        <meshStandardMaterial color="#ff6b1a"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
     </group>
   );
@@ -158,7 +158,7 @@ export default function Hero3DBackground() {
     <div className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none">
       {/* 3D Canvas moved to the left */}
       <div className="absolute inset-0 w-full h-full lg:w-3/5 lg:right-auto lg:left-0">
-        <Canvas camera={{ position: [8, 5, 8], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
+        <Canvas dpr={[1, 2]} camera={{ position: [8, 5, 8], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />
           <directionalLight position={[-10, 10, -5]} intensity={1.2} color="#ff6b1a" />

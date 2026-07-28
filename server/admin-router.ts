@@ -155,4 +155,43 @@ export const adminRouter = createRouter({
     const buffer = await workbook.xlsx.writeBuffer();
     return { data: Buffer.from(buffer).toString("base64") };
   }),
+
+  exportLeadsToExcel: adminQuery.mutation(async () => {
+    const db = getDb();
+    const leads = await db.select().from(constructionLeads).orderBy(desc(constructionLeads.createdAt));
+
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Leads");
+    
+    sheet.columns = [
+      { header: "Reference ID", key: "referenceId", width: 15 },
+      { header: "Name", key: "name", width: 25 },
+      { header: "Email", key: "email", width: 35 },
+      { header: "Phone", key: "phone", width: 20 },
+      { header: "Location", key: "location", width: 30 },
+      { header: "Project Type", key: "projectType", width: 20 },
+      { header: "Plot Size", key: "plotSize", width: 15 },
+      { header: "Budget", key: "budget", width: 20 },
+      { header: "Status", key: "status", width: 15 },
+      { header: "Created At", key: "createdAt", width: 25 },
+    ];
+
+    leads.forEach(l => {
+      sheet.addRow({
+        referenceId: l.referenceId,
+        name: l.name || "-",
+        email: l.email || "-",
+        phone: l.phone || "-",
+        location: [l.city, l.state].filter(Boolean).join(", ") || "-",
+        projectType: l.projectType || "-",
+        plotSize: l.plotSize || "-",
+        budget: l.budget || "-",
+        status: l.status.toUpperCase(),
+        createdAt: new Date(l.createdAt).toLocaleString(),
+      });
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return { data: Buffer.from(buffer).toString("base64") };
+  }),
 });

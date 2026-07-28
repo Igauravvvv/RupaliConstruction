@@ -75,19 +75,17 @@ function Celebration() {
 
 export default function ConstructionProcess() {
   const [activePhase, setActivePhase] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
-  // Auto-play the animation every 5 seconds
+  // Auto-play the animation every 2 seconds
   useEffect(() => {
-    if (isHovered) return;
     const interval = setInterval(() => {
       setActivePhase((prev) => (prev + 1) % phases.length);
-    }, 5000); // 5 seconds to give time to read
+    }, 2000); // 2 seconds for a real quick switch
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, []);
 
   return (
-    <section className="py-20 relative overflow-hidden bg-[var(--rc-white)]" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <section className="py-20 relative overflow-hidden bg-[var(--rc-white)]">
       <div className="container-rc relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-display text-[var(--rc-dark)] mb-4">The Construction Process</h2>
@@ -159,15 +157,13 @@ export default function ConstructionProcess() {
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     >
                       {/* Auto-play Progress Bar */}
-                      {!isHovered && (
-                        <motion.div
-                          key={`progress-${activePhase}`}
-                          initial={{ width: "0%" }}
-                          animate={{ width: "100%" }}
-                          transition={{ duration: 5, ease: "linear" }}
-                          className="absolute top-0 left-0 bottom-0 bg-white/20 rounded-xl md:rounded-full"
-                        />
-                      )}
+                      <motion.div
+                        key={`progress-${activePhase}`}
+                        initial={{ width: "0%" }}
+                        animate={{ width: "100%" }}
+                        transition={{ duration: 2, ease: "linear" }}
+                        className="absolute top-0 left-0 bottom-0 bg-white/20 rounded-xl md:rounded-full"
+                      />
                     </motion.div>
                   )}
                   <div className="relative z-10 flex items-center justify-center h-full">

@@ -30,10 +30,9 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState<"overview" | "projects" | "leads" | "blogs" | "account">("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const exportUsers = trpc.admin.exportUsersToExcel.useMutation({
-    onSuccess: (data) => {
-      // Decode base64 to Blob and trigger download
-      const byteCharacters = atob(data.data);
+  const handleDownload = (base64Data: string, filename: string) => {
+    try {
+      const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
@@ -43,12 +42,31 @@ export default function Admin() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Rupali_Users_${new Date().toISOString().split("T")[0]}.xlsx`;
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error("Download failed", e);
+      // Fallback for large files if atob fails
+      const a = document.createElement("a");
+      a.href = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64Data}`;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
+  };
+
+  const exportUsers = trpc.admin.exportUsersToExcel.useMutation({
+    onSuccess: (data) => handleDownload(data.data, `Rupali_Users_${new Date().toISOString().split("T")[0]}.xlsx`),
+    onError: (err) => alert(`Failed to export users: ${err.message}`)
+  });
+
+  const exportLeads = trpc.admin.exportLeadsToExcel.useMutation({
+    onSuccess: (data) => handleDownload(data.data, `Rupali_Leads_${new Date().toISOString().split("T")[0]}.xlsx`),
+    onError: (err) => alert(`Failed to export leads: ${err.message}`)
   });
 
   useEffect(() => {
@@ -280,14 +298,16 @@ export default function Admin() {
                 </p>
               </div>
               <div className="flex items-center gap-4 text-right">
-                <button
-                  onClick={() => exportUsers.mutate()}
-                  disabled={exportUsers.isPending}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
-                >
-                  <Download className="w-4 h-4" />
-                  {exportUsers.isPending ? "Exporting..." : "Export Users"}
-                </button>
+                {activeTab === "account" && (
+                  <button
+                    onClick={() => exportUsers.mutate()}
+                    disabled={exportUsers.isPending}
+                    className="flex items-center gap-2 px-4 py-2 bg-[var(--rc-blue)] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-colors disabled:opacity-50"
+                  >
+                    <Download className="w-4 h-4" />
+                    {exportUsers.isPending ? "Exporting..." : "Export Users"}
+                  </button>
+                )}
                 <p className="text-xs text-[var(--rc-muted)]">
                   {new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
                 </p>

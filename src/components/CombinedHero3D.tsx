@@ -10,10 +10,10 @@ function TwistedTower({ position, scale }: { position: [number, number, number],
     <group position={position} scale={[scale, scale, scale]}>
       <mesh position={[0, numFloors * 0.5, 0]}>
         <cylinderGeometry args={[0.8, 0.8, numFloors, 8]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       <mesh position={[0, numFloors * 0.5, 0]}>
-        <cylinderGeometry args={[0.85, 0.85, numFloors + 0.1, 8]} />
+        <cylinderGeometry args={[0.8, 0.8, numFloors, 8]} />
         <meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.2} />
       </mesh>
       {[...Array(numFloors)].map((_, i) => {
@@ -24,10 +24,10 @@ function TwistedTower({ position, scale }: { position: [number, number, number],
           <group key={`floor-${i}`} position={[0, yPos, 0]} rotation={[0, rotationY, 0]}>
             <mesh>
               <boxGeometry args={[s, 0.8, s]} />
-              <meshStandardMaterial color="#ffffff" transparent opacity={0.85} />
+              <meshStandardMaterial color="#ffffff" transparent opacity={0.85}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
             </mesh>
             <mesh>
-              <boxGeometry args={[s + 0.05, 0.85, s + 0.05]} />
+              <boxGeometry args={[s, 0.8, s]} />
               <meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.4} />
             </mesh>
           </group>
@@ -49,17 +49,17 @@ function BlockTower({ position, scale }: { position: [number, number, number], s
         <group key={`block-${i}`} position={[0, block.y, 0]}>
           <mesh>
             <boxGeometry args={[block.w, block.h, block.w]} />
-            <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+            <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
           </mesh>
           <mesh>
-            <boxGeometry args={[block.w + 0.1, block.h + 0.1, block.w + 0.1]} />
+            <boxGeometry args={[block.w, block.h, block.w]} />
             <meshBasicMaterial color="#ff6b1a" wireframe transparent opacity={0.3} />
           </mesh>
         </group>
       ))}
       <mesh position={[0, 16, 0]}>
         <cylinderGeometry args={[0.05, 0.1, 4, 8]} />
-        <meshStandardMaterial color="#ff6b1a" />
+        <meshStandardMaterial color="#ff6b1a"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
     </group>
   );
@@ -70,19 +70,19 @@ function SpireTower({ position, scale }: { position: [number, number, number], s
     <group position={position} scale={[scale, scale, scale]}>
       <mesh position={[0, 7, 0]}>
         <cylinderGeometry args={[1.5, 2.5, 14, 16]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       <mesh position={[0, 7, 0]}>
-        <cylinderGeometry args={[1.55, 2.55, 14.1, 16]} />
+        <cylinderGeometry args={[1.5, 2.5, 14, 16]} />
         <meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.3} />
       </mesh>
       <mesh position={[0, 16, 0]}>
         <cylinderGeometry args={[0.1, 1.5, 4, 16]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       <mesh position={[0, 20, 0]}>
         <cylinderGeometry args={[0, 0.1, 4, 8]} />
-        <meshStandardMaterial color="#ff6b1a" />
+        <meshStandardMaterial color="#ff6b1a"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
     </group>
   );
@@ -162,17 +162,17 @@ function ApartmentBuilding() {
 
   return (
     <group ref={groupRef} scale={0} position={[12, 0, -8]}>
-      <mesh position={[0, 4, 0]}><boxGeometry args={[8, 8, 8]} /><meshStandardMaterial color="#ffffff" /></mesh>
-      <mesh position={[0, 4, 0]}><boxGeometry args={[8.05, 8.05, 8.05]} /><meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.15} /></mesh>
-      <mesh position={[0, 14, 0]}><boxGeometry args={[6, 12, 6]} /><meshStandardMaterial color="#ffffff" /></mesh>
-      <mesh position={[0, 14, 0]}><boxGeometry args={[6.05, 12.05, 6.05]} /><meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.2} /></mesh>
+      <mesh position={[0, 4, 0]}><boxGeometry args={[8, 8, 8]} /><meshStandardMaterial color="#ffffff"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+      <mesh position={[0, 4, 0]}><boxGeometry args={[8, 8, 8]} /><meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.15} /></mesh>
+      <mesh position={[0, 14, 0]}><boxGeometry args={[6, 12, 6]} /><meshStandardMaterial color="#ffffff"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+      <mesh position={[0, 14, 0]}><boxGeometry args={[6, 12, 6]} /><meshBasicMaterial color="#0b2e59" wireframe transparent opacity={0.2} /></mesh>
       {[...Array(6)].map((_, i) => (
         <group key={`balcony-${i}`} position={[0, 9 + i * 2, 3]}>
           <mesh position={[0, 0, 0.5]}><boxGeometry args={[5, 1, 1]} /><meshBasicMaterial color="#64748b" wireframe transparent opacity={0.5} /></mesh>
         </group>
       ))}
-      <mesh position={[0, 20.5, 0]}><boxGeometry args={[4, 1, 4]} /><meshStandardMaterial color="#ffffff" /></mesh>
-      <mesh position={[0, 20.5, 0]}><boxGeometry args={[4.05, 1.05, 4.05]} /><meshBasicMaterial color="#64748b" wireframe transparent opacity={0.5} /></mesh>
+      <mesh position={[0, 20.5, 0]}><boxGeometry args={[4, 1, 4]} /><meshStandardMaterial color="#ffffff"  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+      <mesh position={[0, 20.5, 0]}><boxGeometry args={[4, 1, 4]} /><meshBasicMaterial color="#64748b" wireframe transparent opacity={0.5} /></mesh>
     </group>
   );
 }
@@ -226,51 +226,51 @@ function ModernVilla() {
     <group ref={groupRef} scale={[scaleBase, scaleBase, scaleBase]} position={[posX, posY, 0]}>
       <ApartmentBuilding />
       <group ref={foundationRef} scale={0}>
-        <mesh position={[0, -0.25, 0]}><boxGeometry args={[18, 0.5, 12]} /><meshStandardMaterial color={baseColor} /></mesh>
-        <mesh position={[0, -0.25, 0]}><boxGeometry args={[18.05, 0.55, 12.05]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
+        <mesh position={[0, -0.25, 0]}><boxGeometry args={[18, 0.5, 12]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+        <mesh position={[0, -0.25, 0]}><boxGeometry args={[18, 0.5, 12]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
       </group>
       <group ref={poolRef} scale={0}>
         <group position={[3, 0.2, 4.5]}>
-          <mesh position={[0, 0.1, 0]}><boxGeometry args={[8, 0.2, 3]} /><meshPhysicalMaterial color={baseColor} transmission={0.9} opacity={1} roughness={0.05} /></mesh>
+          <mesh position={[0, 0.1, 0]}><boxGeometry args={[8, 0.2, 3]} /><meshPhysicalMaterial color={baseColor} transmission={0.9} opacity={1} roughness={0.05}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
           <mesh position={[0, 0.1, 1.5]}><boxGeometry args={[8, 0.25, 0.1]} /><meshBasicMaterial color={accentColor} wireframe transparent opacity={0.5} /></mesh>
         </group>
         {[...Array(2)].map((_, i) => (
           <group key={`sunbed-${i}`} position={[0 + i * 2, 0.2, 7]}>
-            <mesh position={[0, 0.1, 0]}><boxGeometry args={[1, 0.1, 2]} /><meshStandardMaterial color={baseColor} /></mesh>
-            <mesh position={[0, 0.3, -0.8]} rotation={[0.5, 0, 0]}><boxGeometry args={[1, 0.1, 0.8]} /><meshStandardMaterial color={baseColor} /></mesh>
+            <mesh position={[0, 0.1, 0]}><boxGeometry args={[1, 0.1, 2]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+            <mesh position={[0, 0.3, -0.8]} rotation={[0.5, 0, 0]}><boxGeometry args={[1, 0.1, 0.8]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
           </group>
         ))}
       </group>
       <group ref={garageRef} scale={0}>
         <group position={[-6, 1.5, -2]}>
-          <mesh><boxGeometry args={[5, 3, 6]} /><meshStandardMaterial color={baseColor} /></mesh>
-          <mesh><boxGeometry args={[5.05, 3.05, 6.05]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
+          <mesh><boxGeometry args={[5, 3, 6]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh><boxGeometry args={[5, 3, 6]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
           <mesh position={[0, -0.2, 3.01]}><boxGeometry args={[4, 2.6, 0.1]} /><meshBasicMaterial color={accentColor} wireframe transparent opacity={0.4} /></mesh>
         </group>
       </group>
       <group ref={stairsRef} scale={0}>
         {[...Array(6)].map((_, i) => (
-          <mesh key={`stair-${i}`} position={[-2, -0.2 + i * 0.2, 7 + i * 0.4]}><boxGeometry args={[3, 0.1, 1]} /><meshStandardMaterial color={baseColor} /></mesh>
+          <mesh key={`stair-${i}`} position={[-2, -0.2 + i * 0.2, 7 + i * 0.4]}><boxGeometry args={[3, 0.1, 1]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
         ))}
       </group>
       <group ref={groundFloorRef} scale={0}>
         <group position={[1, 2.5, 0]}>
-          <mesh><boxGeometry args={[8, 5, 8]} /><meshPhysicalMaterial color={baseColor} transmission={0.95} opacity={1} roughness={0.05} thickness={0.5} /></mesh>
-          <mesh><boxGeometry args={[8.05, 5.05, 8.05]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
+          <mesh><boxGeometry args={[8, 5, 8]} /><meshPhysicalMaterial color={baseColor} transmission={0.95} opacity={1} roughness={0.05} thickness={0.5}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh><boxGeometry args={[8, 5, 8]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
         </group>
         <group position={[1, 2.5, -3]}>
-          <mesh><boxGeometry args={[8, 5, 2]} /><meshStandardMaterial color={baseColor} /></mesh>
-          <mesh><boxGeometry args={[8.05, 5.05, 2.05]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
+          <mesh><boxGeometry args={[8, 5, 2]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh><boxGeometry args={[8, 5, 2]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
         </group>
       </group>
       <group ref={cantileverRef} scale={0}>
         <group position={[3, 5.5, 2]}>
-          <mesh><boxGeometry args={[14, 1.5, 10]} /><meshStandardMaterial color={baseColor} /></mesh>
-          <mesh><boxGeometry args={[14.05, 1.55, 10.05]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.2} /></mesh>
+          <mesh><boxGeometry args={[14, 1.5, 10]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh><boxGeometry args={[14, 1.5, 10]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.2} /></mesh>
         </group>
         <group position={[8.5, 5.5, 4]}>
-          <mesh><boxGeometry args={[3, 1.5, 6]} /><mesh castShadow receiveShadow /></mesh>
-          <mesh><boxGeometry args={[3.05, 1.55, 6.05]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
+          <mesh castShadow receiveShadow><boxGeometry args={[3, 1.5, 6]} /><meshStandardMaterial color={baseColor} polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh><boxGeometry args={[3, 1.5, 6]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
         </group>
       </group>
       <group ref={roofRef} scale={0}>
@@ -281,9 +281,9 @@ function ModernVilla() {
       <group ref={landscapeRef} scale={0}>
         {[...Array(5)].map((_, i) => (
           <group key={`land-${i}`} position={[-7 + i * 1.5, 1.5, 6]}>
-            <mesh position={[0, -0.8, 0]}><cylinderGeometry args={[0.05, 0.05, 1.5]} /><meshStandardMaterial color={baseColor} /></mesh>
-            <mesh><icosahedronGeometry args={[0.6, 1]} /><meshPhysicalMaterial color={baseColor} transmission={0.8} opacity={1} roughness={0.1} /></mesh>
-            <mesh><icosahedronGeometry args={[0.65, 1]} /><meshBasicMaterial color={accentColor} wireframe transparent opacity={0.4} /></mesh>
+            <mesh position={[0, -0.8, 0]}><cylinderGeometry args={[0.05, 0.05, 1.5]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+            <mesh><icosahedronGeometry args={[0.6, 1]} /><meshPhysicalMaterial color={baseColor} transmission={0.8} opacity={1} roughness={0.1}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+            <mesh><icosahedronGeometry args={[0.6, 1]} /><meshBasicMaterial color={accentColor} wireframe transparent opacity={0.4} /></mesh>
           </group>
         ))}
       </group>
@@ -300,7 +300,7 @@ export default function CombinedHero3D() {
         This eliminates the overhead of running two separate WebGL contexts.
       */}
       <div className="absolute inset-0 w-full h-full">
-        <Canvas camera={{ position: [0, 8, 22], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
+        <Canvas dpr={[1, 2]} camera={{ position: [0, 8, 22], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
           <ambientLight intensity={0.7} />
           {/* Shared lighting for the entire scene */}
           <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />

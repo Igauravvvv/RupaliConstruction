@@ -263,7 +263,9 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                             >
                               <div className="h-32 bg-gray-50 rounded-xl mb-6 p-4 flex items-center justify-center relative overflow-hidden group-hover:bg-gray-100 transition-colors">
                                 {(() => {
-                                  const logoSrc = brand.image || (brandDomains[brand.name] ? `https://logo.clearbit.com/${brandDomains[brand.name]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`);
+                                  const cleanBrandName = brand.name.replace(/[^a-zA-Z0-9-]/g, '_');
+                                  const localLogoSrc = `/images/brands/${cleanBrandName}.png`;
+                                  const logoSrc = brand.image || localLogoSrc;
                                   return (
                                     <img loading="lazy" 
                                       src={logoSrc} 
@@ -271,7 +273,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                       className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:scale-105 transition-transform"
                                       onError={(e) => {
                                         const img = e.currentTarget;
-                                        if (img.src.includes('clearbit')) {
+                                        if (!img.src.includes('ui-avatars')) {
                                           img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
                                         }
                                       }}
@@ -434,7 +436,9 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                         
                         <div className="w-full md:w-1/3 h-48 bg-gray-50 rounded-2xl p-8 flex items-center justify-center shrink-0 border border-gray-100 relative z-10">
                            {(() => {
-                             const logoSrc = activeBrand.image || (brandDomains[activeBrand.name] ? `https://logo.clearbit.com/${brandDomains[activeBrand.name]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(activeBrand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`);
+                             const cleanBrandName = activeBrand.name.replace(/[^a-zA-Z0-9-]/g, '_');
+                             const localLogoSrc = `/images/brands/${cleanBrandName}.png`;
+                             const logoSrc = activeBrand.image || localLogoSrc;
                              return (
                                <img loading="lazy" 
                                   src={logoSrc} 
@@ -442,7 +446,7 @@ export default function CategoryModal({ isOpen, onClose, category }: CategoryMod
                                   className="max-w-full max-h-full object-contain drop-shadow-md mix-blend-multiply"
                                   onError={(e) => {
                                     const img = e.currentTarget;
-                                    if (img.src.includes('clearbit')) {
+                                    if (!img.src.includes('ui-avatars')) {
                                       img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(activeBrand.name)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
                                     }
                                   }}

@@ -55,7 +55,7 @@ const leaders: Leader[] = [
       "Bringing over three and a half decades of invaluable industry expertise. His deep understanding of structural engineering, project management, and large-scale development has been the driving force behind the company's most ambitious and successful endeavors.",
     specialties: ["Structural Engineering Mastery", "Large-scale Development", "Operational Excellence"],
     image:
-      "/images/Nksharma.webp",
+      "/images/Nksharma.png",
     imageBg: "bg-white",
     badges: [
       { text: "Expert Engineering", icon: <Award className="w-4 h-4" /> },
@@ -70,7 +70,7 @@ const leaders: Leader[] = [
       "Spearheading the modern growth of Rupali Construction. Combining fresh perspectives with core traditional values, he is focused on integrating innovative building technologies, sustainable practices, and expanding the company's footprint into new luxury segments.",
     specialties: ["Innovative Technologies", "Sustainable Practices", "Luxury & Modern Segments"],
     image:
-      "/images/ujjwal tyagi.webp",
+      "/images/ujjwal tyagi.png",
     badges: [
       { text: "Innovation Driven", icon: <MessageSquare className="w-4 h-4" /> },
       { text: "Modern Growth", icon: <Check className="w-4 h-4" /> },
@@ -123,9 +123,18 @@ export default function Leadership() {
             >
               Our Leadership
             </motion.h1>
-            <p className="text-xl md:text-2xl text-[var(--rc-text)]/80 max-w-3xl mx-auto font-light">
+            <p className="text-xl md:text-2xl text-[var(--rc-text)]/80 max-w-3xl mx-auto font-light mb-8">
               The visionary minds driving engineering precision and architectural excellence.
             </p>
+            <motion.a
+              href="/contact"
+              whileHover={{ scale: 1.05, rotate: -1 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-2 md:gap-3 bg-[var(--rc-blue)] text-white px-6 py-3 md:px-10 md:py-5 rounded-full font-bold uppercase tracking-wider text-xs md:text-sm shadow-[0_10px_30px_rgba(10,37,64,0.4)] hover:bg-[var(--rc-orange)] hover:shadow-[0_10px_30px_rgba(242,101,34,0.4)] transition-all"
+            >
+              <span>Book a Consultation</span>
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+            </motion.a>
           </motion.div>
 
           <div className="flex flex-col gap-24 lg:gap-32 max-w-5xl mx-auto">
@@ -187,16 +196,6 @@ export default function Leadership() {
                         ))}
                       </div>
 
-                      <motion.a
-                        href="/contact"
-                        whileHover={{ scale: 1.05, rotate: -1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center gap-1 md:gap-3 bg-[var(--rc-blue)] text-white px-3 py-2 md:px-8 md:py-4 rounded-full font-bold uppercase tracking-wider text-[8px] sm:text-[10px] md:text-sm shadow-[0_5px_15px_rgba(10,37,64,0.4)] md:shadow-[0_10px_30px_rgba(10,37,64,0.4)] hover:bg-[var(--rc-orange)] hover:shadow-[0_10px_30px_rgba(242,101,34,0.4)] transition-all self-start"
-                      >
-                        <span className="hidden sm:inline">Book a Consultation</span>
-                        <span className="sm:hidden">Consult</span>
-                        <ArrowRight className="w-2 h-2 md:w-4 md:h-4" />
-                      </motion.a>
                     </motion.div>
                   </div>
 

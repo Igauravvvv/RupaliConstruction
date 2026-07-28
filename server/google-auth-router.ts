@@ -20,14 +20,15 @@ const googleAuth = new Hono();
 
 // Step 1: Redirect to Google OAuth consent screen
 googleAuth.get("/api/auth/google", (c) => {
-  const clientId = process.env.VITE_GOOGLE_CLIENT_ID || env.googleClientId;
+  const e = process.env;
+  const clientId = e['VITE_GOOGLE_CLIENT_ID'] || e['GOOGLE_CLIENT_ID'] || env.googleClientId;
   const baseUrl = env.isProduction ? "https://www.rupaliconstruction.com" : new URL(c.req.url).origin;
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("response_type", "code");
-  url.searchParams.set("scope", "openid email profile");
+  url.searchParams.set("scope", "openid email profile https://www.googleapis.com/auth/user.phonenumbers.read");
   url.searchParams.set("access_type", "offline");
   url.searchParams.set("prompt", "consent");
   return c.redirect(url.toString());
@@ -45,8 +46,14 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
   try {
     const baseUrl = env.isProduction ? "https://www.rupaliconstruction.com" : new URL(c.req.url).origin;
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
-    const clientId = process.env.VITE_GOOGLE_CLIENT_ID || env.googleClientId;
-    const clientSecret = process.env.VITE_GOOGLE_CLIENT_SECRET || env.googleClientSecret;
+    const e = process.env;
+    const clientId = e['VITE_GOOGLE_CLIENT_ID'] || e['GOOGLE_CLIENT_ID'] || env.googleClientId;
+    const clientSecret = e['VITE_GOOGLE_CLIENT_SECRET'] || e['GOOGLE_CLIENT_SECRET'] || env.googleClientSecret;
+
+    console.log("=== DEBUG GOOGLE OAUTH ===");
+    console.log("Client ID:", clientId);
+    console.log("Client Secret:", clientSecret);
+    console.log("Redirect URI:", redirectUri);
 
     // Exchange code for tokens
     const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
@@ -88,6 +95,21 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
       picture: string;
     };
 
+    let phoneNumber = null;
+    try {
+      const peopleRes = await fetch("https://people.googleapis.com/v1/people/me?personFields=phoneNumbers", {
+        headers: { Authorization: `Bearer ${tokens.access_token}` },
+      });
+      if (peopleRes.ok) {
+        const peopleData = await peopleRes.json();
+        if (peopleData.phoneNumbers && peopleData.phoneNumbers.length > 0) {
+          phoneNumber = peopleData.phoneNumbers[0].value;
+        }
+      }
+    } catch (e) {
+      console.error("Failed to fetch phone number from Google:", e);
+    }
+
     const db = getDb();
 
     // Check if user already exists by Google ID
@@ -109,6 +131,7 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
             .set({
               googleId: profile.id,
               avatar: profile.picture || user.avatar,
+              phoneNumber: phoneNumber || user.phoneNumber,
               authProvider: "google",
               updatedAt: new Date(),
             })
@@ -147,6 +170,7 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
           username,
           displayName: profile.name,
           email: profile.email,
+          phoneNumber,
           googleId: profile.id,
           avatar: profile.picture,
           authProvider: "google",

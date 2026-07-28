@@ -237,12 +237,12 @@ export default function BrandStandards() {
                 >
                   <div className="h-20 w-full flex items-center justify-center mb-3">
                     <img loading="lazy" 
-                      src={brandDomains[brand] ? `https://logo.clearbit.com/${brandDomains[brand]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`} 
+                      src={`/images/brands/${brand.replace(/[^a-zA-Z0-9-]/g, '_')}.png`} 
                       alt={brand}
                       className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
                       onError={(e) => {
                         const img = e.currentTarget;
-                        if (img.src.includes('clearbit')) {
+                        if (!img.src.includes('ui-avatars')) {
                           img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
                         } else {
                           img.style.display = 'none';
@@ -274,12 +274,12 @@ export default function BrandStandards() {
                   >
                     <div className="h-20 w-full flex items-center justify-center mb-3">
                       <img loading="lazy" 
-                        src={brandDomains[brand] ? `https://logo.clearbit.com/${brandDomains[brand]}?size=400` : `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`} 
+                        src={`/images/brands/${brand.replace(/[^a-zA-Z0-9-]/g, '_')}.png`} 
                         alt={brand}
                         className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
                         onError={(e) => {
                           const img = e.currentTarget;
-                          if (img.src.includes('clearbit')) {
+                          if (!img.src.includes('ui-avatars')) {
                             img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
                           }
                         }}

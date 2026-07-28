@@ -30,6 +30,10 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isExcludedRoute = pathname.startsWith('/admin') || pathname === '/login';
+  const isChatWidgetExcluded = isExcludedRoute || pathname === '/contact';
+
   return (
     <HelmetProvider>
       <SEO />
@@ -56,8 +60,8 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-          <FloatingActions />
-          <ChatWidget />
+          {!isExcludedRoute && <FloatingActions />}
+          {!isChatWidgetExcluded && <ChatWidget />}
         </motion.div>
     </HelmetProvider>
   )

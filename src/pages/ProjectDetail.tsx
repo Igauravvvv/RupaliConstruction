@@ -1,10 +1,11 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { 
   ArrowLeft, Maximize2, MapPin, Heart, Flame, Share2, 
-  Bed, Bath, Grid2X2, Layers 
+  Bed, Bath, Grid2X2, Layers, X
 } from "lucide-react";
 import { fallbackProjects } from "@/sections/Projects";
 import HouseAnimation from "@/components/HouseAnimation";
@@ -12,6 +13,17 @@ import Image from "@/components/Image";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  
+  // Prevent body scroll when gallery is open
+  useEffect(() => {
+    if (isGalleryOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; }
+  }, [isGalleryOpen]);
   
   // Use suspense or handle loading state gracefully
   const { data: dbProject, isLoading } = trpc.project.bySlug.useQuery(
@@ -63,7 +75,12 @@ export default function ProjectDetail() {
     );
   }
 
-  const images = activeProject.images ? JSON.parse(activeProject.images) : [];
+  let images: string[] = [];
+  try {
+    images = activeProject.images ? JSON.parse(activeProject.images) : [];
+  } catch (e) {
+    images = activeProject.images ? activeProject.images.split(",").map((s: string) => s.trim()).filter(Boolean) : [];
+  }
   const mainImage = images[0] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80";
   const secondImage = images[1] || "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80";
   
@@ -77,19 +94,33 @@ export default function ProjectDetail() {
       <main className="container-rc pt-28 pb-20">
         
         {/* Back Link */}
-        <Link to="/projects" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[var(--rc-dark)] mb-4 font-medium transition-colors">
+        <Link to="/projects" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[var(--rc-dark)] mb-6 font-medium transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Back to Search
         </Link>
+
+        {/* Project Title Header */}
+        <div className="mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#0F172A] tracking-tight mb-2 font-serif">
+            {activeProject.name}
+          </h1>
+          <div className="flex items-center gap-1.5 text-gray-500 text-sm font-medium">
+            <MapPin className="w-4 h-4 text-gray-400" />
+            {activeProject.location || "Sec-66 (Golf Course Extn. Road)"}
+          </div>
+        </div>
 
         {/* Split Image Gallery */}
         <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[500px] lg:h-[550px] rounded-[32px] overflow-hidden mb-8 shadow-sm">
           <div className="w-full h-full">
             <Image src={mainImage} alt={activeProject.name} className="w-full h-full object-cover" />
           </div>
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative cursor-pointer" onClick={() => setIsGalleryOpen(true)}>
             <Image src={secondImage} alt={activeProject.name} className="w-full h-full object-cover" />
-            <button className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsGalleryOpen(true); }}
+              className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95"
+            >
               <Maximize2 className="w-4 h-4" />
               Show all {images.length > 2 ? images.length : 2} photos
             </button>
@@ -105,14 +136,9 @@ export default function ProjectDetail() {
               <span className="text-gray-400 font-normal border-l border-gray-300 pl-2 ml-1 capitalize">Sale</span>
             </div>
             
-            <h1 className="text-5xl lg:text-6xl font-bold text-[#0F172A] tracking-tight mb-3 font-serif">
+            <h2 className="text-5xl lg:text-6xl font-bold text-[#0F172A] tracking-tight mb-3 font-serif">
               {activeProject.cost || "₹6,00,00,000"}
-            </h1>
-            
-            <div className="flex items-center gap-1.5 text-gray-500 text-sm font-medium">
-              <MapPin className="w-4 h-4 text-gray-400" />
-              {activeProject.location || "Sec-66 (Golf Course Extn. Road)"}
-            </div>
+            </h2>
           </div>
 
           <div className="flex items-center gap-3">
@@ -136,14 +162,14 @@ export default function ProjectDetail() {
             <div className="bg-white border border-gray-200 rounded-[24px] p-8 shadow-sm">
               <div className="grid grid-cols-3 divide-x divide-gray-100">
                 <div className="flex flex-col items-center justify-center text-center px-4">
-                  <Bed className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
-                  <span className="text-2xl font-bold text-[#0F172A]">3</span>
-                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Beds</span>
+                  <Grid2X2 className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
+                  <span className="text-2xl font-bold text-[#0F172A] capitalize">{activeProject.type || "Project"}</span>
+                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Type</span>
                 </div>
                 <div className="flex flex-col items-center justify-center text-center px-4">
-                  <Bath className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
-                  <span className="text-2xl font-bold text-[#0F172A]">3</span>
-                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Baths</span>
+                  <Layers className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
+                  <span className="text-2xl font-bold text-[#0F172A] capitalize">{activeProject.status || "Completed"}</span>
+                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Status</span>
                 </div>
                 <div className="flex flex-col items-center justify-center text-center px-4">
                   <Maximize2 className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
@@ -153,16 +179,15 @@ export default function ProjectDetail() {
               </div>
             </div>
 
-            {/* About this home */}
+            {/* About this project */}
             <div>
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-6">About this home</h2>
+              <h2 className="text-3xl font-bold text-[#0F172A] mb-6">About this {activeProject.type === 'residential' ? 'home' : 'project'}</h2>
               <div 
                 className="prose prose-lg max-w-none text-gray-600 leading-relaxed"
                 dangerouslySetInnerHTML={{ 
                   __html: activeProject.description || `
-                  <p>An ultra-luxury residential project located in prime Gurugram, offering premium apartments. Designed by world-renowned architects, the development features twin towers rising majestically on a land parcel of 10+ acres.</p>
-                  <p>The project emphasizes high-end amenities including a rooftop infinity edge swimming pool, private jacuzzis, private decks, and a comprehensive club with facilities like a private theatre, spa, squash court, beach park, and sports bar.</p>
-                  <p>Experience the pinnacle of luxury living with this exquisite property. Featuring state-of-the-art amenities, premium finishes, and a location that offers both privacy and connectivity.</p>
+                  <p>A beautifully executed ${activeProject.type || 'construction'} project located in ${activeProject.location || 'a prime location'}. Designed and developed with utmost attention to detail and modern architecture.</p>
+                  <p>Our team at Rupali Construction ensured the highest quality standards, resulting in a robust, aesthetically pleasing, and highly functional space.</p>
                   ` 
                 }} 
               />
@@ -170,26 +195,30 @@ export default function ProjectDetail() {
 
             {/* What this property offers */}
             <div>
-              <h2 className="text-3xl font-bold text-[#0F172A] mb-8">What this property offers</h2>
+              <h2 className="text-3xl font-bold text-[#0F172A] mb-8">Project Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
                 <div className="flex items-center gap-4 text-gray-700">
                   <Grid2X2 className="w-6 h-6 text-gray-400" strokeWidth={1.5} />
                   <span className="text-lg">Carpet Area: {parsedArea} sq.ft</span>
                 </div>
                 <div className="flex items-center gap-4 text-gray-700">
-                  <Layers className="w-6 h-6 text-gray-400" strokeWidth={1.5} />
-                  <span className="text-lg">Tiles Flooring</span>
+                  <MapPin className="w-6 h-6 text-gray-400" strokeWidth={1.5} />
+                  <span className="text-lg">Location: {activeProject.location || "N/A"}</span>
                 </div>
-                <div className="flex items-center gap-4 text-gray-700">
-                  <div className="w-6 h-6 rounded flex items-center justify-center border border-gray-400">
-                    <div className="w-3 h-3 bg-gray-400 rounded-sm" />
+                {activeProject.duration && (
+                  <div className="flex items-center gap-4 text-gray-700">
+                    <Layers className="w-6 h-6 text-gray-400" strokeWidth={1.5} />
+                    <span className="text-lg">Duration: {activeProject.duration}</span>
                   </div>
-                  <span className="text-lg">Smart Home Automation</span>
-                </div>
-                <div className="flex items-center gap-4 text-gray-700">
-                  <div className="w-6 h-6 border-2 border-gray-400 rounded-full" />
-                  <span className="text-lg">Central AC</span>
-                </div>
+                )}
+                {activeProject.completionDate && (
+                  <div className="flex items-center gap-4 text-gray-700">
+                    <div className="w-6 h-6 border-2 border-gray-400 rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                    </div>
+                    <span className="text-lg">Completed: {activeProject.completionDate}</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -250,7 +279,7 @@ export default function ProjectDetail() {
         <div className="mt-16 bg-gradient-to-br from-[var(--rc-blue)] to-[#09358A] rounded-[32px] p-10 md:p-14 text-white relative overflow-hidden shadow-xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10 max-w-2xl">
-            <h2 className="text-4xl font-bold mb-4 font-serif">Want a custom home like this?</h2>
+            <h2 className="text-4xl font-bold mb-4 font-serif">Want a custom {activeProject.type === 'residential' ? 'home' : 'project'} like this?</h2>
             <p className="text-white/80 text-xl mb-10 leading-relaxed">
               Every project is unique. Get a personalized estimate for a construction customized to your exact requirements and lifestyle.
             </p>
@@ -269,7 +298,12 @@ export default function ProjectDetail() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {(otherProjects?.items || []).slice(0, 3).map((op) => {
-              const opImages = op.images ? JSON.parse(op.images) : [];
+              let opImages: string[] = [];
+              try {
+                opImages = op.images ? JSON.parse(op.images) : [];
+              } catch (e) {
+                opImages = op.images ? op.images.split(",").map((s: string) => s.trim()).filter(Boolean) : [];
+              }
               const opCover = opImages[0] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80";
               
               return (
@@ -301,6 +335,37 @@ export default function ProjectDetail() {
       </main>
       
       <Footer />
+
+      {/* Image Gallery Modal */}
+      {isGalleryOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" data-lenis-prevent="true">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsGalleryOpen(false)} />
+          
+          {/* Modal Content */}
+          <div className="relative w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 px-6 flex justify-between items-center border-b border-gray-200 bg-white z-10">
+              <h2 className="text-xl md:text-2xl font-bold font-serif text-[#0F172A]">{activeProject.name} - Gallery</h2>
+              <button 
+                onClick={() => setIsGalleryOpen(false)}
+                className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+            
+            <div className="overflow-y-auto p-4 md:p-6 bg-gray-100 flex-1" data-lenis-prevent="true">
+              <div className="flex flex-col gap-6">
+                {(images.length > 0 ? images : [mainImage, secondImage]).map((img: string, idx: number) => (
+                  <div key={idx} className="w-full rounded-xl overflow-hidden shadow-sm bg-white">
+                    <Image src={img} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-auto max-h-[75vh] object-contain mx-auto" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

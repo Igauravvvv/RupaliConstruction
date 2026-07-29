@@ -2,6 +2,9 @@ import * as jose from "jose";
 import { env } from "../lib/env";
 const JWT_ALG = "HS256";
 export async function signSessionToken(payload) {
+    if (!env.appSecret) {
+        throw new Error("Cannot sign session token without APP_SECRET.");
+    }
     const secret = new TextEncoder().encode(env.appSecret);
     return new jose.SignJWT(payload)
         .setProtectedHeader({ alg: JWT_ALG })
@@ -12,6 +15,10 @@ export async function signSessionToken(payload) {
 export async function verifySessionToken(token) {
     if (!token) {
         console.warn("[session] No token provided for verification.");
+        return null;
+    }
+    if (!env.appSecret) {
+        console.warn("[session] APP_SECRET is not configured; skipping Kimi session verification.");
         return null;
     }
     try {

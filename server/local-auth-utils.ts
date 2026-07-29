@@ -4,15 +4,21 @@ import { localUsers } from "@db/schema";
 import { eq } from "drizzle-orm";
 import type { LocalUser } from "@db/schema";
 
-const JWT_SECRET = process.env.APP_SECRET || "rupali-construction-secret-key";
+function getJwtSecret(): string {
+  const secret = process.env.LOCAL_AUTH_SECRET || process.env.APP_SECRET;
+  if (!secret && process.env.NODE_ENV === "production") {
+    throw new Error("Missing LOCAL_AUTH_SECRET or APP_SECRET for local authentication.");
+  }
+  return secret || "rupali-construction-secret-key";
+}
 
 export function signLocalToken(userId: number): string {
-  return jwt.sign({ userId, type: "local" }, JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign({ userId, type: "local" }, getJwtSecret(), { expiresIn: "30d" });
 }
 
 export async function verifyLocalToken(token: string): Promise<LocalUser | null> {
   try {
-    const payload = jwt.verify(token, JWT_SECRET, { clockTolerance: 60 }) as {
+    const payload = jwt.verify(token, getJwtSecret(), { clockTolerance: 60 }) as {
       userId: number;
       type: string;
     };

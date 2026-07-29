@@ -6,10 +6,11 @@ import { createContext } from "./context";
 import { env } from "./lib/env";
 import { createOAuthCallbackHandler } from "./kimi/auth";
 import { Paths } from "@contracts/constants";
-import "../seed-admin";
+import { googleAuth } from "./google-auth-router";
 const app = new Hono();
 app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
 app.get(Paths.oauthCallback, createOAuthCallbackHandler());
+app.route("", googleAuth);
 app.use("/api/trpc/*", async (c) => {
     return fetchRequestHandler({
         endpoint: "/api/trpc",
@@ -20,7 +21,7 @@ app.use("/api/trpc/*", async (c) => {
 });
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
 export default app;
-if (env.isProduction) {
+if (env.isProduction && !process.env.VERCEL) {
     const { serve } = await import("@hono/node-server");
     const { serveStaticFiles } = await import("./lib/vite");
     serveStaticFiles(app);

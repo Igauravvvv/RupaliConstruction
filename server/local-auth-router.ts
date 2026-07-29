@@ -29,34 +29,43 @@ export const localAuthRouter = createRouter({
     .mutation(async ({ input }) => {
       const db = getDb();
 
-      // Check if username exists
-      const existing = await db.query.localUsers.findFirst({
-        where: eq(localUsers.username, input.username),
-      });
-      if (existing) {
+      try {
+        // Check if username exists
+        const existing = await db.query.localUsers.findFirst({
+          where: eq(localUsers.username, input.username),
+        });
+        if (existing) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Username already exists",
+          });
+        }
+
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        const uniqueId = generateUniqueId();
+
+        const result = await db.insert(localUsers).values({
+          uniqueId,
+          username: input.username,
+          passwordHash,
+          displayName: input.displayName || input.username,
+          email: input.email || null,
+          authProvider: "local",
+          role: "user",
+        }).returning({ id: localUsers.id, uniqueId: localUsers.uniqueId });
+
+        const userId = result[0].id;
+        const token = signLocalToken(userId);
+
+        return { token, uniqueId: result[0].uniqueId, success: true };
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+        console.error("[LocalAuth] Unexpected error during registration:", err);
         throw new TRPCError({
-          code: "CONFLICT",
-          message: "Username already exists",
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Registration failed due to a server error. Please try again.",
         });
       }
-
-      const passwordHash = await bcrypt.hash(input.password, 12);
-      const uniqueId = generateUniqueId();
-
-      const result = await db.insert(localUsers).values({
-        uniqueId,
-        username: input.username,
-        passwordHash,
-        displayName: input.displayName || input.username,
-        email: input.email || null,
-        authProvider: "local",
-        role: "user",
-      }).returning({ id: localUsers.id, uniqueId: localUsers.uniqueId });
-
-      const userId = result[0].id;
-      const token = signLocalToken(userId);
-
-      return { token, uniqueId: result[0].uniqueId, success: true };
     }),
 
   login: publicQuery
@@ -68,15 +77,16 @@ export const localAuthRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      console.log("Login attempt for:", input.username);
+      console.log("[LocalAuth] Login attempt for:", input.username);
 
       try {
         const user = await db.query.localUsers.findFirst({
           where: eq(localUsers.username, input.username),
         });
-        console.log("User query result:", !!user);
+        console.log("[LocalAuth] User found:", !!user, user ? `(id=${user.id}, role=${user.role}, authProvider=${user.authProvider})` : "");
         
         if (!user || !user.passwordHash) {
+          console.warn("[LocalAuth] Login failed: user not found or no passwordHash for:", input.username);
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "Invalid username or password",
@@ -85,6 +95,7 @@ export const localAuthRouter = createRouter({
 
         const valid = await bcrypt.compare(input.password, user.passwordHash);
         if (!valid) {
+          console.warn("[LocalAuth] Login failed: password mismatch for:", input.username);
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "Invalid username or password",
@@ -92,11 +103,15 @@ export const localAuthRouter = createRouter({
         }
 
         const token = signLocalToken(user.id);
-        console.log("Login successful");
+        console.log("[LocalAuth] Login successful for:", input.username, "role:", user.role);
         return { token, success: true };
-      } catch (err: any) {
-        console.error("Error during login:", err);
-        throw err;
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+        console.error("[LocalAuth] Unexpected error during login:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Login failed due to a server error. Please try again.",
+        });
       }
     }),
 

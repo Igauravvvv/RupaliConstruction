@@ -147,12 +147,16 @@ const googleAuth = new Hono();
 // Step 1: Redirect to Google OAuth consent screen
 googleAuth.get("/api/auth/google", (c) => {
   const { clientId } = getGoogleClientConfig();
+  console.log("[GoogleAuth] /api/auth/google hit. clientId present:", !!clientId);
   if (!clientId) {
+    console.error("[GoogleAuth] GOOGLE_CLIENT_ID is not set. Google sign-in disabled.");
     return c.html(renderCallbackPage(null, "Google sign-in is not configured.", "/login"), 500);
   }
 
   const baseUrl = getBaseUrl(c.req.raw);
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
+  console.log("[GoogleAuth] Computed baseUrl:", baseUrl);
+  console.log("[GoogleAuth] Computed redirectUri:", redirectUri);
   const redirect = sanitizeRedirectPath(c.req.query("redirect"));
   const state = encodeState({ nonce: nanoid(24), redirect });
   const scopes = process.env.GOOGLE_OAUTH_SCOPES || "openid email profile";
@@ -192,15 +196,21 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
   );
 
   if (error || !code) {
+    console.error("[GoogleAuth] Callback returned without an auth code:", { error, hasCode: !!code });
     return c.html(renderCallbackPage(null, error || "No authorization code received", "/login"));
   }
 
   if (!returnedState || !expectedState || returnedState !== expectedState) {
+    console.error("[GoogleAuth] OAuth state mismatch:", {
+      hasReturnedState: !!returnedState,
+      hasExpectedState: !!expectedState,
+    });
     return c.html(renderCallbackPage(null, "Google sign-in expired. Please try again.", "/login"), 400);
   }
 
   const decodedState = decodeState(returnedState);
   if (!decodedState) {
+    console.error("[GoogleAuth] OAuth state could not be decoded.");
     return c.html(renderCallbackPage(null, "Google sign-in could not be verified.", "/login"), 400);
   }
 
@@ -209,7 +219,12 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
     const { clientId, clientSecret } = getGoogleClientConfig();
 
+    console.log("[GoogleAuth] Callback: baseUrl =", baseUrl);
+    console.log("[GoogleAuth] Callback: redirectUri =", redirectUri);
+    console.log("[GoogleAuth] Callback: clientId present =", !!clientId, "clientSecret present =", !!clientSecret);
+
     if (!clientId || !clientSecret) {
+      console.error("[GoogleAuth] Missing clientId or clientSecret in callback.");
       return c.html(renderCallbackPage(null, "Google sign-in is not configured.", "/login"), 500);
     }
 
@@ -228,7 +243,8 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
 
     if (!tokenRes.ok) {
       const errBody = await tokenRes.text();
-      console.error("Google token exchange failed:", errBody);
+      console.error("[GoogleAuth] Token exchange failed. Status:", tokenRes.status, "Body:", errBody);
+      console.error("[GoogleAuth] redirect_uri used:", redirectUri);
       return c.html(renderCallbackPage(null, "Google sign-in failed during token exchange.", "/login"), 502);
     }
 
@@ -243,6 +259,8 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
     });
 
     if (!profileRes.ok) {
+      const errBody = await profileRes.text();
+      console.error("[GoogleAuth] Failed to fetch Google profile. Status:", profileRes.status, "Body:", errBody);
       return c.html(renderCallbackPage(null, "Failed to fetch Google profile.", "/login"), 502);
     }
 
@@ -266,7 +284,7 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
           }
         }
       } catch (e) {
-        console.error("Failed to fetch phone number from Google:", e);
+        console.error("[GoogleAuth] Failed to fetch phone number from Google:", e);
       }
     }
 
@@ -349,8 +367,8 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
 
     // Return HTML page that stores token and redirects
     return c.html(renderCallbackPage(token, null, redirectPath));
-  } catch (err: any) {
-    console.error("Google OAuth error:", err);
+  } catch (err) {
+    console.error("[GoogleAuth] OAuth error:", err);
     return c.html(renderCallbackPage(null, "An error occurred during authentication.", "/login"), 500);
   }
 });

@@ -122,7 +122,7 @@
     "vite": "^7.2.4",
     "vitest": "^4.0.16"
   },
-  "resolutions": {
+  "overrides": {
     "minimatch": "9.0.5"
   }
 }

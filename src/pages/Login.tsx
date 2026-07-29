@@ -1,13 +1,29 @@
 /// <reference types="vite/client" />
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
 import { ArrowLeft, LogIn, UserPlus, Eye, EyeOff, Shield, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-function getGoogleAuthUrl() {
-  return "/api/auth/google";
+function getSafeRedirect(search: string) {
+  const redirect = new URLSearchParams(search).get("redirect");
+  if (
+    !redirect ||
+    !redirect.startsWith("/") ||
+    redirect.startsWith("//") ||
+    redirect.startsWith("/\\")
+  ) {
+    return "/";
+  }
+  return redirect;
+}
+
+function getGoogleAuthUrl(redirectPath: string) {
+  const params = new URLSearchParams();
+  if (redirectPath !== "/") params.set("redirect", redirectPath);
+  const query = params.toString();
+  return query ? `/api/auth/google?${query}` : "/api/auth/google";
 }
 
 // Google "G" logo SVG
@@ -24,18 +40,24 @@ function GoogleIcon() {
 
 export default function Login() {
   const { isAuthenticated, user } = useAuth();
+  const location = useLocation();
+  const redirectTo = getSafeRedirect(location.search);
   const [mode, setMode] = useState<"login" | "register">("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(() =>
+    new URLSearchParams(location.search).get("authError")
+      ? "Google sign-in could not be completed. Please try again."
+      : ""
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [registeredUniqueId, setRegisteredUniqueId] = useState<string | null>(null);
 
   const loginMutation = trpc.localAuth.login.useMutation({
     onSuccess: (data) => {
       localStorage.setItem("local_auth_token", data.token);
-      window.location.href = "/";
+      window.location.href = redirectTo;
     },
     onError: (err) => setError(err.message),
   });
@@ -44,13 +66,13 @@ export default function Login() {
     onSuccess: (data) => {
       localStorage.setItem("local_auth_token", data.token);
       setRegisteredUniqueId(data.uniqueId);
-      // Don't redirect immediately — show the unique ID first
+      // Show the unique ID before redirecting.
     },
     onError: (err) => setError(err.message),
   });
 
   if (isAuthenticated && !registeredUniqueId) {
-    window.location.href = user?.role === "admin" ? "/admin" : "/";
+    window.location.href = redirectTo !== "/" ? redirectTo : user?.role === "admin" ? "/admin" : "/";
     return null;
   }
 
@@ -100,7 +122,7 @@ export default function Login() {
               </motion.div>
 
               <h1 className="text-2xl font-semibold text-[var(--rc-dark)] mb-2">
-                Account Created! 🎉
+                Account Created!
               </h1>
               <p className="text-sm text-[var(--rc-muted)] mb-8">
                 Your unique Rupali Construction ID
@@ -119,16 +141,16 @@ export default function Login() {
               </motion.div>
 
               <p className="text-xs text-[var(--rc-muted)] mb-6">
-                Save this ID — you can use it to reference your account
+                Save this ID - you can use it to reference your account
               </p>
 
               <button
                 onClick={() => {
-                  window.location.href = "/";
+                  window.location.href = redirectTo;
                 }}
                 className="w-full py-4 bg-[var(--rc-orange)] text-white rounded-xl font-medium hover:bg-[var(--rc-dark)] transition-all duration-300 shadow-lg shadow-[var(--rc-orange)]/20"
               >
-                Continue to Dashboard →
+                Continue to Dashboard
               </button>
             </div>
           </div>
@@ -205,7 +227,7 @@ export default function Login() {
 
             {/* Google Sign-In Button */}
             <a
-              href={getGoogleAuthUrl()}
+              href={getGoogleAuthUrl(redirectTo)}
               className="w-full py-4 bg-white border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-[var(--rc-blue)] hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-3 shadow-sm hover:shadow-md group mb-6"
             >
               <GoogleIcon />
@@ -272,7 +294,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full px-4 py-3 bg-[var(--rc-gray)] border border-[var(--rc-border)] rounded-xl focus:bg-white focus:ring-2 focus:ring-[var(--rc-orange)] focus:border-transparent outline-none transition-all pr-12"
-                    placeholder="••••••••"
+                    placeholder="********"
                     minLength={6}
                   />
                   <button

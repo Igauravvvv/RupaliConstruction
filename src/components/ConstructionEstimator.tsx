@@ -4,7 +4,7 @@ import { Calculator, ArrowRight, CheckCircle2, ShoppingCart, ChevronLeft, Chevro
 
 // --- DATA MODEL ---
 
-export type Tier = "normal" | "premium" | "luxury";
+export type Tier = "normal" | "luxury" | "elite";
 
 export interface Category {
   id: string;
@@ -36,54 +36,54 @@ export const CATEGORIES: Category[] = [
 export const PRODUCTS: Product[] = [
   // Cement
   { id: "p_cem_ambuja", categoryId: "c_cement", brandName: "Ambuja", tier: "normal", multiplier: 1.0, specs: ["OPC 43 Grade", "High Strength", "Weather Resistant"] },
-  { id: "p_cem_acc", categoryId: "c_cement", brandName: "ACC", tier: "premium", multiplier: 1.15, specs: ["OPC 53 Grade", "Rapid Hardening", "Corrosion Resistant"] },
-  { id: "p_cem_ultratech", categoryId: "c_cement", brandName: "UltraTech", tier: "luxury", multiplier: 1.3, specs: ["Super Grade", "Advanced Slag", "Zero Seepage Guarantee"] },
+  { id: "p_cem_acc", categoryId: "c_cement", brandName: "ACC", tier: "luxury", multiplier: 1.15, specs: ["OPC 53 Grade", "Rapid Hardening", "Corrosion Resistant"] },
+  { id: "p_cem_ultratech", categoryId: "c_cement", brandName: "UltraTech", tier: "elite", multiplier: 1.3, specs: ["Super Grade", "Advanced Slag", "Zero Seepage Guarantee"] },
   
   // Steel
   { id: "p_stl_local", categoryId: "c_steel", brandName: "Standard TMT", tier: "normal", multiplier: 1.0, specs: ["Fe 500", "ISI Marked", "Standard Ductility"] },
-  { id: "p_stl_jsw", categoryId: "c_steel", brandName: "JSW Neo", tier: "premium", multiplier: 1.2, specs: ["Fe 500D", "High Ductility", "Earthquake Resistant"] },
-  { id: "p_stl_tata", categoryId: "c_steel", brandName: "Tata Tiscon", tier: "luxury", multiplier: 1.4, specs: ["Fe 550D", "Super Ductile", "Anti-Corrosive Coating"] },
+  { id: "p_stl_jsw", categoryId: "c_steel", brandName: "JSW Neo", tier: "luxury", multiplier: 1.2, specs: ["Fe 500D", "High Ductility", "Earthquake Resistant"] },
+  { id: "p_stl_tata", categoryId: "c_steel", brandName: "Tata Tiscon", tier: "elite", multiplier: 1.4, specs: ["Fe 550D", "Super Ductile", "Anti-Corrosive Coating"] },
   
   // Bricks
   { id: "p_brk_clay", categoryId: "c_bricks", brandName: "Red Clay Bricks", tier: "normal", multiplier: 1.0, specs: ["Standard Class A", "Local Kiln", "High Thermal Mass"] },
-  { id: "p_brk_aac", categoryId: "c_bricks", brandName: "AAC Blocks", tier: "premium", multiplier: 1.2, specs: ["Lightweight", "Excellent Insulation", "Faster Construction"] },
-  { id: "p_brk_premium", categoryId: "c_bricks", brandName: "Premium Porotherm", tier: "luxury", multiplier: 1.5, specs: ["Hollow Blocks", "Acoustic Insulation", "Eco-friendly"] },
+  { id: "p_brk_aac", categoryId: "c_bricks", brandName: "AAC Blocks", tier: "luxury", multiplier: 1.2, specs: ["Lightweight", "Excellent Insulation", "Faster Construction"] },
+  { id: "p_brk_premium", categoryId: "c_bricks", brandName: "Premium Porotherm", tier: "elite", multiplier: 1.5, specs: ["Hollow Blocks", "Acoustic Insulation", "Eco-friendly"] },
 
   // Electrical
   { id: "p_elec_polycab", categoryId: "c_electrical", brandName: "Polycab", tier: "normal", multiplier: 1.0, specs: ["Standard Copper", "FR Grade PVC", "Modular Switches"] },
-  { id: "p_elec_finolex", categoryId: "c_electrical", brandName: "Finolex", tier: "premium", multiplier: 1.25, specs: ["High Conductivity", "FRLS Grade", "Premium Switches"] },
-  { id: "p_elec_havells", categoryId: "c_electrical", brandName: "Havells", tier: "luxury", multiplier: 1.5, specs: ["Zero Halogen", "Smart Home Ready", "Luxury Glass Switches"] },
+  { id: "p_elec_finolex", categoryId: "c_electrical", brandName: "Finolex", tier: "luxury", multiplier: 1.25, specs: ["High Conductivity", "FRLS Grade", "Premium Switches"] },
+  { id: "p_elec_havells", categoryId: "c_electrical", brandName: "Havells", tier: "elite", multiplier: 1.5, specs: ["Zero Halogen", "Smart Home Ready", "Luxury Glass Switches"] },
 
   // Plumbing
   { id: "p_plumb_standard", categoryId: "c_plumbing", brandName: "Standard CPVC", tier: "normal", multiplier: 1.0, specs: ["SDR 11 Pipes", "Basic Fittings", "1 Year Warranty"] },
-  { id: "p_plumb_finolex", categoryId: "c_plumbing", brandName: "Finolex", tier: "premium", multiplier: 1.3, specs: ["High Pressure CPVC", "Brass Threaded", "Lead-free"] },
-  { id: "p_plumb_astral", categoryId: "c_plumbing", brandName: "Astral Pipes", tier: "luxury", multiplier: 1.6, specs: ["Silencio Pipes", "Antibacterial", "Lifetime Warranty"] },
+  { id: "p_plumb_finolex", categoryId: "c_plumbing", brandName: "Finolex", tier: "luxury", multiplier: 1.3, specs: ["High Pressure CPVC", "Brass Threaded", "Lead-free"] },
+  { id: "p_plumb_astral", categoryId: "c_plumbing", brandName: "Astral Pipes", tier: "elite", multiplier: 1.6, specs: ["Silencio Pipes", "Antibacterial", "Lifetime Warranty"] },
 
   // Paint
   { id: "p_pnt_nerolac", categoryId: "c_paint", brandName: "Nerolac", tier: "normal", multiplier: 1.0, specs: ["Interior Distemper", "Basic Weather Coat", "Standard Matte"] },
-  { id: "p_pnt_berger", categoryId: "c_paint", brandName: "Berger", tier: "premium", multiplier: 1.3, specs: ["Silk Glamor", "WeatherCoat Long Life", "Washable"] },
-  { id: "p_pnt_asian", categoryId: "c_paint", brandName: "Asian Paints", tier: "luxury", multiplier: 1.7, specs: ["Royale Play", "Ultima Protek", "Teflon Surface Protection"] },
+  { id: "p_pnt_berger", categoryId: "c_paint", brandName: "Berger", tier: "luxury", multiplier: 1.3, specs: ["Silk Glamor", "WeatherCoat Long Life", "Washable"] },
+  { id: "p_pnt_asian", categoryId: "c_paint", brandName: "Asian Paints", tier: "elite", multiplier: 1.7, specs: ["Royale Play", "Ultima Protek", "Teflon Surface Protection"] },
 
   // Putty
   { id: "p_pty_walplast", categoryId: "c_putty", brandName: "WalPlast", tier: "normal", multiplier: 1.0, specs: ["Cement Based", "Standard Finish", "Good Adhesion"] },
-  { id: "p_pty_jk", categoryId: "c_putty", brandName: "JK Wall Putty", tier: "premium", multiplier: 1.2, specs: ["White Cement Based", "Smooth Finish", "Water Resistant"] },
-  { id: "p_pty_birla", categoryId: "c_putty", brandName: "Birla White", tier: "luxury", multiplier: 1.4, specs: ["Excel Putty", "Superior Whiteness", "Anti-Flaking"] },
+  { id: "p_pty_jk", categoryId: "c_putty", brandName: "JK Wall Putty", tier: "luxury", multiplier: 1.2, specs: ["White Cement Based", "Smooth Finish", "Water Resistant"] },
+  { id: "p_pty_birla", categoryId: "c_putty", brandName: "Birla White", tier: "elite", multiplier: 1.4, specs: ["Excel Putty", "Superior Whiteness", "Anti-Flaking"] },
 
   // Labor
   { id: "p_lab_standard", categoryId: "c_labor", brandName: "Standard Contracting", tier: "normal", multiplier: 1.0, specs: ["Experienced Labor", "Basic Supervision", "Standard Timeline"] },
-  { id: "p_lab_premium", categoryId: "c_labor", brandName: "Premium Contracting", tier: "premium", multiplier: 1.3, specs: ["Specialized Crews", "Daily Quality Checks", "Faster Execution"] },
-  { id: "p_lab_luxury", categoryId: "c_labor", brandName: "Luxury Turnkey", tier: "luxury", multiplier: 1.7, specs: ["Master Craftsmen", "Dedicated Engineer", "Flawless Finishing"] },
+  { id: "p_lab_premium", categoryId: "c_labor", brandName: "Premium Contracting", tier: "luxury", multiplier: 1.3, specs: ["Specialized Crews", "Daily Quality Checks", "Faster Execution"] },
+  { id: "p_lab_luxury", categoryId: "c_labor", brandName: "Luxury Turnkey", tier: "elite", multiplier: 1.7, specs: ["Master Craftsmen", "Dedicated Engineer", "Flawless Finishing"] },
 ];
 
 export const TIER_DEFAULTS: Record<Tier, Record<string, string>> = {
   normal: {},
-  premium: {},
   luxury: {},
+  elite: {},
 };
 
 // Auto-fill tier defaults based on the products array
 CATEGORIES.forEach(cat => {
-  ["normal", "premium", "luxury"].forEach(tier => {
+  ["normal", "luxury", "elite"].forEach(tier => {
     const product = PRODUCTS.find(p => p.categoryId === cat.id && p.tier === tier) 
                  || PRODUCTS.find(p => p.categoryId === cat.id); // fallback
     if (product) {
@@ -149,10 +149,14 @@ export default function ConstructionEstimator() {
   const [mode, setMode] = useState<"setup" | "quick" | "detailed">("setup");
   
   const [inputs, setInputs] = useState({
-    city: "",
-    plotArea: "",
+    city: "Gurgaon",
+    plotArea: "1000",
     floors: "1",
-    foundation: "",
+    foundation: "Standard / Strip",
+    basementAndStilt: "No",
+    rooms: "1",
+    bathrooms: "1",
+    lifts: "No",
   });
 
   // Cart maps categoryId to productId
@@ -162,9 +166,13 @@ export default function ConstructionEstimator() {
 
   // Core Pricing Formula
   const calculateTotal = (currentCart: Record<string, string>) => {
-    const area = parseInt(inputs.plotArea) || 0;
+    let area = parseInt(inputs.plotArea) || 0;
     const floors = parseInt(inputs.floors) || 0;
     const baseRate = getBaseRate(inputs.city, inputs.foundation);
+
+    if (inputs.basementAndStilt === "Yes") {
+      area += (parseInt(inputs.plotArea) || 0) * 1.5;
+    }
 
     const multiplierSum = CATEGORIES.reduce((sum, cat) => {
       const productId = currentCart[cat.id];
@@ -173,7 +181,17 @@ export default function ConstructionEstimator() {
       return sum + (cat.weightPercent / 100) * mult;
     }, 0);
 
-    return area * floors * baseRate * multiplierSum;
+    let total = area * floors * baseRate * multiplierSum;
+
+    if (inputs.lifts === "Yes") {
+      total += 800000;
+    }
+
+    const extraRooms = parseInt(inputs.rooms) || 1;
+    const extraBaths = parseInt(inputs.bathrooms) || 1;
+    total += ((extraRooms - 1) * 50000) + ((extraBaths - 1) * 75000);
+
+    return total;
   };
 
   const currentTotal = calculateTotal(cart);
@@ -219,15 +237,15 @@ export default function ConstructionEstimator() {
 
       {/* SETUP MODE */}
       {mode === "setup" && (
-        <div className="p-4 md:p-6 lg:p-10 space-y-4 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-            <div className="space-y-2 md:space-y-3">
+        <div className="p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6 animate-in fade-in slide-in-from-bottom-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 lg:gap-6">
+            <div className="space-y-1.5 md:space-y-2">
               <label className="text-label text-[var(--rc-muted)] block text-sm">City</label>
-              <div className="grid grid-cols-2 gap-2 md:gap-3">
+              <div className="grid grid-cols-2 gap-2">
                 {["Gurgaon", "Delhi", "Noida", "Faridabad"].map(c => (
                   <button key={c}
                     onClick={() => setInputs(p => ({ ...p, city: c }))}
-                    className={`p-2 md:p-3 rounded-xl border text-center text-sm transition-all ${
+                    className={`p-2 rounded-xl border text-center text-sm transition-all ${
                       inputs.city === c 
                         ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
                         : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
@@ -239,13 +257,13 @@ export default function ConstructionEstimator() {
               </div>
             </div>
 
-            <div className="space-y-2 md:space-y-3">
+            <div className="space-y-1.5 md:space-y-2">
               <label className="text-label text-[var(--rc-muted)] block text-sm">Foundation Type</label>
-              <div className="grid grid-cols-2 gap-2 md:gap-3">
+              <div className="grid grid-cols-2 gap-2">
                 {["Standard / Strip", "Deep/Raft", "Pile"].map(f => (
                   <button key={f}
                     onClick={() => setInputs(p => ({ ...p, foundation: f }))}
-                    className={`p-2 md:p-3 rounded-xl border text-center text-xs md:text-sm transition-all ${
+                    className={`p-2 rounded-xl border text-center text-xs md:text-sm transition-all ${
                       inputs.foundation === f 
                         ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
                         : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
@@ -257,18 +275,18 @@ export default function ConstructionEstimator() {
               </div>
             </div>
 
-            <div className="space-y-2 md:space-y-3">
+            <div className="space-y-1.5 md:space-y-2">
               <label className="text-label text-[var(--rc-muted)] block text-sm">Plot Area (Sq.Ft.)</label>
               <input 
                 type="number"
                 value={inputs.plotArea}
                 onChange={(e) => setInputs(p => ({ ...p, plotArea: e.target.value }))}
-                className="w-full px-4 py-2 md:py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] outline-none text-base md:text-lg"
+                className="w-full px-4 py-2 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-orange)] focus:ring-2 focus:ring-[var(--rc-orange)] outline-none text-base md:text-lg"
                 placeholder="e.g. 2000"
               />
             </div>
 
-            <div className="space-y-2 md:space-y-3">
+            <div className="space-y-1.5 md:space-y-2">
               <label className="text-label text-[var(--rc-muted)] block text-sm">Number of Floors</label>
               <div className="flex gap-2">
                 {['1', '2', '3', '4'].map((num) => (
@@ -276,7 +294,7 @@ export default function ConstructionEstimator() {
                     key={num}
                     type="button"
                     onClick={() => setInputs(p => ({ ...p, floors: num }))}
-                    className={`flex-1 py-2 md:py-3 rounded-xl font-bold transition-all border ${
+                    className={`flex-1 py-2 rounded-xl font-bold transition-all border ${
                       inputs.floors === num
                         ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
                         : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
@@ -288,7 +306,7 @@ export default function ConstructionEstimator() {
                 <button
                   type="button"
                   onClick={() => setInputs(p => ({ ...p, floors: parseInt(inputs.floors) > 4 ? inputs.floors : '5' }))}
-                  className={`flex-1 py-2 md:py-3 rounded-xl font-bold transition-all border text-sm md:text-base ${
+                  className={`flex-1 py-2 rounded-xl font-bold transition-all border text-sm md:text-base ${
                     parseInt(inputs.floors || '1') > 4
                       ? "bg-[var(--rc-blue)] border-[var(--rc-blue)] text-white shadow-md"
                       : "bg-white border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)] hover:text-[var(--rc-blue)]"
@@ -304,11 +322,83 @@ export default function ConstructionEstimator() {
                     min="5" max="100"
                     value={inputs.floors}
                     onChange={(e) => setInputs(p => ({ ...p, floors: e.target.value }))}
-                    className="w-full px-4 py-2 md:py-3 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-blue)] focus:ring-2 focus:ring-[var(--rc-blue)] outline-none text-base md:text-lg mt-2 transition-all"
+                    className="w-full px-4 py-2 rounded-xl border border-[var(--rc-border)] focus:border-[var(--rc-blue)] focus:ring-2 focus:ring-[var(--rc-blue)] outline-none text-base md:text-lg mt-2 transition-all"
                     placeholder="Enter number of floors (e.g. 5)"
                   />
                 </motion.div>
               )}
+            </div>
+
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Basement + Stilt</label>
+              <div className="grid grid-cols-2 gap-2">
+                {["Yes", "No"].map(opt => (
+                  <button key={opt}
+                    onClick={() => setInputs(p => ({ ...p, basementAndStilt: opt }))}
+                    className={`p-2 rounded-xl border text-center text-sm transition-all ${
+                      inputs.basementAndStilt === opt 
+                        ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
+                        : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Number of Rooms</label>
+              <div className="grid grid-cols-5 gap-2">
+                {['1', '2', '3', '4', '5+'].map(num => (
+                  <button key={num}
+                    onClick={() => setInputs(p => ({ ...p, rooms: num }))}
+                    className={`p-2 rounded-xl border text-center text-sm transition-all ${
+                      inputs.rooms === num 
+                        ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
+                        : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Number of Bathrooms</label>
+              <div className="grid grid-cols-5 gap-2">
+                {['1', '2', '3', '4', '5+'].map(num => (
+                  <button key={num}
+                    onClick={() => setInputs(p => ({ ...p, bathrooms: num }))}
+                    className={`p-2 rounded-xl border text-center text-sm transition-all ${
+                      inputs.bathrooms === num 
+                        ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
+                        : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-label text-[var(--rc-muted)] block text-sm">Lifts</label>
+              <div className="grid grid-cols-2 gap-2">
+                {["Yes", "No"].map(opt => (
+                  <button key={opt}
+                    onClick={() => setInputs(p => ({ ...p, lifts: opt }))}
+                    className={`p-2 rounded-xl border text-center text-sm transition-all ${
+                      inputs.lifts === opt 
+                        ? "border-[var(--rc-orange)] bg-[var(--rc-orange)]/10 text-[var(--rc-dark)] font-semibold ring-1 ring-[var(--rc-orange)]" 
+                        : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:border-[var(--rc-blue)]/30"
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -329,13 +419,13 @@ export default function ConstructionEstimator() {
         <div className="p-6 lg:p-10 bg-[var(--rc-gray)] animate-in fade-in slide-in-from-right-8">
           <h4 className="text-center text-xl font-medium text-[var(--rc-dark)] mb-8">Choose a starting package to view costs</h4>
           <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory no-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0">
-            {(['normal', 'premium', 'luxury'] as Tier[]).map((tier) => {
+            {(['normal', 'luxury', 'elite'] as Tier[]).map((tier) => {
               const packageTotal = calculateTotal(TIER_DEFAULTS[tier]);
               const perSqFt = packageTotal / (parseInt(inputs.plotArea) * parseInt(inputs.floors));
               
               return (
                 <div key={tier} className="w-[85vw] max-w-[320px] sm:w-[calc(50%-12px)] sm:max-w-none lg:w-[calc(33.333%-16px)] shrink-0 snap-center bg-white rounded-2xl p-6 shadow-sm border border-[var(--rc-border)] flex flex-col group hover:border-[var(--rc-orange)] hover:shadow-xl transition-all duration-300 relative overflow-hidden">
-                  {tier === 'premium' && (
+                  {tier === 'luxury' && (
                     <div className="absolute top-0 right-0 bg-[var(--rc-orange)] text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-bl-lg z-10 shadow-sm">
                       Most Popular
                     </div>
@@ -344,7 +434,7 @@ export default function ConstructionEstimator() {
                     <h3 className="text-2xl font-serif text-[var(--rc-blue)] capitalize mb-1">{tier}</h3>
                     <p className="text-sm text-[var(--rc-muted)]">
                       {tier === 'normal' ? 'Perfect for standard requirements' : 
-                       tier === 'premium' ? 'High-quality fittings & superior finish' : 
+                       tier === 'luxury' ? 'High-quality fittings & superior finish' : 
                        'Imported materials & smart features'}
                     </p>
                   </div>
@@ -458,7 +548,7 @@ export default function ConstructionEstimator() {
                           <h5 className="text-xl font-semibold text-[var(--rc-dark)] pr-2">{product.brandName}</h5>
                           <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md shrink-0 ${
                             product.tier === 'normal' ? 'bg-gray-200 text-gray-700' :
-                            product.tier === 'premium' ? 'bg-[var(--rc-blue)]/10 text-[var(--rc-blue)]' :
+                            product.tier === 'luxury' ? 'bg-[var(--rc-blue)]/10 text-[var(--rc-blue)]' :
                             'bg-[var(--rc-orange)] text-white shadow-sm'
                           }`}>
                             {product.tier}

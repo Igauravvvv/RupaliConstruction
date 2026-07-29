@@ -63,7 +63,14 @@ export async function createContext(
 
   // Fall back to local auth
   try {
-    const token = opts.req.headers.get("x-local-auth-token");
+    let token = opts.req.headers.get("x-local-auth-token");
+    if (!token) {
+      const authHeader = opts.req.headers.get("authorization");
+      if (authHeader && authHeader.toLowerCase().startsWith("bearer ")) {
+        token = authHeader.substring(7);
+      }
+    }
+    
     if (token) {
       const localUser = await verifyLocalToken(token);
       if (localUser) {

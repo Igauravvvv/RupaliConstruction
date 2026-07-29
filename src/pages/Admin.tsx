@@ -71,7 +71,7 @@ export default function Admin() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate("/login");
+      navigate(`/login?redirect=${encodeURIComponent("/admin")}`);
     }
     if (!isLoading && isAuthenticated && !isAdmin) {
       navigate("/");

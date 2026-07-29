@@ -16,17 +16,9 @@ export function useAuth() {
   const utils = trpc.useUtils();
 
   const {
-    data: oauthUser,
-    isLoading: oauthLoading,
+    data: sessionUser,
+    isLoading,
   } = trpc.auth.me.useQuery(undefined, {
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
-
-  const {
-    data: localUser,
-    isLoading: localLoading,
-  } = trpc.localAuth.me.useQuery(undefined, {
     staleTime: 1000 * 60 * 5,
     retry: false,
   });
@@ -38,31 +30,20 @@ export function useAuth() {
   });
 
   const user: AuthUser | null = useMemo(() => {
-    if (oauthUser) {
+    if (sessionUser) {
       return {
-        id: oauthUser.id,
-        name: oauthUser.name || "User",
-        email: oauthUser.email,
-        avatar: oauthUser.avatar,
-        role: oauthUser.role,
-        authType: "oauth" as const,
-        phoneNumber: oauthUser.phoneNumber,
-      };
-    }
-    if (localUser) {
-      return {
-        id: localUser.id,
-        name: localUser.name || "User",
-        email: localUser.email,
-        avatar: localUser.avatar,
-        role: localUser.role,
-        authType: "local" as const,
-        uniqueId: localUser.uniqueId,
-        phoneNumber: localUser.phoneNumber,
+        id: sessionUser.id,
+        name: sessionUser.name || "User",
+        email: sessionUser.email,
+        avatar: sessionUser.avatar,
+        role: sessionUser.role,
+        authType: sessionUser.authType,
+        uniqueId: sessionUser.uniqueId,
+        phoneNumber: sessionUser.phoneNumber,
       };
     }
     return null;
-  }, [oauthUser, localUser]);
+  }, [sessionUser]);
 
   const isAdmin = user?.role === "admin";
 
@@ -78,7 +59,7 @@ export function useAuth() {
     user,
     isAuthenticated: !!user,
     isAdmin,
-    isLoading: oauthLoading || localLoading,
+    isLoading,
     logout,
   };
 }

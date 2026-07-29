@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import * as cookie from "cookie";
 import { env } from "./lib/env";
 import { getDb } from "./queries/connection";
 import { localUsers } from "@db/schema";
@@ -6,8 +7,15 @@ import { eq } from "drizzle-orm";
 import { signLocalToken } from "./local-auth-utils";
 import { nanoid } from "nanoid";
 
-function generateUniqueId(): string {
-  // Generate RC-XXXXXXXX format (8 uppercase alphanumeric chars)
+const GOOGLE_STATE_COOKIE = "google_oauth_state";
+const GOOGLE_STATE_MAX_AGE_SECONDS = 10 * 60;
+
+type GoogleOAuthState = {
+  nonce: string;
+  redirect: string;
+};
+
+function generateUniqueIdValue(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let result = "RC-";
   for (let i = 0; i < 8; i++) {
@@ -16,21 +24,157 @@ function generateUniqueId(): string {
   return result;
 }
 
+async function generateUniqueId(db: ReturnType<typeof getDb>): Promise<string> {
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const uniqueId = generateUniqueIdValue();
+    const existing = await db.query.localUsers.findFirst({
+      where: eq(localUsers.uniqueId, uniqueId),
+    });
+    if (!existing) return uniqueId;
+  }
+  return `RC-${nanoid(10).toUpperCase().replace(/[^A-Z0-9]/g, "0").slice(0, 8)}`;
+}
+
+function getGoogleClientConfig() {
+  const e = process.env;
+  return {
+    clientId: e.GOOGLE_CLIENT_ID || e.VITE_GOOGLE_CLIENT_ID || env.googleClientId,
+    clientSecret: e.GOOGLE_CLIENT_SECRET || e.VITE_GOOGLE_CLIENT_SECRET || env.googleClientSecret,
+  };
+}
+
+function normalizeBaseUrl(value?: string): string {
+  const trimmed = value?.trim().replace(/\/+$/, "");
+  if (!trimmed) return "";
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+}
+
+function getBaseUrl(req: Request): string {
+  const configured = normalizeBaseUrl(
+    process.env.PUBLIC_SITE_URL ||
+      process.env.SITE_URL ||
+      process.env.APP_URL ||
+      process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+      process.env.VERCEL_URL,
+  );
+  if (configured) return configured;
+
+  const forwardedHost = req.headers.get("x-forwarded-host");
+  if (forwardedHost) {
+    const forwardedProto = req.headers.get("x-forwarded-proto") || "https";
+    return `${forwardedProto}://${forwardedHost}`;
+  }
+
+  return new URL(req.url).origin;
+}
+
+function sanitizeRedirectPath(value: string | null | undefined): string {
+  if (!value) return "/";
+
+  let redirectPath = value;
+  try {
+    redirectPath = decodeURIComponent(value);
+  } catch {
+    redirectPath = value;
+  }
+
+  if (
+    !redirectPath.startsWith("/") ||
+    redirectPath.startsWith("//") ||
+    redirectPath.startsWith("/\\") ||
+    /[\r\n]/.test(redirectPath)
+  ) {
+    return "/";
+  }
+
+  return redirectPath;
+}
+
+function encodeState(state: GoogleOAuthState): string {
+  return Buffer.from(JSON.stringify(state), "utf8").toString("base64url");
+}
+
+function decodeState(value: string): GoogleOAuthState | null {
+  try {
+    const parsed = JSON.parse(Buffer.from(value, "base64url").toString("utf8"));
+    if (
+      parsed &&
+      typeof parsed.nonce === "string" &&
+      parsed.nonce.length >= 16 &&
+      typeof parsed.redirect === "string"
+    ) {
+      return {
+        nonce: parsed.nonce,
+        redirect: sanitizeRedirectPath(parsed.redirect),
+      };
+    }
+  } catch {
+    // Invalid OAuth state.
+  }
+  return null;
+}
+
+function getStateCookieOptions(maxAge: number) {
+  return {
+    httpOnly: true,
+    maxAge,
+    path: "/api/auth/google",
+    sameSite: "lax" as const,
+    secure: env.isProduction,
+  };
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function slugifyUsername(value: string): string {
+  const slug = value
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, "_")
+    .replace(/^[_-]+|[_-]+$/g, "")
+    .slice(0, 50);
+  return slug || `google_${nanoid(8)}`;
+}
+
 const googleAuth = new Hono();
 
 // Step 1: Redirect to Google OAuth consent screen
 googleAuth.get("/api/auth/google", (c) => {
-  const e = process.env;
-  const clientId = e['VITE_GOOGLE_CLIENT_ID'] || e['GOOGLE_CLIENT_ID'] || env.googleClientId;
-  const baseUrl = env.isProduction ? "https://www.rupaliconstruction.com" : new URL(c.req.url).origin;
+  const { clientId } = getGoogleClientConfig();
+  if (!clientId) {
+    return c.html(renderCallbackPage(null, "Google sign-in is not configured.", "/login"), 500);
+  }
+
+  const baseUrl = getBaseUrl(c.req.raw);
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
+  const redirect = sanitizeRedirectPath(c.req.query("redirect"));
+  const state = encodeState({ nonce: nanoid(24), redirect });
+  const scopes = process.env.GOOGLE_OAUTH_SCOPES || "openid email profile";
+
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("response_type", "code");
-  url.searchParams.set("scope", "openid email profile https://www.googleapis.com/auth/user.phonenumbers.read");
-  url.searchParams.set("access_type", "offline");
-  url.searchParams.set("prompt", "consent");
+  url.searchParams.set("scope", scopes);
+  url.searchParams.set("state", state);
+  url.searchParams.set("prompt", "select_account");
+  url.searchParams.set("include_granted_scopes", "true");
+
+  c.header(
+    "Set-Cookie",
+    cookie.serialize(
+      GOOGLE_STATE_COOKIE,
+      state,
+      getStateCookieOptions(GOOGLE_STATE_MAX_AGE_SECONDS),
+    ),
+  );
+
   return c.redirect(url.toString());
 });
 
@@ -38,22 +182,36 @@ googleAuth.get("/api/auth/google", (c) => {
 googleAuth.get("/api/auth/google/callback", async (c) => {
   const code = c.req.query("code");
   const error = c.req.query("error");
+  const returnedState = c.req.query("state");
+  const cookies = cookie.parse(c.req.header("cookie") || "");
+  const expectedState = cookies[GOOGLE_STATE_COOKIE];
+
+  c.header(
+    "Set-Cookie",
+    cookie.serialize(GOOGLE_STATE_COOKIE, "", getStateCookieOptions(0)),
+  );
 
   if (error || !code) {
-    return c.html(renderCallbackPage(null, error || "No authorization code received"));
+    return c.html(renderCallbackPage(null, error || "No authorization code received", "/login"));
+  }
+
+  if (!returnedState || !expectedState || returnedState !== expectedState) {
+    return c.html(renderCallbackPage(null, "Google sign-in expired. Please try again.", "/login"), 400);
+  }
+
+  const decodedState = decodeState(returnedState);
+  if (!decodedState) {
+    return c.html(renderCallbackPage(null, "Google sign-in could not be verified.", "/login"), 400);
   }
 
   try {
-    const baseUrl = env.isProduction ? "https://www.rupaliconstruction.com" : new URL(c.req.url).origin;
+    const baseUrl = getBaseUrl(c.req.raw);
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
-    const e = process.env;
-    const clientId = e['VITE_GOOGLE_CLIENT_ID'] || e['GOOGLE_CLIENT_ID'] || env.googleClientId;
-    const clientSecret = e['VITE_GOOGLE_CLIENT_SECRET'] || e['GOOGLE_CLIENT_SECRET'] || env.googleClientSecret;
+    const { clientId, clientSecret } = getGoogleClientConfig();
 
-    console.log("=== DEBUG GOOGLE OAUTH ===");
-    console.log("Client ID:", clientId);
-    console.log("Client Secret:", clientSecret);
-    console.log("Redirect URI:", redirectUri);
+    if (!clientId || !clientSecret) {
+      return c.html(renderCallbackPage(null, "Google sign-in is not configured.", "/login"), 500);
+    }
 
     // Exchange code for tokens
     const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
@@ -71,7 +229,7 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
     if (!tokenRes.ok) {
       const errBody = await tokenRes.text();
       console.error("Google token exchange failed:", errBody);
-      return c.html(renderCallbackPage(null, "Failed to exchange code for token"));
+      return c.html(renderCallbackPage(null, "Google sign-in failed during token exchange.", "/login"), 502);
     }
 
     const tokens = (await tokenRes.json()) as {
@@ -85,7 +243,7 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
     });
 
     if (!profileRes.ok) {
-      return c.html(renderCallbackPage(null, "Failed to fetch Google profile"));
+      return c.html(renderCallbackPage(null, "Failed to fetch Google profile.", "/login"), 502);
     }
 
     const profile = (await profileRes.json()) as {
@@ -96,18 +254,20 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
     };
 
     let phoneNumber = null;
-    try {
-      const peopleRes = await fetch("https://people.googleapis.com/v1/people/me?personFields=phoneNumbers", {
-        headers: { Authorization: `Bearer ${tokens.access_token}` },
-      });
-      if (peopleRes.ok) {
-        const peopleData = await peopleRes.json();
-        if (peopleData.phoneNumbers && peopleData.phoneNumbers.length > 0) {
-          phoneNumber = peopleData.phoneNumbers[0].value;
+    if ((process.env.GOOGLE_OAUTH_SCOPES || "").includes("user.phonenumbers.read")) {
+      try {
+        const peopleRes = await fetch("https://people.googleapis.com/v1/people/me?personFields=phoneNumbers", {
+          headers: { Authorization: `Bearer ${tokens.access_token}` },
+        });
+        if (peopleRes.ok) {
+          const peopleData = await peopleRes.json();
+          if (peopleData.phoneNumbers && peopleData.phoneNumbers.length > 0) {
+            phoneNumber = peopleData.phoneNumbers[0].value;
+          }
         }
+      } catch (e) {
+        console.error("Failed to fetch phone number from Google:", e);
       }
-    } catch (e) {
-      console.error("Failed to fetch phone number from Google:", e);
     }
 
     const db = getDb();
@@ -145,10 +305,9 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
 
     if (!user) {
       // Create new user
-      const uniqueId = generateUniqueId();
-      // Create a unique username from email or Google ID
+      const uniqueId = await generateUniqueId(db);
       const baseUsername = profile.email
-        ? profile.email.split("@")[0]
+        ? slugifyUsername(profile.email.split("@")[0])
         : `google_${profile.id}`;
 
       // Ensure username uniqueness
@@ -184,29 +343,37 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
 
     // Sign JWT
     const token = signLocalToken(user!.id);
+    const redirectPath = user!.phoneNumber
+      ? decodedState.redirect
+      : `/complete-profile?redirect=${encodeURIComponent(decodedState.redirect)}`;
 
     // Return HTML page that stores token and redirects
-    return c.html(renderCallbackPage(token, null));
+    return c.html(renderCallbackPage(token, null, redirectPath));
   } catch (err: any) {
     console.error("Google OAuth error:", err);
-    return c.html(renderCallbackPage(null, "An error occurred during authentication"));
+    return c.html(renderCallbackPage(null, "An error occurred during authentication.", "/login"), 500);
   }
 });
 
-function renderCallbackPage(token: string | null, error: string | null): string {
+function renderCallbackPage(token: string | null, error: string | null, redirectPath: string): string {
   if (error) {
+    const safeError = escapeHtml(error);
+    const safeRedirectPath = escapeHtml(sanitizeRedirectPath(redirectPath));
     return `<!DOCTYPE html>
 <html>
 <head><title>Login Failed</title></head>
 <body style="font-family:system-ui;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f8f7f5">
   <div style="text-align:center;max-width:400px;padding:40px;background:white;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.1)">
     <h2 style="color:#dc2626;margin-bottom:12px">Login Failed</h2>
-    <p style="color:#6b7280">${error}</p>
-    <a href="/login" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#FF6B1A;color:white;border-radius:8px;text-decoration:none">Try Again</a>
+    <p style="color:#6b7280">${safeError}</p>
+    <a href="${safeRedirectPath}" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#FF6B1A;color:white;border-radius:8px;text-decoration:none">Try Again</a>
   </div>
 </body>
 </html>`;
   }
+
+  const serializedToken = JSON.stringify(token);
+  const serializedRedirect = JSON.stringify(sanitizeRedirectPath(redirectPath));
 
   return `<!DOCTYPE html>
 <html>
@@ -218,8 +385,8 @@ function renderCallbackPage(token: string | null, error: string | null): string 
   </div>
   <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
   <script>
-    localStorage.setItem("local_auth_token", "${token}");
-    window.location.href = "/";
+    localStorage.setItem("local_auth_token", ${serializedToken});
+    window.location.replace(${serializedRedirect});
   </script>
 </body>
 </html>`;

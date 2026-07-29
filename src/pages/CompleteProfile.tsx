@@ -1,13 +1,28 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
 import { Phone, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+function getSafeRedirect(search: string) {
+  const redirect = new URLSearchParams(search).get("redirect");
+  if (
+    !redirect ||
+    !redirect.startsWith("/") ||
+    redirect.startsWith("//") ||
+    redirect.startsWith("/\\")
+  ) {
+    return "/";
+  }
+  return redirect;
+}
+
 export default function CompleteProfile() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = getSafeRedirect(location.search);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
 
@@ -16,7 +31,7 @@ export default function CompleteProfile() {
   const updateProfile = trpc.auth.updateProfile.useMutation({
     onSuccess: () => {
       utils.invalidate().then(() => {
-        navigate("/");
+        navigate(redirectTo);
       });
     },
     onError: (err) => setError(err.message),
@@ -24,11 +39,11 @@ export default function CompleteProfile() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate("/login");
+      navigate(`/login?redirect=${encodeURIComponent(`/complete-profile?redirect=${encodeURIComponent(redirectTo)}`)}`);
     } else if (!isLoading && user?.phoneNumber) {
-      navigate("/");
+      navigate(redirectTo);
     }
-  }, [isLoading, isAuthenticated, user, navigate]);
+  }, [isLoading, isAuthenticated, user, navigate, redirectTo]);
 
   if (isLoading || !isAuthenticated || user?.phoneNumber) {
     return null;

@@ -15,7 +15,10 @@ const trpcClient = trpc.createClient({
       transformer: superjson,
       headers() {
         const token = localStorage.getItem("local_auth_token");
-        return token ? { "x-local-auth-token": token } : {};
+        return token ? { 
+          "x-local-auth-token": token,
+          "Authorization": `Bearer ${token}`
+        } : {};
       },
       fetch(input, init) {
         return globalThis.fetch(input, {

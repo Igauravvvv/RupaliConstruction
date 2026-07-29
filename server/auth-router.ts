@@ -1,7 +1,7 @@
 import * as cookie from "cookie";
 import { Session } from "@contracts/constants";
 import { getSessionCookieOptions } from "./lib/cookies";
-import { createRouter, authedQuery } from "./middleware";
+import { createRouter, authedQuery, publicQuery } from "./middleware";
 import { z } from "zod";
 import { getDb } from "./queries/connection";
 import { users, localUsers } from "@db/schema";
@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
 
 export const authRouter = createRouter({
   me: authedQuery.query((opts) => opts.ctx.user),
-  logout: authedQuery.mutation(async ({ ctx }) => {
+  logout: publicQuery.mutation(async ({ ctx }) => {
     const opts = getSessionCookieOptions(ctx.req.headers);
     ctx.resHeaders.append(
       "set-cookie",

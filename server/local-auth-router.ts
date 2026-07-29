@@ -101,7 +101,13 @@ export const localAuthRouter = createRouter({
     }),
 
   me: publicQuery.query(async ({ ctx }) => {
-    const token = ctx.req.headers.get("x-local-auth-token");
+    let token = ctx.req.headers.get("x-local-auth-token");
+    if (!token) {
+      const authHeader = ctx.req.headers.get("authorization");
+      if (authHeader && authHeader.toLowerCase().startsWith("bearer ")) {
+        token = authHeader.substring(7);
+      }
+    }
     if (!token) return null;
 
     const user = await verifyLocalToken(token);

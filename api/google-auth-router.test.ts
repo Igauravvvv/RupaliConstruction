@@ -53,7 +53,7 @@ function resetAuthEnv() {
 
 async function loadGoogleAuth() {
   vi.resetModules();
-  return import("../server/google-auth-router");
+  return import("../server/google-auth-router.js");
 }
 
 function stateFromLocation(location: string) {

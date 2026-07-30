@@ -25,7 +25,7 @@ function resetAuthEnv() {
 
 async function createCaller(token?: string) {
   vi.resetModules();
-  const { appRouter } = await import("../server/router");
+  const { appRouter } = await import("../server/router.js");
   return appRouter.createCaller({
     req: new Request("https://rupali.example/api/trpc", {
       headers: token ? { "x-local-auth-token": token } : undefined,

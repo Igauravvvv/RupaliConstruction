@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import * as cookie from "cookie";
-import { env } from "./lib/env";
-import { getDb } from "./queries/connection";
+import { env } from "./lib/env.js";
+import { getDb } from "./queries/connection.js";
 import { localUsers } from "@db/schema";
 import { eq } from "drizzle-orm";
-import { signLocalToken } from "./local-auth-utils";
+import { signLocalToken } from "./local-auth-utils.js";
 import { nanoid } from "nanoid";
 
 const GOOGLE_STATE_COOKIE = "google_oauth_state";

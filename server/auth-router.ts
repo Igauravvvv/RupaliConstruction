@@ -1,9 +1,9 @@
 import * as cookie from "cookie";
 import { Session } from "@contracts/constants";
-import { getSessionCookieOptions } from "./lib/cookies";
-import { createRouter, authedQuery, publicQuery } from "./middleware";
+import { getSessionCookieOptions } from "./lib/cookies.js";
+import { createRouter, authedQuery, publicQuery } from "./middleware.js";
 import { z } from "zod";
-import { getDb } from "./queries/connection";
+import { getDb } from "./queries/connection.js";
 import { users, localUsers } from "@db/schema";
 import { eq } from "drizzle-orm";
 

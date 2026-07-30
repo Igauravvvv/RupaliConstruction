@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { createRouter, publicQuery } from "./middleware";
-import { getDb } from "./queries/connection";
+import { createRouter, publicQuery } from "./middleware.js";
+import { getDb } from "./queries/connection.js";
 import { localUsers } from "@db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
-import { signLocalToken, verifyLocalToken } from "./local-auth-utils";
+import { signLocalToken, verifyLocalToken } from "./local-auth-utils.js";
 import { TRPCError } from "@trpc/server";
 
 function generateUniqueId(): string {

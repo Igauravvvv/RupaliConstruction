@@ -12,7 +12,7 @@ vi.mock("../server/queries/connection", () => ({
 
 async function loadServerApp() {
   vi.resetModules();
-  return import("../server/boot");
+  return import("../server/boot.js");
 }
 
 describe("Vercel serverless auth entry", () => {

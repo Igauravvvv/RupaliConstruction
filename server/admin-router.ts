@@ -1,5 +1,5 @@
-import { createRouter, adminQuery } from "./middleware";
-import { getDb } from "./queries/connection";
+import { createRouter, adminQuery } from "./middleware.js";
+import { getDb } from "./queries/connection.js";
 import { users, localUsers, contacts, blogPosts, projects, testimonials, constructionLeads, costCalculatorRequests } from "@db/schema";
 import { sql, eq, desc } from "drizzle-orm";
 import { z } from "zod";

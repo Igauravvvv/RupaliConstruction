@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getDb } from "./queries/connection";
+import { getDb } from "./queries/connection.js";
 import { localUsers } from "@db/schema";
 import { eq } from "drizzle-orm";
 import type { LocalUser } from "@db/schema";

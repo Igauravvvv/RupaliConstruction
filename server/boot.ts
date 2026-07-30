@@ -48,35 +48,7 @@ app.post('/api/upload', async (c) => {
   }
 });
 
-app.use("/api/trpc/*", async (c) => {
-  let bodyData: string | undefined = undefined;
-  
-  if (c.req.method !== 'GET' && c.req.method !== 'HEAD') {
-    const nodeReq = c.env.incoming as any;
-    if (nodeReq && nodeReq.body) {
-      bodyData = typeof nodeReq.body === 'string' ? nodeReq.body : JSON.stringify(nodeReq.body);
-    } else {
-      try {
-        bodyData = await c.req.text();
-      } catch (e) {
-        console.error("Error parsing TRPC body in Hono:", e);
-      }
-    }
-  }
-
-  const reqObj = new Request(c.req.url, {
-    method: c.req.method,
-    headers: c.req.raw.headers,
-    body: bodyData,
-  });
-
-  return fetchRequestHandler({
-    endpoint: "/api/trpc",
-    req: reqObj,
-    router: appRouter,
-    createContext,
-  });
-});
+// TRPC is now handled natively in api/index.ts to bypass Vercel stream hanging issues
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
 
 import { getDb } from "./queries/connection.js";

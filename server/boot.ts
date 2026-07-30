@@ -49,9 +49,25 @@ app.post('/api/upload', async (c) => {
 });
 
 app.use("/api/trpc/*", async (c) => {
+  let bodyData: string | undefined = undefined;
+  
+  if (c.req.method !== 'GET' && c.req.method !== 'HEAD') {
+    try {
+      bodyData = await c.req.text();
+    } catch (e) {
+      console.error("Error parsing TRPC body in Hono:", e);
+    }
+  }
+
+  const reqObj = new Request(c.req.url, {
+    method: c.req.method,
+    headers: c.req.raw.headers,
+    body: bodyData,
+  });
+
   return fetchRequestHandler({
     endpoint: "/api/trpc",
-    req: c.req.raw,
+    req: reqObj,
     router: appRouter,
     createContext,
   });

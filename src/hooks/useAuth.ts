@@ -15,12 +15,24 @@ export type AuthUser = {
 export function useAuth() {
   const utils = trpc.useUtils();
 
+  // Try OAuth session first (Kimi auth via cookie)
   const {
     data: sessionUser,
-    isLoading,
+    isLoading: oauthLoading,
   } = trpc.auth.me.useQuery(undefined, {
     staleTime: 1000 * 60 * 5,
     retry: false,
+  });
+
+  // Try local auth (JWT token via localStorage) — always attempt
+  const hasLocalToken = typeof window !== "undefined" && !!localStorage.getItem("local_auth_token");
+  const {
+    data: localUser,
+    isLoading: localLoading,
+  } = trpc.localAuth.me.useQuery(undefined, {
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+    enabled: hasLocalToken,
   });
 
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -29,23 +41,27 @@ export function useAuth() {
     },
   });
 
+  // Prefer OAuth user, fall back to local user
+  const resolvedSource = sessionUser || localUser;
+
   const user: AuthUser | null = useMemo(() => {
-    if (sessionUser) {
+    if (resolvedSource) {
       return {
-        id: sessionUser.id,
-        name: sessionUser.name || "User",
-        email: sessionUser.email,
-        avatar: sessionUser.avatar,
-        role: sessionUser.role,
-        authType: sessionUser.authType,
-        uniqueId: sessionUser.uniqueId,
-        phoneNumber: sessionUser.phoneNumber,
+        id: resolvedSource.id,
+        name: resolvedSource.name || "User",
+        email: resolvedSource.email,
+        avatar: resolvedSource.avatar,
+        role: resolvedSource.role,
+        authType: resolvedSource.authType ?? ("local" as const),
+        uniqueId: resolvedSource.uniqueId,
+        phoneNumber: resolvedSource.phoneNumber,
       };
     }
     return null;
-  }, [sessionUser]);
+  }, [resolvedSource]);
 
   const isAdmin = user?.role === "admin";
+  const isLoading = oauthLoading || (hasLocalToken && localLoading);
 
   const logout = useCallback(() => {
     localStorage.removeItem("local_auth_token");

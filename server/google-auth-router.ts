@@ -118,7 +118,7 @@ function getStateCookieOptions(maxAge: number) {
   return {
     httpOnly: true,
     maxAge,
-    path: "/api/auth/google",
+    path: "/",
     sameSite: "lax" as const,
     secure: env.isProduction,
   };

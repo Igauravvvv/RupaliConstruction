@@ -52,10 +52,15 @@ app.use("/api/trpc/*", async (c) => {
   let bodyData: string | undefined = undefined;
   
   if (c.req.method !== 'GET' && c.req.method !== 'HEAD') {
-    try {
-      bodyData = await c.req.text();
-    } catch (e) {
-      console.error("Error parsing TRPC body in Hono:", e);
+    const nodeReq = c.env.incoming as any;
+    if (nodeReq && nodeReq.body) {
+      bodyData = typeof nodeReq.body === 'string' ? nodeReq.body : JSON.stringify(nodeReq.body);
+    } else {
+      try {
+        bodyData = await c.req.text();
+      } catch (e) {
+        console.error("Error parsing TRPC body in Hono:", e);
+      }
     }
   }
 

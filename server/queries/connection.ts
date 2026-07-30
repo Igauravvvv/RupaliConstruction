@@ -15,7 +15,7 @@ export function getDb() {
       throw new Error("DATABASE_URL is not configured. Please set it in your .env file.");
     }
     console.log("[DB] Creating new database connection...");
-    const client = postgres(connectionUrl, { prepare: false });
+    const client = postgres(connectionUrl, { prepare: false, ssl: "require", connect_timeout: 10 });
     instance = drizzle(client, {
       schema: fullSchema,
     });

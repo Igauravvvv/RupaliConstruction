@@ -11,7 +11,7 @@ import { googleAuth } from "./google-auth-router.js";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
-app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
+// app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
 app.get(Paths.oauthCallback, createOAuthCallbackHandler());
 app.route("", googleAuth);
 import fs from 'fs';
@@ -57,6 +57,23 @@ app.use("/api/trpc/*", async (c) => {
   });
 });
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
+
+import { getDb } from "./queries/connection.js";
+import { localUsers } from "../db/schema.js";
+app.get('/api/test-db-write', async (c) => {
+  try {
+    const db = getDb();
+    await db.insert(localUsers).values({
+      uniqueId: 'test-' + Date.now(),
+      username: 'test-' + Date.now(),
+      role: 'user',
+      authProvider: 'local'
+    });
+    return c.json({ success: true });
+  } catch (error) {
+    return c.json({ error: String(error) }, 500);
+  }
+});
 
 export default app;
 

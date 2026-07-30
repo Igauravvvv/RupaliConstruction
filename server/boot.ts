@@ -11,7 +11,7 @@ import { googleAuth } from "./google-auth-router.js";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
-// app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
+// // app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
 app.get(Paths.oauthCallback, createOAuthCallbackHandler());
 app.route("", googleAuth);
 import fs from 'fs';
@@ -88,6 +88,15 @@ app.get('/api/test-db-write', async (c) => {
     return c.json({ success: true });
   } catch (error) {
     return c.json({ error: String(error) }, 500);
+  }
+});
+
+app.post('/api/test-post', async (c) => {
+  try {
+    const text = await c.req.text();
+    return c.json({ receivedLength: text.length, body: text });
+  } catch (err) {
+    return c.json({ error: String(err) }, 500);
   }
 });
 

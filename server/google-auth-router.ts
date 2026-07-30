@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import * as cookie from "cookie";
 import { env } from "./lib/env.js";
 import { getDb } from "./queries/connection.js";
-import { localUsers } from "@db/schema";
+import { localUsers } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import { signLocalToken } from "./local-auth-utils.js";
 import { nanoid } from "nanoid";

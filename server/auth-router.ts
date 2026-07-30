@@ -1,10 +1,10 @@
 import * as cookie from "cookie";
-import { Session } from "@contracts/constants";
+import { Session } from "../contracts/constants.js";
 import { getSessionCookieOptions } from "./lib/cookies.js";
 import { createRouter, authedQuery, publicQuery } from "./middleware.js";
 import { z } from "zod";
 import { getDb } from "./queries/connection.js";
-import { users, localUsers } from "@db/schema";
+import { users, localUsers } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 
 export const authRouter = createRouter({

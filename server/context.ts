@@ -1,5 +1,5 @@
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import type { User, LocalUser } from "@db/schema";
+import type { User, LocalUser } from "../db/schema.js";
 import { authenticateRequest } from "./kimi/auth.js";
 import { verifyLocalToken } from "./local-auth-utils.js";
 

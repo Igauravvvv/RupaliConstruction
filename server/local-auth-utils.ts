@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { getDb } from "./queries/connection.js";
-import { localUsers } from "@db/schema";
+import { localUsers } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import type { LocalUser } from "@db/schema";
+import type { LocalUser } from "../db/schema.js";
 
 function getJwtSecret(): string {
   const secret = process.env.LOCAL_AUTH_SECRET || process.env.APP_SECRET;

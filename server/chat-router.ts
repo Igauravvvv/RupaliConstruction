@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, authedQuery, publicQuery } from "./middleware.js";
 import { getDb } from "./queries/connection.js";
-import { chatMessages, constructionLeads, costCalculatorRequests, projects } from "@db/schema";
+import { chatMessages, constructionLeads, costCalculatorRequests, projects } from "../db/schema.js";
 import { eq, desc } from "drizzle-orm";
 
 const SYSTEM_PROMPT = `You are the AI assistant for Rupali Construction, a premium construction company based in Gurgaon, India. You help visitors with questions about residential and commercial construction, renovation, interior design, project timelines, pricing estimates, and company services. Be professional, helpful, and knowledgeable about construction in India. Always encourage visitors to fill out the contact form or call for detailed consultations. Keep responses concise and helpful.`;

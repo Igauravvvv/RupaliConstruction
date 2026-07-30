@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "./middleware.js";
 import { getDb } from "./queries/connection.js";
-import { localUsers } from "@db/schema";
+import { localUsers } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { signLocalToken, verifyLocalToken } from "./local-auth-utils.js";

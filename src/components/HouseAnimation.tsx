@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 export default function HouseAnimation() {
-  const draw: any = {
+  const draw: Variants = {
     hidden: { pathLength: 0, opacity: 0 },
     visible: (i: number) => {
       const delay = 1 + i * 0.5;
@@ -24,6 +24,8 @@ export default function HouseAnimation() {
       </div>
       
       <motion.svg
+        role="img"
+        aria-label="House construction animation"
         width="160"
         height="160"
         viewBox="0 0 200 200"

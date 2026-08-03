@@ -1,6 +1,5 @@
 import { trpc } from "@/providers/trpc";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { TestimonialCard } from "@/components/ui/testimonial-card";
 
 export default function Testimonials() {

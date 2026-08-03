@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { trpc } from "@/providers/trpc";
 import { MapPin, Maximize2, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
@@ -10,20 +10,9 @@ const filterOptions = ["all", "residential", "commercial", "renovation"] as cons
 export default function Projects() {
   const [searchParams, setSearchParams] = useSearchParams();
   const typeFromUrl = searchParams.get("type");
-  const [activeFilter, setActiveFilter] = useState<string>(
-    typeFromUrl && filterOptions.includes(typeFromUrl as any) ? typeFromUrl : "all"
-  );
-
-  useEffect(() => {
-    if (typeFromUrl && filterOptions.includes(typeFromUrl as any)) {
-      setActiveFilter(typeFromUrl);
-    } else if (!typeFromUrl) {
-      setActiveFilter("all");
-    }
-  }, [typeFromUrl]);
+  const activeFilter = typeFromUrl && (filterOptions as readonly string[]).includes(typeFromUrl) ? typeFromUrl : "all";
 
   const handleFilterClick = (filter: string) => {
-    setActiveFilter(filter);
     if (filter === "all") {
       setSearchParams(new URLSearchParams());
     } else {

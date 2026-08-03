@@ -9,6 +9,7 @@ import { createOAuthCallbackHandler } from "./kimi/auth.js";
 import { Paths } from "../contracts/constants.js";
 import { googleAuth } from "./google-auth-router.js";
 import { sitemapHandler } from "./sitemap.js";
+import { seoPrerenderHandler } from "./seo-prerender.js";
 import { authenticateRequest } from "./kimi/auth.js";
 import { LOCAL_AUTH_COOKIE, verifyLocalToken } from "./local-auth-utils.js";
 import * as cookie from "cookie";
@@ -147,6 +148,15 @@ app.get("/api/health", (c) => c.json({ status: "ok" }));
 
 // For any other /api routes, return 404 (if not handled above)
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
+
+// Universal AI Crawler & SEO HTML Prerender Engine for page navigation requests
+app.get("*", async (c, next) => {
+  const path = new URL(c.req.url).pathname;
+  if (path.startsWith("/api/") || path === "/sitemap.xml" || path.includes(".")) {
+    return next();
+  }
+  return seoPrerenderHandler(c);
+});
 
 export default app;
 

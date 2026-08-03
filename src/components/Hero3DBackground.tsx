@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Points, PointMaterial, PresentationControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -154,31 +154,42 @@ function DataParticles() {
 }
 
 export default function Hero3DBackground() {
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
   return (
-    <div className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none">
-      {/* 3D Canvas moved to the left */}
+    <div className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none" aria-hidden="true" role="presentation">
+      {/* 3D Canvas moved to the left, rendered only on large screens to optimize mobile performance */}
       <div className="absolute inset-0 w-full h-full lg:w-3/5 lg:right-auto lg:left-0">
-        <Canvas dpr={[1, 2]} camera={{ position: [8, 5, 8], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />
-          <directionalLight position={[-10, 10, -5]} intensity={1.2} color="#ff6b1a" />
-          
-          <PresentationControls 
-            global 
-            snap={true} 
-            rotation={[0, -0.5, 0]} 
-            polar={[-Math.PI / 3, Math.PI / 3]} 
-            azimuth={[-Math.PI / 1.4, Math.PI / 2]}
-          >
-            <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-              <CitySkyline />
-            </Float>
-          </PresentationControls>
-          
-          <DataParticles />
-          
-          <fog attach="fog" args={['#F8F7F5', 8, 25]} />
-        </Canvas>
+        {isDesktop && (
+          <Canvas dpr={[1, 2]} camera={{ position: [8, 5, 8], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />
+            <directionalLight position={[-10, 10, -5]} intensity={1.2} color="#ff6b1a" />
+            
+            <PresentationControls 
+              global 
+              snap={true} 
+              rotation={[0, -0.5, 0]} 
+              polar={[-Math.PI / 3, Math.PI / 3]} 
+              azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+            >
+              <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+                <CitySkyline />
+              </Float>
+            </PresentationControls>
+            
+            <DataParticles />
+            
+            <fog attach="fog" args={['#F8F7F5', 8, 25]} />
+          </Canvas>
+        )}
       </div>
       
       {/* Gradient overlay to smoothly blend the right side into the 3D canvas on desktop */}

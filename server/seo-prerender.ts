@@ -59,16 +59,18 @@ function getHtmlTemplate(): string {
 }
 
 function getDefaultJsonLd(pageDescription?: string): Array<Record<string, any>> {
+  const desc = pageDescription || "At Rupali Construction, we provide turnkey home construction and architectural solutions with licensed structural engineers, quality material sourcing, and detailed 2D/3D Vastu designs in Gurgaon and Delhi NCR.";
   return [
     {
       "@context": "https://schema.org",
       "@type": "HomeAndConstructionBusiness",
+      "@id": `${BASE_URL}/#organization`,
       "name": "Rupali Construction",
-      "alternateName": "Rupali Homes",
+      "alternateName": ["Rupali Homes", "Rupali Construction Gurgaon"],
       "url": BASE_URL,
-      "logo": DEFAULT_IMAGE,
+      "logo": "https://rupaliconstruction.com/logo-icon.webp",
       "image": DEFAULT_IMAGE,
-      "description": pageDescription || "Rupali Construction is a premium Gurgaon-based contractor specializing in luxury residential villas, commercial building, structural design, and turnkey interiors.",
+      "description": desc,
       "telephone": "+919311830088",
       "email": "ujjwalt.rg@rupalihomes.com",
       "priceRange": "$$$",
@@ -89,9 +91,32 @@ function getDefaultJsonLd(pageDescription?: string): Array<Record<string, any>> 
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": `${BASE_URL}/#website`,
       "name": "Rupali Construction",
+      "alternateName": "Rupali Homes",
       "url": BASE_URL,
+      "description": desc,
+      "publisher": {
+        "@id": `${BASE_URL}/#organization`,
+      },
     },
+    {
+      "@context": "https://schema.org",
+      "@type": "SiteNavigationElement",
+      "@id": `${BASE_URL}/#sitelinks`,
+      "name": [
+        "Rupali Construction Ongoing Projects",
+        "House Construction, Gurugram & NCR",
+        "Best House Construction Quality & Standards",
+        "Best Luxury Construction Studio In Gurgaon"
+      ],
+      "url": [
+        `${BASE_URL}/projects`,
+        `${BASE_URL}/services`,
+        `${BASE_URL}/brand-standards`,
+        `${BASE_URL}/contact`
+      ]
+    }
   ];
 }
 
@@ -101,8 +126,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
   // Default homepage & General SEO fallback
   if (cleanPath === "/" || cleanPath === "/home") {
     return {
-      title: "Rupali Construction | Crafting Architecture into Reality in Gurgaon",
-      description: "Rupali Construction is Gurgaon's premier construction and architectural contracting company specializing in luxury residential villas, turnkey interiors, commercial building, and real estate consulting.",
+      title: "Home Construction Company In Gurgaon | Best Luxury House Builders | Rupali Construction",
+      description: "At Rupali Construction, we provide turnkey home construction and architectural solutions with licensed structural engineers, quality material sourcing, and detailed 2D/3D Vastu designs in Gurgaon and Delhi NCR.",
       canonical: BASE_URL,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd(),
@@ -152,8 +177,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath === "/services") {
     return {
-      title: "Construction & Architectural Services in Gurgaon | Rupali Construction",
-      description: "Explore our expert services: residential villa construction, turnkey commercial interiors, real estate consulting, and Vastu-compliant architectural planning in Gurugram.",
+      title: "House Construction, Gurugram & Delhi NCR | Rupali Construction Services",
+      description: "Rupali Construction is a leading construction company in Gurgaon delivering turnkey luxury villas, structural architecture, and Vastu-compliant floor designs.",
       canonical: `${BASE_URL}/services`,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd("Expert residential construction, turnkey interior architectural execution, and property real estate development in Gurgaon."),
@@ -202,8 +227,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
     }
 
     return {
-      title: "Featured Luxury Villa & Commercial Projects | Rupali Construction",
-      description: "Browse Rupali Construction's extensive portfolio of completed and ongoing luxury residential villas, commercial structures, and custom interiors in Gurgaon.",
+      title: "Rupali Construction Ongoing Projects | Best Home Builders",
+      description: "Rupali Construction has built completed and ongoing luxury residential villas, corporate spaces, and architectural landmarks across Gurgaon and Delhi NCR.",
       canonical: `${BASE_URL}/projects`,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd("Portfolio of turnkey residential villas and commercial installations engineered by Rupali Construction in Gurugram."),
@@ -466,8 +491,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath === "/brand-standards") {
     return {
-      title: "Brand Standards & Quality Construction Specifications | Rupali Construction",
-      description: "Review Rupali Construction's non-negotiable architectural specifications: TATA Steel reinforcement, UltraTech concrete, imported waterproofing, and digital site quality auditing.",
+      title: "Best House Construction Quality & Standards | Rupali Construction",
+      description: "Uncompromising Grade Fe500D TATA steel reinforcement, UltraTech M30 concrete, and imported crystallization waterproofing specified for every Rupali residence.",
       canonical: `${BASE_URL}/brand-standards`,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd("Quality standards and structural engineering protocols at Rupali Construction."),
@@ -489,8 +514,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath === "/contact") {
     return {
-      title: "Contact Rupali Construction | Corporate Office in Sector 71 Gurgaon",
-      description: "Get in touch with Rupali Construction for architectural consultation, villa cost estimates, and real estate inquiry. Corporate office: 5th floor, M3M Broadway, Sector 71, Gurugram.",
+      title: "Best Luxury Construction Studio In Gurgaon | Contact Rupali Construction",
+      description: "Schedule an architectural consultation and Vastu plot appraisal with Rupali Construction's corporate engineering studio in Sector 71, Gurugram.",
       canonical: `${BASE_URL}/contact`,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd("Contact information and Gurugram headquarters for Rupali Construction."),

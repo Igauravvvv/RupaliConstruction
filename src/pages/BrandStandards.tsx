@@ -28,7 +28,38 @@ export default function BrandStandards() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <SEO title="Brand Standards | Rupali Construction" />
+      <SEO 
+        title="Luxury Material & Brand Standards | Rupali Construction"
+        description="Explore the benchmark quality brand standards, luxury fitting brands, architectural specifications, and proven structural materials utilized by Rupali Construction in Gurugram."
+        keywords="construction brands Gurgaon, luxury fittings brands India, build quality standards NCR, home construction materials Sector 71 Gurgaon"
+        url="/brand-standards"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Luxury Brand & Quality Standards - Rupali Construction",
+            "description": "Benchmark quality architectural standards and trusted brand fittings utilized by Rupali Construction."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Brand Standards",
+                "item": "https://rupaliconstruction.com/brand-standards"
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
 
       {/* ─── UNIFIED HERO & CATEGORY SECTION ─── */}

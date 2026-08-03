@@ -8,7 +8,46 @@ import SEO from "@/components/SEO";
 export default function Services() {
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden relative">
-      <SEO title="Our Services | Rupali Construction" description="Explore our comprehensive suite of construction, design, and engineering services." />
+      <SEO 
+        title="Luxury Construction & Architectural Services in Gurgaon | Rupali Construction" 
+        description="Explore our comprehensive suite of luxury residential construction, turnkey interior design, villa renovation, architectural engineering, and real estate resale services in Gurugram."
+        keywords="luxury construction Gurgaon, villa construction services, interior design Sector 71 Gurgaon, architecture company Haryana, turnkey contractor Gurgaon"
+        url="/services"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "serviceType": "Residential & Luxury Villa Construction",
+            "provider": {
+              "@type": "HomeAndConstructionBusiness",
+              "name": "Rupali Construction"
+            },
+            "areaServed": {
+              "@type": "City",
+              "name": "Gurugram"
+            },
+            "description": "Custom residential villa construction, turnkey interiors, structural engineering, and real estate consulting."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://rupaliconstruction.com/services"
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
       
       {/* Background Image with Premium Gradient Fade */}

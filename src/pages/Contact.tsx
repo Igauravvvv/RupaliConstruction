@@ -36,7 +36,53 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen relative">
-      <SEO title="Contact Us | Rupali Construction" />
+      <SEO 
+        title="Contact Us & Get a Construction Quote | Rupali Construction Gurgaon"
+        description="Connect with Rupali Construction in Gurugram for your luxury home building, architecture, interior design, or real estate consultation. Visit our office at M3M Broadway, Sector 71."
+        keywords="Rupali Construction address, construction quote Gurgaon, home contractors Sector 71 Gurgaon, phone number Rupali Construction, construction companies near M3M Broadway"
+        url="/contact"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contact Rupali Construction",
+            "description": "Get in touch with Rupali Construction for residential villa construction and architecture consultation in Gurgaon.",
+            "mainEntity": {
+              "@type": "HomeAndConstructionBusiness",
+              "name": "Rupali Construction",
+              "telephone": "+919311830088",
+              "email": "ujjwalt.rg@rupalihomes.com",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "5th floor, M3M Broadway, Sector 71",
+                "addressLocality": "Gurugram",
+                "addressRegion": "Haryana",
+                "postalCode": "122004",
+                "addressCountry": "IN"
+              },
+              "openingHours": "Mo-Sa 09:00-19:00"
+            }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Contact",
+                "item": "https://rupaliconstruction.com/contact"
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
 
       {/* Background Image with Premium Gradient Fade */}

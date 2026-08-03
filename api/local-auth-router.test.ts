@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import bcrypt from "bcryptjs";
+import * as cookie from "cookie";
 
 const findFirst = vi.fn();
 const insertValues = vi.fn();
@@ -14,6 +15,9 @@ vi.mock("../server/queries/connection", () => ({
     insert: () => ({
       values: insertValues,
     }),
+    update: () => ({
+      set: () => ({ where: vi.fn() }),
+    }),
   }),
 }));
 
@@ -23,12 +27,12 @@ function resetAuthEnv() {
   vi.stubEnv("APP_SECRET", "");
 }
 
-async function createCaller(token?: string) {
+async function createCaller(localAuthCookie?: string) {
   vi.resetModules();
   const { appRouter } = await import("../server/router.js");
   return appRouter.createCaller({
     req: new Request("https://rupali.example/api/trpc", {
-      headers: token ? { "x-local-auth-token": token } : undefined,
+      headers: localAuthCookie ? { cookie: localAuthCookie } : undefined,
     }),
     resHeaders: new Headers(),
   });
@@ -45,7 +49,7 @@ describe("local password auth", () => {
     vi.unstubAllEnvs();
   });
 
-  it("logs in with a valid username and password and returns a usable token", async () => {
+  it("logs in with a valid username and password and sets an HttpOnly session cookie", async () => {
     const passwordHash = await bcrypt.hash("correct-password", 4);
     const dbUser = {
       id: 3,
@@ -62,7 +66,12 @@ describe("local password auth", () => {
     };
 
     findFirst.mockResolvedValueOnce(dbUser);
-    const caller = await createCaller();
+    const resHeaders = new Headers();
+    const { appRouter } = await import("../server/router.js");
+    const caller = appRouter.createCaller({
+      req: new Request("https://rupali.example/api/trpc"),
+      resHeaders,
+    });
 
     const result = await caller.localAuth.login({
       username: "client",
@@ -70,10 +79,13 @@ describe("local password auth", () => {
     });
 
     expect(result.success).toBe(true);
-    expect(result.token).toEqual(expect.any(String));
+    const authCookie = cookie.parse(resHeaders.get("set-cookie") || "").rc_local_auth;
+    expect(authCookie).toEqual(expect.any(String));
+    expect(resHeaders.get("set-cookie")).toContain("HttpOnly");
+    expect(resHeaders.get("set-cookie")).toContain("Secure");
 
     findFirst.mockResolvedValueOnce(dbUser);
-    const authedCaller = await createCaller(result.token);
+    const authedCaller = await createCaller(cookie.serialize("rc_local_auth", authCookie));
     await expect(authedCaller.localAuth.me()).resolves.toMatchObject({
       id: 100003,
       name: "Client User",

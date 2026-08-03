@@ -4,7 +4,7 @@ import { env } from "./lib/env.js";
 import { getDb } from "./queries/connection.js";
 import { localUsers } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import { signLocalToken } from "./local-auth-utils.js";
+import { serializeLocalAuthCookie, signLocalToken } from "./local-auth-utils.js";
 import { nanoid } from "nanoid";
 
 const GOOGLE_STATE_COOKIE = "google_oauth_state";
@@ -147,7 +147,6 @@ const googleAuth = new Hono();
 // Step 1: Redirect to Google OAuth consent screen
 googleAuth.get("/api/auth/google", (c) => {
   const { clientId } = getGoogleClientConfig();
-  console.log("[GoogleAuth] /api/auth/google hit. clientId present:", !!clientId);
   if (!clientId) {
     console.error("[GoogleAuth] GOOGLE_CLIENT_ID is not set. Google sign-in disabled.");
     return c.html(renderCallbackPage(null, "Google sign-in is not configured.", "/login"), 500);
@@ -155,8 +154,6 @@ googleAuth.get("/api/auth/google", (c) => {
 
   const baseUrl = getBaseUrl(c.req.raw);
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
-  console.log("[GoogleAuth] Computed baseUrl:", baseUrl);
-  console.log("[GoogleAuth] Computed redirectUri:", redirectUri);
   const redirect = sanitizeRedirectPath(c.req.query("redirect"));
   const state = encodeState({ nonce: nanoid(24), redirect });
   const scopes = process.env.GOOGLE_OAUTH_SCOPES || "openid email profile";
@@ -219,10 +216,6 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
     const { clientId, clientSecret } = getGoogleClientConfig();
 
-    console.log("[GoogleAuth] Callback: baseUrl =", baseUrl);
-    console.log("[GoogleAuth] Callback: redirectUri =", redirectUri);
-    console.log("[GoogleAuth] Callback: clientId present =", !!clientId, "clientSecret present =", !!clientSecret);
-
     if (!clientId || !clientSecret) {
       console.error("[GoogleAuth] Missing clientId or clientSecret in callback.");
       return c.html(renderCallbackPage(null, "Google sign-in is not configured.", "/login"), 500);
@@ -269,7 +262,13 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
       email: string;
       name: string;
       picture: string;
+      verified_email?: boolean;
     };
+
+    if (!profile.id || !profile.email || profile.verified_email !== true) {
+      console.error("[GoogleAuth] Refusing an OAuth profile without a verified email address.");
+      return c.html(renderCallbackPage(null, "Google did not provide a verified email address.", "/login"), 502);
+    }
 
     let phoneNumber = null;
     if ((process.env.GOOGLE_OAUTH_SCOPES || "").includes("user.phonenumbers.read")) {
@@ -361,12 +360,15 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
 
     // Sign JWT
     const token = signLocalToken(user!.id);
+    await db.update(localUsers)
+      .set({ lastSignInAt: new Date(), updatedAt: new Date() })
+      .where(eq(localUsers.id, user!.id));
     const redirectPath = user!.phoneNumber
       ? decodedState.redirect
       : `/complete-profile?redirect=${encodeURIComponent(decodedState.redirect)}`;
 
-    // Return HTML page that stores token and redirects
-    return c.html(renderCallbackPage(token, null, redirectPath));
+    c.res.headers.append("Set-Cookie", serializeLocalAuthCookie(token));
+    return c.html(renderCallbackPage(null, null, redirectPath));
   } catch (err) {
     console.error("[GoogleAuth] OAuth error:", err);
     return c.html(renderCallbackPage(null, "An error occurred during authentication.", "/login"), 500);
@@ -390,7 +392,6 @@ function renderCallbackPage(token: string | null, error: string | null, redirect
 </html>`;
   }
 
-  const serializedToken = JSON.stringify(token);
   const serializedRedirect = JSON.stringify(sanitizeRedirectPath(redirectPath));
 
   return `<!DOCTYPE html>
@@ -402,10 +403,7 @@ function renderCallbackPage(token: string | null, error: string | null, redirect
     <p style="color:#6b7280">Signing you in...</p>
   </div>
   <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-  <script>
-    localStorage.setItem("local_auth_token", ${serializedToken});
-    window.location.replace(${serializedRedirect});
-  </script>
+  <script>window.location.replace(${serializedRedirect});</script>
 </body>
 </html>`;
 }

@@ -6,6 +6,7 @@ import {
   timestamp,
   integer,
   boolean,
+  index,
   pgEnum,
 } from "drizzle-orm/pg-core";
 
@@ -24,10 +25,11 @@ export const users = pgTable("users", {
   phoneNumber: varchar("phoneNumber", { length: 50 }),
   avatar: text("avatar"),
   role: roleEnum("role").default("user").notNull(),
+  profileCompleted: boolean("profileCompleted").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   lastSignInAt: timestamp("lastSignInAt").defaultNow().notNull(),
-});
+}, (table) => [index("users_last_sign_in_at_idx").on(table.lastSignInAt)]);
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -48,9 +50,11 @@ export const localUsers = pgTable("local_users", {
   avatar: text("avatar"),
   authProvider: authProviderEnum("authProvider").default("local").notNull(),
   role: roleEnum("role").default("user").notNull(),
+  profileCompleted: boolean("profileCompleted").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-});
+  lastSignInAt: timestamp("lastSignInAt").defaultNow().notNull(),
+}, (table) => [index("local_users_last_sign_in_at_idx").on(table.lastSignInAt)]);
 
 export type LocalUser = typeof localUsers.$inferSelect;
 export type InsertLocalUser = typeof localUsers.$inferInsert;
@@ -67,7 +71,7 @@ export const contacts = pgTable("contacts", {
   message: text("message"),
   status: statusEnum("status").default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => [index("contacts_status_created_at_idx").on(table.status, table.createdAt)]);
 
 export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = typeof contacts.$inferInsert;
@@ -88,7 +92,10 @@ export const blogPosts = pgTable("blog_posts", {
   viewCount: integer("viewCount").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-});
+}, (table) => [
+  index("blog_posts_published_created_at_idx").on(table.published, table.createdAt),
+  index("blog_posts_category_published_created_at_idx").on(table.category, table.published, table.createdAt),
+]);
 
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = typeof blogPosts.$inferInsert;
@@ -110,7 +117,7 @@ export const projects = pgTable("projects", {
   cost: varchar("cost", { length: 100 }),
   processSteps: text("process_steps"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => [index("projects_filter_created_at_idx").on(table.type, table.status, table.featured, table.createdAt)]);
 
 export type Project = typeof projects.$inferSelect;
 export type InsertProject = typeof projects.$inferInsert;
@@ -126,7 +133,7 @@ export const testimonials = pgTable("testimonials", {
   image: text("image"),
   featured: boolean("featured").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => [index("testimonials_featured_created_at_idx").on(table.featured, table.createdAt)]);
 
 export type Testimonial = typeof testimonials.$inferSelect;
 export type InsertTestimonial = typeof testimonials.$inferInsert;
@@ -134,11 +141,12 @@ export type InsertTestimonial = typeof testimonials.$inferInsert;
 // Chat messages
 export const chatMessages = pgTable("chat_messages", {
   id: serial("id").primaryKey(),
+  userId: integer("userId").notNull().default(0),
   sessionId: varchar("sessionId", { length: 255 }).notNull(),
   role: chatRoleEnum("role").notNull(),
   content: text("content").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => [index("chat_messages_user_session_created_at_idx").on(table.userId, table.sessionId, table.createdAt)]);
 
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatMessage = typeof chatMessages.$inferInsert;
@@ -169,7 +177,7 @@ export const constructionLeads = pgTable("construction_leads", {
   assignedTo: varchar("assignedTo", { length: 255 }),
   remarks: text("remarks"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => [index("construction_leads_status_created_at_idx").on(table.status, table.createdAt)]);
 
 export type ConstructionLead = typeof constructionLeads.$inferSelect;
 export type InsertConstructionLead = typeof constructionLeads.$inferInsert;
@@ -188,7 +196,7 @@ export const costCalculatorRequests = pgTable("cost_calculator_requests", {
   phone: varchar("phone", { length: 50 }),
   email: varchar("email", { length: 320 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+}, (table) => [index("cost_calculator_requests_created_at_idx").on(table.createdAt)]);
 
 export type CostCalculatorRequest = typeof costCalculatorRequests.$inferSelect;
 export type InsertCostCalculatorRequest = typeof costCalculatorRequests.$inferInsert;

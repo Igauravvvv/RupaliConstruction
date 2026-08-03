@@ -10,6 +10,7 @@ export type AuthUser = {
   authType: "oauth" | "local";
   uniqueId?: string;
   phoneNumber?: string | null;
+  profileCompleted?: boolean;
 };
 
 export function useAuth() {
@@ -25,14 +26,12 @@ export function useAuth() {
   });
 
   // Try local auth (JWT token via localStorage) — always attempt
-  const hasLocalToken = typeof window !== "undefined" && !!localStorage.getItem("local_auth_token");
   const {
     data: localUser,
     isLoading: localLoading,
   } = trpc.localAuth.me.useQuery(undefined, {
     staleTime: 1000 * 60 * 5,
     retry: false,
-    enabled: hasLocalToken,
   });
 
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -55,16 +54,16 @@ export function useAuth() {
         authType: resolvedSource.authType ?? ("local" as const),
         uniqueId: resolvedSource.uniqueId,
         phoneNumber: resolvedSource.phoneNumber,
+        profileCompleted: (resolvedSource as any).profileCompleted,
       };
     }
     return null;
   }, [resolvedSource]);
 
   const isAdmin = user?.role === "admin";
-  const isLoading = oauthLoading || (hasLocalToken && localLoading);
+  const isLoading = oauthLoading || localLoading;
 
   const logout = useCallback(() => {
-    localStorage.removeItem("local_auth_token");
     logoutMutation.mutate();
     setTimeout(() => {
       window.location.reload();

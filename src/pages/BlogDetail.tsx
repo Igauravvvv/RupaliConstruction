@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import { fallbackPosts } from "./Blog";
+import SEO from "@/components/SEO";
 
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -16,6 +17,62 @@ export default function BlogDetail() {
 
   return (
     <div className="min-h-screen relative">
+      {post && (
+        <SEO 
+          title={`${post.title} | Construction Insights | Rupali Construction`}
+          description={post.excerpt || (post.content && post.content.substring(0, 160)) || "Read expert construction and architecture insights from Rupali Construction."}
+          keywords={`${post.category || 'construction'}, blog, Gurgaon, construction insights, architecture`}
+          image={post.coverImage || "https://rupaliconstruction.com/logo-main.webp"}
+          url={`/blog/${post.slug || slug}`}
+          type="article"
+          schema={[
+            {
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              "headline": post.title,
+              "image": [post.coverImage || "https://rupaliconstruction.com/logo-main.webp"],
+              "datePublished": post.createdAt ? new Date(post.createdAt).toISOString() : new Date().toISOString(),
+              "author": {
+                "@type": "Organization",
+                "name": post.author || "Rupali Construction Team"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "Rupali Construction",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://rupaliconstruction.com/logo-main.webp"
+                }
+              },
+              "description": post.excerpt || "Expert construction insights."
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://rupaliconstruction.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Blog",
+                  "item": "https://rupaliconstruction.com/blog"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": post.title,
+                  "item": `https://rupaliconstruction.com/blog/${post.slug || slug}`
+                }
+              ]
+            }
+          ]}
+        />
+      )}
       <Navbar />
 
       {/* Background Image with Premium Gradient Fade */}

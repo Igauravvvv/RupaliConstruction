@@ -2,6 +2,8 @@ import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { User, LocalUser } from "../db/schema.js";
 import { authenticateRequest } from "./kimi/auth.js";
 import { verifyLocalToken } from "./local-auth-utils.js";
+import { LOCAL_AUTH_COOKIE } from "./local-auth-utils.js";
+import * as cookie from "cookie";
 
 export type UnifiedUser = {
   id: number;
@@ -12,6 +14,7 @@ export type UnifiedUser = {
   authType: "oauth" | "local";
   uniqueId?: string;
   phoneNumber?: string | null;
+  profileCompleted: boolean;
 };
 
 export type TrpcContext = {
@@ -29,6 +32,7 @@ function oauthToUnified(u: User): UnifiedUser {
     role: u.role as "user" | "admin",
     authType: "oauth",
     phoneNumber: u.phoneNumber,
+    profileCompleted: u.profileCompleted,
   };
 }
 
@@ -42,6 +46,7 @@ function localToUnified(u: LocalUser): UnifiedUser {
     authType: "local",
     uniqueId: u.uniqueId,
     phoneNumber: u.phoneNumber,
+    profileCompleted: u.profileCompleted,
   };
 }
 
@@ -63,13 +68,8 @@ export async function createContext(
 
   // Fall back to local auth
   try {
-    let token = opts.req.headers.get("x-local-auth-token");
-    if (!token) {
-      const authHeader = opts.req.headers.get("authorization");
-      if (authHeader && authHeader.toLowerCase().startsWith("bearer ")) {
-        token = authHeader.substring(7);
-      }
-    }
+    const cookies = cookie.parse(opts.req.headers.get("cookie") || "");
+    const token = cookies[LOCAL_AUTH_COOKIE];
     
     if (token) {
       const localUser = await verifyLocalToken(token);

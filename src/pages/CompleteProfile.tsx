@@ -1,63 +1,68 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
-import { Phone, CheckCircle2 } from "lucide-react";
+import { Phone, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 function getSafeRedirect(search: string) {
   const redirect = new URLSearchParams(search).get("redirect");
-  if (
-    !redirect ||
-    !redirect.startsWith("/") ||
-    redirect.startsWith("//") ||
-    redirect.startsWith("/\\")
-  ) {
+  if (!redirect || !redirect.startsWith("/") || redirect.startsWith("//") || redirect.startsWith("/\\")) {
     return "/";
   }
   return redirect;
 }
 
 export default function CompleteProfile() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const redirectTo = getSafeRedirect(location.search);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
 
-  const utils = trpc.useUtils();
-
   const updateProfile = trpc.auth.updateProfile.useMutation({
     onSuccess: () => {
-      utils.invalidate().then(() => {
-        navigate(redirectTo);
-      });
+      // Reload page to reflect updated token/user data or just navigate
+      window.location.href = redirectTo;
     },
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      setError(err.message);
+    },
   });
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       navigate(`/login?redirect=${encodeURIComponent(`/complete-profile?redirect=${encodeURIComponent(redirectTo)}`)}`);
-    } else if (!isLoading && user?.phoneNumber) {
+    } else if (!authLoading && user?.profileCompleted) {
       navigate(redirectTo);
     }
-  }, [isLoading, isAuthenticated, user, navigate, redirectTo]);
-
-  if (isLoading || !isAuthenticated || user?.phoneNumber) {
-    return null;
-  }
+  }, [authLoading, isAuthenticated, user, navigate, redirectTo]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (phoneNumber.length < 10) {
-      setError("Please enter a valid phone number");
+
+    if (!phoneNumber || phoneNumber.length < 10) {
+      setError("Please enter a valid phone number (at least 10 digits).");
       return;
     }
+
     updateProfile.mutate({ phoneNumber });
   };
+
+  const handleSkip = () => {
+    updateProfile.mutate({ phoneNumber: undefined });
+  };
+
+  if (authLoading || (isAuthenticated && user?.profileCompleted)) {
+    return (
+      <div className="min-h-screen bg-[var(--rc-gray)] flex items-center justify-center">
+        <div className="animate-spin w-10 h-10 border-3 border-[var(--rc-blue)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[var(--rc-gray)] flex items-center justify-center p-4">

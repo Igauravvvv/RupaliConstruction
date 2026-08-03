@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createRouter, publicQuery, adminQuery } from "./middleware.js";
 import { getDb } from "./queries/connection.js";
 import { projects } from "../db/schema.js";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 export const projectRouter = createRouter({
   list: publicQuery
@@ -23,7 +23,7 @@ export const projectRouter = createRouter({
 
       if (input?.type) conditions.push(eq(projects.type, input.type));
       if (input?.status) conditions.push(eq(projects.status, input.status));
-      if (input?.featured) conditions.push(eq(projects.featured, input.featured));
+      if (input?.featured !== undefined) conditions.push(eq(projects.featured, input.featured));
 
       const where = conditions.length > 1 ? and(...conditions) : conditions[0];
 
@@ -42,7 +42,10 @@ export const projectRouter = createRouter({
             .limit(input?.limit || 10)
             .offset(input?.offset || 0);
 
-      return { items, total: items.length };
+      const countResult = where
+        ? await db.select({ count: sql<number>`count(*)` }).from(projects).where(where)
+        : await db.select({ count: sql<number>`count(*)` }).from(projects);
+      return { items, total: Number(countResult[0]?.count ?? 0) };
     }),
 
   bySlug: publicQuery

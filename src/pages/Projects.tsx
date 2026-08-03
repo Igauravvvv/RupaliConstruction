@@ -10,7 +10,38 @@ import SEO from "@/components/SEO";
 export default function Projects() {
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden relative">
-      <SEO title="Our Projects | Rupali Construction" />
+      <SEO 
+        title="Luxury Villa Projects & Portfolio in Gurgaon | Rupali Construction" 
+        description="Explore our exclusive portfolio of delivered luxury residential villas, custom custom estates, turnkey renovations, and commercial architectures in Gurugram and Delhi NCR."
+        keywords="luxury projects Gurgaon, residential villas built Gurgaon, construction portfolio Gurgaon, turnkey houses Sector 71, luxury custom home designs"
+        url="/projects"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Luxury Projects Portfolio - Rupali Construction",
+            "description": "Showcase of residential villas, commercial landmarks, and architectural masterpieces constructed in Gurgaon."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://rupaliconstruction.com/projects"
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
       
       {/* Background Image with Premium Gradient Fade */}

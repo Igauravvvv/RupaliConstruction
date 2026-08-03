@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createRouter, authedQuery, publicQuery } from "./middleware.js";
 import { getDb } from "./queries/connection.js";
 import { chatMessages, constructionLeads, costCalculatorRequests, projects } from "../db/schema.js";
-import { eq, desc } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 
 const SYSTEM_PROMPT = `You are the AI assistant for Rupali Construction, a premium construction company based in Gurgaon, India. You help visitors with questions about residential and commercial construction, renovation, interior design, project timelines, pricing estimates, and company services. Be professional, helpful, and knowledgeable about construction in India. Always encourage visitors to fill out the contact form or call for detailed consultations. Keep responses concise and helpful.`;
 
@@ -10,15 +10,16 @@ export const chatRouter = createRouter({
   send: authedQuery
     .input(
       z.object({
-        sessionId: z.string(),
-        message: z.string().min(1),
+        sessionId: z.string().min(16).max(128).regex(/^session_[A-Za-z0-9_-]+$/),
+        message: z.string().trim().min(1).max(2_000),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const db = getDb();
 
       // Store user message
       await db.insert(chatMessages).values({
+        userId: ctx.user.id,
         sessionId: input.sessionId,
         role: "user",
         content: input.message,
@@ -28,7 +29,7 @@ export const chatRouter = createRouter({
       const history = await db
         .select()
         .from(chatMessages)
-        .where(eq(chatMessages.sessionId, input.sessionId))
+        .where(and(eq(chatMessages.userId, ctx.user.id), eq(chatMessages.sessionId, input.sessionId)))
         .orderBy(desc(chatMessages.createdAt))
         .limit(10);
 
@@ -79,6 +80,7 @@ export const chatRouter = createRouter({
 
       // Store assistant response
       await db.insert(chatMessages).values({
+        userId: ctx.user.id,
         sessionId: input.sessionId,
         role: "assistant",
         content: assistantContent,
@@ -179,13 +181,13 @@ export const chatRouter = createRouter({
     }),
 
   history: authedQuery
-    .input(z.object({ sessionId: z.string() }))
-    .query(async ({ input }) => {
+    .input(z.object({ sessionId: z.string().min(16).max(128).regex(/^session_[A-Za-z0-9_-]+$/) }))
+    .query(async ({ input, ctx }) => {
       const db = getDb();
       return db
         .select()
         .from(chatMessages)
-        .where(eq(chatMessages.sessionId, input.sessionId))
+        .where(and(eq(chatMessages.userId, ctx.user.id), eq(chatMessages.sessionId, input.sessionId)))
         .orderBy(chatMessages.createdAt);
     }),
 });

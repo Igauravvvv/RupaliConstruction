@@ -2,19 +2,19 @@ import { z } from "zod";
 import { createRouter, publicQuery, adminQuery } from "./middleware.js";
 import { getDb } from "./queries/connection.js";
 import { contacts } from "../db/schema.js";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, gte, sql } from "drizzle-orm";
 
 export const contactRouter = createRouter({
   submit: publicQuery
     .input(
       z.object({
-        name: z.string().min(1, "Name is required"),
+        name: z.string().trim().min(1, "Name is required").max(100),
         email: z.string().email("Valid email is required"),
-        phone: z.string().optional(),
-        city: z.string().optional(),
-        service: z.string().optional(),
-        budget: z.string().optional(),
-        message: z.string().optional(),
+        phone: z.string().trim().max(20).optional(),
+        city: z.string().trim().max(100).optional(),
+        service: z.string().trim().max(100).optional(),
+        budget: z.string().trim().max(100).optional(),
+        message: z.string().trim().max(5000).optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -62,21 +62,23 @@ export const contactRouter = createRouter({
 
   stats: adminQuery.query(async () => {
     const db = getDb();
-    const all = await db.select().from(contacts);
-    const total = all.length;
-    const newCount = all.filter((c) => c.status === "new").length;
-    const readCount = all.filter((c) => c.status === "read").length;
-    const repliedCount = all.filter((c) => c.status === "replied").length;
-    const archivedCount = all.filter((c) => c.status === "archived").length;
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const todayCount = all.filter((c) => c.createdAt >= today).length;
-
     const weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
-    const weekCount = all.filter((c) => c.createdAt >= weekAgo).length;
-
-    return { total, new: newCount, read: readCount, replied: repliedCount, archived: archivedCount, today: todayCount, thisWeek: weekCount };
+    const [counts] = await db.select({
+      total: sql<number>`count(*)`,
+      new: sql<number>`count(*) filter (where ${contacts.status} = 'new')`,
+      read: sql<number>`count(*) filter (where ${contacts.status} = 'read')`,
+      replied: sql<number>`count(*) filter (where ${contacts.status} = 'replied')`,
+      archived: sql<number>`count(*) filter (where ${contacts.status} = 'archived')`,
+      today: sql<number>`count(*) filter (where ${contacts.createdAt} >= ${today})`,
+      thisWeek: sql<number>`count(*) filter (where ${contacts.createdAt} >= ${weekAgo})`,
+    }).from(contacts);
+    return {
+      total: Number(counts?.total ?? 0), new: Number(counts?.new ?? 0), read: Number(counts?.read ?? 0),
+      replied: Number(counts?.replied ?? 0), archived: Number(counts?.archived ?? 0),
+      today: Number(counts?.today ?? 0), thisWeek: Number(counts?.thisWeek ?? 0),
+    };
   }),
 });

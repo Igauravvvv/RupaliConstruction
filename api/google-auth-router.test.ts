@@ -65,6 +65,7 @@ describe("Google auth serverless route", () => {
     resetAuthEnv();
     findFirst.mockReset();
     updateSet.mockReset();
+    updateSet.mockReturnValue({ where: vi.fn() });
     insertValues.mockReset();
     vi.stubGlobal("fetch", vi.fn());
   });
@@ -205,9 +206,10 @@ describe("Google auth serverless route", () => {
       )
       .mockResolvedValueOnce(
         Response.json({
-          id: "google-user-id",
-          email: "client@example.com",
-          name: "Client User",
+        id: "google-user-id",
+        email: "client@example.com",
+        verified_email: true,
+        name: "Client User",
           picture: "https://example.com/avatar.png",
         }),
       );
@@ -223,8 +225,9 @@ describe("Google auth serverless route", () => {
     const body = await response.text();
 
     expect(response.status).toBe(200);
-    expect(body).toContain('localStorage.setItem("local_auth_token"');
+    expect(body).not.toContain("localStorage");
     expect(body).toContain('window.location.replace("/admin")');
+    expect(response.headers.get("set-cookie")).toContain("rc_local_auth=");
     expect(insertValues).not.toHaveBeenCalled();
 
     const tokenRequestBody = vi.mocked(fetch).mock.calls[0][1]?.body as URLSearchParams;

@@ -30,6 +30,12 @@ function StatsCards() {
       color: "bg-blue-50 text-blue-600",
     },
     {
+      label: "Logins Today",
+      value: (stats?.users as any)?.loginsToday || 0,
+      icon: Users,
+      color: "bg-emerald-50 text-emerald-600",
+    },
+    {
       label: "Contact Submissions",
       value: stats?.contacts || 0,
       icon: MessageSquare,

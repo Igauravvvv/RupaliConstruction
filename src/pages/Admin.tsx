@@ -7,6 +7,7 @@ import AdminProjects from "@/components/admin/AdminProjects";
 import AdminAccount from "@/components/admin/AdminAccount";
 import AdminLeads from "@/components/admin/AdminLeads";
 import AdminBlogs from "@/components/admin/AdminBlogs";
+import AdminUsers from "@/components/admin/AdminUsers";
 import {
   LayoutDashboard,
   Briefcase,
@@ -21,13 +22,15 @@ import {
   ChevronRight,
   Download,
   FileText,
+  UserCheck,
 } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function Admin() {
   const { user, isAuthenticated, isAdmin, isLoading, logout } = useAuth();
   const navigate = useNavigate();
   
-  const [activeTab, setActiveTab] = useState<"overview" | "projects" | "leads" | "blogs" | "account">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "users" | "projects" | "leads" | "blogs" | "account">("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleDownload = (base64Data: string, filename: string) => {
@@ -95,6 +98,8 @@ export default function Admin() {
     switch (activeTab) {
       case "overview":
         return <AdminOverview />;
+      case "users":
+        return <AdminUsers />;
       case "projects":
         return <AdminProjects />;
       case "leads":
@@ -110,6 +115,7 @@ export default function Admin() {
 
   const navItems = [
     { id: "overview", label: "Dashboard Overview", icon: LayoutDashboard },
+    { id: "users", label: "User Management", icon: UserCheck },
     { id: "leads", label: "Lead Management", icon: Users },
     { id: "projects", label: "Projects Portfolio", icon: Briefcase },
     { id: "blogs", label: "Blog Moderation", icon: FileText },
@@ -121,6 +127,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-[var(--rc-gray)] flex flex-col font-sans">
+      <SEO title="Admin Dashboard | Rupali Construction" noindex={true} />
       {/* ─── Admin Top Bar ─── */}
       <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-[var(--rc-blue)] shadow-lg shadow-[var(--rc-blue)]/20 flex items-center justify-between px-4 lg:px-8">
         {/* Left: Logo + Brand */}

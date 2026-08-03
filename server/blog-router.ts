@@ -59,7 +59,7 @@ export const blogRouter = createRouter({
       if (post) {
         await db
           .update(blogPosts)
-          .set({ viewCount: post.viewCount + 1 })
+          .set({ viewCount: sql`${blogPosts.viewCount} + 1`, updatedAt: new Date() })
           .where(eq(blogPosts.id, post.id));
       }
 

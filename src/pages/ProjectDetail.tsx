@@ -10,6 +10,7 @@ import {
 import { fallbackProjects } from "@/sections/Projects";
 import HouseAnimation from "@/components/HouseAnimation";
 import Image from "@/components/Image";
+import SEO from "@/components/SEO";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -89,6 +90,53 @@ export default function ProjectDetail() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] font-sans">
+      <SEO 
+        title={`${activeProject.name} | Luxury Villa Project Gurgaon | Rupali Construction`}
+        description={activeProject.description || `Explore ${activeProject.name}, a luxury ${activeProject.type || 'residential'} architectural project in ${activeProject.location || 'Gurgaon'}, built by Rupali Construction with uncompromised quality and aesthetics.`}
+        keywords={`${activeProject.name}, ${activeProject.location || 'Gurgaon'} construction, residential project Gurgaon, luxury custom villa Gurgaon, architecture Sector 71`}
+        image={mainImage}
+        url={`/projects/${activeProject.slug || slug}`}
+        type="article"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Residence",
+            "name": activeProject.name,
+            "description": activeProject.description || `Luxury villa project built in ${activeProject.location || 'Gurgaon'}.`,
+            "image": images.length > 0 ? images : [mainImage],
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": activeProject.location || "Gurugram",
+              "addressRegion": "Haryana",
+              "addressCountry": "IN"
+            }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://rupaliconstruction.com/projects"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": activeProject.name,
+                "item": `https://rupaliconstruction.com/projects/${activeProject.slug || slug}`
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
 
       <main className="container-rc pt-28 pb-20">

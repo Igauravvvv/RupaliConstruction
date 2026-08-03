@@ -15,7 +15,38 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen relative bg-[var(--rc-white)]">
-      <SEO title="Blog & Insights | Rupali Construction" />
+      <SEO 
+        title="Construction Insights & Architecture Blog | Rupali Construction"
+        description="Read expert insights, cost estimation guides, luxury building advice, interior trends, and real estate market updates in Gurugram from Rupali Construction."
+        keywords="construction blog Gurgaon, home building tips Gurgaon, architecture news NCR, luxury construction cost estimating, real estate advice Haryana"
+        url="/blog"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "Construction & Architecture Insights",
+            "description": "Expert insights, construction tips, and industry updates from Rupali Construction."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://rupaliconstruction.com/blog"
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
 
       {/* Full Page Background Image */}

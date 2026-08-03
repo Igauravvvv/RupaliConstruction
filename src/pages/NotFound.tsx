@@ -1,9 +1,11 @@
 import { Link } from "react-router";
 import { ArrowLeft } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-[var(--rc-gray)] flex items-center justify-center p-4">
+      <SEO title="Page Not Found | Rupali Construction" noindex={true} />
       <div className="text-center">
         <img
           src="/logo-icon.webp"

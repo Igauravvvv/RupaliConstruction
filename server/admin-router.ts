@@ -8,39 +8,49 @@ import ExcelJS from "exceljs";
 export const adminRouter = createRouter({
   dashboardStats: adminQuery.query(async () => {
     const db = getDb();
-
-    const oauthCount = await db.select({ count: sql<number>`count(*)` }).from(users);
-    const localCount = await db.select({ count: sql<number>`count(*)` }).from(localUsers);
-    const contactCount = await db.select({ count: sql<number>`count(*)` }).from(contacts);
-    const blogCount = await db.select({ count: sql<number>`count(*)` }).from(blogPosts);
-    const projectCount = await db.select({ count: sql<number>`count(*)` }).from(projects);
-    const testimonialCount = await db.select({ count: sql<number>`count(*)` }).from(testimonials);
-    const leadsCount = await db.select({ count: sql<number>`count(*)` }).from(constructionLeads);
-    const costReqCount = await db.select({ count: sql<number>`count(*)` }).from(costCalculatorRequests);
-
-    // Get today's leads
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const allLeads = await db.select().from(constructionLeads);
-    const todayLeads = allLeads.filter(l => l.createdAt >= today).length;
-    
-    // Get pending follow-ups
-    const pendingLeads = allLeads.filter(l => l.status === "new" || l.status === "follow-up").length;
+
+    const [oauthStats, localStats, contactCount, blogCount, projectCount, testimonialCount, leadStats, costReqCount] = await Promise.all([
+      db.select({
+        count: sql<number>`count(*)`,
+        loginsToday: sql<number>`count(*) filter (where ${users.lastSignInAt} >= ${today})`,
+      }).from(users),
+      db.select({
+        count: sql<number>`count(*)`,
+        loginsToday: sql<number>`count(*) filter (where ${localUsers.lastSignInAt} >= ${today})`,
+      }).from(localUsers),
+      db.select({ count: sql<number>`count(*)` }).from(contacts),
+      db.select({ count: sql<number>`count(*)` }).from(blogPosts),
+      db.select({ count: sql<number>`count(*)` }).from(projects),
+      db.select({ count: sql<number>`count(*)` }).from(testimonials),
+      db.select({
+        count: sql<number>`count(*)`,
+        today: sql<number>`count(*) filter (where ${constructionLeads.createdAt} >= ${today})`,
+        pending: sql<number>`count(*) filter (where ${constructionLeads.status} in ('new', 'follow-up'))`,
+      }).from(constructionLeads),
+      db.select({ count: sql<number>`count(*)` }).from(costCalculatorRequests),
+    ]);
+
+    const oauth = oauthStats[0];
+    const local = localStats[0];
+    const leads = leadStats[0];
 
     return {
       users: {
-        oauth: oauthCount[0]?.count || 0,
-        local: localCount[0]?.count || 0,
-        total: (oauthCount[0]?.count || 0) + (localCount[0]?.count || 0),
+        oauth: Number(oauth?.count ?? 0),
+        local: Number(local?.count ?? 0),
+        total: Number(oauth?.count ?? 0) + Number(local?.count ?? 0),
+        loginsToday: Number(oauth?.loginsToday ?? 0) + Number(local?.loginsToday ?? 0),
       },
-      contacts: contactCount[0]?.count || 0,
-      blogPosts: blogCount[0]?.count || 0,
-      projects: projectCount[0]?.count || 0,
-      testimonials: testimonialCount[0]?.count || 0,
-      chatbotLeads: leadsCount[0]?.count || 0,
-      costRequests: costReqCount[0]?.count || 0,
-      todayLeads,
-      pendingLeads,
+      contacts: Number(contactCount[0]?.count ?? 0),
+      blogPosts: Number(blogCount[0]?.count ?? 0),
+      projects: Number(projectCount[0]?.count ?? 0),
+      testimonials: Number(testimonialCount[0]?.count ?? 0),
+      chatbotLeads: Number(leads?.count ?? 0),
+      costRequests: Number(costReqCount[0]?.count ?? 0),
+      todayLeads: Number(leads?.today ?? 0),
+      pendingLeads: Number(leads?.pending ?? 0),
     };
   }),
 
@@ -54,17 +64,23 @@ export const adminRouter = createRouter({
         id: u.id,
         name: u.name,
         email: u.email,
+        phone: u.phoneNumber,
         role: u.role,
         authType: "oauth" as const,
         createdAt: u.createdAt,
+        lastSignInAt: u.lastSignInAt,
+        profileCompleted: u.profileCompleted,
       })),
       local: localUsersList.map((u) => ({
         id: u.id,
         name: u.displayName || u.username,
         email: u.email,
+        phone: u.phoneNumber,
         role: u.role,
         authType: "local" as const,
         createdAt: u.createdAt,
+        lastSignInAt: u.lastSignInAt,
+        profileCompleted: u.profileCompleted,
       })),
     };
   }),

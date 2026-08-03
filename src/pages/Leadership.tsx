@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Check, MessageSquare, Award, ArrowRight, HardHat, Hammer, Ruler, Wrench, Cone, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
+import SEO from "@/components/SEO";
 
 const FloatingIcon = ({ icon: Icon, delay, x, y, duration, size = 120 }: any) => (
   <motion.div
@@ -85,6 +86,58 @@ export default function Leadership() {
 
   return (
     <div className="min-h-screen overflow-x-hidden flex flex-col font-sans relative">
+      <SEO 
+        title="Our Leadership & Founder Team | Rupali Construction"
+        description="Meet the visionary leadership behind Rupali Construction: S.P. Tyagi, N.K. Sharma, and Ujjwal Tyagi, bringing over 35+ years of engineering and construction mastery in Gurugram."
+        keywords="Rupali Construction founder, S.P. Tyagi construction Gurgaon, Ujjwal Tyagi Rupali Homes, Gurgaon construction developers team"
+        url="/leadership"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "Leadership - Rupali Construction",
+            "description": "Meet the experienced leadership team driving architectural excellence at Rupali Construction in Gurgaon.",
+            "mainEntity": [
+              {
+                "@type": "Person",
+                "name": "S.P. Tyagi",
+                "jobTitle": "Founder & Leader",
+                "worksFor": { "@type": "Organization", "name": "Rupali Construction" }
+              },
+              {
+                "@type": "Person",
+                "name": "N.K. Sharma",
+                "jobTitle": "Structural Engineering Master",
+                "worksFor": { "@type": "Organization", "name": "Rupali Construction" }
+              },
+              {
+                "@type": "Person",
+                "name": "Ujjwal Tyagi",
+                "jobTitle": "Modern Growth & Innovation Lead",
+                "worksFor": { "@type": "Organization", "name": "Rupali Construction" }
+              }
+            ]
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Leadership",
+                "item": "https://rupaliconstruction.com/leadership"
+              }
+            ]
+          }
+        ]}
+      />
       <Navbar />
 
       {/* Background Image with Premium Gradient Fade */}

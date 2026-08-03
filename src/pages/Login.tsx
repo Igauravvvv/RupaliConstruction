@@ -5,6 +5,7 @@ import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
 import { ArrowLeft, LogIn, UserPlus, Eye, EyeOff, Shield, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SEO from "@/components/SEO";
 
 function getSafeRedirect(search: string) {
   const redirect = new URLSearchParams(search).get("redirect");
@@ -55,8 +56,7 @@ export default function Login() {
   const [registeredUniqueId, setRegisteredUniqueId] = useState<string | null>(null);
 
   const loginMutation = trpc.localAuth.login.useMutation({
-    onSuccess: (data) => {
-      localStorage.setItem("local_auth_token", data.token);
+    onSuccess: () => {
       window.location.href = redirectTo;
     },
     onError: (err) => setError(err.message),
@@ -64,7 +64,6 @@ export default function Login() {
 
   const registerMutation = trpc.localAuth.register.useMutation({
     onSuccess: (data) => {
-      localStorage.setItem("local_auth_token", data.token);
       setRegisteredUniqueId(data.uniqueId);
       // Show the unique ID before redirecting.
     },
@@ -168,6 +167,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[var(--rc-gray)] flex items-center justify-center p-4 relative overflow-hidden">
+      <SEO title="Login | Rupali Construction" noindex={true} />
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[var(--rc-orange)]/5 rounded-full blur-3xl" />

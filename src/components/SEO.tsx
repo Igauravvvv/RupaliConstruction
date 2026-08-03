@@ -16,7 +16,7 @@ export default function SEO({
   description = "Rupali Construction is a premium Gurgaon-based company specializing in residential construction, luxury villas, real estate resale, and architectural design.", 
   keywords = "construction, Gurgaon, residential, commercial, villas, resell, real estate, architecture, turnkey interior, luxury home contractor",
   type = "website",
-  image = "https://rupaliconstruction.com/logo-main.webp",
+  image = "https://rupaliconstruction.com/logo-main.png",
   url = "https://rupaliconstruction.com",
   schema,
   noindex = false
@@ -32,8 +32,8 @@ export default function SEO({
       "name": "Rupali Construction",
       "alternateName": "Rupali Homes",
       "url": "https://rupaliconstruction.com",
-      "logo": "https://rupaliconstruction.com/logo-main.webp",
-      "image": "https://rupaliconstruction.com/logo-main.webp",
+      "logo": "https://rupaliconstruction.com/logo-icon.png",
+      "image": "https://rupaliconstruction.com/logo-main.png",
       "description": description,
       "telephone": "+919311830088",
       "email": "ujjwalt.rg@rupalihomes.com",
@@ -79,6 +79,55 @@ export default function SEO({
         "target": "https://rupaliconstruction.com/projects?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Rupali Construction Main Navigation & Sitelinks",
+      "itemListElement": [
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "Ongoing & Luxury Villa Projects",
+          "description": "Explore our exclusive portfolio of delivered luxury residential villas, custom estates, and architectural landmarks in Gurugram.",
+          "url": "https://rupaliconstruction.com/projects"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "Turnkey Construction & Architectural Services",
+          "description": "End-to-end luxury residential construction, turnkey interior design, structural engineering, and villa renovation in Delhi NCR.",
+          "url": "https://rupaliconstruction.com/services"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "Our Leadership & Architects",
+          "description": "Meet our licensed structural engineers and architectural leadership team behind Gurgaon's luxury homes.",
+          "url": "https://rupaliconstruction.com/leadership"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 4,
+          "name": "Quality Material & Brand Standards",
+          "description": "Discover our strict quality benchmarks, premium brands, and lab-tested building materials used in our villa construction.",
+          "url": "https://rupaliconstruction.com/brand-standards"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 5,
+          "name": "Construction Cost Guides & Blog",
+          "description": "Read our latest insights on home building costs, Vastu design tips, material selection, and construction guides in Gurgaon.",
+          "url": "https://rupaliconstruction.com/blog"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 6,
+          "name": "Contact Us & Free Online Estimate",
+          "description": "Get in touch with Rupali Construction at M3M Broadway, Gurgaon for instant cost estimates, floor plans, and architectural consulting.",
+          "url": "https://rupaliconstruction.com/contact"
+        }
+      ]
     }
   ];
 

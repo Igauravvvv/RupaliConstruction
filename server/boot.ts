@@ -140,9 +140,10 @@ app.all("/api/trpc/*", async (c) => {
   });
 });
 
-// Sitemap endpoints for Google Search Console
+// Sitemap and Verification endpoints for Google Search Console
 app.get("/sitemap.xml", sitemapHandler);
 app.get("/api/sitemap.xml", sitemapHandler);
+app.get("/google348ec33da0ad3145.html", (c) => c.text("google-site-verification: google348ec33da0ad3145.html"));
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
 

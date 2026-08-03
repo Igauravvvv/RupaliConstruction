@@ -117,7 +117,7 @@ export default function Navbar() {
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
               <Link
-                to={user?.role === "admin" ? "/admin" : "/"}
+                to={user?.role === "admin" ? "/admin" : "/profile"}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300 ${
                   isDarkSection
                     ? "border-white/20 text-white hover:bg-white/10"
@@ -162,7 +162,7 @@ export default function Navbar() {
           {/* Login / Profile Icon */}
           {isAuthenticated ? (
             <Link
-              to={user?.role === "admin" ? "/admin" : "/"}
+              to={user?.role === "admin" ? "/admin" : "/profile"}
               className={`p-2 rounded-full transition-colors ${
                 isDarkSection ? "text-white hover:bg-white/10" : "text-[var(--rc-blue)] hover:bg-[var(--rc-blue)]/10"
               }`}
@@ -249,7 +249,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <div className="grid grid-cols-2 gap-4">
                 <Link
-                  to={user?.role === "admin" ? "/admin" : "/"}
+                  to={user?.role === "admin" ? "/admin" : "/profile"}
                   onClick={() => setMobileOpen(false)}
                   className={`py-4 text-sm font-bold tracking-wider uppercase rounded-2xl text-center flex items-center justify-center gap-2 border transition-colors ${
                     isDarkSection ? "border-white/20 text-white hover:bg-white/10" : "border-[var(--rc-border)] text-[var(--rc-dark)] hover:bg-[var(--rc-gray)]"

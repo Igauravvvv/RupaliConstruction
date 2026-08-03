@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
 import { X, Sparkles, ArrowRight } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function PromoPopup() {
+  const { isAuthenticated, isLoading } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const [hasDismissed, setHasDismissed] = useState(false);
 
   useEffect(() => {
-    if (hasDismissed) return;
+    if (hasDismissed || isAuthenticated || isLoading) return;
 
     // Check if they dismissed it in a previous session
     if (sessionStorage.getItem("promo_dismissed")) {
@@ -32,7 +34,7 @@ export default function PromoPopup() {
     };
 
     const checkAndShow = () => {
-      if (timePassed && scrolledEnough && !hasDismissed) {
+      if (timePassed && scrolledEnough && !hasDismissed && !isAuthenticated) {
         setIsVisible(true);
         // Remove scroll listener once shown
         window.removeEventListener("scroll", handleScroll);
@@ -45,13 +47,15 @@ export default function PromoPopup() {
       clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [hasDismissed]);
+  }, [hasDismissed, isAuthenticated, isLoading]);
 
   const handleDismiss = () => {
     setIsVisible(false);
     setHasDismissed(true);
     sessionStorage.setItem("promo_dismissed", "true");
   };
+
+  if (isAuthenticated) return null;
 
   return (
     <AnimatePresence>

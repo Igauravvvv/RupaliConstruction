@@ -15,6 +15,7 @@ const BrandStandards = lazy(() => import('./pages/BrandStandards'))
 const Admin = lazy(() => import('./pages/Admin'))
 const Login = lazy(() => import('./pages/Login'))
 const CompleteProfile = lazy(() => import('./pages/CompleteProfile'))
+const Profile = lazy(() => import('./pages/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 import ChatWidget from './components/ChatWidget'
 import FloatingActions from './components/FloatingActions'
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<Login />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
+            <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
             <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

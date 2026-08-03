@@ -1,8 +1,18 @@
 import { useState } from "react";
-import { Calculator, ArrowRight, Home, ArrowLeft } from "lucide-react";
+import { Calculator, ArrowRight, Home, ArrowLeft, CheckCircle2, Bookmark, User } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/hooks/useAuth";
+import { trpc } from "@/providers/trpc";
+import { Link } from "react-router";
 
 export default function CostCalculator() {
+  const { isAuthenticated } = useAuth();
+  const [savedRefId, setSavedRefId] = useState<string | null>(null);
+  const saveMutation = trpc.auth.saveEstimateRecord.useMutation({
+    onSuccess: (data) => {
+      setSavedRefId(data.referenceId || "Saved");
+    }
+  });
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     city: "",
@@ -239,9 +249,49 @@ export default function CostCalculator() {
               </p>
             </div>
 
+            <div className="mb-6 flex flex-col gap-3 max-w-sm mx-auto">
+              {isAuthenticated ? (
+                savedRefId ? (
+                  <div className="p-3 bg-green-50 text-green-700 border border-green-200 rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
+                    <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                    <span>Saved to Profile ({savedRefId})</span>
+                    <Link to="/profile" className="underline text-xs text-[var(--rc-blue)] ml-1 font-extrabold">View Records</Link>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      const est = calculateEstimate();
+                      saveMutation.mutate({
+                        city: formData.city,
+                        propertyType: formData.spot || "General",
+                        plotSize: formData.plotArea || "0",
+                        floors: parseInt(formData.floors) || 1,
+                        quality: formData.quality || "standard",
+                        estimatedCost: `${est.min} - ${est.max}`,
+                      });
+                    }}
+                    disabled={saveMutation.isPending}
+                    className="w-full py-3.5 bg-[var(--rc-blue)] hover:bg-[var(--rc-orange)] text-white text-sm font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    {saveMutation.isPending ? "Saving to Records..." : "Save Estimate to My Profile Records"}
+                  </button>
+                )
+              ) : (
+                <Link
+                  to="/login?redirect=/contact"
+                  className="w-full py-3 bg-[var(--rc-blue)]/10 hover:bg-[var(--rc-blue)]/20 text-[var(--rc-blue)] border border-[var(--rc-blue)]/30 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2"
+                >
+                  <User className="w-4 h-4" />
+                  Sign in to Save & Track Estimate Records
+                </Link>
+              )}
+            </div>
+
             <button
               onClick={() => {
                 setStep(1);
+                setSavedRefId(null);
                 setFormData({ city: "", spot: "", plotArea: "", floors: "", quality: "" });
               }}
               className="text-[var(--rc-orange)] font-medium hover:underline text-sm focus:outline-none focus:ring-2 focus:ring-[var(--rc-orange)] rounded-md px-2 py-1"

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calculator, ArrowRight, CheckCircle2, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calculator, ArrowRight, CheckCircle2, ShoppingCart, ChevronLeft, ChevronRight, Bookmark, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { trpc } from "@/providers/trpc";
+import { Link } from "react-router";
 
 // --- DATA MODEL ---
 
@@ -146,6 +149,13 @@ function AnimatedPrice({ value }: { value: number }) {
 // --- MAIN COMPONENT ---
 
 export default function ConstructionEstimator() {
+  const { isAuthenticated } = useAuth();
+  const [savedRefId, setSavedRefId] = useState<string | null>(null);
+  const saveMutation = trpc.auth.saveEstimateRecord.useMutation({
+    onSuccess: (data) => {
+      setSavedRefId(data.referenceId || "Saved");
+    }
+  });
   const [mode, setMode] = useState<"setup" | "quick" | "detailed">("setup");
   
   const [inputs, setInputs] = useState({
@@ -636,6 +646,42 @@ export default function ConstructionEstimator() {
             </div>
             
             <div className="mt-auto lg:pt-6 lg:border-t border-white/10 flex flex-col gap-3">
+              {isAuthenticated ? (
+                savedRefId ? (
+                  <div className="w-full py-3 px-4 bg-green-500/20 text-green-300 border border-green-500/30 font-bold rounded-xl text-xs flex items-center justify-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
+                    <span>Saved to Profile ({savedRefId})</span>
+                    <Link to="/profile" className="underline font-extrabold ml-1 text-white">View Records</Link>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      saveMutation.mutate({
+                        city: inputs.city,
+                        propertyType: `Detailed Custom Build (${inputs.rooms} Rooms, ${inputs.bathrooms} Baths)`,
+                        plotSize: inputs.plotArea,
+                        floors: parseInt(inputs.floors) || 1,
+                        quality: "Custom Cart",
+                        estimatedCost: `₹${currentTotal.toLocaleString('en-IN')}`,
+                      });
+                    }}
+                    disabled={saveMutation.isPending}
+                    className="w-full py-3.5 bg-[var(--rc-orange)] text-white font-bold rounded-xl hover:bg-[var(--rc-orange)]/90 transition-colors shadow-lg flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    {saveMutation.isPending ? "Saving..." : "Save Estimate to My Records"}
+                  </button>
+                )
+              ) : (
+                <Link
+                  to="/login?redirect=/"
+                  className="w-full py-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  Sign in to Save & Track Estimate Records
+                </Link>
+              )}
+
               <button className="w-full py-3.5 bg-white text-[var(--rc-dark)] font-bold rounded-xl hover:bg-[var(--rc-orange)] hover:text-white transition-colors shadow-lg">
                 Download PDF Quote
               </button>

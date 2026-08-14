@@ -46,7 +46,13 @@ if (!env.isProduction && !fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Initialize S3 client for Supabase Storage
+// Supabase Storage configuration (REST API — used for presigned uploads)
+const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/$/, "");
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseBucket = process.env.SUPABASE_BUCKET_NAME || "images";
+const supabaseConfigured = !!(supabaseUrl && supabaseServiceKey);
+
+// Legacy S3 client (kept for backwards compatibility if someone already set S3 vars)
 const s3Configured = !!(process.env.SUPABASE_S3_ACCESS_KEY_ID && process.env.SUPABASE_S3_SECRET_ACCESS_KEY && process.env.SUPABASE_S3_ENDPOINT);
 const s3Client = s3Configured ? new S3Client({
   region: process.env.SUPABASE_S3_REGION || "ap-south-1",
@@ -80,6 +86,71 @@ function hasValidImageSignature(contentType: string, buffer: Buffer): boolean {
   return false;
 }
 
+/* ─── Presigned Upload Endpoint ───────────────────────────────────────────
+ * The browser calls this to get a signed URL, then uploads the file directly
+ * to Supabase Storage.  This bypasses the Vercel 4.5 MB serverless body
+ * limit because the file never passes through the serverless function.
+ * ────────────────────────────────────────────────────────────────────────── */
+app.post('/api/upload/presign', async (c) => {
+  try {
+    if (!(await isAdminRequest(c.req.raw))) {
+      return c.json({ error: "Administrator access is required to upload images." }, 403);
+    }
+
+    const { contentType, fileSize } = await c.req.json<{ contentType: string; fileSize: number }>();
+
+    const extension = imageExtensions[contentType];
+    if (!extension) {
+      return c.json({ error: "Only PNG, JPEG, WEBP, and AVIF images are accepted." }, 400);
+    }
+    if (!fileSize || fileSize <= 0 || fileSize > MAX_UPLOAD_BYTES) {
+      return c.json({ error: "File size must be between 1 byte and 10 MB." }, 400);
+    }
+
+    // ── Cloud storage: generate a Supabase signed upload URL ─────────
+    if (supabaseConfigured) {
+      const filename = `${randomUUID()}.${extension}`;
+
+      const signRes = await fetch(
+        `${supabaseUrl}/storage/v1/object/upload/sign/${supabaseBucket}/${filename}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${supabaseServiceKey}`,
+            apikey: supabaseServiceKey!,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ upsert: false }),
+        }
+      );
+
+      if (!signRes.ok) {
+        const errText = await signRes.text().catch(() => "");
+        console.error("Supabase signed URL error:", signRes.status, errText);
+        return c.json({ error: "Failed to prepare image upload." }, 502);
+      }
+
+      const signData = await signRes.json() as { url: string };
+      // Supabase returns a relative path — prefix with the project URL
+      const uploadUrl = `${supabaseUrl}/storage/v1${signData.url}`;
+      const publicUrl = `${supabaseUrl}/storage/v1/object/public/${supabaseBucket}/${filename}`;
+
+      return c.json({ uploadUrl, publicUrl });
+    }
+
+    // ── No cloud storage — tell the client to use the direct upload ──
+    if (!env.isProduction) {
+      return c.json({ useDirectUpload: true });
+    }
+
+    return c.json({ error: "Image storage is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY." }, 503);
+  } catch (error) {
+    console.error("Presign error:", error);
+    return c.json({ error: "Failed to prepare image upload." }, 500);
+  }
+});
+
+/* ─── Direct Upload Endpoint (local development fallback) ─────────────── */
 app.post('/api/upload', async (c) => {
   try {
     if (!(await isAdminRequest(c.req.raw))) {
@@ -105,6 +176,7 @@ app.post('/api/upload', async (c) => {
     }
     const filename = `${randomUUID()}.${extension}`;
 
+    // Legacy S3 path (kept for backwards compat)
     if (s3Client && s3Configured) {
       const bucketName = process.env.SUPABASE_BUCKET_NAME || "images";
       const publicUrlBase = process.env.SUPABASE_PUBLIC_URL?.replace(/\/$/, "");
@@ -119,6 +191,28 @@ app.post('/api/upload', async (c) => {
         ContentType: file.type || "application/octet-stream",
       }));
       return c.json({ url: `${publicUrlBase}/${bucketName}/${filename}` });
+    }
+
+    // Supabase REST API upload (server-side, for files under Vercel limit)
+    if (supabaseConfigured) {
+      const uploadRes = await fetch(
+        `${supabaseUrl}/storage/v1/object/${supabaseBucket}/${filename}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${supabaseServiceKey}`,
+            apikey: supabaseServiceKey!,
+            "Content-Type": file.type || "application/octet-stream",
+          },
+          body: buffer,
+        }
+      );
+      if (!uploadRes.ok) {
+        const errText = await uploadRes.text().catch(() => "");
+        console.error("Supabase upload error:", uploadRes.status, errText);
+        return c.json({ error: "Failed to upload image to storage." }, 502);
+      }
+      return c.json({ url: `${supabaseUrl}/storage/v1/object/public/${supabaseBucket}/${filename}` });
     }
 
     if (env.isProduction) return c.json({ error: "Image storage is unavailable." }, 503);
@@ -144,6 +238,11 @@ app.all("/api/trpc/*", async (c) => {
 app.get("/sitemap.xml", sitemapHandler);
 app.get("/api/sitemap.xml", sitemapHandler);
 app.get("/google348ec33da0ad3145.html", (c) => c.text("google-site-verification: google348ec33da0ad3145.html"));
+app.get("/google315697aa7a6970dc.html", (c) => c.text("google-site-verification: google315697aa7a6970dc.html"));
+app.get("/google:code.html", (c) => {
+  const code = c.req.param("code");
+  return c.text(`google-site-verification: google${code}.html`);
+});
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
 

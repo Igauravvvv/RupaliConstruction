@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { uploadImageFile } from "@/lib/upload";
 import { trpc } from "@/providers/trpc";
 import { X, Upload, Loader2, CheckCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -38,20 +39,7 @@ export default function SubmitBlogModal({ isOpen, onClose }: SubmitBlogModalProp
       let coverImage = "";
 
       if (file) {
-        const formData = new FormData();
-        formData.append("file", file);
-        
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-        
-        if (!uploadRes.ok) {
-          throw new Error("Failed to upload image");
-        }
-        
-        const uploadData = await uploadRes.json();
-        coverImage = uploadData.url;
+        coverImage = await uploadImageFile(file);
       }
 
       await submitMutation.mutateAsync({

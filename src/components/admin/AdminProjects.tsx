@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { uploadImageFile } from "@/lib/upload";
 import { trpc } from "@/providers/trpc";
 import {
   Plus,
@@ -244,18 +245,10 @@ function ImageUploadZone({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadFile = async (file: File): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      if (!res.ok) throw new Error("Upload failed");
-      const data = await res.json();
-      return data.url;
-    } catch {
+      return await uploadImageFile(file);
+    } catch (err) {
+      console.error("Image upload failed:", err);
       return null;
     }
   };
@@ -283,6 +276,9 @@ function ImageUploadZone({
         setUploadError("Failed to upload images. Please try again.");
       } else {
         onChange([...imageUrls, ...newUrls]);
+        if (newUrls.length < imageFiles.length) {
+          setUploadError(`${imageFiles.length - newUrls.length} image(s) failed to upload.`);
+        }
       }
       setIsUploading(false);
     },

@@ -97,7 +97,11 @@ app.post('/api/upload/presign', async (c) => {
       return c.json({ error: "Administrator access is required to upload images." }, 403);
     }
 
-    const { contentType, fileSize } = await c.req.json<{ contentType: string; fileSize: number }>();
+    // The metadata intentionally travels in the URL rather than a JSON body.
+    // Vercel's request pipeline can consume a POST body before Hono receives
+    // it, which previously left authenticated presign requests pending.
+    const contentType = c.req.query("contentType") || "";
+    const fileSize = Number(c.req.query("fileSize"));
 
     const extension = imageExtensions[contentType];
     if (!extension) {

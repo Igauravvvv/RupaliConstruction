@@ -32,13 +32,15 @@ export async function uploadImageFile(file: File): Promise<string> {
 
   try {
     // ── Step 1: Ask the server for a presigned upload URL ──────────────
-    const presignRes = await fetch("/api/upload/presign", {
+    // Keep the metadata in the query string. On Vercel this endpoint is
+    // handled by Hono, and avoiding a request body prevents intermediary
+    // body parsing from stalling the presign request before Hono receives it.
+    const params = new URLSearchParams({
+      contentType: file.type,
+      fileSize: String(file.size),
+    });
+    const presignRes = await fetch(`/api/upload/presign?${params}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contentType: file.type,
-        fileSize: file.size,
-      }),
       signal: controller.signal,
     });
 

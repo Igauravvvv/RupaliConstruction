@@ -244,15 +244,6 @@ function ImageUploadZone({
   const [showUrlInput, setShowUrlInput] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const uploadFile = async (file: File): Promise<string | null> => {
-    try {
-      return await uploadImageFile(file);
-    } catch (err) {
-      console.error("Image upload failed:", err);
-      return null;
-    }
-  };
-
   const handleFiles = useCallback(
     async (files: FileList | File[]) => {
       const imageFiles = Array.from(files).filter((f) =>
@@ -266,21 +257,43 @@ function ImageUploadZone({
       setIsUploading(true);
       setUploadError(null);
 
-      const newUrls: string[] = [];
-      for (const file of imageFiles) {
-        const url = await uploadFile(file);
-        if (url) newUrls.push(url);
-      }
+      try {
+        // Upload independently so one bad file cannot keep the remaining
+        // selected images from being added to the project.
+        const results = await Promise.allSettled(
+          imageFiles.map((file) => uploadImageFile(file))
+        );
+        const newUrls = results
+          .filter((result): result is PromiseFulfilledResult<string> => result.status === "fulfilled")
+          .map((result) => result.value);
+        const failures = results.filter(
+          (result): result is PromiseRejectedResult => result.status === "rejected"
+        );
 
-      if (newUrls.length === 0) {
-        setUploadError("Failed to upload images. Please try again.");
-      } else {
-        onChange([...imageUrls, ...newUrls]);
-        if (newUrls.length < imageFiles.length) {
-          setUploadError(`${imageFiles.length - newUrls.length} image(s) failed to upload.`);
+        if (newUrls.length > 0) {
+          onChange([...imageUrls, ...newUrls]);
         }
+
+        if (failures.length > 0) {
+          console.error("Image upload failed:", failures.map((failure) => failure.reason));
+          const firstError = failures[0]?.reason;
+          const message = firstError instanceof Error ? firstError.message : "Unknown error";
+          setUploadError(
+            newUrls.length > 0
+              ? `${failures.length} image(s) failed to upload: ${message}`
+              : `Image upload failed: ${message}`
+          );
+        }
+      } catch (error) {
+        // Promise.allSettled should make this path exceptional, but retain a
+        // visible error for unexpected client-side failures.
+        console.error("Unable to start image upload:", error);
+        setUploadError("Image upload failed. Please try again.");
+      } finally {
+        // Never leave the editor in an uploading state after a failed request,
+        // aborted request, or rendering error.
+        setIsUploading(false);
       }
-      setIsUploading(false);
     },
     [imageUrls, onChange]
   );

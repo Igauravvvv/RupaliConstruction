@@ -4,6 +4,11 @@ import { getDb } from "./queries/connection.js";
 import { projects } from "../db/schema.js";
 import { eq, desc, and, sql } from "drizzle-orm";
 
+function withoutProjectCost<T extends { cost?: unknown }>(project: T) {
+  const { cost: _cost, ...publicProject } = project;
+  return publicProject;
+}
+
 export const projectRouter = createRouter({
   list: publicQuery
     .input(
@@ -45,16 +50,20 @@ export const projectRouter = createRouter({
       const countResult = where
         ? await db.select({ count: sql<number>`count(*)` }).from(projects).where(where)
         : await db.select({ count: sql<number>`count(*)` }).from(projects);
-      return { items, total: Number(countResult[0]?.count ?? 0) };
+      return {
+        items: items.map(withoutProjectCost),
+        total: Number(countResult[0]?.count ?? 0),
+      };
     }),
 
   bySlug: publicQuery
     .input(z.object({ slug: z.string() }))
     .query(async ({ input }) => {
       const db = getDb();
-      return db.query.projects.findFirst({
+      const project = await db.query.projects.findFirst({
         where: eq(projects.slug, input.slug),
       });
+      return project ? withoutProjectCost(project) : undefined;
     }),
 
   create: adminQuery

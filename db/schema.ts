@@ -115,6 +115,10 @@ export const projects = pgTable("projects", {
   featured: boolean("featured").default(false).notNull(),
   completionDate: varchar("completionDate", { length: 50 }),
   cost: varchar("cost", { length: 100 }),
+  reviewerName: varchar("reviewerName", { length: 120 }),
+  reviewerRole: varchar("reviewerRole", { length: 160 }),
+  reviewText: text("reviewText"),
+  instagramVideoUrl: text("instagramVideoUrl"),
   processSteps: text("process_steps"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => [index("projects_filter_created_at_idx").on(table.type, table.status, table.featured, table.createdAt)]);

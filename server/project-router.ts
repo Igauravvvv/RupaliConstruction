@@ -72,6 +72,10 @@ export const projectRouter = createRouter({
         featured: z.boolean().default(false),
         completionDate: z.string().optional(),
         cost: z.string().optional(),
+        reviewerName: z.string().max(120).optional(),
+        reviewerRole: z.string().max(160).optional(),
+        reviewText: z.string().max(5000).optional(),
+        instagramVideoUrl: z.string().url().optional().or(z.literal("")),
         processSteps: z.string().optional(),
       })
     )
@@ -97,6 +101,10 @@ export const projectRouter = createRouter({
         featured: z.boolean().optional(),
         completionDate: z.string().optional(),
         cost: z.string().optional(),
+        reviewerName: z.string().max(120).optional(),
+        reviewerRole: z.string().max(160).optional(),
+        reviewText: z.string().max(5000).optional(),
+        instagramVideoUrl: z.string().url().optional().or(z.literal("")),
         processSteps: z.string().optional(),
       })
     )

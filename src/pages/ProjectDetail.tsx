@@ -4,8 +4,8 @@ import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { 
-  ArrowLeft, Maximize2, MapPin, Heart, Flame, Share2, 
-  Bed, Bath, Grid2X2, Layers, X
+  ArrowLeft, Maximize2, MapPin, Heart, Flame, Share2,
+  Grid2X2, Layers, X, Instagram, Quote
 } from "lucide-react";
 import { fallbackProjects } from "@/sections/Projects";
 import HouseAnimation from "@/components/HouseAnimation";
@@ -63,7 +63,10 @@ export default function ProjectDetail() {
     images: JSON.stringify([fallbackMatch.coverImage]),
     featured: false,
     completionDate: fallbackMatch.completionDate,
-    cost: "₹5,50,00,000",
+    reviewerName: "",
+    reviewerRole: "",
+    reviewText: "",
+    instagramVideoUrl: "",
     processSteps: "",
     createdAt: new Date(),
   } as any : null);
@@ -177,16 +180,9 @@ export default function ProjectDetail() {
 
         {/* Header Information Row */}
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8 border-b border-gray-200 pb-8">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-emerald-600 uppercase mb-3">
-              <div className="w-2 h-2 rounded-full bg-emerald-600 shadow-[0_0_8px_rgba(5,150,105,0.8)]" />
-              AVAILABLE
-              <span className="text-gray-400 font-normal border-l border-gray-300 pl-2 ml-1 capitalize">Sale</span>
-            </div>
-            
-            <h2 className="text-5xl lg:text-6xl font-bold text-[#0F172A] tracking-tight mb-3 font-serif">
-              {activeProject.cost || "₹6,00,00,000"}
-            </h2>
+          <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-emerald-600 uppercase">
+            <div className={`w-2 h-2 rounded-full shadow-[0_0_8px_rgba(5,150,105,0.8)] ${activeProject.status === "ongoing" ? "bg-amber-500" : "bg-emerald-600"}`} />
+            {activeProject.status === "ongoing" ? "Ongoing project" : "Completed project"}
           </div>
 
           <div className="flex items-center gap-3">
@@ -278,50 +274,39 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        {/* Cost Breakdown Section */}
-        <div className="mt-16 pt-12 border-t border-gray-200">
-          <div className="max-w-4xl">
-            <h2 className="text-3xl font-bold text-[#0F172A] mb-3">Project Cost Breakdown</h2>
-            <p className="text-gray-500 mb-8 text-lg">A detailed analysis of how we calculated the {activeProject.cost || "₹6,00,00,000"} investment for this premium construction.</p>
-            
-            <div className="bg-white border border-gray-200 rounded-[24px] overflow-hidden shadow-sm">
-              <div className="divide-y divide-gray-100">
-                <div className="flex items-center justify-between p-6 md:px-8 hover:bg-gray-50 transition-colors">
-                  <div>
-                    <h4 className="font-bold text-[#0F172A] text-lg">Core Construction</h4>
-                    <p className="text-sm text-gray-500 mt-1">Foundation, structural framing, roofing, exterior walls.</p>
-                  </div>
-                  <div className="text-xl font-bold text-gray-800">45%</div>
-                </div>
-                <div className="flex items-center justify-between p-6 md:px-8 hover:bg-gray-50 transition-colors">
-                  <div>
-                    <h4 className="font-bold text-[#0F172A] text-lg">Premium Materials & Finishes</h4>
-                    <p className="text-sm text-gray-500 mt-1">Italian marble, custom millwork, high-end fixtures.</p>
-                  </div>
-                  <div className="text-xl font-bold text-gray-800">30%</div>
-                </div>
-                <div className="flex items-center justify-between p-6 md:px-8 hover:bg-gray-50 transition-colors">
-                  <div>
-                    <h4 className="font-bold text-[#0F172A] text-lg">Smart Systems & Utilities</h4>
-                    <p className="text-sm text-gray-500 mt-1">HVAC, smart home automation, plumbing, electrical.</p>
-                  </div>
-                  <div className="text-xl font-bold text-gray-800">15%</div>
-                </div>
-                <div className="flex items-center justify-between p-6 md:px-8 hover:bg-gray-50 transition-colors bg-gray-50/50">
-                  <div>
-                    <h4 className="font-bold text-[#0F172A] text-lg">Design & Permits</h4>
-                    <p className="text-sm text-gray-500 mt-1">Architectural fees, city permits, engineering approvals.</p>
-                  </div>
-                  <div className="text-xl font-bold text-gray-800">10%</div>
-                </div>
+        {(activeProject.reviewText || activeProject.instagramVideoUrl) && (
+          <section className="mt-16 pt-12 border-t border-gray-200">
+            <div className="max-w-4xl space-y-6">
+              <div>
+                <h2 className="text-3xl font-bold text-[#0F172A] mb-2">Client review</h2>
+                <p className="text-gray-500 text-lg">Hear directly from the people we built this project for.</p>
               </div>
-              <div className="bg-[#0F172A] p-6 md:px-8 flex items-center justify-between text-white">
-                <span className="font-medium text-lg">Total Project Cost</span>
-                <span className="text-3xl font-bold">{activeProject.cost || "₹6,00,00,000"}</span>
-              </div>
+              {activeProject.reviewText && (
+                <figure className="bg-white border border-gray-200 rounded-[24px] p-8 md:p-10 shadow-sm">
+                  <Quote className="w-9 h-9 text-[var(--rc-orange)] mb-5" strokeWidth={1.5} />
+                  <blockquote className="text-xl md:text-2xl leading-relaxed text-[#0F172A] font-serif">“{activeProject.reviewText}”</blockquote>
+                  {(activeProject.reviewerName || activeProject.reviewerRole) && (
+                    <figcaption className="mt-6 text-sm">
+                      {activeProject.reviewerName && <p className="font-bold text-[#0F172A]">{activeProject.reviewerName}</p>}
+                      {activeProject.reviewerRole && <p className="text-gray-500 mt-1">{activeProject.reviewerRole}</p>}
+                    </figcaption>
+                  )}
+                </figure>
+              )}
+              {activeProject.instagramVideoUrl && (
+                <a
+                  href={activeProject.instagramVideoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] px-6 py-4 font-bold text-white shadow-lg transition-transform hover:-translate-y-0.5"
+                >
+                  <Instagram className="w-5 h-5" />
+                  Watch the client testimonial on Instagram
+                </a>
+              )}
             </div>
-          </div>
-        </div>
+          </section>
+        )}
 
         {/* Custom CTA Section */}
         <div className="mt-16 bg-gradient-to-br from-[var(--rc-blue)] to-[#09358A] rounded-[32px] p-10 md:p-14 text-white relative overflow-hidden shadow-xl">
@@ -370,9 +355,6 @@ export default function ProjectDetail() {
                   <div className="p-6">
                     <h3 className="font-bold text-xl text-[#0F172A] mb-1 truncate">{op.name}</h3>
                     <p className="text-gray-500 text-sm mb-4 truncate">{op.location}</p>
-                    <div className="text-[#0F172A] font-bold">
-                      {op.cost || "Price on Request"}
-                    </div>
                   </div>
                 </Link>
               );

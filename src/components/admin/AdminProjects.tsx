@@ -28,6 +28,11 @@ const projectSchema = z.object({
   status: z.enum(["ongoing", "completed"]),
   images: z.string().optional(),
   featured: z.boolean().optional(),
+  completionDate: z.string().optional(),
+  reviewerName: z.string().max(120).optional(),
+  reviewerRole: z.string().max(160).optional(),
+  reviewText: z.string().max(5000).optional(),
+  instagramVideoUrl: z.string().url("Enter a valid Instagram link").optional().or(z.literal("")),
 });
 
 type ProjectFormData = z.infer<typeof projectSchema>;
@@ -612,7 +617,7 @@ function ProjectForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Status
+                Project Status
               </label>
               <select
                 {...register("status")}
@@ -621,6 +626,17 @@ function ProjectForm({
                 <option value="ongoing">Ongoing</option>
                 <option value="completed">Completed</option>
               </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Completion / expected date
+              </label>
+              <input
+                {...register("completionDate")}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--rc-blue)] outline-none"
+                placeholder="e.g. December 2026"
+              />
             </div>
 
             {/* Image Upload Zone replaces the old URL textarea */}
@@ -640,6 +656,50 @@ function ProjectForm({
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--rc-blue)] outline-none"
           />
+        </div>
+
+        <div className="mt-8 border-t border-[var(--rc-border)] pt-6">
+          <div className="mb-4">
+            <h3 className="text-base font-semibold text-[var(--rc-dark)]">Client review</h3>
+            <p className="text-xs text-[var(--rc-muted)]">Shown only on this project’s public page.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Reviewer name</label>
+              <input
+                {...register("reviewerName")}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--rc-blue)] outline-none"
+                placeholder="e.g. Mr. Sharma"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Reviewer details</label>
+              <input
+                {...register("reviewerRole")}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--rc-blue)] outline-none"
+                placeholder="e.g. Homeowner, Gurugram"
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Review</label>
+            <textarea
+              {...register("reviewText")}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--rc-blue)] outline-none"
+              placeholder="Add the client testimonial for this project"
+            />
+          </div>
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Instagram testimonial video link</label>
+            <input
+              {...register("instagramVideoUrl")}
+              type="url"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--rc-blue)] outline-none"
+              placeholder="https://www.instagram.com/reel/..."
+            />
+            {errors.instagramVideoUrl && <p className="text-red-500 text-xs mt-1">{errors.instagramVideoUrl.message}</p>}
+          </div>
         </div>
 
         <div className="mt-4 flex items-center gap-2">

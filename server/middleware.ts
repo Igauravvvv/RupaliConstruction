@@ -4,6 +4,42 @@ import superjson from "superjson";
 import type { TrpcContext } from "./context.js";
 import { enforceRateLimit, mutationRateLimitRules } from "./rate-limit.js";
 
+function normalizeOrigin(value: string | null | undefined): string | null {
+  if (!value) return null;
+  try {
+    return new URL(value.includes("://") ? value : `https://${value}`).origin;
+  } catch {
+    return null;
+  }
+}
+
+function getAllowedRequestOrigins(req: Request): Set<string> {
+  const origins = new Set<string>();
+  const requestOrigin = normalizeOrigin(req.url);
+  if (requestOrigin) origins.add(requestOrigin);
+
+  // Vercel can expose its internal deployment URL as Request.url while the
+  // browser is correctly using the custom domain. Accept the proxy-provided
+  // public origin as well as the configured canonical origins.
+  const forwardedHost = req.headers.get("x-forwarded-host");
+  if (forwardedHost) {
+    const forwardedProto = req.headers.get("x-forwarded-proto") || "https";
+    const forwardedOrigin = normalizeOrigin(`${forwardedProto}://${forwardedHost}`);
+    if (forwardedOrigin) origins.add(forwardedOrigin);
+  }
+
+  for (const value of [
+    process.env.PUBLIC_SITE_URL,
+    process.env.SITE_URL,
+    process.env.APP_URL,
+  ]) {
+    const configuredOrigin = normalizeOrigin(value);
+    if (configuredOrigin) origins.add(configuredOrigin);
+  }
+
+  return origins;
+}
+
 const t = initTRPC.context<TrpcContext>().create({
   transformer: superjson,
 });
@@ -21,7 +57,7 @@ const mutationSecurity = t.middleware(async (opts) => {
   if (opts.type !== "mutation") return opts.next();
 
   const origin = opts.ctx.req.headers.get("origin");
-  if (origin && origin !== new URL(opts.ctx.req.url).origin) {
+  if (origin && !getAllowedRequestOrigins(opts.ctx.req).has(origin)) {
     throw new TRPCError({ code: "FORBIDDEN", message: "Cross-origin requests are not allowed." });
   }
 

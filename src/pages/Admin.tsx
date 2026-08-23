@@ -27,7 +27,7 @@ import {
 import SEO from "@/components/SEO";
 
 export default function Admin() {
-  const { user, isAuthenticated, isAdmin, isLoading, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, isLoading, logout, isLoggingOut } = useAuth();
   const navigate = useNavigate();
   
   const [activeTab, setActiveTab] = useState<"overview" | "users" | "projects" | "leads" | "blogs" | "account">("overview");
@@ -185,7 +185,8 @@ export default function Admin() {
           {/* Logout */}
           <button
             onClick={logout}
-            className="p-2 text-white/60 hover:text-red-300 hover:bg-red-500/20 rounded-lg transition-all"
+            disabled={isLoggingOut}
+            className="p-2 text-white/60 hover:text-red-300 hover:bg-red-500/20 rounded-lg transition-all disabled:cursor-wait disabled:opacity-60"
             title="Logout"
           >
             <LogOut className="w-5 h-5" />

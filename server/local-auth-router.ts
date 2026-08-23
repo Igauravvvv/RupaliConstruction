@@ -22,9 +22,10 @@ export const localAuthRouter = createRouter({
     .input(
       z.object({
         username: z.string().trim().min(3).max(50).regex(/^[a-zA-Z0-9._-]+$/, "Username contains unsupported characters"),
-        password: z.string().min(12).max(128),
+        password: z.string().min(6).max(128, "Password must be at least 6 characters"),
         displayName: z.string().trim().min(1).max(100).optional(),
-        email: z.string().email().optional(),
+        email: z.string().email("Please enter a valid email address").optional().or(z.literal("")),
+        phoneNumber: z.string().trim().optional().or(z.literal("")),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -51,6 +52,7 @@ export const localAuthRouter = createRouter({
           passwordHash,
           displayName: input.displayName || input.username,
           email: input.email || null,
+          phoneNumber: input.phoneNumber || null,
           authProvider: "local",
           role: "user",
         }).returning({ id: localUsers.id, uniqueId: localUsers.uniqueId });

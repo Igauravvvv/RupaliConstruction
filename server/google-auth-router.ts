@@ -38,8 +38,10 @@ async function generateUniqueId(db: ReturnType<typeof getDb>): Promise<string> {
 function getGoogleClientConfig() {
   const e = process.env;
   return {
-    clientId: e.GOOGLE_CLIENT_ID || e.VITE_GOOGLE_CLIENT_ID || env.googleClientId,
-    clientSecret: e.GOOGLE_CLIENT_SECRET || e.VITE_GOOGLE_CLIENT_SECRET || env.googleClientSecret,
+    // OAuth secrets must be server-only. `VITE_*` values are bundled for the
+    // browser and must never be used as a credential fallback.
+    clientId: e.GOOGLE_CLIENT_ID || env.googleClientId,
+    clientSecret: e.GOOGLE_CLIENT_SECRET || env.googleClientSecret,
   };
 }
 
@@ -114,14 +116,34 @@ function decodeState(value: string): GoogleOAuthState | null {
   return null;
 }
 
-function getStateCookieOptions(maxAge: number) {
-  return {
+function getStateCookieOptions(maxAge: number, req?: Request, baseUrl?: string) {
+  const options: cookie.SerializeOptions = {
     httpOnly: true,
     maxAge,
     path: "/",
     sameSite: "lax" as const,
     secure: env.isProduction,
   };
+
+  // An OAuth flow may start on www but the configured callback is the apex
+  // domain. Sharing state with the parent domain prevents a false state
+  // mismatch when Google returns to the canonical callback URL.
+  if (req && baseUrl) {
+    try {
+      const canonicalHost = new URL(baseUrl).hostname;
+      const requestHost = new URL(req.url).hostname;
+      if (
+        canonicalHost.includes(".") &&
+        (requestHost === canonicalHost || requestHost.endsWith(`.${canonicalHost}`))
+      ) {
+        options.domain = canonicalHost;
+      }
+    } catch {
+      // Use a host-only cookie if either URL is malformed.
+    }
+  }
+
+  return options;
 }
 
 function escapeHtml(value: string): string {
@@ -172,7 +194,7 @@ googleAuth.get("/api/auth/google", (c) => {
     cookie.serialize(
       GOOGLE_STATE_COOKIE,
       state,
-      getStateCookieOptions(GOOGLE_STATE_MAX_AGE_SECONDS),
+      getStateCookieOptions(GOOGLE_STATE_MAX_AGE_SECONDS, c.req.raw, baseUrl),
     ),
   );
 
@@ -184,12 +206,13 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
   const code = c.req.query("code");
   const error = c.req.query("error");
   const returnedState = c.req.query("state");
+  const baseUrl = getBaseUrl(c.req.raw);
   const cookies = cookie.parse(c.req.header("cookie") || "");
   const expectedState = cookies[GOOGLE_STATE_COOKIE];
 
   c.header(
     "Set-Cookie",
-    cookie.serialize(GOOGLE_STATE_COOKIE, "", getStateCookieOptions(0)),
+    cookie.serialize(GOOGLE_STATE_COOKIE, "", getStateCookieOptions(0, c.req.raw, baseUrl)),
   );
 
   if (error || !code) {
@@ -212,7 +235,6 @@ googleAuth.get("/api/auth/google/callback", async (c) => {
   }
 
   try {
-    const baseUrl = getBaseUrl(c.req.raw);
     const redirectUri = `${baseUrl}/api/auth/google/callback`;
     const { clientId, clientSecret } = getGoogleClientConfig();
 

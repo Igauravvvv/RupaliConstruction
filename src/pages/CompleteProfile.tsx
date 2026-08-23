@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function getSafeRedirect(search: string) {
   const redirect = new URLSearchParams(search).get("redirect");
   if (!redirect || !redirect.startsWith("/") || redirect.startsWith("//") || redirect.startsWith("/\\")) {
-    return "/";
+    return "/profile";
   }
   return redirect;
 }

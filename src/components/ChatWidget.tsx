@@ -14,8 +14,6 @@ function getSessionId() {
 }
 
 const EXPRESSIONS = [
-  { id: "welcome", image: "/CHAT-MODEL-WELCOME.webp", messages: ["hiii", "Goodmoning"] },
-  { id: "happy", image: "/CHAT-MODEL-HAPPY.webp", messages: ["hiii", "Goodmoning"] },
   { id: "talk", image: "/CHAT-MODEL-TALK.webp", messages: ["hiii", "Goodmoning"] }
 ];
 
@@ -94,11 +92,7 @@ export default function ChatWidget() {
   const { data: projects } = trpc.chat.getProjects.useQuery(undefined, { enabled: flowState === "projects" });
 
   const getChatWindowBotImage = () => {
-    switch (botExpression) {
-      case "thinking": return "/CHAT-MODEL-TALK.webp";
-      case "happy": return "/CHAT-MODEL-HAPPY.webp";
-      default: return "/CHAT-MODEL-WELCOME.webp";
-    }
+    return "/CHAT-MODEL-TALK.webp";
   };
 
   const addMessage = (role: "user" | "assistant", content: string | React.ReactNode) => {
@@ -309,16 +303,10 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!hasMounted || isHovered || isOpen) return;
     const interval = setInterval(() => {
-      setIsChanging(true);
-      setTimeout(() => {
-        const nextIndex = (exprIndex + 1) % EXPRESSIONS.length;
-        setExprIndex(nextIndex);
-        setCurrentMessage(EXPRESSIONS[nextIndex].messages[Math.floor(Math.random() * EXPRESSIONS[nextIndex].messages.length)]);
-        setIsChanging(false);
-      }, 300);
-    }, 1500);
+      setCurrentMessage(EXPRESSIONS[0].messages[Math.floor(Math.random() * EXPRESSIONS[0].messages.length)]);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [hasMounted, isHovered, exprIndex, isOpen]);
+  }, [hasMounted, isHovered, isOpen]);
 
   return (
     <>
@@ -335,9 +323,7 @@ export default function ChatWidget() {
               onMouseLeave={() => setIsHovered(false)}
             >
               <AnimatePresence mode="wait">
-                {!isChanging && (
                   <motion.div
-                    key={currentMessage}
                     initial={{ opacity: 0, x: -20, scale: 0.95 }}
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: -10, scale: 0.95, transition: { duration: 0.2 } }}
@@ -356,7 +342,6 @@ export default function ChatWidget() {
                       <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     </button>
                   </motion.div>
-                )}
               </AnimatePresence>
 
               <motion.button
@@ -372,9 +357,6 @@ export default function ChatWidget() {
                   src={EXPRESSIONS[exprIndex].image}
                   alt="AI Assistant"
                   className="w-full h-auto object-contain"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: isChanging ? 0 : 1, scale: isChanging ? 0.95 : 1 }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
                 />
               </motion.button>
             </motion.div>
@@ -423,7 +405,7 @@ export default function ChatWidget() {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
                   <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${msg.role === "user" ? "bg-[var(--rc-orange)] rounded-full" : "bg-white rounded-full shadow-sm border border-gray-100"}`}>
-                    {msg.role === "user" ? <User className="w-4 h-4 text-white" /> : <img loading="lazy" src="/CHAT-MODEL-WELCOME.webp" alt="Rupali" className="w-full h-full object-cover translate-y-1 scale-110 rounded-full" />}
+                    {msg.role === "user" ? <User className="w-4 h-4 text-white" /> : <img loading="lazy" src={getChatWindowBotImage()} alt="Rupali" className="w-full h-full object-cover translate-y-1 scale-110 rounded-full" />}
                   </div>
                   <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed shadow-sm ${msg.role === "user" ? "bg-[#0B2D5C] text-white rounded-tr-sm" : "bg-white text-gray-800 rounded-tl-sm border border-gray-100"}`}>
                     {msg.content}

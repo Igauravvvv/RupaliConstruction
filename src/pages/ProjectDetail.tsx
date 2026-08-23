@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
@@ -15,6 +15,7 @@ import SEO from "@/components/SEO";
 export default function ProjectDetail() {
   const { slug } = useParams();
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
   
   // Prevent body scroll when gallery is open
   useEffect(() => {
@@ -40,16 +41,6 @@ export default function ProjectDetail() {
     (p) => p.name.toLowerCase().replace(/\s+/g, '-') === slug
   );
 
-  if (isLoading && !fallbackMatch) {
-    return (
-      <div className="min-h-screen bg-[#F9F9F9] flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-4 border-[var(--rc-blue)] border-t-transparent animate-spin" />
-      </div>
-    );
-  }
-
-  // ... fallback match extracted above ...
-
   const activeProject = dbProject || (fallbackMatch ? {
     id: 0,
     name: fallbackMatch.name,
@@ -71,6 +62,51 @@ export default function ProjectDetail() {
     createdAt: new Date(),
   } as any : null);
 
+  let images: string[] = [];
+  if (activeProject) {
+    try {
+      images = activeProject.images ? JSON.parse(activeProject.images) : [];
+    } catch (e) {
+      images = activeProject.images ? activeProject.images.split(",").map((s: string) => s.trim()).filter(Boolean) : [];
+    }
+  }
+  
+  const mainImage = images[0] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80";
+  const secondImage = images[1] || "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80";
+  
+  const displayImages = images.length > 0 ? images : [mainImage, secondImage];
+  const [aspectRatios, setAspectRatios] = useState<Record<string, 'portrait' | 'landscape'>>({});
+
+  useEffect(() => {
+    let isMounted = true;
+    displayImages.forEach(src => {
+      if (!aspectRatios[src]) {
+        const img = new window.Image();
+        img.onload = () => {
+          if (isMounted) {
+            setAspectRatios(prev => ({
+              ...prev,
+              [src]: img.naturalWidth >= img.naturalHeight ? 'landscape' : 'portrait'
+            }));
+          }
+        };
+        img.src = src;
+      }
+    });
+    return () => { isMounted = false; };
+  }, [displayImages]);
+
+  // Parse numeric values out of area or use fallbacks for UI demonstration
+  const parsedArea = activeProject?.area ? activeProject.area.replace(/[^0-9]/g, "") : "2945";
+
+  if (isLoading && !fallbackMatch) {
+    return (
+      <div className="min-h-screen bg-[#F9F9F9] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-4 border-[var(--rc-blue)] border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
   if (!activeProject) {
     return (
       <div className="min-h-screen bg-[#F9F9F9] flex items-center justify-center">
@@ -78,18 +114,6 @@ export default function ProjectDetail() {
       </div>
     );
   }
-
-  let images: string[] = [];
-  try {
-    images = activeProject.images ? JSON.parse(activeProject.images) : [];
-  } catch (e) {
-    images = activeProject.images ? activeProject.images.split(",").map((s: string) => s.trim()).filter(Boolean) : [];
-  }
-  const mainImage = images[0] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80";
-  const secondImage = images[1] || "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80";
-  
-  // Parse numeric values out of area or use fallbacks for UI demonstration
-  const parsedArea = activeProject.area ? activeProject.area.replace(/[^0-9]/g, "") : "2945";
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] font-sans">
@@ -161,21 +185,76 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        {/* Split Image Gallery */}
-        <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[500px] lg:h-[550px] rounded-[32px] overflow-hidden mb-8 shadow-sm">
-          <div className="w-full h-full">
-            <Image src={mainImage} alt={activeProject.name} className="w-full h-full object-cover" />
-          </div>
-          <div className="w-full h-full relative cursor-pointer" onClick={() => setIsGalleryOpen(true)}>
-            <Image src={secondImage} alt={activeProject.name} className="w-full h-full object-cover" />
-            <button 
-              onClick={(e) => { e.stopPropagation(); setIsGalleryOpen(true); }}
-              className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95"
-            >
-              <Maximize2 className="w-4 h-4" />
-              Show all {images.length > 2 ? images.length : 2} photos
-            </button>
-          </div>
+        {/* Responsive Image Gallery */}
+        <div className="mb-12 relative group">
+          {displayImages.length > 0 ? (
+            <>
+              <div 
+                ref={scrollRef}
+                className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {displayImages.map((src, idx) => {
+                  const ratio = aspectRatios[src] || 'landscape';
+                  // Mobile: w-full (1 photo). Desktop: w-1/3 if portrait, w-full if landscape.
+                  const widthClass = ratio === 'portrait' ? 'w-full md:w-[33.333%] shrink-0' : 'w-full shrink-0';
+                  
+                  return (
+                    <div 
+                      key={idx} 
+                      className={`snap-center h-[400px] md:h-[500px] lg:h-[600px] rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer ${widthClass}`}
+                      onClick={() => setIsGalleryOpen(true)}
+                    >
+                      <Image src={src} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-full object-cover" />
+                      {idx === displayImages.length - 1 && (
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); setIsGalleryOpen(true); }}
+                          className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95 md:opacity-0 md:group-hover:opacity-100 z-10"
+                        >
+                          <Maximize2 className="w-4 h-4" />
+                          Show all {displayImages.length} photos
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700"
+              >
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (scrollRef.current) scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700"
+              >
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </button>
+            </>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[500px] lg:h-[550px] rounded-[32px] overflow-hidden mb-8 shadow-sm">
+              <div className="w-full h-full">
+                <Image src={mainImage} alt={activeProject.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="w-full h-full relative cursor-pointer" onClick={() => setIsGalleryOpen(true)}>
+                <Image src={secondImage} alt={activeProject.name} className="w-full h-full object-cover" />
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setIsGalleryOpen(true); }}
+                  className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                  Show all photos
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Header Information Row */}
@@ -203,22 +282,22 @@ export default function ProjectDetail() {
           <div className="lg:col-span-8 space-y-12">
             
             {/* Quick Stats Bar */}
-            <div className="bg-white border border-gray-200 rounded-[24px] p-8 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-[24px] p-5 md:p-8 shadow-sm">
               <div className="grid grid-cols-3 divide-x divide-gray-100">
-                <div className="flex flex-col items-center justify-center text-center px-4">
-                  <Grid2X2 className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
-                  <span className="text-2xl font-bold text-[#0F172A] capitalize">{activeProject.type || "Project"}</span>
-                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Type</span>
+                <div className="flex flex-col items-center justify-center text-center px-1 md:px-4 overflow-hidden">
+                  <Grid2X2 className="w-5 h-5 md:w-7 md:h-7 text-gray-400 mb-2 md:mb-3" strokeWidth={1.5} />
+                  <span className="text-[13px] sm:text-base md:text-2xl font-bold text-[#0F172A] capitalize truncate w-full">{activeProject.type || "Project"}</span>
+                  <span className="text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Type</span>
                 </div>
-                <div className="flex flex-col items-center justify-center text-center px-4">
-                  <Layers className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
-                  <span className="text-2xl font-bold text-[#0F172A] capitalize">{activeProject.status || "Completed"}</span>
-                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Status</span>
+                <div className="flex flex-col items-center justify-center text-center px-1 md:px-4 overflow-hidden">
+                  <Layers className="w-5 h-5 md:w-7 md:h-7 text-gray-400 mb-2 md:mb-3" strokeWidth={1.5} />
+                  <span className="text-[13px] sm:text-base md:text-2xl font-bold text-[#0F172A] capitalize truncate w-full">{activeProject.status || "Completed"}</span>
+                  <span className="text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Status</span>
                 </div>
-                <div className="flex flex-col items-center justify-center text-center px-4">
-                  <Maximize2 className="w-7 h-7 text-gray-400 mb-3" strokeWidth={1.5} />
-                  <span className="text-2xl font-bold text-[#0F172A]">{parsedArea}</span>
-                  <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Sqft</span>
+                <div className="flex flex-col items-center justify-center text-center px-1 md:px-4 overflow-hidden">
+                  <Maximize2 className="w-5 h-5 md:w-7 md:h-7 text-gray-400 mb-2 md:mb-3" strokeWidth={1.5} />
+                  <span className="text-[13px] sm:text-base md:text-2xl font-bold text-[#0F172A] truncate w-full">{parsedArea}</span>
+                  <span className="text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-wider text-gray-400 uppercase mt-1">Sqft</span>
                 </div>
               </div>
             </div>

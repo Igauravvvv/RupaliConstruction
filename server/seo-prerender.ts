@@ -55,7 +55,7 @@ function getHtmlTemplate(): string {
   }
 
   // Fallback structural template if no file is readable
-  return `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Rupali Construction | Crafting Architecture into Reality</title><meta name="description" content="Rupali Construction is a premium Gurgaon-based company specializing in residential construction, luxury villas, real estate resale, and architectural design." /><link rel="canonical" href="${BASE_URL}/" /></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" /><link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" /><link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" /><link rel="shortcut icon" href="/favicon.ico" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Rupali Construction | Crafting Architecture into Reality</title><meta name="description" content="Rupali Construction is a premium Gurgaon-based company specializing in residential construction, luxury villas, real estate resale, and architectural design." /><link rel="canonical" href="${BASE_URL}/" /></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>`;
 }
 
 function getDefaultJsonLd(pageDescription?: string): Array<Record<string, any>> {
@@ -68,7 +68,7 @@ function getDefaultJsonLd(pageDescription?: string): Array<Record<string, any>> 
       "name": "Rupali Construction",
       "alternateName": ["Rupali Homes", "Rupali Construction Gurgaon"],
       "url": BASE_URL,
-      "logo": "https://rupaliconstruction.com/logo-icon.webp",
+      "logo": "https://rupaliconstruction.com/favicon-512x512.png",
       "image": DEFAULT_IMAGE,
       "description": desc,
       "telephone": "+919311830088",

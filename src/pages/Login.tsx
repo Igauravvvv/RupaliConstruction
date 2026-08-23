@@ -15,14 +15,14 @@ function getSafeRedirect(search: string) {
     redirect.startsWith("//") ||
     redirect.startsWith("/\\")
   ) {
-    return "/";
+    return "/profile";
   }
   return redirect;
 }
 
 function getGoogleAuthUrl(redirectPath: string) {
   const params = new URLSearchParams();
-  if (redirectPath !== "/") params.set("redirect", redirectPath);
+  if (redirectPath !== "/profile") params.set("redirect", redirectPath);
   const query = params.toString();
   return query ? `/api/auth/google?${query}` : "/api/auth/google";
 }
@@ -47,6 +47,8 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState(() =>
     new URLSearchParams(location.search).get("authError")
       ? "Google sign-in could not be completed. Please try again."
@@ -71,7 +73,7 @@ export default function Login() {
   });
 
   if (isAuthenticated && !registeredUniqueId) {
-    window.location.href = redirectTo !== "/" ? redirectTo : user?.role === "admin" ? "/admin" : "/";
+    window.location.href = redirectTo === "/profile" && user?.role === "admin" ? "/admin" : redirectTo;
     return null;
   }
 
@@ -86,6 +88,8 @@ export default function Login() {
         username,
         password,
         displayName: displayName || undefined,
+        email: email || undefined,
+        phoneNumber: phoneNumber || undefined,
       });
     }
   };
@@ -254,17 +258,44 @@ export default function Login() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
+                    className="space-y-4"
                   >
-                    <label className="text-sm font-medium text-[var(--rc-dark)] mb-2 block">
-                      Display Name
-                    </label>
-                    <input
-                      type="text"
-                      value={displayName}
-                      onChange={(e) => setDisplayName(e.target.value)}
-                      className="w-full px-4 py-3 bg-[var(--rc-gray)] border border-[var(--rc-border)] rounded-xl focus:bg-white focus:ring-2 focus:ring-[var(--rc-orange)] focus:border-transparent outline-none transition-all"
-                      placeholder="Your full name"
-                    />
+                    <div>
+                      <label className="text-sm font-medium text-[var(--rc-dark)] mb-2 block">
+                        Display Name
+                      </label>
+                      <input
+                        type="text"
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        className="w-full px-4 py-3 bg-[var(--rc-gray)] border border-[var(--rc-border)] rounded-xl focus:bg-white focus:ring-2 focus:ring-[var(--rc-orange)] focus:border-transparent outline-none transition-all"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-[var(--rc-dark)] mb-2 block">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-4 py-3 bg-[var(--rc-gray)] border border-[var(--rc-border)] rounded-xl focus:bg-white focus:ring-2 focus:ring-[var(--rc-orange)] focus:border-transparent outline-none transition-all"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-[var(--rc-dark)] mb-2 block">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="w-full px-4 py-3 bg-[var(--rc-gray)] border border-[var(--rc-border)] rounded-xl focus:bg-white focus:ring-2 focus:ring-[var(--rc-orange)] focus:border-transparent outline-none transition-all"
+                        placeholder="+91 9876543210"
+                      />
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>

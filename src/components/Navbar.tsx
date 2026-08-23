@@ -8,7 +8,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDarkSection, setIsDarkSection] = useState(false);
   const location = useLocation();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, isLoggingOut } = useAuth();
 
   useEffect(() => {
     setMobileOpen(false);
@@ -133,7 +133,8 @@ export default function Navbar() {
               </Link>
               <button
                 onClick={logout}
-                className={`p-2.5 rounded-full border transition-all duration-300 ${
+                disabled={isLoggingOut}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-bold tracking-wider uppercase transition-all duration-300 disabled:cursor-wait disabled:opacity-60 ${
                   isDarkSection
                     ? "border-white/20 text-white hover:bg-red-500/20 hover:border-red-400/40"
                     : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:bg-red-50 hover:text-red-500 hover:border-red-200"
@@ -141,6 +142,7 @@ export default function Navbar() {
                 title="Logout"
               >
                 <LogOut className="w-4 h-4" />
+                {isLoggingOut ? "Signing out" : "Logout"}
               </button>
             </div>
           ) : (
@@ -267,12 +269,13 @@ export default function Navbar() {
                     logout();
                     setMobileOpen(false);
                   }}
+                  disabled={isLoggingOut}
                   className={`py-4 text-sm font-bold tracking-wider uppercase rounded-2xl text-center flex items-center justify-center gap-2 border transition-colors ${
                     isDarkSection ? "border-red-400/30 text-red-300 hover:bg-red-500/10" : "border-red-200 text-red-500 hover:bg-red-50"
                   }`}
                 >
                   <LogOut className="w-4 h-4" />
-                  Logout
+                  {isLoggingOut ? "Signing out" : "Logout"}
                 </button>
               </div>
             ) : (

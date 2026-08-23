@@ -64,17 +64,22 @@ export function useAuth() {
   const isLoading = oauthLoading || localLoading;
 
   const logout = useCallback(() => {
-    logoutMutation.mutate();
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-  }, [logoutMutation]);
+    if (logoutMutation.isPending) return;
+
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        void utils.invalidate();
+        window.location.assign("/login");
+      },
+    });
+  }, [logoutMutation, utils]);
 
   return {
     user,
     isAuthenticated: !!user,
     isAdmin,
     isLoading,
+    isLoggingOut: logoutMutation.isPending,
     logout,
   };
 }

@@ -6,14 +6,14 @@ import { Link } from "react-router";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import { 
-  User, Shield, Mail, Phone, Calendar, Building2, Calculator, 
-  FileText, CheckCircle2, Edit3, LogOut, ArrowRight, Sparkles, 
+  User, Shield, Mail, Phone, Calendar, Calculator,
+  FileText, CheckCircle2, Edit3, ArrowRight, Sparkles,
   Clock, MapPin, Layers, Award, AlertCircle, RefreshCw
 } from "lucide-react";
 
 export default function Profile() {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState<"overview" | "estimates" | "inquiries">("overview");
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const [activeTab, setActiveTab] = useState<"overview" | "estimates">("overview");
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -122,12 +122,6 @@ export default function Profile() {
                   <Shield className="w-4 h-4" /> Admin Portal
                 </Link>
               )}
-              <button
-                onClick={logout}
-                className="px-6 py-3 bg-white/10 hover:bg-red-500/20 text-white font-bold rounded-xl transition-colors border border-white/20 hover:border-red-500/40 flex items-center gap-2 text-sm"
-              >
-                <LogOut className="w-4 h-4" /> Logout
-              </button>
             </div>
           </div>
         </div>
@@ -183,21 +177,6 @@ export default function Profile() {
               {recordsData?.estimates && recordsData.estimates.length > 0 && (
                 <span className="ml-1 px-2 py-0.5 text-xs bg-[var(--rc-orange)] text-white rounded-full font-extrabold">
                   {recordsData.estimates.length}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab("inquiries")}
-              className={`pb-4 px-3 sm:px-6 text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 ${
-                activeTab === "inquiries"
-                  ? "border-[var(--rc-orange)] text-[var(--rc-dark)] font-bold"
-                  : "border-transparent text-[var(--rc-muted)] hover:text-[var(--rc-dark)]"
-              }`}
-            >
-              <FileText className="w-4 h-4" /> Inquiries & Leads
-              {recordsData && (recordsData.leads.length + recordsData.inquiries.length) > 0 && (
-                <span className="ml-1 px-2 py-0.5 text-xs bg-[var(--rc-blue)] text-white rounded-full font-extrabold">
-                  {recordsData.leads.length + recordsData.inquiries.length}
                 </span>
               )}
             </button>
@@ -339,17 +318,13 @@ export default function Profile() {
                   </div>
                   <h3 className="text-xl font-bold mb-2">My Record System</h3>
                   <p className="text-white/70 text-sm leading-relaxed mb-6">
-                    All your cost estimates, project inquiries, and brand consultations are automatically organized here under your verified account credentials.
+                    Your account details and saved cost estimates are securely organized here under your verified credentials.
                   </p>
 
                   <div className="space-y-4 pt-4 border-t border-white/10">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-white/80 flex items-center gap-2"><Calculator className="w-4 h-4 text-[var(--rc-orange)]" /> Saved Estimates</span>
                       <span className="font-bold text-lg">{recordsData?.estimates?.length ?? 0}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-white/80 flex items-center gap-2"><FileText className="w-4 h-4 text-emerald-400" /> Active Inquiries</span>
-                      <span className="font-bold text-lg">{((recordsData?.leads?.length ?? 0) + (recordsData?.inquiries?.length ?? 0))}</span>
                     </div>
                   </div>
                 </div>
@@ -443,89 +418,6 @@ export default function Profile() {
             </motion.div>
           )}
 
-          {activeTab === "inquiries" && (
-            <motion.div
-              key="inquiries"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-            >
-              {recordsLoading ? (
-                <div className="py-20 text-center text-[var(--rc-muted)]">Loading your inquiries...</div>
-              ) : recordsData && (recordsData.leads.length + recordsData.inquiries.length) > 0 ? (
-                <div className="space-y-4 max-w-4xl mx-auto">
-                  {recordsData.leads.map((lead) => (
-                    <div key={`lead-${lead.id}`} className="bg-white rounded-2xl p-6 border border-[var(--rc-border)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-[var(--rc-blue)] shrink-0 mt-1 sm:mt-0">
-                          <Building2 className="w-6 h-6" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3 mb-1">
-                            <h4 className="font-bold text-base text-[var(--rc-dark)]">{lead.projectType || "Turnkey Construction Inquiry"}</h4>
-                            <span className="px-2.5 py-0.5 bg-blue-100 text-[var(--rc-blue)] text-xs font-bold rounded-full capitalize">
-                              {lead.status || "New"}
-                            </span>
-                          </div>
-                          <p className="text-xs text-[var(--rc-muted)] mb-1">
-                            Location: {lead.city || "NCR"} | Budget: {lead.budget || "TBD"} | Timeline: {lead.timeline || "Immediate"}
-                          </p>
-                          <span className="text-[11px] font-semibold text-[var(--rc-orange)]">Ref: {lead.referenceId}</span>
-                        </div>
-                      </div>
-                      <div className="text-right text-xs text-[var(--rc-muted)] shrink-0 self-end sm:self-center">
-                        <div>Submitted on</div>
-                        <div className="font-bold text-[var(--rc-dark)]">{formatDate(lead.createdAt)}</div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {recordsData.inquiries.map((contact) => (
-                    <div key={`contact-${contact.id}`} className="bg-white rounded-2xl p-6 border border-[var(--rc-border)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[var(--rc-orange)] shrink-0 mt-1 sm:mt-0">
-                          <Mail className="w-6 h-6" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3 mb-1">
-                            <h4 className="font-bold text-base text-[var(--rc-dark)]">{contact.service || "Consultation Request"}</h4>
-                            <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full capitalize">
-                              {contact.status || "New"}
-                            </span>
-                          </div>
-                          <p className="text-xs text-[var(--rc-muted)] line-clamp-1 mb-1">
-                            Message: {contact.message || "Requested consultation from engineering desk."}
-                          </p>
-                          {contact.city && <span className="text-[11px] font-semibold text-[var(--rc-muted)]">City: {contact.city}</span>}
-                        </div>
-                      </div>
-                      <div className="text-right text-xs text-[var(--rc-muted)] shrink-0 self-end sm:self-center">
-                        <div>Submitted on</div>
-                        <div className="font-bold text-[var(--rc-dark)]">{formatDate(contact.createdAt)}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-3xl p-12 text-center border border-[var(--rc-border)] max-w-xl mx-auto">
-                  <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-[var(--rc-blue)]">
-                    <FileText className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[var(--rc-dark)] mb-2">No Inquiries Found</h3>
-                  <p className="text-sm text-[var(--rc-muted)] mb-8 leading-relaxed">
-                    When you request architectural consultations, submit building inquiries, or interact with our guided engineering flow, your conversation logs and lead status will appear here.
-                  </p>
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--rc-blue)] text-white font-bold rounded-xl hover:bg-[var(--rc-orange)] transition-all shadow-lg"
-                  >
-                    Start a Consultation
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              )}
-            </motion.div>
-          )}
         </AnimatePresence>
       </main>
 

@@ -24,7 +24,7 @@ export default function Projects() {
 
   const { data } = trpc.project.list.useQuery({
     type: activeFilter === "all" ? undefined : (activeFilter as "residential" | "commercial" | "renovation" | "interior"),
-    limit: 8,
+    limit: 50,
   });
 
   const projects = data?.items || [];

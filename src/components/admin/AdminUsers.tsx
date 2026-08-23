@@ -3,9 +3,12 @@ import { UserCircle2, Mail, Phone, Calendar, Shield, MapPin, Search } from "luci
 import { useState } from "react";
 
 export default function AdminUsers() {
-  const { data: users, isLoading } = trpc.admin.userList.useQuery();
+  const { data: users, isLoading } = trpc.admin.userList.useQuery(undefined, {
+    refetchInterval: 15_000,
+    refetchOnWindowFocus: true,
+  });
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState<"all" | "oauth" | "local">("all");
+  const [filterType, setFilterType] = useState<"all" | "oauth" | "google" | "local">("all");
 
   if (isLoading) {
     return (
@@ -52,7 +55,8 @@ export default function AdminUsers() {
             className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[var(--rc-blue)]"
           >
             <option value="all">All Users</option>
-            <option value="oauth">Google Sign-in</option>
+            <option value="oauth">Other OAuth</option>
+            <option value="google">Google Sign-in</option>
             <option value="local">Email & Password</option>
           </select>
         </div>
@@ -113,11 +117,11 @@ export default function AdminUsers() {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
-                        user.authType === "oauth" 
+                        user.authType === "google" || user.authType === "oauth"
                           ? "bg-blue-50 text-blue-700" 
                           : "bg-purple-50 text-purple-700"
                       }`}>
-                        {user.authType === "oauth" ? "Google" : "Local"}
+                        {user.authType === "google" || user.authType === "oauth" ? "Google" : "Email & Password"}
                       </span>
                     </td>
                     <td className="px-6 py-4">

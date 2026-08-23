@@ -77,7 +77,7 @@ export const adminRouter = createRouter({
         email: u.email,
         phone: u.phoneNumber,
         role: u.role,
-        authType: "local" as const,
+        authType: u.authProvider,
         createdAt: u.createdAt,
         lastSignInAt: u.lastSignInAt,
         profileCompleted: u.profileCompleted,

@@ -10,7 +10,13 @@ export default function PromoPopup() {
   const [hasDismissed, setHasDismissed] = useState(false);
 
   useEffect(() => {
-    if (hasDismissed || isAuthenticated || isLoading) return;
+    if (isAuthenticated) {
+      setIsVisible(false);
+      setHasDismissed(true);
+      return;
+    }
+
+    if (hasDismissed || isLoading) return;
 
     // Check if they dismissed it in a previous session
     if (sessionStorage.getItem("promo_dismissed")) {
@@ -55,7 +61,7 @@ export default function PromoPopup() {
     sessionStorage.setItem("promo_dismissed", "true");
   };
 
-  if (isAuthenticated) return null;
+  if (isLoading || isAuthenticated) return null;
 
   return (
     <AnimatePresence>
@@ -96,7 +102,7 @@ export default function PromoPopup() {
 
               <div className="flex flex-col gap-4">
                 <Link
-                  to="/login"
+                  to="/login?redirect=/profile"
                   onClick={handleDismiss}
                   className="w-full flex items-center justify-between px-6 py-4 bg-white text-[var(--rc-orange)] rounded-xl font-bold hover:bg-[var(--rc-gray)] transition-all group/btn shadow-xl shadow-black/10"
                 >

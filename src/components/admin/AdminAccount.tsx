@@ -2,12 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { User, LogOut, Shield } from "lucide-react";
 
 export default function AdminAccount() {
-  const { user } = useAuth();
-
-  const handleLogout = () => {
-    localStorage.removeItem("local_auth_token");
-    window.location.href = "/login";
-  };
+  const { user, logout, isLoggingOut } = useAuth();
 
   return (
     <div className="bg-white rounded-xl border border-[var(--rc-border)] overflow-hidden max-w-2xl">
@@ -56,11 +51,12 @@ export default function AdminAccount() {
 
         <div className="mt-8 pt-6 border-t border-[var(--rc-border)]">
           <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-6 py-3 bg-red-50 text-red-600 rounded-xl font-medium hover:bg-red-100 transition-colors"
+            onClick={logout}
+            disabled={isLoggingOut}
+            className="flex items-center gap-2 px-6 py-3 bg-red-50 text-red-600 rounded-xl font-medium hover:bg-red-100 transition-colors disabled:cursor-wait disabled:opacity-60"
           >
             <LogOut className="w-5 h-5" />
-            Sign Out
+            {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </button>
         </div>
       </div>

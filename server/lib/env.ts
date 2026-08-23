@@ -12,8 +12,8 @@ export const env = {
   kimiAuthUrl: e.KIMI_AUTH_URL || e.VITE_KIMI_AUTH_URL || "https://auth.kimi.com",
   kimiOpenUrl: e.KIMI_OPEN_URL || "https://open.kimi.com",
   ownerUnionId: e.OWNER_UNION_ID ?? "",
-  googleClientId: e.GOOGLE_CLIENT_ID || e.VITE_GOOGLE_CLIENT_ID || "",
-  googleClientSecret: e.GOOGLE_CLIENT_SECRET || e.VITE_GOOGLE_CLIENT_SECRET || "",
+  googleClientId: e.GOOGLE_CLIENT_ID || "",
+  googleClientSecret: e.GOOGLE_CLIENT_SECRET || "",
 };
 
 export function requireKimiEnv() {

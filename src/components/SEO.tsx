@@ -12,8 +12,8 @@ interface SEOProps {
 }
 
 export default function SEO({ 
-  title = "Rupali Construction | Crafting Architecture into Reality", 
-  description = "Rupali Construction is a premium Gurgaon-based company specializing in residential construction, luxury villas, real estate resale, and architectural design.", 
+  title = "AI-Powered Home Construction Company In Gurgaon | Best Luxury House Builders | Rupali Construction", 
+  description = "Rupali Construction is Gurgaon's premier AI-powered home construction company offering turnkey villa building, 2D/3D Vastu architectural designs, licensed structural engineering, luxury interior solutions, and intelligent cost estimation across Delhi NCR.", 
   keywords = "construction, Gurgaon, residential, commercial, villas, resell, real estate, architecture, turnkey interior, luxury home contractor",
   type = "website",
   image = "https://rupaliconstruction.com/logo-main.png",

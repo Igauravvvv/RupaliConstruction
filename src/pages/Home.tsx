@@ -18,7 +18,12 @@ import InstagramFeed from "@/sections/InstagramFeed";
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden">
-      <SEO />
+      <SEO 
+        title="AI-Powered Home Construction Company In Gurgaon | Best Luxury House Builders | Rupali Construction"
+        description="Rupali Construction is Gurgaon's premier AI-powered home construction company offering turnkey villa building, 2D/3D Vastu architectural designs, licensed structural engineering, luxury interior solutions, and intelligent cost estimation across Delhi NCR."
+        keywords="home construction company in gurugram, best home builders in gurgaon, AI construction Gurgaon, house construction delhi ncr, luxury residential builders, turnkey villa construction, architects in sector 71 gurgaon, rupali construction"
+        url="/"
+      />
       <Navbar />
       <Hero />
       <CinematicReveal />

@@ -66,7 +66,7 @@ export default function BrandStandards() {
       <section className="relative min-h-[90vh] bg-white pt-32 pb-24 overflow-hidden">
         {/* Background Image with Premium Gradient Fade */}
         <div className="absolute top-0 left-0 w-full h-[70%] z-0">
-          <img loading="lazy" 
+          <img 
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80" 
             alt="Modern Construction"
             className="w-full h-full object-cover opacity-60 mix-blend-luminosity"

@@ -29,7 +29,7 @@ export default function BrandCard({ brand, index, categoryColor }: BrandCardProp
           <img
             src={brand.image}
             alt={brand.name}
-            className="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/brand:scale-110"
+            className="w-full h-full object-cover will-change-transform transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/brand:scale-110"
             loading="lazy"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";

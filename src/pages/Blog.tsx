@@ -51,7 +51,7 @@ export default function Blog() {
 
       {/* Full Page Background Image */}
       <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none">
-        <img loading="lazy" 
+        <img 
           src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?auto=format&fit=crop&w=1920&q=80" 
           alt="Construction Planning and Blog"
           className="w-full h-full object-cover object-[center_20%] opacity-[0.15] mix-blend-luminosity"

@@ -53,7 +53,7 @@ export default function Services() {
       {/* Background Image with Premium Gradient Fade */}
       <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
         <div className="sticky top-0 w-full h-screen">
-          <img loading="lazy" 
+          <img 
             src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
             alt="Professional Construction Team Services"
             className="w-full h-full object-cover opacity-35 mix-blend-luminosity"

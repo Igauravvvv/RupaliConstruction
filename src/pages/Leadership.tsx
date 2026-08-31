@@ -142,7 +142,7 @@ export default function Leadership() {
 
       {/* Background Image with Premium Gradient Fade */}
       <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none">
-        <img loading="lazy" 
+        <img 
           src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1920&q=80" 
           alt="Construction Leadership and Planning"
           className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"

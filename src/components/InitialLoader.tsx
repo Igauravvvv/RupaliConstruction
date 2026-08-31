@@ -14,7 +14,7 @@ export default function InitialLoader({ onComplete }: { onComplete: () => void }
     // Animate progress from 0 → 100 over ~1.8s
     let raf: number;
     const start = performance.now();
-    const duration = 1800; // ms
+    const duration = 1200; // ms
 
     const tick = (now: number) => {
       const elapsed = now - start;
@@ -27,7 +27,7 @@ export default function InitialLoader({ onComplete }: { onComplete: () => void }
         raf = requestAnimationFrame(tick);
       } else {
         // Small pause at 100 % before exit animation
-        setTimeout(() => setIsDone(true), 350);
+        setTimeout(() => setIsDone(true), 200);
       }
     };
 

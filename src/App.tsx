@@ -34,10 +34,10 @@ function ScrollToTop() {
 
 /** Fade-in / fade-out wrapper for page transitions */
 const pageTransition = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
-  transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
+  exit: { opacity: 0, y: -6 },
+  transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] },
 };
 
 export default function App() {
@@ -59,7 +59,7 @@ export default function App() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
           <ScrollToTop />
           <Suspense fallback={<GlobalLoader />}>

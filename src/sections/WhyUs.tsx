@@ -69,13 +69,13 @@ export default function WhyUs() {
           className="text-center"
         >
           <motion.p 
-            variants={{ hidden: { opacity: 0, x: "-100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 1.5, type: "spring", bounce: 0.1 } } }}
+            variants={{ hidden: { opacity: 0, x: "-100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, type: "spring", bounce: 0.1 } } }}
             className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] mb-2 drop-shadow-sm"
           >
             Why Choose Us
           </motion.p>
           <motion.h2 
-            variants={{ hidden: { opacity: 0, x: "-100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 1.5, type: "spring", bounce: 0.1 } } }}
+            variants={{ hidden: { opacity: 0, x: "-100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, type: "spring", bounce: 0.1 } } }}
             className="text-xl md:text-2xl font-medium text-[var(--rc-dark)] max-w-4xl mx-auto"
           >
             The Rupali Advantage

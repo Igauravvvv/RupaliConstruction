@@ -7,21 +7,21 @@ const phases = [
     label: 'Structural', 
     desc: 'Foundation, core framing, and heavy structural engineering.',
     details: 'The structural phase forms the unbreakable backbone of your villa. We utilize high-grade steel I-beams, cross-bracing, and reinforced concrete to ensure maximum durability, earthquake resistance, and structural integrity for generations to come.',
-    image: '/villa_structural.png'
+    image: '/villa_structural.webp'
   },
   { 
     id: 'rough', 
     label: 'Rough-In', 
     desc: 'Exterior walls, roofing, MEP systems, and insulation.',
     details: 'During the rough-in phase, the skeleton becomes a home. We install premium insulation, state-of-the-art HVAC systems, advanced smart-home wiring, and specialized plumbing—all meticulously routed before the walls are closed up.',
-    image: '/villa_rough.png'
+    image: '/villa_rough.webp'
   },
   { 
     id: 'finished', 
     label: 'Finished', 
     desc: 'Premium facade, luxurious interiors, and final handover.',
     details: 'The grand finale. Your vision comes to life with exquisite materials, flawless architectural finishes, imported glass, and luxury landscaping. Welcome to your new ultra-premium Rupali Construction masterpiece.',
-    image: '/villa_finished.png'
+    image: '/villa_finished.webp'
   }
 ];
 
@@ -104,7 +104,7 @@ export default function ConstructionProcess() {
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </AnimatePresence>

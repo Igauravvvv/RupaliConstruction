@@ -58,19 +58,19 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
           className="text-center mb-16"
         >
           <motion.p 
-            variants={{ hidden: { opacity: 0, x: "100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 1.5, type: "spring", bounce: 0.1 } } }}
+            variants={{ hidden: { opacity: 0, x: "100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, type: "spring", bounce: 0.1 } } }}
             className="text-3xl md:text-4xl font-serif italic tracking-wide text-[var(--rc-orange)] mb-4"
           >
             Our Services
           </motion.p>
           <motion.h2 
-            variants={{ hidden: { opacity: 0, x: "100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 1.5, type: "spring", bounce: 0.1 } } }}
+            variants={{ hidden: { opacity: 0, x: "100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, type: "spring", bounce: 0.1 } } }}
             className="text-display-2 text-[var(--rc-dark)] max-w-4xl mx-auto whitespace-nowrap"
           >
             Built for Precision
           </motion.h2>
           <motion.p 
-            variants={{ hidden: { opacity: 0, x: "100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 1.5, type: "spring", bounce: 0.1 } } }}
+            variants={{ hidden: { opacity: 0, x: "100vw" }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, type: "spring", bounce: 0.1 } } }}
             className="text-[var(--rc-muted)] mt-4 max-w-xl mx-auto"
           >
             From concept to completion, we offer a comprehensive suite of construction services tailored to your vision.

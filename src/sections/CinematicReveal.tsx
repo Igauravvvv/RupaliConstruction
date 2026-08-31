@@ -17,7 +17,7 @@ export default function CinematicReveal() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=120%", // Reduced from 200% to make the scroll transition faster
+          end: "+=100%", // Tighter scroll for faster section transition
           pin: true,
           scrub: 1,
         },

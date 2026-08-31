@@ -10,15 +10,15 @@ const staggerContainer = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.3,
+      staggerChildren: 0.1,
+      delayChildren: 0.15,
     },
   },
 };
 
 const fadeUp: any = {
   hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 const floatAnimation = {
@@ -26,7 +26,7 @@ const floatAnimation = {
   animate: {
     y: [0, -10, 0],
     transition: {
-      duration: 4,
+      duration: 3,
       repeat: Infinity,
       ease: "easeInOut"
     }
@@ -81,7 +81,7 @@ export default function Hero() {
                     className="text-5xl md:text-7xl lg:text-[6.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
                   >
                     Crafting
                   </motion.span>
@@ -122,7 +122,7 @@ export default function Hero() {
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 rounded-full"
                     style={{ background: 'radial-gradient(ellipse at center, rgba(240,113,43,0.15) 0%, transparent 60%)' }}
                     animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.9, 1.05, 0.9] }}
-                    transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
                   />
                 </motion.div>
 
@@ -132,7 +132,7 @@ export default function Hero() {
                     className="text-3xl md:text-5xl lg:text-[4rem] font-light tracking-wide text-[var(--rc-text)]/80 block"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                    transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
                   >
                     Into Reality
                   </motion.span>
@@ -182,7 +182,7 @@ export default function Hero() {
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 1, type: "spring" }}
+            transition={{ delay: 0.8, duration: 0.6, type: "spring" }}
             className="flex flex-col items-center gap-2 pointer-events-auto cursor-pointer group"
             onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
           >
@@ -191,7 +191,7 @@ export default function Hero() {
           <div className="w-7 h-11 border-2 border-[var(--rc-blue)] group-hover:border-[var(--rc-orange)] rounded-full flex justify-center p-1 transition-colors duration-300 bg-white/40 backdrop-blur-sm shadow-[0_4px_10px_rgba(0,0,0,0.05)]">
              <motion.div
                 animate={{ y: [0, 18, 0], opacity: [1, 0, 1] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                 className="w-1.5 h-3 bg-[var(--rc-orange)] rounded-full shadow-[0_0_8px_rgba(240,113,43,0.8)]"
              />
           </div>

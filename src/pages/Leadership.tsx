@@ -56,7 +56,7 @@ const leaders: Leader[] = [
       "Bringing over three and a half decades of invaluable industry expertise. His deep understanding of structural engineering, project management, and large-scale development has been the driving force behind the company's most ambitious and successful endeavors.",
     specialties: ["Structural Engineering Mastery", "Large-scale Development", "Operational Excellence"],
     image:
-      "/images/Nksharma.png",
+      "/images/Nksharma.webp",
     imageBg: "bg-white",
     badges: [
       { text: "Expert Engineering", icon: <Award className="w-4 h-4" /> },
@@ -71,7 +71,7 @@ const leaders: Leader[] = [
       "Spearheading the modern growth of Rupali Construction. Combining fresh perspectives with core traditional values, he is focused on integrating innovative building technologies, sustainable practices, and expanding the company's footprint into new luxury segments.",
     specialties: ["Innovative Technologies", "Sustainable Practices", "Luxury & Modern Segments"],
     image:
-      "/images/ujjwal tyagi.png",
+      "/images/ujjwal_tyagi.webp",
     badges: [
       { text: "Innovation Driven", icon: <MessageSquare className="w-4 h-4" /> },
       { text: "Modern Growth", icon: <Check className="w-4 h-4" /> },

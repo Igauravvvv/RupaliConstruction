@@ -60,7 +60,7 @@ export default function TrustBar({ variant = "default" }: { variant?: "default" 
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.5 }}
                     whileInView={{ opacity: 1, scale: 1.5 }}
-                    transition={{ duration: 1.2, delay: i * 0.2, ease: "easeOut" }}
+                    transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
                     viewport={{ once: true }}
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[150%] bg-[var(--rc-orange)]/30 blur-2xl rounded-[100%] pointer-events-none"
                   />

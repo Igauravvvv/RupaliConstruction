@@ -77,7 +77,7 @@ export default function Projects() {
             initial={{ opacity: 0, x: "-50vw" }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "100px" }}
-            transition={{ duration: 1.2, type: "spring", bounce: 0.2 }}
+            transition={{ duration: 0.6, type: "spring", bounce: 0.2 }}
             className="flex flex-col items-center"
           >
             <p className="text-5xl lg:text-[6rem] leading-none font-serif italic text-[var(--rc-orange)] mb-3 drop-shadow-sm">

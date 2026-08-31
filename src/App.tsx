@@ -13,6 +13,7 @@ const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
 const Leadership = lazy(() => import('./pages/Leadership'))
 const BrandStandards = lazy(() => import('./pages/BrandStandards'))
 const Admin = lazy(() => import('./pages/Admin'))
+const AdminLogin = lazy(() => import('./pages/AdminLogin'))
 const Login = lazy(() => import('./pages/Login'))
 const CompleteProfile = lazy(() => import('./pages/CompleteProfile'))
 const Profile = lazy(() => import('./pages/Profile'))
@@ -43,7 +44,7 @@ const pageTransition = {
 export default function App() {
   const location = useLocation();
   const { pathname } = location;
-  const isExcludedRoute = pathname.startsWith('/admin') || pathname === '/login';
+  const isExcludedRoute = pathname.startsWith('/admin') || pathname === '/login' || pathname === '/admin-login';
   const isChatWidgetExcluded = isExcludedRoute || pathname === '/contact';
 
   const [appReady, setAppReady] = useState(false);
@@ -76,6 +77,7 @@ export default function App() {
                   <Route path="/brand-standards" element={<BrandStandards />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/admin-login" element={<AdminLogin />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/complete-profile" element={<CompleteProfile />} />
                   <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />

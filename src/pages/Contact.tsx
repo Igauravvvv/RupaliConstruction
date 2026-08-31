@@ -124,8 +124,8 @@ export default function Contact() {
                     Thank You!
                   </h2>
                   <p className="text-[var(--rc-muted)] max-w-md">
-                    Your message has been received. Our team will contact you
-                    within 24 hours to discuss your project.
+                    Your message has been received and recorded under the <strong>Leads</strong> section. 
+                    Our team will contact you within 24 hours to discuss your project.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}

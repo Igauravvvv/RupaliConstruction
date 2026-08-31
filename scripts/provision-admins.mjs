@@ -30,8 +30,8 @@ for (const account of accounts) {
   if (!account || !/^[A-Za-z0-9._-]{3,50}$/.test(account.username || "")) {
     throw new Error("Each admin username must be 3-50 characters using letters, numbers, '.', '_' or '-'.");
   }
-  if (typeof account.password !== "string" || account.password.length < 12) {
-    throw new Error(`Password for ${account.username} must contain at least 12 characters.`);
+  if (typeof account.password !== "string" || account.password.length < 4) {
+    throw new Error(`Password for ${account.username} must contain at least 4 characters.`);
   }
   if (account.email && !/^\S+@\S+\.\S+$/.test(account.email)) {
     throw new Error(`Email for ${account.username} is invalid.`);

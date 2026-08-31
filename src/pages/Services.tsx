@@ -55,6 +55,8 @@ export default function Services() {
         <div className="sticky top-0 w-full h-screen">
           <img 
             src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+            srcSet="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=70 800w, https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80 1920w"
+            sizes="100vw"
             alt="Professional Construction Team Services"
             className="w-full h-full object-cover opacity-35 mix-blend-luminosity"
           />

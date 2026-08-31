@@ -333,7 +333,7 @@ export default function ChatWidget() {
                   >
                     <div className="pl-2 md:pl-4 pr-1 md:pr-3 flex items-center gap-1.5 md:gap-3 overflow-hidden">
                       <svg className="w-3.5 h-3.5 md:w-5 md:h-5 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
-                      <span className="text-gray-200 text-[9px] md:text-[13px] font-medium leading-tight max-w-[80px] md:max-w-none md:whitespace-nowrap pr-1">
+                      <span className="text-gray-200 text-[9px] md:text-[13px] font-medium leading-tight w-[80px] md:w-[220px] whitespace-nowrap overflow-hidden pr-1">
                         <TypingText text={currentMessage} />
                       </span>
                     </div>
@@ -356,6 +356,8 @@ export default function ChatWidget() {
                   key={EXPRESSIONS[exprIndex].image}
                   src={EXPRESSIONS[exprIndex].image}
                   alt="AI Assistant"
+                  width="112"
+                  height="168"
                   className="w-full h-auto object-contain"
                 />
               </motion.button>

@@ -72,7 +72,9 @@ export default function Footer() {
         <img
           src="/logo-icon.webp"
           alt=""
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] object-contain opacity-[0.03] rotate-12"
+          width="800"
+          height="800"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] object-contain opacity-[0.03] rotate-12 pointer-events-none"
         />
       </div>
 
@@ -89,6 +91,8 @@ export default function Footer() {
               <img
                 src="/logo-icon.webp"
                 alt="Rupali Construction"
+                width="96"
+                height="96"
                 className="w-24 object-contain relative z-10 brightness-[1.2]"
               />
             </Link>
@@ -191,6 +195,8 @@ export default function Footer() {
               <img
                 src="/logo-icon.webp"
                 alt="Rupali Construction"
+                width="64"
+                height="64"
                 className="w-16 object-contain brightness-[1.2]"
               />
             </Link>

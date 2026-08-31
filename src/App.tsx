@@ -18,12 +18,11 @@ const Login = lazy(() => import('./pages/Login'))
 const CompleteProfile = lazy(() => import('./pages/CompleteProfile'))
 const Profile = lazy(() => import('./pages/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-import ChatWidget from './components/ChatWidget'
-import FloatingActions from './components/FloatingActions'
+const ChatWidget = lazy(() => import('./components/ChatWidget'))
+const FloatingActions = lazy(() => import('./components/FloatingActions'))
 import AuthGuard from './components/AuthGuard'
 import SEO from './components/SEO'
 import GlobalLoader from './components/GlobalLoader'
-import InitialLoader from './components/InitialLoader'
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -46,13 +45,6 @@ export default function App() {
   const { pathname } = location;
   const isExcludedRoute = pathname.startsWith('/admin') || pathname === '/login' || pathname === '/admin-login';
   const isChatWidgetExcluded = isExcludedRoute || pathname === '/contact';
-
-  const [appReady, setAppReady] = useState(false);
-
-  // Show the intro loader only on the very first visit
-  if (!appReady) {
-    return <InitialLoader onComplete={() => setAppReady(true)} />;
-  }
 
   return (
     <HelmetProvider>
@@ -85,9 +77,9 @@ export default function App() {
                 </Routes>
               </motion.div>
             </AnimatePresence>
+            {!isExcludedRoute && <FloatingActions />}
+            {!isChatWidgetExcluded && <ChatWidget />}
           </Suspense>
-          {!isExcludedRoute && <FloatingActions />}
-          {!isChatWidgetExcluded && <ChatWidget />}
         </motion.div>
     </HelmetProvider>
   )

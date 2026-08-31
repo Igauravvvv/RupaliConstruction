@@ -600,7 +600,7 @@ export async function seoPrerenderHandler(c: Context) {
     // Inject Semantic Content directly into root container for AI bots and immediate FCP
     const isPrivateAppRoute = url.pathname.startsWith('/admin') || url.pathname.startsWith('/profile') || url.pathname.startsWith('/login');
     if (!isPrivateAppRoute) {
-      html = html.replace(/<div id=["']root["']>\s*<\/div>/i, `<div id="root">${pageData.semanticHtml}</div>`);
+      html = html.replace(/<div id=["']root["']>\s*<\/div>/i, `<div id="root"><div style="opacity:0; position:absolute; pointer-events:none; z-index:-9999; height:0; overflow:hidden;" aria-hidden="true">${pageData.semanticHtml}</div></div>`);
     }
 
     c.header("Content-Type", "text/html; charset=utf-8");

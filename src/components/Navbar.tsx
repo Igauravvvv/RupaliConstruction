@@ -86,6 +86,8 @@ export default function Navbar() {
           <img
             src="/logo-main.webp?v=2"
             alt="Rupali Construction"
+            width="192"
+            height="128"
             className={`w-48 h-auto md:w-auto md:h-24 lg:h-32 object-contain md:scale-[1.8] origin-left translate-y-1 md:translate-y-2 lg:translate-y-4 transition-all duration-500 ${
               isDarkSection ? "drop-shadow-lg" : "md:mix-blend-multiply"
             }`}

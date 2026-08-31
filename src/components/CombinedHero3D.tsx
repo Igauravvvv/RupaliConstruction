@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Points, PointMaterial, PresentationControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -293,41 +293,52 @@ function ModernVilla() {
 
 // --- UNIFIED SCENE COMPONENT ---
 export default function CombinedHero3D() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none">
       {/* 
         A single Canvas spanning the entire viewport.
-        This eliminates the overhead of running two separate WebGL contexts.
+        Disabled on mobile (innerWidth < 1024) to save battery and drastically improve performance.
       */}
-      <div className="absolute inset-0 w-full h-full">
-        <Canvas dpr={[1, 2]} camera={{ position: [0, 8, 22], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
-          <ambientLight intensity={0.7} />
-          {/* Shared lighting for the entire scene */}
-          <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />
-          <directionalLight position={[-10, 10, -5]} intensity={1.2} color="#ff6b1a" />
-          
-          <PresentationControls 
-            global 
-            snap={true} 
-            rotation={[0, 0, 0]} 
-            polar={[-Math.PI / 4, Math.PI / 4]} 
-            azimuth={[-Math.PI / 4, Math.PI / 4]}
-          >
-            {/* The City Skyline (positioned on the left) */}
-            <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-              <CitySkyline />
-            </Float>
+      {!isMobile && (
+        <div className="absolute inset-0 w-full h-full">
+          <Canvas dpr={[1, 2]} camera={{ position: [0, 8, 22], fov: 45 }} className="pointer-events-auto cursor-grab active:cursor-grabbing">
+            <ambientLight intensity={0.7} />
+            {/* Shared lighting for the entire scene */}
+            <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />
+            <directionalLight position={[-10, 10, -5]} intensity={1.2} color="#ff6b1a" />
+            
+            <PresentationControls 
+              global 
+              snap={true} 
+              rotation={[0, 0, 0]} 
+              polar={[-Math.PI / 4, Math.PI / 4]} 
+              azimuth={[-Math.PI / 4, Math.PI / 4]}
+            >
+              {/* The City Skyline (positioned on the left) */}
+              <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+                <CitySkyline />
+              </Float>
 
-            {/* The Modern Villa (positioned on the right) */}
-            <Float speed={2} rotationIntensity={0.02} floatIntensity={0.1}>
-              <ModernVilla />
-            </Float>
-          </PresentationControls>
-          
-          <DataParticles />
-          <fog attach="fog" args={['#ffffff', 10, 45]} />
-        </Canvas>
-      </div>
+              {/* The Modern Villa (positioned on the right) */}
+              <Float speed={2} rotationIntensity={0.02} floatIntensity={0.1}>
+                <ModernVilla />
+              </Float>
+            </PresentationControls>
+            
+            <DataParticles />
+            <fog attach="fog" args={['#ffffff', 10, 45]} />
+          </Canvas>
+        </div>
+      )}
     </div>
   );
 }

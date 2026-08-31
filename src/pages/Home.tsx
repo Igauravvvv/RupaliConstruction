@@ -13,6 +13,8 @@ import PromoPopup from "@/components/PromoPopup";
 
 import SEO from "@/components/SEO";
 
+import InstagramFeed from "@/sections/InstagramFeed";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden">
@@ -24,6 +26,7 @@ export default function Home() {
       <WhyUs />
       <Services />
       <Projects />
+      <InstagramFeed />
       <Testimonials />
       <EstimateSection />
       <FAQ />

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
+import InstagramFeed from "@/sections/InstagramFeed";
 import { 
   ArrowLeft, Maximize2, MapPin, Heart, Flame, Share2,
   Grid2X2, Layers, X, Instagram, Quote
@@ -403,6 +404,8 @@ export default function ProjectDetail() {
             </Link>
           </div>
         </div>
+
+        <InstagramFeed />
 
         {/* Other Properties Section */}
         <div className="mt-24 pt-16 border-t border-gray-200">

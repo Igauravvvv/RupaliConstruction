@@ -379,7 +379,7 @@ export default function Login() {
             <p className="text-center text-sm text-[var(--rc-muted)] mt-8 pt-6 border-t border-[var(--rc-border)]">
               {mode === "login" ? (
                 <>
-                  Admin?{" "}
+                  New client?{" "}
                   <button
                     onClick={() => {
                       setMode("register");

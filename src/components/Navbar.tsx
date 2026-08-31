@@ -9,6 +9,8 @@ export default function Navbar() {
   const [isDarkSection, setIsDarkSection] = useState(false);
   const location = useLocation();
   const { user, isAuthenticated, logout, isLoggingOut } = useAuth();
+  
+  const isNormalUserLoggedIn = isAuthenticated && user?.role !== "admin";
 
   useEffect(() => {
     setMobileOpen(false);
@@ -102,7 +104,7 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className={`hidden md:flex items-center ${isAuthenticated ? 'gap-3 md:-mr-12 lg:-mr-24 xl:-mr-32' : 'gap-4 md:-mr-8 lg:-mr-16'}`}>
+        <div className={`hidden md:flex items-center ${isNormalUserLoggedIn ? 'gap-3 md:-mr-12 lg:-mr-24 xl:-mr-32' : 'gap-4 md:-mr-8 lg:-mr-16'}`}>
           <Link
             to="/contact"
             className={`px-8 py-3 text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-xl ${
@@ -114,7 +116,7 @@ export default function Navbar() {
             Get Estimate
           </Link>
 
-          {isAuthenticated ? (
+          {isNormalUserLoggedIn ? (
             <div className="flex items-center gap-3">
               <Link
                 to={user?.role === "admin" ? "/admin" : "/profile"}
@@ -162,7 +164,7 @@ export default function Navbar() {
 
         <div className="md:hidden flex items-center gap-1">
           {/* Login / Profile Icon */}
-          {isAuthenticated ? (
+          {isNormalUserLoggedIn ? (
             <Link
               to={user?.role === "admin" ? "/admin" : "/profile"}
               className={`p-2 rounded-full transition-colors ${
@@ -248,7 +250,7 @@ export default function Navbar() {
               Get Estimate
             </Link>
 
-            {isAuthenticated ? (
+            {isNormalUserLoggedIn ? (
               <div className="grid grid-cols-2 gap-4">
                 <Link
                   to={user?.role === "admin" ? "/admin" : "/profile"}

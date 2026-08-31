@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router";
 import { Menu, X, LogIn, LogOut, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
+const pageModules = import.meta.glob('../pages/*.tsx');
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -11,6 +13,15 @@ export default function Navbar() {
   const { user, isAuthenticated, logout, isLoggingOut } = useAuth();
   
   const isNormalUserLoggedIn = isAuthenticated && user?.role !== "admin";
+
+  const handlePrefetch = (href: string) => {
+    if (href === '/') {
+      pageModules['../pages/Home.tsx']?.();
+    } else {
+      const pageName = href.replace('/', '').split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+      pageModules[`../pages/${pageName}.tsx`]?.();
+    }
+  };
 
   useEffect(() => {
     setMobileOpen(false);
@@ -69,6 +80,7 @@ export default function Navbar() {
         <Link 
           to="/" 
           onClick={() => window.scrollTo(0, 0)}
+          onMouseEnter={() => handlePrefetch("/")}
           className="flex items-center py-2 hover:opacity-80 transition-opacity -ml-2 md:-ml-8 lg:-ml-16"
         >
           <img
@@ -95,6 +107,7 @@ export default function Navbar() {
                 key={link.href}
                 to={link.href}
                 onClick={() => window.scrollTo(0, 0)}
+                onMouseEnter={() => handlePrefetch(link.href)}
                 className={`text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 relative group ${textColor}`}
               >
                 {link.label}

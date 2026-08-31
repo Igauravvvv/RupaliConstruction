@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import { Instagram } from "lucide-react";
 
 export default function InstagramFeed() {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://elfsightcdn.com/platform.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="mt-24 pt-16 text-center">
       <p className="text-[10px] font-bold tracking-[0.2em] text-[#E1306C] uppercase mb-2">Join the Community</p>

@@ -17,6 +17,8 @@ export default function ProjectDetail() {
   const { slug } = useParams();
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const thumbScrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   
   // Prevent body scroll when gallery is open
   useEffect(() => {
@@ -25,8 +27,58 @@ export default function ProjectDetail() {
     } else {
       document.body.style.overflow = 'unset';
     }
-    return () => { document.body.style.overflow = 'unset'; }
+    return () => { document.body.style.overflow = 'unset'; };
   }, [isGalleryOpen]);
+
+  // Keep active thumbnail scrolled into view
+  useEffect(() => {
+    if (!thumbScrollRef.current) return;
+    const thumbContainer = thumbScrollRef.current;
+    const thumbs = Array.from(thumbContainer.children) as HTMLElement[];
+    if (thumbs[activeIndex]) {
+      const thumb = thumbs[activeIndex];
+      const targetScroll = thumb.offsetLeft - thumbContainer.offsetLeft - (thumbContainer.clientWidth / 2 - thumb.clientWidth / 2);
+      thumbContainer.scrollTo({ left: Math.max(0, targetScroll), behavior: 'smooth' });
+    }
+  }, [activeIndex]);
+
+  const handleMainScroll = () => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const scrollLeft = container.scrollLeft;
+    const children = Array.from(container.children) as HTMLElement[];
+    let closestIndex = 0;
+    let minDiff = Infinity;
+    children.forEach((child, idx) => {
+      const diff = Math.abs(child.offsetLeft - container.offsetLeft - scrollLeft);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIndex = idx;
+      }
+    });
+    setActiveIndex(closestIndex);
+  };
+
+  const scrollToImage = (index: number) => {
+    setActiveIndex(index);
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const children = Array.from(container.children) as HTMLElement[];
+    if (children[index]) {
+      const targetOffset = children[index].offsetLeft - container.offsetLeft;
+      container.scrollTo({ left: targetOffset, behavior: 'smooth' });
+    }
+  };
+
+  const scrollPrev = () => {
+    const prev = Math.max(0, activeIndex - 1);
+    scrollToImage(prev);
+  };
+
+  const scrollNext = () => {
+    const next = Math.min(displayImages.length - 1, activeIndex + 1);
+    scrollToImage(next);
+  };
   
   // Use suspense or handle loading state gracefully
   const { data: dbProject, isLoading } = trpc.project.bySlug.useQuery(
@@ -186,13 +238,14 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        {/* Responsive Image Gallery */}
-        <div className="mb-12 relative group">
+        {/* Responsive Image Gallery & Bottom Thumbnail Strip */}
+        <div className="mb-10 relative group">
           {displayImages.length > 0 ? (
             <>
               <div 
                 ref={scrollRef}
-                className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide"
+                onScroll={handleMainScroll}
+                className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-hide"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {displayImages.map((src, idx) => {
@@ -203,7 +256,7 @@ export default function ProjectDetail() {
                   return (
                     <div 
                       key={idx} 
-                      className={`snap-center h-[400px] md:h-[500px] lg:h-[600px] rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer ${widthClass}`}
+                      className={`snap-center h-[380px] sm:h-[460px] md:h-[500px] lg:h-[580px] rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer ${widthClass}`}
                       onClick={() => setIsGalleryOpen(true)}
                     >
                       <Image src={src} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-full object-cover" />
@@ -220,24 +273,92 @@ export default function ProjectDetail() {
                   );
                 })}
               </div>
+
+              {/* Prev / Next Arrows */}
               <button 
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+                  scrollPrev();
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700"
+                className="absolute left-4 top-[190px] sm:top-[230px] md:top-[250px] lg:top-[290px] -translate-y-1/2 w-11 h-11 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-80 md:opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700 active:scale-95"
+                aria-label="Previous photo"
               >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
               </button>
               <button 
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (scrollRef.current) scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+                  scrollNext();
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700"
+                className="absolute right-4 top-[190px] sm:top-[230px] md:top-[250px] lg:top-[290px] -translate-y-1/2 w-11 h-11 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-80 md:opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700 active:scale-95"
+                aria-label="Next photo"
               >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
               </button>
+
+              {/* Thumbnail List Strip on Mobile & Laptop */}
+              {displayImages.length > 1 && (
+                <div className="mt-4 pt-1">
+                  <div className="flex items-center justify-between mb-2.5 px-1">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--rc-orange)]" />
+                      Photo {activeIndex + 1} of {displayImages.length}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setIsGalleryOpen(true)}
+                      className="text-xs font-bold text-[var(--rc-blue)] hover:text-[var(--rc-orange)] transition-colors flex items-center gap-1"
+                    >
+                      <Maximize2 className="w-3.5 h-3.5" />
+                      View Full Gallery ({displayImages.length})
+                    </button>
+                  </div>
+                  
+                  <div 
+                    ref={thumbScrollRef}
+                    className="flex items-center gap-3 overflow-x-auto pb-2 pt-1 px-1 scrollbar-hide"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    {displayImages.map((src, idx) => {
+                      const isActive = activeIndex === idx;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => scrollToImage(idx)}
+                          className={`group relative shrink-0 overflow-hidden rounded-2xl transition-all duration-300 focus:outline-none ${
+                            isActive
+                              ? "ring-2 ring-[var(--rc-orange)] ring-offset-2 scale-105 shadow-md shadow-orange-500/25 border-transparent"
+                              : "opacity-65 hover:opacity-100 hover:scale-[1.03] border border-gray-200"
+                          } w-20 h-16 sm:w-24 sm:h-18 md:w-28 md:h-20`}
+                          aria-label={`View photo ${idx + 1}`}
+                        >
+                          <Image
+                            src={src}
+                            alt={`${activeProject.name} thumbnail ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className={`absolute inset-0 transition-opacity ${isActive ? "bg-black/0" : "bg-black/15 group-hover:bg-black/0"}`} />
+                          <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-black/60 text-[10px] font-bold text-white backdrop-blur-xs">
+                            {idx + 1}
+                          </span>
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      type="button"
+                      onClick={() => setIsGalleryOpen(true)}
+                      className="shrink-0 h-16 sm:h-18 md:h-20 px-4 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[var(--rc-orange)] bg-gray-50 hover:bg-orange-50/50 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-[var(--rc-orange)] transition-all text-xs font-semibold"
+                    >
+                      <Maximize2 className="w-4 h-4" />
+                      <span className="whitespace-nowrap">+{displayImages.length} All</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <div className="grid grid-cols-2 gap-2 h-[400px] md:h-[500px] lg:h-[550px] rounded-[32px] overflow-hidden mb-8 shadow-sm">

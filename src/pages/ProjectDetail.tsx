@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router";
+import useEmblaCarousel from "embla-carousel-react";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
@@ -16,9 +17,16 @@ import SEO from "@/components/SEO";
 export default function ProjectDetail() {
   const { slug } = useParams();
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    containScroll: "trimSnaps",
+    dragFree: false,
+  });
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
   
   // Prevent body scroll when gallery is open
   useEffect(() => {
@@ -29,6 +37,27 @@ export default function ProjectDetail() {
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [isGalleryOpen]);
+
+  // Sync active slide from Embla carousel
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      const selected = emblaApi.selectedScrollSnap();
+      setActiveIndex(selected);
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+    };
+
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi]);
 
   // Keep active thumbnail scrolled into view
   useEffect(() => {
@@ -42,42 +71,19 @@ export default function ProjectDetail() {
     }
   }, [activeIndex]);
 
-  const handleMainScroll = () => {
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const scrollLeft = container.scrollLeft;
-    const children = Array.from(container.children) as HTMLElement[];
-    let closestIndex = 0;
-    let minDiff = Infinity;
-    children.forEach((child, idx) => {
-      const diff = Math.abs(child.offsetLeft - container.offsetLeft - scrollLeft);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestIndex = idx;
-      }
-    });
-    setActiveIndex(closestIndex);
-  };
-
   const scrollToImage = (index: number) => {
     setActiveIndex(index);
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const children = Array.from(container.children) as HTMLElement[];
-    if (children[index]) {
-      const targetOffset = children[index].offsetLeft - container.offsetLeft;
-      container.scrollTo({ left: targetOffset, behavior: 'smooth' });
+    if (emblaApi) {
+      emblaApi.scrollTo(index);
     }
   };
 
   const scrollPrev = () => {
-    const prev = Math.max(0, activeIndex - 1);
-    scrollToImage(prev);
+    if (emblaApi) emblaApi.scrollPrev();
   };
 
   const scrollNext = () => {
-    const next = Math.min(displayImages.length - 1, activeIndex + 1);
-    scrollToImage(next);
+    if (emblaApi) emblaApi.scrollNext();
   };
   
   // Use suspense or handle loading state gracefully
@@ -242,61 +248,83 @@ export default function ProjectDetail() {
         <div className="mb-10 relative group">
           {displayImages.length > 0 ? (
             <>
+              {/* Embla Carousel Viewport */}
               <div 
-                ref={scrollRef}
-                onScroll={handleMainScroll}
-                className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-hide"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                ref={emblaRef}
+                className="overflow-hidden rounded-[32px] cursor-grab active:cursor-grabbing select-none"
+                data-lenis-prevent="true"
               >
-                {displayImages.map((src, idx) => {
-                  const ratio = aspectRatios[src] || 'landscape';
-                  // Mobile: w-full (1 photo). Desktop: w-1/3 if portrait, w-full if landscape.
-                  const widthClass = ratio === 'portrait' ? 'w-full md:w-[33.333%] shrink-0' : 'w-full shrink-0';
-                  
-                  return (
-                    <div 
-                      key={idx} 
-                      className={`snap-center h-[380px] sm:h-[460px] md:h-[500px] lg:h-[580px] rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer ${widthClass}`}
-                      onClick={() => setIsGalleryOpen(true)}
-                    >
-                      <Image src={src} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-full object-cover" />
-                      {idx === displayImages.length - 1 && (
-                        <button 
-                          onClick={(e) => { e.stopPropagation(); setIsGalleryOpen(true); }}
-                          className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95 md:opacity-0 md:group-hover:opacity-100 z-10"
+                <div className="flex -ml-4">
+                  {displayImages.map((src, idx) => {
+                    const ratio = aspectRatios[src] || 'landscape';
+                    // Mobile: 1 photo (100% width). Desktop: 3 photos if portrait (33.333% width each), 1 photo if landscape.
+                    const widthClass = ratio === 'portrait' 
+                      ? 'flex-[0_0_100%] md:flex-[0_0_33.333%]' 
+                      : 'flex-[0_0_100%]';
+
+                    return (
+                      <div 
+                        key={idx} 
+                        className={`pl-4 min-w-0 ${widthClass}`}
+                      >
+                        <div 
+                          className="h-[380px] sm:h-[460px] md:h-[500px] lg:h-[580px] rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer"
+                          onClick={() => {
+                            if (emblaApi && !emblaApi.clickAllowed()) return;
+                            setIsGalleryOpen(true);
+                          }}
                         >
-                          <Maximize2 className="w-4 h-4" />
-                          Show all {displayImages.length} photos
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
+                          <Image 
+                            src={src} 
+                            alt={`${activeProject.name} photo ${idx + 1}`} 
+                            className="w-full h-full object-cover pointer-events-none select-none" 
+                          />
+                          {idx === displayImages.length - 1 && (
+                            <button 
+                              onClick={(e) => { 
+                                e.stopPropagation(); 
+                                setIsGalleryOpen(true); 
+                              }}
+                              className="absolute bottom-6 right-6 bg-white/95 backdrop-blur px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium text-sm text-[var(--rc-dark)] hover:bg-white shadow-lg transition-all active:scale-95 md:opacity-0 md:group-hover:opacity-100 z-10"
+                            >
+                              <Maximize2 className="w-4 h-4" />
+                              Show all {displayImages.length} photos
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Prev / Next Arrows */}
-              <button 
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  scrollPrev();
-                }}
-                className="absolute left-4 top-[190px] sm:top-[230px] md:top-[250px] lg:top-[290px] -translate-y-1/2 w-11 h-11 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-80 md:opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700 active:scale-95"
-                aria-label="Previous photo"
-              >
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-              </button>
-              <button 
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  scrollNext();
-                }}
-                className="absolute right-4 top-[190px] sm:top-[230px] md:top-[250px] lg:top-[290px] -translate-y-1/2 w-11 h-11 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-80 md:opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700 active:scale-95"
-                aria-label="Next photo"
-              >
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-              </button>
+              {canScrollPrev && (
+                <button 
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scrollPrev();
+                  }}
+                  className="absolute left-4 top-[190px] sm:top-[230px] md:top-[250px] lg:top-[290px] -translate-y-1/2 w-11 h-11 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-85 md:opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700 active:scale-95 shadow-black/10"
+                  aria-label="Previous photo"
+                >
+                  <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+              )}
+              {canScrollNext && (
+                <button 
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scrollNext();
+                  }}
+                  className="absolute right-4 top-[190px] sm:top-[230px] md:top-[250px] lg:top-[290px] -translate-y-1/2 w-11 h-11 bg-white/90 backdrop-blur rounded-full shadow-lg flex items-center justify-center opacity-85 md:opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white text-gray-700 active:scale-95 shadow-black/10"
+                  aria-label="Next photo"
+                >
+                  <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                </button>
+              )}
 
               {/* Thumbnail List Strip on Mobile & Laptop */}
               {displayImages.length > 1 && (

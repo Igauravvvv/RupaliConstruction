@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router";
 import useEmblaCarousel from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
@@ -17,12 +18,19 @@ import SEO from "@/components/SEO";
 export default function ProjectDetail() {
   const { slug } = useParams();
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
-    align: "start",
-    containScroll: "trimSnaps",
-    dragFree: false,
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: false,
+      align: "start",
+      containScroll: "trimSnaps",
+      dragFree: false,
+    },
+    [
+      WheelGesturesPlugin({
+        forceWheelAxis: "x",
+      }),
+    ]
+  );
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -348,6 +356,7 @@ export default function ProjectDetail() {
                     ref={thumbScrollRef}
                     className="flex items-center gap-3 overflow-x-auto pb-2 pt-1 px-1 scrollbar-hide"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    data-lenis-prevent="true"
                   >
                     {displayImages.map((src, idx) => {
                       const isActive = activeIndex === idx;

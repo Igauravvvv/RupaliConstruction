@@ -9,7 +9,8 @@ export default function FloatingActions() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowTop(window.scrollY > 300);
+      const next = window.scrollY > 300;
+      setShowTop(prev => prev !== next ? next : prev);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);

@@ -76,8 +76,8 @@ module.exports = {
           "20%,50%": { opacity: "0" },
         },
         marquee: {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(calc(-100% - var(--gap)))' }
+          from: { transform: 'translate3d(0, 0, 0)' },
+          to: { transform: 'translate3d(calc(-100% - var(--gap)), 0, 0)' }
         },
         shine: {
           from: { backgroundPosition: '200% center' },

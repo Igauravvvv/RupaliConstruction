@@ -45,12 +45,12 @@ export default function CinematicReveal() {
         ref={imageRef}
         src="/assets/images/cinematic_architecture.webp"
         alt="Modern Architecture"
-        className="absolute inset-0 w-full h-full object-cover object-[center_40%] origin-center opacity-0 scale-100"
+        className="absolute inset-0 w-full h-full object-cover object-[center_40%] origin-center opacity-0 scale-100 will-change-transform"
       />
 
       {/* Cinematic Text Overlay (Vision to Reality) */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div ref={textRef} className="text-center opacity-0 scale-90">
+        <div ref={textRef} className="text-center opacity-0 scale-90 will-change-transform">
           <h2 className="text-7xl md:text-[12rem] leading-none font-serif italic text-white drop-shadow-2xl">
             Vision
           </h2>

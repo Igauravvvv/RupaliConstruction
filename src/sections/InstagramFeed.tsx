@@ -1,18 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Instagram } from "lucide-react";
 
 export default function InstagramFeed() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) return;
-    const script = document.createElement('script');
-    script.src = 'https://elfsightcdn.com/platform.js';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) {
+            const script = document.createElement('script');
+            script.src = 'https://elfsightcdn.com/platform.js';
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+          }
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div className="mt-24 pt-16 text-center">
+    <div ref={containerRef} className="mt-24 pt-16 text-center">
       <p className="text-[10px] font-bold tracking-[0.2em] text-[#E1306C] uppercase mb-2">Join the Community</p>
       <a 
         href="https://instagram.com/rupali_construction_" 

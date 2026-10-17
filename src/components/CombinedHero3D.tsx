@@ -231,7 +231,7 @@ function ModernVilla() {
       </group>
       <group ref={poolRef} scale={0}>
         <group position={[3, 0.2, 4.5]}>
-          <mesh position={[0, 0.1, 0]}><boxGeometry args={[8, 0.2, 3]} /><meshPhysicalMaterial color={baseColor} transmission={0.9} opacity={1} roughness={0.05}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh position={[0, 0.1, 0]}><boxGeometry args={[8, 0.2, 3]} /><meshStandardMaterial color="#cde3f8" transparent opacity={0.7} roughness={0.05} metalness={0.1} polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
           <mesh position={[0, 0.1, 1.5]}><boxGeometry args={[8, 0.25, 0.1]} /><meshBasicMaterial color={accentColor} wireframe transparent opacity={0.5} /></mesh>
         </group>
         {[...Array(2)].map((_, i) => (
@@ -255,7 +255,7 @@ function ModernVilla() {
       </group>
       <group ref={groundFloorRef} scale={0}>
         <group position={[1, 2.5, 0]}>
-          <mesh><boxGeometry args={[8, 5, 8]} /><meshPhysicalMaterial color={baseColor} transmission={0.95} opacity={1} roughness={0.05} thickness={0.5}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+          <mesh><boxGeometry args={[8, 5, 8]} /><meshStandardMaterial color={baseColor} transparent opacity={0.65} roughness={0.05} metalness={0.1} polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
           <mesh><boxGeometry args={[8, 5, 8]} /><meshBasicMaterial color={wireColor} wireframe transparent opacity={0.15} /></mesh>
         </group>
         <group position={[1, 2.5, -3]}>
@@ -282,7 +282,7 @@ function ModernVilla() {
         {[...Array(5)].map((_, i) => (
           <group key={`land-${i}`} position={[-7 + i * 1.5, 1.5, 6]}>
             <mesh position={[0, -0.8, 0]}><cylinderGeometry args={[0.05, 0.05, 1.5]} /><meshStandardMaterial color={baseColor}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
-            <mesh><icosahedronGeometry args={[0.6, 1]} /><meshPhysicalMaterial color={baseColor} transmission={0.8} opacity={1} roughness={0.1}  polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
+            <mesh><icosahedronGeometry args={[0.6, 1]} /><meshStandardMaterial color={baseColor} transparent opacity={0.8} roughness={0.1} polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} /></mesh>
             <mesh><icosahedronGeometry args={[0.6, 1]} /><meshBasicMaterial color={accentColor} wireframe transparent opacity={0.4} /></mesh>
           </group>
         ))}
@@ -294,24 +294,39 @@ function ModernVilla() {
 // --- UNIFIED SCENE COMPONENT ---
 export default function CombinedHero3D() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isInView, setIsInView] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile, { passive: true });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: '100px' }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      observer.disconnect();
+    };
   }, []);
 
   return (
-    <div className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none">
-      {/* 
-        A single Canvas spanning the entire viewport.
-        Disabled on mobile (innerWidth < 1024) to save battery and drastically improve performance.
-      */}
+    <div ref={containerRef} className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none">
       <div className="absolute inset-0 w-full h-full">
         <Canvas 
-          dpr={isMobile ? [1, 1.5] : [1, 2]} 
+          frameloop={isInView ? "always" : "never"}
+          dpr={isMobile ? [1, 1.25] : [1, 1.5]} 
           camera={{ position: [0, 8, 22], fov: 45 }} 
+          gl={{ powerPreference: "high-performance", antialias: true, alpha: true, stencil: false, depth: true }}
           className={isMobile ? "pointer-events-none" : "pointer-events-auto cursor-grab active:cursor-grabbing"}
         >
           <ambientLight intensity={0.7} />

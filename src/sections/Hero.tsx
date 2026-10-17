@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { ArrowRight, ChevronDown, Activity, MapPin, HardHat, Wrench, Hammer, Ruler } from "lucide-react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 const CombinedHero3D = lazy(() => import("@/components/CombinedHero3D"));
 
@@ -36,10 +36,6 @@ const floatAnimation = {
 const words = ["ARTS", "HOMES", "DREAMS", "ARCHITECTURE"];
 
 export default function Hero() {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
-  
   const [wordIndex, setWordIndex] = useState(0);
 
   useEffect(() => {

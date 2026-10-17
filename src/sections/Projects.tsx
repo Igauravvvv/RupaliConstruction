@@ -74,10 +74,10 @@ export default function Projects() {
       <div className="container-rc relative z-10">
         <div className="flex flex-col items-center justify-center text-center mb-12">
           <motion.div 
-            initial={{ opacity: 0, x: "-50vw" }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "100px" }}
-            transition={{ duration: 0.6, type: "spring", bounce: 0.2 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
             <p className="text-5xl lg:text-[6rem] leading-none font-serif italic text-[var(--rc-orange)] mb-3 drop-shadow-sm">

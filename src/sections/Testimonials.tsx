@@ -41,10 +41,10 @@ export default function Testimonials() {
           className="flex flex-col items-center gap-4 px-4 sm:gap-8"
         >
           <motion.p
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, margin: "-50px" }}
-            transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] mb-2 drop-shadow-sm"
           >
             Testimonials
@@ -60,7 +60,7 @@ export default function Testimonials() {
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-4">
           <div className="group flex overflow-hidden p-2 [--gap:2rem] [gap:var(--gap)] flex-row [--duration:25s]">
             {/* First Set */}
-            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
+            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee will-change-transform flex-row group-hover:[animation-play-state:paused]">
               {mappedTestimonials.map((testimonial, i) => (
                 <TestimonialCard
                   key={`set1-${i}`}
@@ -70,7 +70,7 @@ export default function Testimonials() {
             </div>
 
             {/* Second Set (identical duplicate for seamless loop) */}
-            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]" aria-hidden="true">
+            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee will-change-transform flex-row group-hover:[animation-play-state:paused]" aria-hidden="true">
               {mappedTestimonials.map((testimonial, i) => (
                 <TestimonialCard
                   key={`set2-${i}`}

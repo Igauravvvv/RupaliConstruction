@@ -32,18 +32,20 @@ export default function Navbar() {
       ticking = true;
       requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
-        setScrolled(currentScrollY > 80);
+        const newScrolled = currentScrollY > 80;
+        setScrolled(prev => prev !== newScrolled ? newScrolled : prev);
         
         const darkSections = document.querySelectorAll('.dark-nav-trigger, #cinematic-reveal-section');
         let isDark = false;
         
-        darkSections.forEach((section) => {
-          const rect = section.getBoundingClientRect();
+        for (let i = 0; i < darkSections.length; i++) {
+          const rect = darkSections[i].getBoundingClientRect();
           if (rect.top <= 80 && rect.bottom >= 80) {
             isDark = true;
+            break;
           }
-        });
-        setIsDarkSection(isDark);
+        }
+        setIsDarkSection(prev => prev !== isDark ? isDark : prev);
         ticking = false;
       });
     };

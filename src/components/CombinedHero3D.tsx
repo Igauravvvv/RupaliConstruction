@@ -92,11 +92,14 @@ function CitySkyline() {
   const groupRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
   
-  const isMobile = viewport.width < 12;
-  const scaleMultiplier = isMobile ? 0.65 : 1;
-  const scaleBase = 0.45 * scaleMultiplier;
-  const posX = isMobile ? -viewport.width / 2 + 1.5 : -14;
-  const posY = isMobile ? -11 : -10.5;
+  const isMobile = viewport.width < 14;
+  const isLaptop = viewport.width >= 14 && viewport.width < 34;
+  const scaleMultiplier = isMobile ? 0.6 : (isLaptop ? 0.8 : 1);
+  const scaleBase = 0.42 * scaleMultiplier;
+  const posX = isMobile 
+    ? -viewport.width / 2 + 1.2 
+    : (isLaptop ? -viewport.width * 0.36 : -13.5);
+  const posY = isMobile ? -11 : (isLaptop ? -9.8 : -10.5);
 
   useFrame((state) => {
     if (groupRef.current) {
@@ -189,11 +192,14 @@ function ModernVilla() {
   const landscapeRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
   
-  const isMobile = viewport.width < 12;
-  const scaleMultiplier = isMobile ? 0.65 : 1;
-  const scaleBase = 0.55 * scaleMultiplier;
-  const posX = isMobile ? viewport.width / 2 - 1.5 : 14;
-  const posY = isMobile ? -10 : -7.5;
+  const isMobile = viewport.width < 14;
+  const isLaptop = viewport.width >= 14 && viewport.width < 34;
+  const scaleMultiplier = isMobile ? 0.6 : (isLaptop ? 0.8 : 1);
+  const scaleBase = 0.50 * scaleMultiplier;
+  const posX = isMobile 
+    ? viewport.width / 2 - 1.2 
+    : (isLaptop ? viewport.width * 0.36 : 13.5);
+  const posY = isMobile ? -10 : (isLaptop ? -7.0 : -7.5);
   
   useFrame((state) => {
     const t = state.clock.elapsedTime;

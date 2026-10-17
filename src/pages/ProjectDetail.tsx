@@ -268,7 +268,7 @@ export default function ProjectDetail() {
                         className={`pl-4 min-w-0 ${widthClass}`}
                       >
                         <div 
-                          className="h-[380px] sm:h-[460px] md:h-[500px] lg:h-[580px] rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer"
+                          className="h-[360px] sm:h-[420px] md:h-[460px] lg:h-[480px] xl:h-[560px] rounded-[24px] md:rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer"
                           onClick={() => {
                             if (emblaApi && !emblaApi.clickAllowed()) return;
                             setIsGalleryOpen(true);

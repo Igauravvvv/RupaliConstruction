@@ -51,10 +51,10 @@ export default function CinematicReveal() {
       {/* Cinematic Text Overlay (Vision to Reality) */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div ref={textRef} className="text-center opacity-0 scale-90 will-change-transform">
-          <h2 className="text-7xl md:text-[12rem] leading-none font-serif italic text-white drop-shadow-2xl">
+          <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-[8.5rem] xl:text-[11rem] leading-none font-serif italic text-white drop-shadow-2xl">
             Vision
           </h2>
-          <p className="text-[var(--rc-orange)] font-mono text-xl md:text-3xl tracking-[0.5em] md:tracking-[0.8em] mt-4 md:mt-8 uppercase font-bold drop-shadow-sm">
+          <p className="text-[var(--rc-orange)] font-mono text-base sm:text-lg md:text-2xl lg:text-3xl tracking-[0.4em] md:tracking-[0.6em] lg:tracking-[0.8em] mt-3 md:mt-6 uppercase font-bold drop-shadow-sm">
             To Reality
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function CinematicReveal() {
 
       <div 
         ref={contentRef} 
-        className="absolute inset-0 flex flex-col justify-start pt-32 md:pt-40 px-8 md:px-24 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none opacity-0"
+        className="absolute inset-0 flex flex-col justify-start pt-24 md:pt-28 lg:pt-36 px-6 md:px-16 lg:px-24 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none opacity-0"
         style={{ transform: "translateY(50px)" }}
       >
         <div className="max-w-3xl pointer-events-auto">

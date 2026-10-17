@@ -83,20 +83,21 @@ export default function Navbar() {
           to="/" 
           onClick={() => window.scrollTo(0, 0)}
           onMouseEnter={() => handlePrefetch("/")}
-          className="flex items-center py-2 hover:opacity-80 transition-opacity -ml-2 md:-ml-8 lg:-ml-16"
+          className="flex items-center py-2 hover:opacity-80 transition-opacity shrink-0"
         >
           <img
             src="/logo-main.webp?v=2"
             alt="Rupali Construction"
             width="192"
             height="128"
-            className={`w-48 h-auto md:w-auto md:h-24 lg:h-32 object-contain md:scale-[1.8] origin-left translate-y-1 md:translate-y-2 lg:translate-y-4 transition-all duration-500 ${
+            className={`h-11 sm:h-12 md:h-14 lg:h-16 xl:h-20 w-auto object-contain transition-all duration-300 ${
               isDarkSection ? "drop-shadow-lg" : "md:mix-blend-multiply"
             }`}
           />
         </Link>
 
-        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-10">
+        {/* Center Desktop Navigation: auto-responsive spacing to never collide */}
+        <nav className="hidden xl:flex items-center gap-5 2xl:gap-8 mx-auto px-4">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.href;
             
@@ -112,19 +113,44 @@ export default function Navbar() {
                 to={link.href}
                 onClick={() => window.scrollTo(0, 0)}
                 onMouseEnter={() => handlePrefetch(link.href)}
-                className={`text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 relative group ${textColor}`}
+                className={`text-xs 2xl:text-sm font-bold tracking-[0.12em] 2xl:tracking-[0.15em] uppercase whitespace-nowrap transition-all duration-300 relative group py-1 ${textColor}`}
               >
                 {link.label}
-                <span className={`absolute -bottom-2 left-0 w-full h-[2px] ${underlineColor} transform origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
+                <span className={`absolute -bottom-1 left-0 w-full h-[2px] ${underlineColor} transform origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
               </Link>
             );
           })}
         </nav>
 
-        <div className={`hidden md:flex items-center ${isNormalUserLoggedIn ? 'gap-3 md:-mr-12 lg:-mr-24 xl:-mr-32' : 'gap-4 md:-mr-8 lg:-mr-16'}`}>
+        {/* Compact Navigation for 13" Laptops (1024px to 1279px) */}
+        <nav className="hidden lg:flex xl:hidden items-center gap-3 mx-auto px-2">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.href;
+            const textColor = isDarkSection 
+              ? (isActive ? "text-[var(--rc-orange)]" : "text-white/90 hover:text-[var(--rc-orange)]")
+              : (isActive ? "text-[var(--rc-blue)]" : "text-[var(--rc-text)] hover:text-[var(--rc-blue)]");
+            const underlineColor = isDarkSection ? "bg-white" : "bg-[var(--rc-orange)]";
+
+            return (
+              <Link
+                key={link.href}
+                to={link.href}
+                onClick={() => window.scrollTo(0, 0)}
+                onMouseEnter={() => handlePrefetch(link.href)}
+                className={`text-[11px] font-bold tracking-wider uppercase whitespace-nowrap transition-all duration-300 relative group py-1 ${textColor}`}
+              >
+                {link.label}
+                <span className={`absolute -bottom-1 left-0 w-full h-[2px] ${underlineColor} transform origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right CTA / Auth Buttons */}
+        <div className={`hidden lg:flex items-center shrink-0 ${isNormalUserLoggedIn ? 'gap-2 xl:gap-3' : 'gap-2.5 xl:gap-4'}`}>
           <Link
             to="/contact"
-            className={`px-8 py-3 text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-xl ${
+            className={`px-5 py-2.5 xl:px-7 xl:py-3 text-xs xl:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 shadow-md hover:scale-105 hover:shadow-lg whitespace-nowrap ${
               isDarkSection 
                 ? "bg-white text-[var(--rc-blue)] hover:bg-[var(--rc-orange)] hover:text-white shadow-white/10 hover:shadow-[var(--rc-orange)]/30"
                 : "bg-[var(--rc-blue)] text-white hover:bg-[var(--rc-dark)] shadow-[var(--rc-blue)]/30 hover:shadow-[var(--rc-blue)]/40"
@@ -134,52 +160,52 @@ export default function Navbar() {
           </Link>
 
           {isNormalUserLoggedIn ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Link
                 to={user?.role === "admin" ? "/admin" : "/profile"}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300 ${
+                className={`flex items-center gap-2 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full border transition-all duration-300 ${
                   isDarkSection
                     ? "border-white/20 text-white hover:bg-white/10"
                     : "border-[var(--rc-border)] text-[var(--rc-dark)] hover:bg-gray-50"
                 }`}
               >
                 {user?.avatar ? (
-                  <img src={user.avatar} alt="" className="w-6 h-6 rounded-full object-cover" />
+                  <img src={user.avatar} alt="" className="w-5 h-5 rounded-full object-cover" />
                 ) : (
                   <User className="w-4 h-4" />
                 )}
-                <span className="text-xs font-bold tracking-wider uppercase max-w-[80px] truncate">{user?.name?.split(' ')[0]}</span>
+                <span className="text-xs font-bold tracking-wider uppercase max-w-[70px] truncate">{user?.name?.split(' ')[0]}</span>
               </Link>
               <button
                 onClick={logout}
                 disabled={isLoggingOut}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-bold tracking-wider uppercase transition-all duration-300 disabled:cursor-wait disabled:opacity-60 ${
+                className={`flex items-center gap-1.5 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full border text-xs font-bold tracking-wider uppercase transition-all duration-300 disabled:cursor-wait disabled:opacity-60 ${
                   isDarkSection
                     ? "border-white/20 text-white hover:bg-red-500/20 hover:border-red-400/40"
                     : "border-[var(--rc-border)] text-[var(--rc-muted)] hover:bg-red-50 hover:text-red-500 hover:border-red-200"
                 }`}
                 title="Logout"
               >
-                <LogOut className="w-4 h-4" />
-                {isLoggingOut ? "Signing out" : "Logout"}
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden xl:inline">{isLoggingOut ? "Signing out" : "Logout"}</span>
               </button>
             </div>
           ) : (
             <Link
               to="/login"
-              className={`group flex items-center gap-2 px-6 py-3 text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 border backdrop-blur-sm hover:scale-105 hover:shadow-lg ${
+              className={`group flex items-center gap-1.5 px-4 py-2.5 xl:px-6 xl:py-3 text-xs xl:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 border backdrop-blur-sm hover:scale-105 hover:shadow-lg whitespace-nowrap ${
                 isDarkSection
                   ? "border-white/20 bg-white/5 text-white hover:bg-white/15 hover:border-white/40 hover:shadow-white/10"
                   : "border-[var(--rc-blue)]/20 bg-[var(--rc-blue)]/5 text-[var(--rc-blue)] hover:bg-[var(--rc-blue)]/10 hover:border-[var(--rc-blue)]/40 hover:shadow-[var(--rc-blue)]/10"
               }`}
             >
-              <User className="w-4 h-4 transition-transform group-hover:scale-110" />
+              <User className="w-3.5 h-3.5 transition-transform group-hover:scale-110" />
               Login
             </Link>
           )}
         </div>
 
-        <div className="md:hidden flex items-center gap-1">
+        <div className="lg:hidden flex items-center gap-1">
           {/* Login / Profile Icon */}
           {isNormalUserLoggedIn ? (
             <Link

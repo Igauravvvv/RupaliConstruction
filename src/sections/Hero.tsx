@@ -58,23 +58,23 @@ export default function Hero() {
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto pb-24 md:pb-0"
+            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto py-2 pb-16 md:pb-6 lg:pb-0"
           >
-            <motion.div variants={fadeUp} className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--rc-blue)]/20 bg-white/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[var(--rc-orange)]/50 transition-all duration-300 cursor-default">
+            <motion.div variants={fadeUp} className="mb-3 sm:mb-5 lg:mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[var(--rc-blue)]/20 bg-white/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[var(--rc-orange)]/50 transition-all duration-300 cursor-default">
               <span className="w-2 h-2 rounded-full bg-[var(--rc-orange)] animate-pulse"></span>
-              <span className="text-xs font-bold tracking-widest text-[var(--rc-blue)] uppercase">
+              <span className="text-[10px] sm:text-xs font-bold tracking-widest text-[var(--rc-blue)] uppercase">
                 Established Since 2001
               </span>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="mb-6 w-full flex flex-col items-center justify-center relative z-10">
+            <motion.div variants={fadeUp} className="mb-4 sm:mb-6 w-full flex flex-col items-center justify-center relative z-10">
               <div className="absolute -inset-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85)_0%,transparent_60%)] blur-2xl -z-10 rounded-full" />
               <h1 className="leading-[1.1] w-full relative flex flex-col items-center">
                 
                 {/* Crafting - Elegant Serif Neutral */}
-                <motion.div className="flex justify-center items-center mb-1">
+                <motion.div className="flex justify-center items-center mb-0.5 sm:mb-1">
                   <motion.span 
-                    className="text-5xl md:text-7xl lg:text-[6.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
+                    className="text-4xl sm:text-6xl md:text-6xl lg:text-[4.75rem] xl:text-[5.75rem] 2xl:text-[6.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
@@ -84,14 +84,14 @@ export default function Hero() {
                 </motion.div>
 
                 {/* Looping Word - Premium Copper/Orange Shimmer */}
-                <motion.div className="flex flex-col items-center justify-center relative my-2 z-20 h-[4rem] md:h-[8rem] lg:h-[10rem]">
+                <motion.div className="flex flex-col items-center justify-center relative my-1 sm:my-2 z-20 h-[3.5rem] sm:h-[5.5rem] md:h-[6.5rem] lg:h-[7.5rem] xl:h-[9.5rem]">
                   <AnimatePresence mode="wait">
                     <motion.span 
                       key={wordIndex}
                       className={`font-black uppercase tracking-tighter text-transparent block leading-none px-4 drop-shadow-[0_4px_10px_rgba(240,113,43,0.2)] cursor-default ${
                         words[wordIndex] === "ARCHITECTURE" 
-                          ? "text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem]" 
-                          : "text-6xl md:text-8xl lg:text-[9rem]"
+                          ? "text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[6.75rem] 2xl:text-[7.5rem]" 
+                          : "text-5xl sm:text-7xl md:text-7xl lg:text-[6.5rem] xl:text-8xl 2xl:text-[9rem]"
                       }`}
                       style={{ WebkitTextStroke: "2px var(--rc-orange)", WebkitTextFillColor: "transparent" }}
                       initial={{ y: 30, opacity: 0, scale: 0.95, rotateX: 15 }}
@@ -123,9 +123,9 @@ export default function Hero() {
                 </motion.div>
 
                 {/* Into Reality - Minimalist Light Sans */}
-                <motion.div className="flex justify-center items-center mt-3">
+                <motion.div className="flex justify-center items-center mt-1 sm:mt-2">
                   <motion.span 
-                    className="text-3xl md:text-5xl lg:text-[4rem] font-light tracking-wide text-[var(--rc-text)]/80 block"
+                    className="text-2xl sm:text-4xl md:text-4xl lg:text-[2.75rem] xl:text-[3.5rem] 2xl:text-[4rem] font-light tracking-wide text-[var(--rc-text)]/80 block"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
@@ -137,15 +137,15 @@ export default function Hero() {
               </h1>
             </motion.div>
 
-            <motion.p variants={fadeUp} className="text-xl md:text-2xl text-[var(--rc-text)] max-w-2xl mx-auto mb-10 leading-relaxed font-medium text-center">
+            <motion.p variants={fadeUp} className="text-base sm:text-lg md:text-xl lg:text-xl text-[var(--rc-text)] max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed font-medium text-center">
               Building legacies with engineering precision.
             </motion.p>
 
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-6">
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
               <div className="relative group">
                 <Link
                   to="/contact"
-                  className="relative px-8 py-4 bg-[var(--rc-blue)] text-white font-bold rounded-full hover:bg-[var(--rc-dark)] shadow-[0_0_20px_rgba(11,36,71,0.3)] hover:shadow-[0_0_30px_rgba(240,113,43,0.4)] focus:ring-2 focus:ring-offset-2 focus:ring-[var(--rc-orange)] focus:outline-none transition-all duration-300 flex items-center gap-3 overflow-hidden z-10"
+                  className="relative px-7 py-3.5 md:px-8 md:py-4 bg-[var(--rc-blue)] text-white font-bold rounded-full hover:bg-[var(--rc-dark)] shadow-[0_0_20px_rgba(11,36,71,0.3)] hover:shadow-[0_0_30px_rgba(240,113,43,0.4)] focus:ring-2 focus:ring-offset-2 focus:ring-[var(--rc-orange)] focus:outline-none transition-all duration-300 flex items-center gap-3 overflow-hidden z-10"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
                   <span className="relative z-10 flex items-center gap-2 tracking-widest uppercase text-xs">
@@ -163,7 +163,7 @@ export default function Hero() {
               
               <Link
                 to="/projects"
-                className="group px-6 py-4 bg-transparent text-[var(--rc-text)] font-bold hover:text-[var(--rc-orange)] focus:outline-none transition-colors inline-flex items-center gap-2 tracking-widest uppercase text-xs relative"
+                className="group px-6 py-3.5 md:py-4 bg-transparent text-[var(--rc-text)] font-bold hover:text-[var(--rc-orange)] focus:outline-none transition-colors inline-flex items-center gap-2 tracking-widest uppercase text-xs relative"
               >
                 View Portfolio
                 <span className="absolute bottom-2 left-6 right-6 h-[1px] bg-[var(--rc-text)]/20 group-hover:bg-[var(--rc-orange)] group-hover:w-auto transition-all duration-300"></span>
@@ -173,8 +173,8 @@ export default function Hero() {
 
       </div>
 
-      <div className="absolute bottom-2 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
-        <div className="transform scale-[0.5] md:scale-100 origin-bottom">
+      <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
+        <div className="transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-90 xl:scale-100 origin-bottom">
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

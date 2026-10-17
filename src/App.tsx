@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router'
-import { useEffect, lazy, Suspense, useState } from 'react'
+import React, { Component, ReactNode, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HelmetProvider } from 'react-helmet-async'
 
@@ -24,6 +24,34 @@ const FloatingActions = lazy(() => import('./components/FloatingActions'))
 import AuthGuard from './components/AuthGuard'
 import SEO from './components/SEO'
 import GlobalLoader from './components/GlobalLoader'
+
+class RouteErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: any, info: any) {
+    console.error("Route render error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#F8F7F5] flex flex-col items-center justify-center p-6 text-center">
+          <h2 className="text-2xl font-serif font-bold text-[#071F3D] mb-3">Something went wrong</h2>
+          <p className="text-gray-600 mb-6 text-sm max-w-md">We encountered an issue loading this section. Please refresh or return to the home page.</p>
+          <a href="/" className="px-6 py-2.5 rounded-xl bg-[#0B2E59] text-white font-medium hover:bg-blue-900 transition-colors text-sm">Return Home</a>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -59,24 +87,26 @@ export default function App() {
           <Suspense fallback={<GlobalLoader />}>
             <AnimatePresence mode="wait">
               <motion.div key={pathname} {...pageTransition}>
-                <Routes location={location}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/services/:slug" element={<ServiceDetail />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<BlogDetail />} />
-                  <Route path="/projects" element={<Projects />} />
-                  <Route path="/projects/:slug" element={<ProjectDetail />} />
-                  <Route path="/leadership" element={<Leadership />} />
-                  <Route path="/brand-standards" element={<BrandStandards />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/admin-login" element={<AdminLogin />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/complete-profile" element={<CompleteProfile />} />
-                  <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <RouteErrorBoundary>
+                  <Routes location={location}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/services/:slug" element={<ServiceDetail />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogDetail />} />
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/projects/:slug" element={<ProjectDetail />} />
+                    <Route path="/leadership" element={<Leadership />} />
+                    <Route path="/brand-standards" element={<BrandStandards />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin-login" element={<AdminLogin />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/complete-profile" element={<CompleteProfile />} />
+                    <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </RouteErrorBoundary>
               </motion.div>
             </AnimatePresence>
             {!isExcludedRoute && <FloatingActions />}

@@ -66,9 +66,12 @@ export default function ServiceDetail() {
     const fallbacks = fallbackProjects.filter(
       p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter
     );
-    if (!dbProjects || dbProjects.length === 0) return fallbacks.slice(0, 3);
+    const dbItems = Array.isArray(dbProjects) 
+      ? dbProjects 
+      : (dbProjects?.items || []);
+    if (dbItems.length === 0) return fallbacks.slice(0, 3);
     
-    const combined = [...fallbacks, ...dbProjects];
+    const combined = [...fallbacks, ...dbItems];
     const seen = new Set<string>();
     return combined.filter(p => {
       const key = (p.name || "").toLowerCase().trim();

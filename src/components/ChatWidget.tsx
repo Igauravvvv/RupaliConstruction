@@ -328,12 +328,12 @@ export default function ChatWidget() {
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: -10, scale: 0.95, transition: { duration: 0.2 } }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="absolute bottom-5 sm:bottom-6 md:bottom-9 left-[70%] sm:left-[75%] md:left-[85%] w-max max-w-[185px] sm:max-w-[210px] md:max-w-[400px] bg-black/50 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-0.5 md:p-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/60 transition-colors z-10 overflow-hidden"
+                    className="absolute bottom-3 sm:bottom-5 md:bottom-9 left-[54px] sm:left-[68px] md:left-[85%] w-max max-w-[135px] sm:max-w-[180px] md:max-w-[400px] bg-black/55 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-0.5 md:p-1 shadow-lg cursor-pointer hover:bg-black/65 transition-colors z-10 overflow-hidden"
                     onClick={() => setIsOpen(true)}
                   >
                     <div className="pl-1.5 sm:pl-2 md:pl-3 pr-1 md:pr-2 flex items-center gap-1 sm:gap-1.5 md:gap-2.5 overflow-hidden">
                       <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
-                      <span className="text-gray-200 text-[8px] sm:text-[9px] md:text-[11.5px] font-medium leading-tight w-[60px] sm:w-[75px] md:w-[160px] whitespace-nowrap overflow-hidden pr-1">
+                      <span className="text-gray-200 text-[8px] sm:text-[9px] md:text-[11.5px] font-medium leading-tight w-[45px] sm:w-[65px] md:w-[160px] whitespace-nowrap overflow-hidden pr-1">
                         <TypingText text={currentMessage} />
                       </span>
                     </div>
@@ -348,7 +348,7 @@ export default function ChatWidget() {
                 onClick={() => setIsOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9, y: -10 }}
-                className="relative w-[72px] sm:w-[85px] md:w-[125px] max-w-[75px] sm:max-w-[90px] md:max-w-[130px] h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
+                className="relative w-[65px] sm:w-[80px] md:w-[125px] max-w-[70px] sm:max-w-[85px] md:max-w-[130px] h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
                 animate={isHovered ? {} : { y: [0, -4, 0], scale: [1, 1.01, 1] }}
                 transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" }, scale: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
               >

@@ -310,7 +310,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      <div className="fixed bottom-0 -left-2 md:left-6 z-50 flex flex-col items-start pointer-events-none">
+      <div className="fixed bottom-0 left-0 sm:left-2 md:left-6 z-40 flex flex-col items-start pointer-events-none">
         <AnimatePresence>
           {hasMounted && !isOpen && (
             <motion.div
@@ -328,18 +328,18 @@ export default function ChatWidget() {
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: -10, scale: 0.95, transition: { duration: 0.2 } }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="absolute bottom-6 md:bottom-10 left-[60%] md:left-[85%] w-max max-w-[210px] md:max-w-[420px] bg-black/40 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-0.5 md:p-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/50 transition-colors z-10 overflow-hidden"
+                    className="absolute bottom-5 sm:bottom-6 md:bottom-9 left-[70%] sm:left-[75%] md:left-[85%] w-max max-w-[185px] sm:max-w-[210px] md:max-w-[400px] bg-black/50 backdrop-blur-xl border border-white/10 rounded-full flex items-center p-0.5 md:p-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] cursor-pointer hover:bg-black/60 transition-colors z-10 overflow-hidden"
                     onClick={() => setIsOpen(true)}
                   >
-                    <div className="pl-2 md:pl-3 pr-1 md:pr-2 flex items-center gap-1.5 md:gap-2.5 overflow-hidden">
-                      <svg className="w-3 h-3 md:w-4 md:h-4 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
-                      <span className="text-gray-200 text-[8.5px] md:text-[11.5px] font-medium leading-tight w-[70px] md:w-[170px] whitespace-nowrap overflow-hidden pr-1">
+                    <div className="pl-1.5 sm:pl-2 md:pl-3 pr-1 md:pr-2 flex items-center gap-1 sm:gap-1.5 md:gap-2.5 overflow-hidden">
+                      <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-[var(--rc-orange)] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.603 0c-.085 4.542-2.146 7.61-5.59 9.38 3.514 1.792 5.518 4.908 5.617 9.421.1-4.48 2.213-7.531 5.753-9.284-3.527-1.742-5.63-4.9-5.78-9.517zM5.19 15.698c-.046 2.443-1.155 4.095-3.007 5.048 1.89.964 2.969 2.641 3.023 5.07.053-2.41 1.19-4.053 3.095-4.996-1.898-.938-3.029-2.637-3.11-5.122z"/></svg>
+                      <span className="text-gray-200 text-[8px] sm:text-[9px] md:text-[11.5px] font-medium leading-tight w-[60px] sm:w-[75px] md:w-[160px] whitespace-nowrap overflow-hidden pr-1">
                         <TypingText text={currentMessage} />
                       </span>
                     </div>
-                    <button className="flex-shrink-0 bg-[#0A2647] text-white px-2 md:px-3.5 py-1 md:py-1.5 rounded-full text-[8px] md:text-[10.5px] font-bold tracking-wide md:tracking-wider uppercase flex items-center gap-1 md:gap-1.5 shadow-inner border border-white/5 hover:bg-[var(--rc-orange)] hover:border-transparent transition-all duration-300">
+                    <button className="flex-shrink-0 bg-[#0A2647] text-white px-2 sm:px-2.5 md:px-3.5 py-0.5 sm:py-1 md:py-1.5 rounded-full text-[7.5px] sm:text-[8.5px] md:text-[10px] font-bold tracking-wide md:tracking-wider uppercase flex items-center gap-1 md:gap-1.5 shadow-inner border border-white/5 hover:bg-[var(--rc-orange)] hover:border-transparent transition-all duration-300">
                       Let's Talk
-                      <svg className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                      <svg className="w-2.5 h-2.5 md:w-3 md:h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     </button>
                   </motion.div>
               </AnimatePresence>
@@ -348,17 +348,17 @@ export default function ChatWidget() {
                 onClick={() => setIsOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9, y: -10 }}
-                className="relative w-22 sm:w-24 md:w-32 h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
-                animate={isHovered ? {} : { y: [0, -6, 0], scale: [1, 1.01, 1] }}
+                className="relative w-[72px] sm:w-[85px] md:w-[125px] max-w-[75px] sm:max-w-[90px] md:max-w-[130px] h-auto flex items-end justify-center drop-shadow-2xl z-0 cursor-pointer"
+                animate={isHovered ? {} : { y: [0, -4, 0], scale: [1, 1.01, 1] }}
                 transition={{ y: { duration: 3, repeat: Infinity, ease: "easeInOut" }, scale: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
               >
                 <motion.img 
                   key={EXPRESSIONS[exprIndex].image}
                   src={EXPRESSIONS[exprIndex].image}
                   alt="AI Assistant"
-                  width="96"
-                  height="144"
-                  className="w-full h-auto object-contain"
+                  width="125"
+                  height="187"
+                  className="w-full h-auto object-contain block pointer-events-auto"
                 />
               </motion.button>
             </motion.div>

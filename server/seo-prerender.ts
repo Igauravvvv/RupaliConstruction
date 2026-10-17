@@ -207,6 +207,56 @@ async function resolvePageData(pathname: string): Promise<PageData> {
     };
   }
 
+  if (cleanPath.startsWith("/services/")) {
+    const serviceSlug = cleanPath.replace("/services/", "").toLowerCase().trim();
+    const serviceTitles: Record<string, { title: string; desc: string }> = {
+      "residential-construction": {
+        title: "Luxury Residential & Turnkey Villa Construction Gurgaon | Rupali Construction",
+        desc: "End-to-end bespoke luxury villa and builder floor construction in DLF and Sushant Lok with fixed pricing and 10-year warranty."
+      },
+      "renovation": {
+        title: "Structural Renovation & Villa Modernization Gurgaon | Rupali Construction",
+        desc: "Complete home and villa renovation services in Gurgaon with NDT structural audits, modern facade upgrades, and 5-year seepage warranty."
+      },
+      "commercial-construction": {
+        title: "Commercial & Corporate Construction Gurgaon | Rupali Construction",
+        desc: "High-grade office buildings, retail spaces, and institutional facilities engineered for modern business needs in Gurgaon."
+      },
+      "interior-design": {
+        title: "Luxury Turnkey Interior Design Gurgaon | Rupali Construction",
+        desc: "Bespoke residential interior design featuring 100% German CNC factory-finished modular woodwork and guaranteed 3D render match."
+      },
+      "architectural-design": {
+        title: "Architectural Design & Vastu Planning Gurgaon | Rupali Construction",
+        desc: "Award-winning architectural studio delivering Vastu-compliant master blueprints, 3D elevations, and DTCP sanction drawings."
+      },
+      "structural-engineering": {
+        title: "Advanced Structural Engineering & Health Audits Gurgaon | Rupali Construction",
+        desc: "Seismic Zone IV engineering, STAAD/ETABS 3D modeling, and certified non-destructive structural stability audits in Gurgaon."
+      }
+    };
+
+    const info = serviceTitles[serviceSlug] || {
+      title: "Specialized Construction Services Gurgaon | Rupali Construction",
+      desc: "Precision engineering, turnkey luxury construction, and architectural design services in Gurgaon by Rupali Construction."
+    };
+
+    return {
+      title: info.title,
+      description: info.desc,
+      canonical: `${BASE_URL}/services/${serviceSlug}`,
+      ogImage: DEFAULT_IMAGE,
+      jsonLd: getDefaultJsonLd(info.desc),
+      semanticHtml: `
+        <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 1200px; margin: 0 auto;">
+          <h1>${info.title}</h1>
+          <p>${info.desc}</p>
+          <div style="margin-top: 2rem;"><a href="/contact">Book a Consultation Call</a></div>
+        </main>
+      `,
+    };
+  }
+
   if (cleanPath === "/projects") {
     let projectsHtml = "<p>Loading recent projects...</p>";
     try {

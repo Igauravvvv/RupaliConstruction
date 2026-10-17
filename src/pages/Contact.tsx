@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 import { trpc } from "@/providers/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
@@ -6,12 +7,15 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Loader2 } from "lucide-r
 import SEO from "@/components/SEO";
 
 export default function Contact() {
+  const [searchParams] = useSearchParams();
+  const initialService = searchParams.get("service") || "";
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     city: "",
-    service: "",
+    service: initialService,
     budget: "",
     message: "",
   });

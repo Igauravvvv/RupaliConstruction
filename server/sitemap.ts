@@ -11,6 +11,12 @@ export async function sitemapHandler(c: Context) {
   const staticRoutes = [
     { url: "", priority: "1.0", changefreq: "daily" },
     { url: "/services", priority: "0.9", changefreq: "weekly" },
+    { url: "/services/residential-construction", priority: "0.9", changefreq: "weekly" },
+    { url: "/services/renovation", priority: "0.9", changefreq: "weekly" },
+    { url: "/services/commercial-construction", priority: "0.9", changefreq: "weekly" },
+    { url: "/services/interior-design", priority: "0.9", changefreq: "weekly" },
+    { url: "/services/architectural-design", priority: "0.9", changefreq: "weekly" },
+    { url: "/services/structural-engineering", priority: "0.9", changefreq: "weekly" },
     { url: "/projects", priority: "0.9", changefreq: "weekly" },
     { url: "/blog", priority: "0.8", changefreq: "daily" },
     { url: "/leadership", priority: "0.8", changefreq: "monthly" },

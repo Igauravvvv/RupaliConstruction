@@ -11,7 +11,7 @@ const services = [
     title: "Residential Construction",
     slug: "residential-construction",
     desc: "Premium luxury villas and turnkey builder floors built with precision civil engineering and finest materials.",
-    highlights: ["150+ Built", "10-Yr Warranty", "0% Cost Overrun"],
+    highlights: ["550+ Built", "10-Yr Warranty", "0% Cost Overrun"],
     link: "/services/residential-construction",
   },
   {
@@ -19,7 +19,7 @@ const services = [
     title: "Commercial Construction",
     slug: "commercial-construction",
     desc: "Grade-A office towers, retail complexes, and commercial facilities designed for maximum efficiency.",
-    highlights: ["High Floor Loads", "NBC Compliant", "Fast-Track PEB"],
+    highlights: ["Gold's Gym", "Knowledge Centre", "Quick & Stays"],
     link: "/services/commercial-construction",
   },
   {

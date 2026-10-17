@@ -1,23 +1,27 @@
 import { trpc } from "@/providers/trpc";
 import { motion } from "framer-motion";
 import { TestimonialCard } from "@/components/ui/testimonial-card";
+import { Building2, Dumbbell, GraduationCap, Hotel, Star, CheckCircle2 } from "lucide-react";
 
 export default function Testimonials() {
-  const { data } = trpc.testimonial.list.useQuery({ limit: 6 });
-  const testimonials = data || fallbackTestimonials;
+  const { data } = trpc.testimonial.list.useQuery({ limit: 12 });
+  const testimonials = data && data.length > 0 ? data : fallbackTestimonials;
 
-  const avatars = [
+  const defaultAvatars = [
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=150&h=150&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=150&h=150&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=150&h=150&fit=crop&q=80",
     "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
   ];
 
-  const mappedTestimonials = testimonials.map((t, i) => ({
+  const mappedTestimonials = testimonials.map((t: any, i: number) => ({
     author: {
       name: t.name,
       handle: t.location || "Verified Client",
-      avatar: avatars[i % avatars.length]
+      avatar: t.avatar || defaultAvatars[i % defaultAvatars.length]
     },
     text: t.content
   }));
@@ -32,13 +36,13 @@ export default function Testimonials() {
         />
       </div>
 
-      <div className="mx-auto flex w-full flex-col items-center gap-4 text-center sm:gap-16 relative z-10">
+      <div className="mx-auto flex w-full flex-col items-center gap-4 text-center sm:gap-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center gap-4 px-4 sm:gap-8"
+          className="flex flex-col items-center gap-4 px-4 sm:gap-6"
         >
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -50,15 +54,52 @@ export default function Testimonials() {
             Testimonials
           </motion.p>
           <h2 className="max-w-[720px] text-xl md:text-2xl font-medium text-[var(--rc-dark)]">
-            What Our Clients Say
+            What Our Clients & Commercial Partners Say
           </h2>
-          <p className="text-md max-w-[600px] font-medium text-muted-foreground sm:text-lg">
-            Join thousands of happy homeowners who built their future with us.
+          <p className="text-md max-w-[650px] font-medium text-muted-foreground sm:text-lg">
+            Trusted by over 550+ luxury homeowners and esteemed commercial landmark developers across Gurgaon.
           </p>
+
+          {/* Featured Commercial Clients Badge Bar (Gold's Gym, Knowledge Centre, Quick & Stays Hotel) */}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-4xl px-2">
+            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600 shrink-0">
+                <Dumbbell className="w-4 h-4" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-[var(--rc-dark)] leading-tight">Gold's Gym</p>
+                <p className="text-[10px] text-gray-500">Commercial Fitness Landmark</p>
+              </div>
+              <span className="text-[10px] font-bold text-amber-500 flex items-center ml-1">★ 5.0</span>
+            </div>
+
+            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
+              <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center text-[var(--rc-blue)] shrink-0">
+                <GraduationCap className="w-4 h-4" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-[var(--rc-dark)] leading-tight">Knowledge Centre</p>
+                <p className="text-[10px] text-gray-500">Corporate Innovation Hub</p>
+              </div>
+              <span className="text-[10px] font-bold text-amber-500 flex items-center ml-1">★ 5.0</span>
+            </div>
+
+            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
+                <Hotel className="w-4 h-4" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs font-bold text-[var(--rc-dark)] leading-tight">Quick & Stays Hotel</p>
+                <p className="text-[10px] text-gray-500">Commercial Hospitality</p>
+              </div>
+              <span className="text-[10px] font-bold text-amber-500 flex items-center ml-1">★ 5.0</span>
+            </div>
+          </div>
         </motion.div>
 
+        {/* Marquee Carousel of Testimonials */}
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-4">
-          <div className="group flex overflow-hidden p-2 [--gap:2rem] [gap:var(--gap)] flex-row [--duration:25s]">
+          <div className="group flex overflow-hidden p-2 [--gap:2rem] [gap:var(--gap)] flex-row [--duration:30s]">
             {/* First Set */}
             <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee will-change-transform flex-row group-hover:[animation-play-state:paused]">
               {mappedTestimonials.map((testimonial, i) => (
@@ -89,6 +130,27 @@ export default function Testimonials() {
 }
 
 export const fallbackTestimonials = [
+  {
+    name: "Gold's Gym Management",
+    location: "Golf Course Road, Gurgaon",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=150&h=150&fit=crop&q=80",
+    content: "Rupali Construction engineered and constructed our flagship Gold's Gym facility with exceptional high-load floor capacities, vibration damping for heavy weights, and advanced ventilation. Delivered on schedule with immaculate structural precision.",
+  },
+  {
+    name: "Knowledge Centre Corporate Director",
+    location: "Sector 44, Gurgaon",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=150&h=150&fit=crop&q=80",
+    content: "Building the Knowledge Centre required complex large-span acoustic auditoriums and smart HVAC automation. Rupali Construction's engineering rigor and institutional quality standards exceeded all expectations.",
+  },
+  {
+    name: "Quick & Stays Hospitality Group",
+    location: "Sushant Lok 1, Sector 43, Gurgaon",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=150&h=150&fit=crop&q=80",
+    content: "From core RCC structure to luxury guest room finishes, Quick & Stays Hotel was delivered ahead of schedule with 0% cost overruns. Their turnkey execution and adherence to fire & safety norms was flawless.",
+  },
   {
     name: "Rajesh Sharma",
     location: "Sector 45, Gurgaon",
@@ -137,28 +199,4 @@ export const fallbackTestimonials = [
     rating: 5,
     content: "We chose Rupali for a major renovation. They completely transformed our space into a modern sanctuary. The transparent pricing and daily updates gave us immense peace of mind.",
   },
-  {
-    name: "Sanjay Patel",
-    location: "Faridabad NIT",
-    rating: 5,
-    content: "Reliable, trustworthy, and incredibly skilled. They handled the complex structural work of our multi-story building with absolute precision. Best contractors in the NCR region.",
-  },
-  {
-    name: "Kavita Rao",
-    location: "DLF Phase 5, Gurgaon",
-    rating: 5,
-    content: "The finishing quality of their work is simply breathtaking. Every corner of our new home reflects premium luxury. Their design inputs were invaluable during the process.",
-  },
-  {
-    name: "Manish Jain",
-    location: "Udyog Vihar",
-    rating: 5,
-    content: "A fantastic partner for industrial construction. They completed our warehouse facility adhering to all safety standards and within the exact budget we discussed on day one.",
-  },
-  {
-    name: "Pooja Bhatia",
-    location: "South Delhi",
-    rating: 5,
-    content: "From the foundation to the final coat of paint, the dedication of the Rupali team is visible. They truly craft dreams into reality. We couldn't be happier with our bespoke residence.",
-  }
 ];

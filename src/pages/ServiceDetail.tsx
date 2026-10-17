@@ -61,9 +61,22 @@ export default function ServiceDetail() {
     limit: 3,
   });
 
-  const matchingProjects = (dbProjects && dbProjects.length > 0) 
-    ? dbProjects 
-    : fallbackProjects.filter(p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter).slice(0, 3);
+  // Ensure Encore Villa and commercial landmarks (Gold's Gym, Knowledge Centre, Quick & Stays) are prominently featured
+  const matchingProjects = (() => {
+    const fallbacks = fallbackProjects.filter(
+      p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter
+    );
+    if (!dbProjects || dbProjects.length === 0) return fallbacks.slice(0, 3);
+    
+    const combined = [...fallbacks, ...dbProjects];
+    const seen = new Set<string>();
+    return combined.filter(p => {
+      const key = (p.name || "").toLowerCase().trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 3);
+  })();
 
   const whatsappUrl = `https://wa.me/919311830088?text=${encodeURIComponent(service.consultationCTA.whatsappMessage)}`;
 

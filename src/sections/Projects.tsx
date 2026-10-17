@@ -290,6 +290,63 @@ function ProjectImage({ src, name }: { src?: string; name: string }) {
 }
 
 export const fallbackProjects = [
+  { 
+    name: "Encore Villa", 
+    slug: "encore-villa",
+    type: "residential", 
+    location: "DLF Phase 4, Gurgaon", 
+    area: "6,500 sq ft", 
+    completionDate: "2025", 
+    coverImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80",
+    images: JSON.stringify([
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80"
+    ])
+  },
+  { 
+    name: "Gold's Gym", 
+    slug: "golds-gym",
+    type: "commercial", 
+    location: "Golf Course Road, Gurgaon", 
+    area: "18,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80",
+    images: JSON.stringify([
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&q=80"
+    ])
+  },
+  { 
+    name: "Knowledge Centre", 
+    slug: "knowledge-centre",
+    type: "commercial", 
+    location: "Sector 44, Gurgaon", 
+    area: "42,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
+    images: JSON.stringify([
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80"
+    ])
+  },
+  { 
+    name: "Quick & Stays Hotel", 
+    slug: "quick-and-stays-hotel",
+    type: "commercial", 
+    location: "Sushant Lok 1, Sector 43, Gurgaon", 
+    area: "35,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80",
+    images: JSON.stringify([
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80"
+    ])
+  },
   { name: "The Sapphire", type: "residential", location: "Sector 62, Gurgaon", area: "45,000 sq ft", completionDate: "2024", coverImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80" },
   { name: "Skyline Tower", type: "commercial", location: "Cyber City, Gurgaon", area: "1,20,000 sq ft", completionDate: "2023", coverImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80" },
   { name: "Rupali Villas", type: "residential", location: "DLF Phase 5, Gurgaon", area: "85,000 sq ft", completionDate: "2024", coverImage: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80" },

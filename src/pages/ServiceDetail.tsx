@@ -73,17 +73,39 @@ export default function ServiceDetail() {
     );
 
     // If DB returned matching items, use them; otherwise use real fallbackProjects
-    const sourceList = realDbMatches.length > 0 
+    const sourceList = (realDbMatches.length > 0 
       ? realDbMatches 
-      : fallbackProjects.filter(p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter);
+      : fallbackProjects.filter(p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter)
+    ).map(p => {
+      const fb = fallbackProjects.find(f => f.slug === p.slug || f.name.toLowerCase().trim() === p.name.toLowerCase().trim());
+      return {
+        ...p,
+        area: p.area || fb?.area || "",
+        location: p.location || fb?.location || "",
+        description: p.description || fb?.description || "",
+      };
+    });
 
-    // For commercial: "only add real projects inside commercial... there are only two commercial projects, add only two only over there"
+    // For commercial: Include QuickIn Stayz as signature highlight alongside Gold Gym and Knowledge Center
     if (service.projectTypeFilter === "commercial") {
-      const topTwo = sourceList.filter(p => {
+      const commercialMatches = sourceList.filter(p => {
         const n = (p.name || "").toLowerCase();
-        return n.includes("gold") || n.includes("knowledge");
+        const s = (p.slug || "").toLowerCase();
+        return n.includes("quickin") || s.includes("quickin") || n.includes("gold") || s.includes("gold") || n.includes("knowledge") || s.includes("knowledge");
       });
-      return (topTwo.length > 0 ? topTwo : sourceList).slice(0, 2);
+
+      // Prioritize QuickIn Stayz first as the signature commercial milestone
+      commercialMatches.sort((a, b) => {
+        const aName = (a.name || "").toLowerCase() + (a.slug || "").toLowerCase();
+        const bName = (b.name || "").toLowerCase() + (b.slug || "").toLowerCase();
+        if (aName.includes("quickin")) return -1;
+        if (bName.includes("quickin")) return 1;
+        if (aName.includes("gold")) return -1;
+        if (bName.includes("gold")) return 1;
+        return 0;
+      });
+
+      return (commercialMatches.length > 0 ? commercialMatches : sourceList).slice(0, 3);
     }
 
     // For residential: real residential projects (Duplex Luxury Villa, Apartment At Sushant Lok)
@@ -374,29 +396,45 @@ export default function ServiceDetail() {
                   }
                 }
                 const slugToUse = p.slug || p.name.toLowerCase().replace(/\s+/g, '-');
+                const isQuickInHighlight = (p.name || "").toLowerCase().includes("quickin") || (p.slug || "").includes("quickin");
 
                 return (
                   <Link
                     key={p.id}
                     to={`/projects/${slugToUse}`}
-                    className="group bg-white rounded-3xl overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 flex flex-col"
+                    className={`group bg-white rounded-3xl overflow-hidden border ${
+                      isQuickInHighlight 
+                        ? 'border-2 border-[var(--rc-orange)] ring-4 ring-[var(--rc-orange)]/15 shadow-xl relative' 
+                        : 'border border-gray-200 hover:shadow-xl'
+                    } transition-all duration-300 flex flex-col`}
                   >
                     <div className="h-56 sm:h-64 overflow-hidden relative">
+                      {isQuickInHighlight && (
+                        <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white px-3.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow-lg flex items-center gap-1.5 border border-white/40 ring-2 ring-orange-500/30">
+                          <Sparkles className="w-3.5 h-3.5 fill-white text-white" />
+                          <span>Signature Highlight</span>
+                        </div>
+                      )}
                       <Image
                         src={coverImg || service.heroImage}
                         alt={p.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[var(--rc-dark)] shadow-sm">
+                      <div className="absolute top-4 left-4 z-10 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[var(--rc-dark)] shadow-sm">
                         {p.location || "Gurugram"}
                       </div>
                     </div>
                     <div className="p-6 flex-1 flex flex-col justify-between">
                       <div>
+                        {isQuickInHighlight && (
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-orange-50 border border-orange-200/80 text-[10px] font-extrabold text-[var(--rc-orange)] uppercase tracking-wider mb-2">
+                            <Sparkles className="w-3 h-3 text-[var(--rc-orange)]" /> Landmark Commercial Achievement
+                          </div>
+                        )}
                         <h3 className="text-lg font-serif font-bold text-[var(--rc-dark)] group-hover:text-[var(--rc-orange)] transition-colors mb-1">
                           {p.name}
                         </h3>
-                        <p className="text-xs text-gray-500 mb-3">{p.area || "Luxury Residence"}</p>
+                        <p className="text-xs text-gray-500 mb-3">{p.area || (service.projectTypeFilter === 'commercial' ? "Commercial Project" : "Luxury Residence")}</p>
                       </div>
                       <span className="text-xs font-semibold text-[var(--rc-blue)] flex items-center gap-1">
                         Explore Project Details <ArrowRight className="w-3.5 h-3.5" />

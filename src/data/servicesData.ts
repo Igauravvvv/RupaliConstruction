@@ -331,12 +331,12 @@ export const servicesData: ServiceDetailItem[] = [
     heroImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80",
     iconName: "Building2",
     projectTypeFilter: "commercial",
-    overview: "From prominent commercial landmarks like Gold Gym (M3M Urbana) and Knowledge Center (M3M Broadway) to modern corporate facilities across Gurgaon, Rupali Construction builds commercial assets optimized for maximum carpet area efficiency, high floor load capacities, and fast-track execution.",
+    overview: "From our signature commercial hospitality milestone QuickIn Stayz (Sushant Lok 1) to prominent fitness and institutional centers like Gold Gym (M3M Urbana) and Knowledge Center (M3M Broadway), Rupali Construction builds commercial assets optimized for maximum carpet area efficiency, high structural durability, and high commercial yields.",
     highlights: [
-      { label: "Commercial Assets", value: "40+ Projects" },
+      { label: "Signature Highlight", value: "QuickIn Stayz (35,000 sq ft)" },
+      { label: "Commercial Assets", value: "40+ Delivered" },
       { label: "Key Landmarks", value: "Gold Gym & Knowledge Center" },
       { label: "Building Code", value: "NBC 2016 Compliant" },
-      { label: "Speed Execution", value: "PEB / Post-Tensioned" },
     ],
     steps: [
       {

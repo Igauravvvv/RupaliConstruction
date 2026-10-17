@@ -44,7 +44,7 @@ export default function App() {
   const location = useLocation();
   const { pathname } = location;
   const isExcludedRoute = pathname.startsWith('/admin') || pathname === '/login' || pathname === '/admin-login';
-  const isChatWidgetExcluded = isExcludedRoute || pathname === '/contact';
+  const isHomePage = pathname === '/';
 
   return (
     <HelmetProvider>
@@ -78,7 +78,7 @@ export default function App() {
               </motion.div>
             </AnimatePresence>
             {!isExcludedRoute && <FloatingActions />}
-            {!isChatWidgetExcluded && <ChatWidget />}
+            {isHomePage && <ChatWidget />}
           </Suspense>
         </motion.div>
     </HelmetProvider>

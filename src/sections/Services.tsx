@@ -19,7 +19,7 @@ const services = [
     title: "Commercial Construction",
     slug: "commercial-construction",
     desc: "Grade-A office towers, retail complexes, and commercial facilities designed for maximum efficiency.",
-    highlights: ["Gold's Gym", "Knowledge Centre", "Quick & Stays"],
+    highlights: ["Gold Gym", "Knowledge Center", "NBC 2016"],
     link: "/services/commercial-construction",
   },
   {

@@ -58,27 +58,36 @@ export default function ServiceDetail() {
   // Fetch relevant portfolio projects matching this category
   const { data: dbProjects } = trpc.project.list.useQuery({
     type: service.projectTypeFilter,
-    limit: 3,
+    limit: 10,
   });
 
-  // Ensure Encore Villa and commercial landmarks (Gold's Gym, Knowledge Centre, Quick & Stays) are prominently featured
+  // Display only real projects from the project section with their defined categories
   const matchingProjects = (() => {
-    const fallbacks = fallbackProjects.filter(
-      p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter
-    );
     const dbItems = Array.isArray(dbProjects) 
       ? dbProjects 
       : (dbProjects?.items || []);
-    if (dbItems.length === 0) return fallbacks.slice(0, 3);
     
-    const combined = [...fallbacks, ...dbItems];
-    const seen = new Set<string>();
-    return combined.filter(p => {
-      const key = (p.name || "").toLowerCase().trim();
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    }).slice(0, 3);
+    // Filter real DB items by category
+    const realDbMatches = dbItems.filter(
+      p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter
+    );
+
+    // If DB returned matching items, use them; otherwise use real fallbackProjects
+    const sourceList = realDbMatches.length > 0 
+      ? realDbMatches 
+      : fallbackProjects.filter(p => !service.projectTypeFilter || p.type.toLowerCase() === service.projectTypeFilter);
+
+    // For commercial: "only add real projects inside commercial... there are only two commercial projects, add only two only over there"
+    if (service.projectTypeFilter === "commercial") {
+      const topTwo = sourceList.filter(p => {
+        const n = (p.name || "").toLowerCase();
+        return n.includes("gold") || n.includes("knowledge");
+      });
+      return (topTwo.length > 0 ? topTwo : sourceList).slice(0, 2);
+    }
+
+    // For residential: real residential projects (Duplex Luxury Villa, Apartment At Sushant Lok)
+    return sourceList.slice(0, 3);
   })();
 
   const whatsappUrl = `https://wa.me/919311830088?text=${encodeURIComponent(service.consultationCTA.whatsappMessage)}`;
@@ -347,15 +356,21 @@ export default function ServiceDetail() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {matchingProjects.map((p) => {
                 let coverImg = p.coverImage || "";
                 if (!coverImg && (p as any).images) {
-                  try {
-                    const parsed = JSON.parse((p as any).images);
-                    coverImg = parsed[0] || "";
-                  } catch {
-                    coverImg = (p as any).images.split(",")[0] || "";
+                  const raw = (p as any).images;
+                  if (typeof raw === "string") {
+                    if (raw.trim().startsWith("[") || raw.trim().startsWith("{")) {
+                      try {
+                        const parsed = JSON.parse(raw);
+                        coverImg = Array.isArray(parsed) ? parsed[0] : "";
+                      } catch {}
+                    }
+                    if (!coverImg) {
+                      coverImg = raw.split(",")[0]?.trim() || "";
+                    }
                   }
                 }
                 const slugToUse = p.slug || p.name.toLowerCase().replace(/\s+/g, '-');

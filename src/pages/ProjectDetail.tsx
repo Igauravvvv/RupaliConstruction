@@ -105,20 +105,20 @@ export default function ProjectDetail() {
 
   // Attempt to find a fallback project if DB returns null or is loading
   const fallbackMatch = fallbackProjects.find(
-    (p) => p.name.toLowerCase().replace(/\s+/g, '-') === slug
+    (p) => (p as any).slug === slug || p.name.toLowerCase().replace(/\s+/g, '-') === slug
   );
 
   const activeProject = dbProject || (fallbackMatch ? {
-    id: 0,
+    id: fallbackMatch.id || 0,
     name: fallbackMatch.name,
-    slug: slug || "",
-    description: "",
+    slug: (fallbackMatch as any).slug || slug || "",
+    description: (fallbackMatch as any).description || "",
     location: fallbackMatch.location,
     area: fallbackMatch.area,
     duration: "18 Months",
     type: fallbackMatch.type,
     status: "completed",
-    images: JSON.stringify([fallbackMatch.coverImage]),
+    images: (fallbackMatch as any).images || JSON.stringify([fallbackMatch.coverImage]),
     featured: false,
     completionDate: fallbackMatch.completionDate,
     reviewerName: "",

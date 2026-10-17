@@ -51,14 +51,19 @@ export default function Projects() {
 
   const getProjectImage = (project: any) => {
     if (project.images) {
-      try {
-        const imgs = JSON.parse(project.images);
-        if (imgs.length > 0) return imgs[0];
-      } catch {
-        return project.images.split(",")[0];
+      const raw = project.images;
+      if (typeof raw === "string") {
+        if (raw.trim().startsWith("[") || raw.trim().startsWith("{")) {
+          try {
+            const imgs = JSON.parse(raw);
+            if (Array.isArray(imgs) && imgs.length > 0) return imgs[0];
+          } catch {}
+        }
+        const first = raw.split(",")[0]?.trim();
+        if (first) return first;
       }
     }
-    const fallback = fallbackProjects.find((p) => p.name === project.name);
+    const fallback = fallbackProjects.find((p) => p.name === project.name || p.slug === project.slug);
     return fallback?.coverImage || undefined;
   };
 
@@ -216,7 +221,7 @@ export default function Projects() {
                 <div className="aspect-[3/4] relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
                   <ProjectImage 
-                    src={project.images ? (() => { try { const imgs = JSON.parse(project.images); return imgs[0]; } catch { return project.images?.split(",")[0]; } })() : (project as any).coverImage} 
+                    src={getProjectImage(project)} 
                     name={project.name} 
                   />
                 </div>
@@ -291,69 +296,93 @@ function ProjectImage({ src, name }: { src?: string; name: string }) {
 
 export const fallbackProjects = [
   { 
-    name: "Encore Villa", 
-    slug: "encore-villa",
+    id: 13,
+    name: "Duplex Luxury Villa", 
+    slug: "duplex-luxury-villa",
     type: "residential", 
-    location: "DLF Phase 4, Gurgaon", 
-    area: "6,500 sq ft", 
-    completionDate: "2025", 
-    coverImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80",
-    images: JSON.stringify([
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80"
-    ])
-  },
-  { 
-    name: "Gold's Gym", 
-    slug: "golds-gym",
-    type: "commercial", 
-    location: "Golf Course Road, Gurgaon", 
-    area: "18,000 sq ft", 
+    location: "The Westerlies, Sector 108, Gurugram", 
+    area: "3,240 sq ft", 
     completionDate: "2024", 
-    coverImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80",
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/a1d1885c-72d6-4bf5-9202-c8352529603d.jpg",
+    description: "Turnkey luxury duplex villa crafted with modern architecture, premium structural engineering, and high-end finishes in The Westerlies, Sector 108, Gurugram.",
     images: JSON.stringify([
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&q=80"
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/a1d1885c-72d6-4bf5-9202-c8352529603d.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/18cb134c-2857-42ca-9062-adfa6e03133b.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/39af469b-3bf4-4ba5-b029-63c6cfff7b7f.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/bd41909a-70a6-4571-8fcc-844e9065e56d.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/fae1e633-a9e8-4c0e-95da-76fceafc73ab.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/a4c7b3d2-5ed1-4300-b204-150c8d7f3bd7.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/82d52a40-0dd4-44fa-9d4c-2af02c4e0b94.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f61a63bb-7da5-4c11-9186-ffaf9a844940.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/8fe1e5d5-58db-46e5-b592-4518e93000c6.jpg",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/c8281564-2aa9-4917-9bfa-c9a1b07ffa5c.jpg"
     ])
   },
   { 
-    name: "Knowledge Centre", 
-    slug: "knowledge-centre",
-    type: "commercial", 
-    location: "Sector 44, Gurgaon", 
-    area: "42,000 sq ft", 
+    id: 12,
+    name: "Apartment At Sushant Lok", 
+    slug: "apartment-at-sushant-lok",
+    type: "residential", 
+    location: "Sushant Lok 1, Gurugram", 
+    area: "1,800 sq ft", 
     completionDate: "2024", 
-    coverImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/9b0bd635-2175-4371-a8fc-50e7a50983db.png",
+    description: "Premium residential apartment floor with bespoke interior craftsmanship and civil upgrades in Sushant Lok, Gurgaon.",
     images: JSON.stringify([
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80"
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/9b0bd635-2175-4371-a8fc-50e7a50983db.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/9c4aa831-9802-49d2-b325-201c5180e9b5.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/d64b78ee-73fa-4e68-a156-b7644edd3fb4.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7d869794-8bde-43f8-9bb0-b9647ac7170b.png"
     ])
   },
   { 
-    name: "Quick & Stays Hotel", 
-    slug: "quick-and-stays-hotel",
+    id: 15,
+    name: "Gold Gym", 
+    slug: "gold-gym",
     type: "commercial", 
-    location: "Sushant Lok 1, Sector 43, Gurgaon", 
+    location: "Sector 67, M3M URBANA, Gurgaon", 
+    area: "11,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
+    description: "State-of-the-art commercial fitness facility with heavy reinforced civil flooring, industrial acoustic isolation, and premium MEP systems at M3M Urbana, Sector 67, Gurgaon.",
+    images: JSON.stringify([
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/ddc7209e-e9e0-4e97-85d7-c9159af57d86.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/ca6633e7-fc74-4a1c-8597-77caea430610.png"
+    ])
+  },
+  { 
+    id: 14,
+    name: "Knowledge Center", 
+    slug: "knowledge-center",
+    type: "commercial", 
+    location: "M3M Broadway, Sector 71, Gurugram", 
+    area: "100,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
+    description: "Iconic commercial landmark featuring corporate innovation suites, knowledge auditoriums, and cutting-edge civil infrastructure at M3M Broadway, Sector 71, Gurugram.",
+    images: JSON.stringify([
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/2a4be811-3f5a-4333-b541-31a0d1febb6a.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/1d63ff4a-2d3f-4a08-a67a-88b52d7e3835.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7ce868fb-a54d-47a0-ab7e-a1177bffa8a9.png"
+    ])
+  },
+  { 
+    id: 16,
+    name: "QuickIn Stayz", 
+    slug: "quickin-stayz",
+    type: "commercial", 
+    location: "Block - C, Sushant Lok 1, Sector 43, Gurugram", 
     area: "35,000 sq ft", 
     completionDate: "2024", 
-    coverImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80",
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
+    description: "Modern turnkey commercial hospitality and boutique suites located in Sushant Lok 1, Sector 43, Gurugram.",
     images: JSON.stringify([
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80"
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/46c59bbb-6ca0-4e8e-88c0-77f5c6c72457.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/d21cff8b-8cdc-4434-9084-b2771c27065c.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/b92f87a0-bda8-4249-a016-4758727341a4.png"
     ])
-  },
-  { name: "The Sapphire", type: "residential", location: "Sector 62, Gurgaon", area: "45,000 sq ft", completionDate: "2024", coverImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80" },
-  { name: "Skyline Tower", type: "commercial", location: "Cyber City, Gurgaon", area: "1,20,000 sq ft", completionDate: "2023", coverImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80" },
-  { name: "Rupali Villas", type: "residential", location: "DLF Phase 5, Gurgaon", area: "85,000 sq ft", completionDate: "2024", coverImage: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80" },
-  { name: "NCR Business Park", type: "commercial", location: "Noida Sector 136", area: "2,50,000 sq ft", completionDate: "2023", coverImage: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80" },
-  { name: "Heritage Homes", type: "renovation", location: "Sushant Lok, Gurgaon", area: "12,000 sq ft", completionDate: "2024", coverImage: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80" },
-  { name: "Green Valley Estate", type: "residential", location: "Sohna Road, Gurgaon", area: "1,80,000 sq ft", completionDate: "2025", coverImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80" },
-  { name: "Oasis Apartments", type: "residential", location: "Golf Course Ext", area: "1,10,000 sq ft", completionDate: "2025", coverImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?auto=format&fit=crop&q=80" },
-  { name: "Tech Hub Tower", type: "commercial", location: "Udyog Vihar", area: "3,00,000 sq ft", completionDate: "2026", coverImage: "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&q=80" },
-  { name: "Pinecrest Villas", type: "residential", location: "Sector 54, Gurgaon", area: "95,000 sq ft", completionDate: "2024", coverImage: "https://images.unsplash.com/photo-1613490908574-4bf8765ff9c3?auto=format&fit=crop&q=80" },
+  }
 ];

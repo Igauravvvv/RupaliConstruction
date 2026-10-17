@@ -83,14 +83,14 @@ export default function Navbar() {
           to="/" 
           onClick={() => window.scrollTo(0, 0)}
           onMouseEnter={() => handlePrefetch("/")}
-          className="flex items-center py-2 hover:opacity-80 transition-opacity shrink-0"
+          className="flex items-center py-1.5 hover:opacity-85 transition-opacity shrink-0"
         >
           <img
-            src="/logo-main.webp?v=2"
+            src="/logo-main.webp?v=3"
             alt="Rupali Construction"
-            width="192"
-            height="128"
-            className={`h-11 sm:h-12 md:h-14 lg:h-16 xl:h-20 w-auto object-contain transition-all duration-300 ${
+            width="240"
+            height="54"
+            className={`h-10 sm:h-11 md:h-13 lg:h-14 xl:h-15 w-auto object-contain transition-all duration-300 ${
               isDarkSection ? "drop-shadow-lg" : "md:mix-blend-multiply"
             }`}
           />

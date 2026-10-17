@@ -134,9 +134,9 @@ export default function Admin() {
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <img
-              src="/logo-main.webp?v=2"
+              src="/logo-main.webp?v=3"
               alt="Rupali Construction"
-              className="h-10 w-auto object-contain brightness-0 invert"
+              className="h-9 w-auto object-contain brightness-0 invert"
             />
           </Link>
           <div className="hidden sm:flex items-center gap-2 ml-2 pl-4 border-l border-white/20">

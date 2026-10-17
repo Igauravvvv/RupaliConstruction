@@ -73,9 +73,9 @@ export default function InitialLoader({ onComplete }: { onComplete: () => void }
 
           {/* Logo */}
           <motion.img
-            src="/logo-main.webp?v=2"
+            src="/logo-main.webp?v=3"
             alt="Rupali Construction"
-            className="w-44 sm:w-56 md:w-64 mb-8 drop-shadow-2xl"
+            className="w-48 sm:w-56 md:w-64 mb-8 drop-shadow-2xl"
             initial={{ opacity: 0, y: 20, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}

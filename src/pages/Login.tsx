@@ -205,9 +205,9 @@ export default function Login() {
             {/* Header */}
             <div className="text-center mb-8">
               <img
-                src="/logo-main.webp?v=2"
+                src="/logo-main.webp?v=3"
                 alt="Rupali Construction"
-                className="h-20 md:h-24 w-auto mx-auto mb-6 object-contain mix-blend-multiply scale-[1.3] origin-center"
+                className="h-12 md:h-14 w-auto mx-auto mb-4 object-contain mix-blend-multiply"
               />
               <AnimatePresence mode="wait">
                 <motion.div

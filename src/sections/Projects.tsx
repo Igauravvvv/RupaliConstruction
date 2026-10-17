@@ -111,54 +111,58 @@ export default function Projects() {
         </div>
 
         {/* Desktop Grid - hidden on mobile */}
-        <div ref={gridRef} className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Desktop Grid - hidden on mobile */}
+        <div ref={gridRef} className="hidden md:flex md:flex-wrap justify-center gap-6">
           {projects.length > 0 ? (
-            projects.map((project, i) => (
-              <Link
-                key={project.id}
-                to={`/projects/${project.slug}`}
-                className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block"
-                style={{ transitionDelay: `${i * 100}ms` }}
-              >
-                <div className="aspect-[4/3] relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--rc-dark)] via-transparent to-transparent z-10" />
-                  <div className="w-full h-full bg-[var(--rc-blue)]/20 flex items-center justify-center">
-                    <ProjectImage src={getProjectImage(project)} name={project.name} />
+            projects.map((project, i) => {
+              const areaToShow = project.area || fallbackProjects.find(f => f.slug === project.slug)?.area;
+              return (
+                <Link
+                  key={project.id}
+                  to={`/projects/${project.slug}`}
+                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block w-full md:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48.5px)/3)]"
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  <div className="aspect-[4/3] relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--rc-dark)] via-transparent to-transparent z-10" />
+                    <div className="w-full h-full bg-[var(--rc-blue)]/20 flex items-center justify-center">
+                      <ProjectImage src={getProjectImage(project)} name={project.name} />
+                    </div>
                   </div>
-                </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  <div className="text-label text-[var(--rc-orange)] mb-2 capitalize">
-                    {project.type}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                    <div className="text-label text-[var(--rc-orange)] mb-2 capitalize">
+                      {project.type}
+                    </div>
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      {project.name}
+                    </h3>
+                    <div className="flex flex-wrap gap-4 text-sm text-white/60">
+                      {project.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5" />
+                          {project.location}
+                        </span>
+                      )}
+                      {areaToShow && (
+                        <span className="flex items-center gap-1">
+                          <Maximize2 className="w-3.5 h-3.5" />
+                          {areaToShow}
+                        </span>
+                      )}
+                      {project.completionDate && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {project.completionDate}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    {project.name}
-                  </h3>
-                  <div className="flex flex-wrap gap-4 text-sm text-white/60">
-                    {project.location && (
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5" />
-                        {project.location}
-                      </span>
-                    )}
-                    {project.area && (
-                      <span className="flex items-center gap-1">
-                        <Maximize2 className="w-3.5 h-3.5" />
-                        {project.area}
-                      </span>
-                    )}
-                    {project.completionDate && (
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {project.completionDate}
-                      </span>
-                    )}
-                  </div>
-                </div>
 
-                <div className="absolute inset-0 bg-[var(--rc-orange)]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-              </Link>
-            ))
+                  <div className="absolute inset-0 bg-[var(--rc-orange)]/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                </Link>
+              );
+            })
           ) : (
             <>
               {fallbackProjects
@@ -167,7 +171,7 @@ export default function Projects() {
                 <Link
                   key={project.name}
                   to={`/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block"
+                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block w-full md:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48.5px)/3)]"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div className="aspect-[4/3] relative overflow-hidden">
@@ -205,14 +209,17 @@ export default function Projects() {
 
         {/* Mobile 2-Column Grid - hidden on md+ */}
         <div className="md:hidden grid grid-cols-2 gap-2.5">
-          {(projects.length > 0 ? projects : fallbackProjects.filter(p => activeFilter === "all" || p.type === activeFilter)).map((project: any, i: number) => (
-            <motion.div
-              key={project.id || project.name}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-            >
+          {(projects.length > 0 ? projects : fallbackProjects.filter(p => activeFilter === "all" || p.type === activeFilter)).map((project: any, i: number, arr: any[]) => {
+            const isLastOdd = i === arr.length - 1 && arr.length % 2 === 1;
+            return (
+              <motion.div
+                key={project.id || project.name}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className={isLastOdd ? "col-span-2 max-w-[260px] mx-auto w-full" : ""}
+              >
               <Link
                 to={`/projects/${project.slug || project.name?.toLowerCase().replace(/\s+/g, '-')}`}
                 className="group block rounded-2xl overflow-hidden relative bg-[var(--rc-dark)] active:scale-[0.97] transition-transform"
@@ -254,7 +261,8 @@ export default function Projects() {
                 </div>
               </Link>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -296,6 +304,56 @@ function ProjectImage({ src, name }: { src?: string; name: string }) {
 
 export const fallbackProjects = [
   { 
+    id: 16,
+    name: "QuickIn Stayz", 
+    slug: "quickin-stayz",
+    type: "commercial", 
+    location: "Block - C, Sushant Lok 1, Sector 43, Gurugram", 
+    area: "35,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
+    description: "Modern turnkey commercial hospitality and boutique suites located in Sushant Lok 1, Sector 43, Gurugram.",
+    images: JSON.stringify([
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/46c59bbb-6ca0-4e8e-88c0-77f5c6c72457.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/d21cff8b-8cdc-4434-9084-b2771c27065c.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/b92f87a0-bda8-4249-a016-4758727341a4.png"
+    ])
+  },
+  { 
+    id: 15,
+    name: "Gold Gym", 
+    slug: "gold-gym",
+    type: "commercial", 
+    location: "Sector 67, M3M URBANA, Gurgaon", 
+    area: "11,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
+    description: "State-of-the-art commercial fitness facility with heavy reinforced civil flooring, industrial acoustic isolation, and premium MEP systems at M3M Urbana, Sector 67, Gurgaon.",
+    images: JSON.stringify([
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/ddc7209e-e9e0-4e97-85d7-c9159af57d86.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/ca6633e7-fc74-4a1c-8597-77caea430610.png"
+    ])
+  },
+  { 
+    id: 14,
+    name: "Knowledge Center", 
+    slug: "knowledge-center",
+    type: "commercial", 
+    location: "M3M Broadway, Sector 71, Gurugram", 
+    area: "100,000 sq ft", 
+    completionDate: "2024", 
+    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
+    description: "Iconic commercial landmark featuring corporate innovation suites, knowledge auditoriums, and cutting-edge civil infrastructure at M3M Broadway, Sector 71, Gurugram.",
+    images: JSON.stringify([
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/2a4be811-3f5a-4333-b541-31a0d1febb6a.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/1d63ff4a-2d3f-4a08-a67a-88b52d7e3835.png",
+      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7ce868fb-a54d-47a0-ab7e-a1177bffa8a9.png"
+    ])
+  },
+  { 
     id: 13,
     name: "Duplex Luxury Villa", 
     slug: "duplex-luxury-villa",
@@ -333,56 +391,6 @@ export const fallbackProjects = [
       "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/9c4aa831-9802-49d2-b325-201c5180e9b5.png",
       "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/d64b78ee-73fa-4e68-a156-b7644edd3fb4.png",
       "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7d869794-8bde-43f8-9bb0-b9647ac7170b.png"
-    ])
-  },
-  { 
-    id: 15,
-    name: "Gold Gym", 
-    slug: "gold-gym",
-    type: "commercial", 
-    location: "Sector 67, M3M URBANA, Gurgaon", 
-    area: "11,000 sq ft", 
-    completionDate: "2024", 
-    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
-    description: "State-of-the-art commercial fitness facility with heavy reinforced civil flooring, industrial acoustic isolation, and premium MEP systems at M3M Urbana, Sector 67, Gurgaon.",
-    images: JSON.stringify([
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/ddc7209e-e9e0-4e97-85d7-c9159af57d86.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/ca6633e7-fc74-4a1c-8597-77caea430610.png"
-    ])
-  },
-  { 
-    id: 14,
-    name: "Knowledge Center", 
-    slug: "knowledge-center",
-    type: "commercial", 
-    location: "M3M Broadway, Sector 71, Gurugram", 
-    area: "100,000 sq ft", 
-    completionDate: "2024", 
-    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
-    description: "Iconic commercial landmark featuring corporate innovation suites, knowledge auditoriums, and cutting-edge civil infrastructure at M3M Broadway, Sector 71, Gurugram.",
-    images: JSON.stringify([
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/2a4be811-3f5a-4333-b541-31a0d1febb6a.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/1d63ff4a-2d3f-4a08-a67a-88b52d7e3835.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7ce868fb-a54d-47a0-ab7e-a1177bffa8a9.png"
-    ])
-  },
-  { 
-    id: 16,
-    name: "QuickIn Stayz", 
-    slug: "quickin-stayz",
-    type: "commercial", 
-    location: "Block - C, Sushant Lok 1, Sector 43, Gurugram", 
-    area: "35,000 sq ft", 
-    completionDate: "2024", 
-    coverImage: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
-    description: "Modern turnkey commercial hospitality and boutique suites located in Sushant Lok 1, Sector 43, Gurugram.",
-    images: JSON.stringify([
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/46c59bbb-6ca0-4e8e-88c0-77f5c6c72457.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/d21cff8b-8cdc-4434-9084-b2771c27065c.png",
-      "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/b92f87a0-bda8-4249-a016-4758727341a4.png"
     ])
   }
 ];

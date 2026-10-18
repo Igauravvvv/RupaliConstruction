@@ -123,6 +123,47 @@ export default function ServiceDetail() {
         image={service.heroImage}
         url={`/services/${service.slug}`}
         type="article"
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": service.title,
+            "description": service.overview,
+            "provider": {
+              "@type": "HomeAndConstructionBusiness",
+              "name": "Rupali Construction",
+              "url": "https://rupaliconstruction.com"
+            },
+            "areaServed": {
+              "@type": "City",
+              "name": "Gurugram"
+            }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://rupaliconstruction.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://rupaliconstruction.com/services"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": service.shortTitle,
+                "item": `https://rupaliconstruction.com/services/${service.slug}`
+              }
+            ]
+          }
+        ]}
       />
       <Navbar />
 

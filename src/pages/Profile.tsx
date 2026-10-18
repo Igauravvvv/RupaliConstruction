@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
+import SEO from "@/components/SEO";
 import { 
   User, Shield, Mail, Phone, Calendar, Calculator,
   FileText, CheckCircle2, Edit3, ArrowRight, Sparkles,
@@ -80,6 +81,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[var(--rc-gray)] flex flex-col">
+      <SEO title="Client Portal & Profile | Rupali Construction" noindex={true} />
       <Navbar />
 
       <main className="flex-grow pt-24 lg:pt-32 pb-20 container-rc">

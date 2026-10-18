@@ -1,8 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin-login
 Disallow: /login
 Disallow: /complete-profile
+Disallow: /profile
 Disallow: /api/
 
 Sitemap: https://rupaliconstruction.com/sitemap.xml

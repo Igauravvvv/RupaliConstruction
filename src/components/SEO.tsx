@@ -142,15 +142,26 @@ export default function SEO({
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={absoluteUrl} />
 
+      {/* Sitemap Meta Link */}
+      <link rel="sitemap" type="application/xml" title="Sitemap" href="https://rupaliconstruction.com/sitemap.xml" />
+
       {/* Robot Instructions */}
       {noindex ? (
-        <meta name="robots" content="noindex, nofollow" />
+        <>
+          <meta name="robots" content="noindex, nofollow" />
+          <meta name="googlebot" content="noindex, nofollow" />
+        </>
       ) : (
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <>
+          <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+          <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        </>
       )}
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
+      <meta property="og:site_name" content="Rupali Construction" />
+      <meta property="og:locale" content="en_IN" />
       <meta property="og:url" content={absoluteUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -158,10 +169,18 @@ export default function SEO({
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:site" content="@rupalihomes" />
+      <meta property="twitter:creator" content="@rupalihomes" />
       <meta property="twitter:url" content={absoluteUrl} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={absoluteImage} />
+
+      {/* Local SEO Geo Tags for Gurugram */}
+      {!noindex && <meta name="geo.region" content="IN-HR" />}
+      {!noindex && <meta name="geo.placename" content="Gurugram" />}
+      {!noindex && <meta name="geo.position" content="28.3971;77.0370" />}
+      {!noindex && <meta name="ICBM" content="28.3971, 77.0370" />}
 
       {/* Structured Data (JSON-LD) for Google Search Listings & Rich Snippets */}
       {!noindex && finalSchema.map((item, index) => (

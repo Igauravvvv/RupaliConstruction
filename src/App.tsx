@@ -22,7 +22,6 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 const ChatWidget = lazy(() => import('./components/ChatWidget'))
 const FloatingActions = lazy(() => import('./components/FloatingActions'))
 import AuthGuard from './components/AuthGuard'
-import SEO from './components/SEO'
 import GlobalLoader from './components/GlobalLoader'
 
 class RouteErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
@@ -66,7 +65,7 @@ const pageTransition = {
   initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -6 },
-  transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] },
+  transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] },
 };
 
 export default function App() {
@@ -77,8 +76,7 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <SEO />
-        <motion.div
+      <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}

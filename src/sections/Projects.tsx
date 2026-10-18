@@ -286,7 +286,7 @@ function ProjectImage({ src, name }: { src?: string; name: string }) {
     return (
       <Image 
         src={src} 
-        alt={name} 
+        alt={`${name} - Construction and Architecture Project in Gurugram by Rupali Construction`} 
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
       />
     );

@@ -4,6 +4,7 @@ import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
 import { Phone, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SEO from "@/components/SEO";
 
 function getSafeRedirect(search: string) {
   const redirect = new URLSearchParams(search).get("redirect");
@@ -66,6 +67,7 @@ export default function CompleteProfile() {
 
   return (
     <div className="min-h-screen bg-[var(--rc-gray)] flex items-center justify-center p-4">
+      <SEO title="Complete Your Profile | Rupali Construction" noindex={true} />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

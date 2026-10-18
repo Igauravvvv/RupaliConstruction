@@ -327,17 +327,30 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="rounded-2xl overflow-hidden border border-[var(--rc-border)] aspect-square">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.857315731681!2d77.0913!3d28.4595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDI3JzM0LjIiTiA3N8KwMDUnMjguNyJF!5e0!3m2!1sen!2sin!4v1"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Rupali Construction Office Location"
-                />
+              <div className="rounded-2xl overflow-hidden border border-[var(--rc-border)] shadow-md bg-white">
+                <div className="aspect-square w-full">
+                  <iframe
+                    src="https://www.google.com/maps?q=28.3971,77.0370&hl=en&z=16&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Rupali Construction Office Location at M3M Broadway, Sector 71, Gurugram"
+                  />
+                </div>
+                <div className="p-4 bg-white border-t border-[var(--rc-border)] text-center">
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=28.3971,77.0370"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[var(--rc-blue)] text-white text-xs font-bold rounded-xl hover:bg-[var(--rc-orange)] transition-colors uppercase tracking-wider"
+                  >
+                    <MapPin className="w-3.5 h-3.5" />
+                    Get Directions to M3M Broadway
+                  </a>
+                </div>
               </div>
             </div>
           </div>

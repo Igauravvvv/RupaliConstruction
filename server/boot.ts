@@ -265,12 +265,15 @@ app.get("*", async (c, next) => {
 export default app;
 
 if (env.isProduction && !process.env.VERCEL) {
-  const { serve } = await import("@hono/node-server");
-  const { serveStaticFiles } = await import("./lib/vite.js");
-  serveStaticFiles(app);
-
-  const port = parseInt(process.env.PORT || "3000");
-  serve({ fetch: app.fetch, port }, () => {
-    console.log(`Server running on http://localhost:${port}/`);
+  import("@hono/node-server").then(({ serve }) => {
+    import("./lib/vite.js").then(({ serveStaticFiles }) => {
+      serveStaticFiles(app);
+      const port = parseInt(process.env.PORT || "3000");
+      serve({ fetch: app.fetch, port }, () => {
+        console.log(`Server running on http://localhost:${port}/`);
+      });
+    });
+  }).catch((err) => {
+    console.error("Failed to initialize production server:", err);
   });
 }

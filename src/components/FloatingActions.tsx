@@ -31,6 +31,15 @@ export default function FloatingActions() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const trackContactClick = (name: string) => {
+    if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag("event", "contact_click", {
+        event_category: "lead_generation",
+        event_label: name,
+      });
+    }
+  };
+
   const contactOptions = [
     {
       name: "Call Us",
@@ -86,6 +95,7 @@ export default function FloatingActions() {
                 href={opt.href}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackContactClick(opt.name)}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}

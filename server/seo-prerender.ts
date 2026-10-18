@@ -623,8 +623,20 @@ export async function seoPrerenderHandler(c: Context) {
     }
 
     // Replace Description & Meta tags
-    html = html.replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${pageData.description}" />`);
+    html = html.replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${escapeHtml(pageData.description)}" />`);
     html = html.replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${pageData.canonical}" />`);
+
+    const isPrivateAppRoute = url.pathname.startsWith('/admin') || url.pathname.startsWith('/profile') || url.pathname.startsWith('/login') || url.pathname.startsWith('/complete-profile');
+
+    const robotsMeta = isPrivateAppRoute
+      ? `<meta name="robots" content="noindex, nofollow" />\n    <meta name="googlebot" content="noindex, nofollow" />`
+      : `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />`;
+
+    const geoMeta = isPrivateAppRoute ? "" : `
+    <meta name="geo.region" content="IN-HR" />
+    <meta name="geo.placename" content="Gurugram" />
+    <meta name="geo.position" content="28.3971;77.0370" />
+    <meta name="ICBM" content="28.3971, 77.0370" />`;
 
     // Inject OpenGraph & Twitter tags and JSON-LD schema into head
     const schemaScript = Array.isArray(pageData.jsonLd)
@@ -632,23 +644,28 @@ export async function seoPrerenderHandler(c: Context) {
       : `<script type="application/ld+json">${JSON.stringify(pageData.jsonLd)}</script>`;
 
     const ogTags = `
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="${BASE_URL}/sitemap.xml" />
+    ${robotsMeta}
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rupali Construction" />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:url" content="${pageData.canonical}" />
-    <meta property="og:title" content="${pageData.title}" />
-    <meta property="og:description" content="${pageData.description}" />
+    <meta property="og:title" content="${escapeHtml(pageData.title)}" />
+    <meta property="og:description" content="${escapeHtml(pageData.description)}" />
     <meta property="og:image" content="${pageData.ogImage}" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@rupalihomes" />
+    <meta name="twitter:creator" content="@rupalihomes" />
     <meta name="twitter:url" content="${pageData.canonical}" />
-    <meta name="twitter:title" content="${pageData.title}" />
-    <meta name="twitter:description" content="${pageData.description}" />
-    <meta name="twitter:image" content="${pageData.ogImage}" />
+    <meta name="twitter:title" content="${escapeHtml(pageData.title)}" />
+    <meta name="twitter:description" content="${escapeHtml(pageData.description)}" />
+    <meta name="twitter:image" content="${pageData.ogImage}" />${geoMeta}
     ${schemaScript}
     `;
 
     html = html.replace("</head>", `${ogTags}\n</head>`);
 
     // Inject Semantic Content directly into root container for AI bots and immediate FCP
-    const isPrivateAppRoute = url.pathname.startsWith('/admin') || url.pathname.startsWith('/profile') || url.pathname.startsWith('/login');
     if (!isPrivateAppRoute) {
       html = html.replace(/<div id=["']root["']>\s*<\/div>/i, `<div id="root"><div style="opacity:0; position:absolute; pointer-events:none; z-index:-9999; height:0; overflow:hidden;" aria-hidden="true">${pageData.semanticHtml}</div></div>`);
     }

@@ -141,10 +141,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               <li><LinkItem href="/" isRouterLink>Home</LinkItem></li>
+              <li><LinkItem href="/services" isRouterLink>Services</LinkItem></li>
               <li><LinkItem href="/projects" isRouterLink>Projects</LinkItem></li>
               <li><LinkItem href="/blog" isRouterLink>Blog</LinkItem></li>
+              <li><LinkItem href="/leadership" isRouterLink>Leadership</LinkItem></li>
+              <li><LinkItem href="/brand-standards" isRouterLink>Brand Standards</LinkItem></li>
               <li><LinkItem href="/contact" isRouterLink>Contact</LinkItem></li>
-              <li><LinkItem href="/#estimate">Get Estimate</LinkItem></li>
+              <li><LinkItem href="/sitemap.xml">Sitemap</LinkItem></li>
             </ul>
           </div>
 
@@ -259,10 +262,13 @@ export default function Footer() {
                   >
                     <ul className="pb-4 px-4 space-y-3">
                       <li><LinkItem href="/" isRouterLink>Home</LinkItem></li>
+                      <li><LinkItem href="/services" isRouterLink>Services</LinkItem></li>
                       <li><LinkItem href="/projects" isRouterLink>Projects</LinkItem></li>
                       <li><LinkItem href="/blog" isRouterLink>Blog</LinkItem></li>
+                      <li><LinkItem href="/leadership" isRouterLink>Leadership</LinkItem></li>
+                      <li><LinkItem href="/brand-standards" isRouterLink>Brand Standards</LinkItem></li>
                       <li><LinkItem href="/contact" isRouterLink>Contact</LinkItem></li>
-                      <li><LinkItem href="/#estimate">Get Estimate</LinkItem></li>
+                      <li><LinkItem href="/sitemap.xml">Sitemap</LinkItem></li>
                     </ul>
                   </motion.div>
                 )}
@@ -291,9 +297,20 @@ export default function Footer() {
             BOTTOM BAR (Shared)
             ========================================= */}
         <div className="border-t border-white/10 pt-6 flex flex-row items-center justify-between relative">
-          <p className="text-[10px] md:text-xs font-medium text-white/40 tracking-wider">
-            &copy; {new Date().getFullYear()} Rupali Construction.
-          </p>
+          <div className="flex items-center gap-3 md:gap-4 flex-wrap">
+            <p className="text-[10px] md:text-xs font-medium text-white/40 tracking-wider">
+              &copy; {new Date().getFullYear()} Rupali Construction. All rights reserved.
+            </p>
+            <span className="text-white/20 text-xs hidden sm:inline">•</span>
+            <a 
+              href="/sitemap.xml" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] md:text-xs text-white/40 hover:text-[var(--rc-orange)] transition-colors underline underline-offset-2"
+            >
+              XML Sitemap
+            </a>
+          </div>
           <button
             onClick={scrollToTop}
             className="group flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/40 hover:text-[var(--rc-orange)] transition-colors"

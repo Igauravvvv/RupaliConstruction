@@ -278,13 +278,13 @@ export default function ProjectDetail() {
                         <div 
                           className="h-[360px] sm:h-[420px] md:h-[460px] lg:h-[480px] xl:h-[560px] rounded-[24px] md:rounded-[32px] overflow-hidden shadow-sm relative cursor-pointer"
                           onClick={() => {
-                            if (emblaApi && !emblaApi.clickAllowed()) return;
+                            if (emblaApi && !(emblaApi as any).clickAllowed?.()) return;
                             setIsGalleryOpen(true);
                           }}
                         >
                           <Image 
                             src={src} 
-                            alt={`${activeProject.name} photo ${idx + 1}`} 
+                            alt={`${activeProject.name} in ${activeProject.location || "Gurugram"} - Luxury Construction & Architectural Design photo ${idx + 1} by Rupali Construction`} 
                             className="w-full h-full object-cover pointer-events-none select-none" 
                           />
                           {idx === displayImages.length - 1 && (

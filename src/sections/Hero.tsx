@@ -133,12 +133,12 @@ export default function Hero() {
                     Into Reality
                   </motion.span>
                 </motion.div>
-                <span className="sr-only"> - Luxury Independent House Construction Company & Villa Builders in Gurugram</span>
+                <span className="sr-only"> - Best Builder in Gurgaon & Top Turnkey Construction Contractor | Rupali Construction Luxury Villa Builders</span>
               </h1>
             </motion.div>
 
             <motion.p variants={fadeUp} className="text-base sm:text-lg md:text-xl lg:text-xl text-[var(--rc-text)] max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed font-medium text-center">
-              Premier independent house construction, turnkey villa building, and architectural engineering across Gurugram & Delhi NCR.
+              Premier independent house construction, turnkey luxury villa building, and architectural engineering across Gurugram & Delhi NCR. Recognized as Gurgaon's top-rated builder and civil contractor.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">

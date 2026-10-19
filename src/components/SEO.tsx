@@ -12,9 +12,9 @@ interface SEOProps {
 }
 
 export default function SEO({ 
-  title = "AI-Powered Home Construction Company In Gurgaon | Best Luxury House Builders | Rupali Construction", 
-  description = "Rupali Construction is Gurgaon's premier AI-powered home construction company offering turnkey villa building, 2D/3D Vastu architectural designs, licensed structural engineering, luxury interior solutions, and intelligent cost estimation across Delhi NCR.", 
-  keywords = "construction, Gurgaon, residential, commercial, villas, resell, real estate, architecture, turnkey interior, luxury home contractor",
+  title = "Best Builder in Gurgaon | Best Contractor | Rupali Construction Luxury Villa Builders", 
+  description = "Rupali Construction is Gurgaon's top-rated builder and turnkey civil construction contractor. Delivering luxury independent villas, 2D/3D Vastu designs, licensed structural engineering, and transparent pricing across Gurugram & Delhi NCR.", 
+  keywords = "best builder in gurgaon, best contractor in gurgaon, rupali construction, top construction company in gurugram, luxury home builders gurgaon, turnkey villa construction contractor, independent house construction, civil contractor sector 71 gurgaon, house construction cost gurgaon, dlf phase builders, golf course road construction",
   type = "website",
   image = "https://rupaliconstruction.com/logo-main.png",
   url = "https://rupaliconstruction.com",
@@ -142,8 +142,9 @@ export default function SEO({
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={absoluteUrl} />
 
-      {/* Sitemap Meta Link */}
+      {/* Sitemap Meta Links */}
       <link rel="sitemap" type="application/xml" title="Sitemap" href="https://rupaliconstruction.com/sitemap.xml" />
+      <link rel="alternate" type="text/html" title="HTML Sitemap" href="https://rupaliconstruction.com/sitemap" />
 
       {/* Robot Instructions */}
       {noindex ? (

@@ -147,7 +147,7 @@ export default function Footer() {
               <li><LinkItem href="/leadership" isRouterLink>Leadership</LinkItem></li>
               <li><LinkItem href="/brand-standards" isRouterLink>Brand Standards</LinkItem></li>
               <li><LinkItem href="/contact" isRouterLink>Contact</LinkItem></li>
-              <li><LinkItem href="/sitemap.xml">Sitemap</LinkItem></li>
+              <li><LinkItem href="/sitemap" isRouterLink>Sitemap & Directory</LinkItem></li>
             </ul>
           </div>
 
@@ -268,7 +268,7 @@ export default function Footer() {
                       <li><LinkItem href="/leadership" isRouterLink>Leadership</LinkItem></li>
                       <li><LinkItem href="/brand-standards" isRouterLink>Brand Standards</LinkItem></li>
                       <li><LinkItem href="/contact" isRouterLink>Contact</LinkItem></li>
-                      <li><LinkItem href="/sitemap.xml">Sitemap</LinkItem></li>
+                      <li><LinkItem href="/sitemap" isRouterLink>Sitemap & Directory</LinkItem></li>
                     </ul>
                   </motion.div>
                 )}
@@ -301,6 +301,14 @@ export default function Footer() {
             <p className="text-[10px] md:text-xs font-medium text-white/40 tracking-wider">
               &copy; {new Date().getFullYear()} Rupali Construction. All rights reserved.
             </p>
+            <span className="text-white/20 text-xs hidden sm:inline">•</span>
+            <Link 
+              to="/sitemap"
+              onClick={() => window.scrollTo(0, 0)}
+              className="text-[10px] md:text-xs text-white/60 hover:text-[var(--rc-orange)] transition-colors underline underline-offset-2"
+            >
+              HTML Sitemap
+            </Link>
             <span className="text-white/20 text-xs hidden sm:inline">•</span>
             <a 
               href="/sitemap.xml" 

@@ -126,15 +126,15 @@ async function resolvePageData(pathname: string): Promise<PageData> {
   // Default homepage & General SEO fallback
   if (cleanPath === "/" || cleanPath === "/home") {
     return {
-      title: "Home Construction Company In Gurgaon | Best Luxury House Builders | Rupali Construction",
-      description: "At Rupali Construction, we provide turnkey home construction and architectural solutions with licensed structural engineers, quality material sourcing, and detailed 2D/3D Vastu designs in Gurgaon and Delhi NCR.",
+      title: "Best Builder in Gurgaon | Best Contractor | Rupali Construction Luxury Villa Builders",
+      description: "Rupali Construction is Gurgaon's top-rated builder and turnkey civil construction contractor. Delivering luxury independent villas, 2D/3D Vastu designs, licensed structural engineering, and transparent pricing across Gurugram & Delhi NCR.",
       canonical: BASE_URL,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd(),
       semanticHtml: `
         <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto;">
           <header>
-            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Rupali Construction | Premier Architectural Contractor in Gurugram</h1>
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Best Builder & Turnkey Construction Contractor in Gurgaon | Rupali Construction</h1>
             <p style="font-size: 1.2rem; color: #555;">Crafting Luxury Residences, Turnkey Commercial Spaces, and Bespoke Villas across Gurgaon & Delhi NCR since foundation.</p>
           </header>
           <section style="margin-top: 2rem;">
@@ -579,6 +579,102 @@ async function resolvePageData(pathname: string): Promise<PageData> {
             <p><strong>Email Address:</strong> <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
             <p><strong>Working Hours:</strong> Monday – Saturday, 9:00 AM – 7:00 PM IST</p>
           </address>
+        </main>
+      `,
+    };
+  }
+
+  if (cleanPath === "/sitemap" || cleanPath === "/site-map") {
+    return {
+      title: "Sitemap & Gurgaon Construction Directory | Best Builder & Contractor | Rupali Construction",
+      description: "Browse the complete directory of Rupali Construction. Search for best builder in Gurgaon, best contractor in Gurgaon, luxury residential villas, and 2026 construction guides.",
+      canonical: `${BASE_URL}/sitemap`,
+      ogImage: DEFAULT_IMAGE,
+      jsonLd: [
+        ...getDefaultJsonLd("Complete site architecture and directory of Rupali Construction - Gurgaon's premier home builder and turnkey civil contractor."),
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Who is the best builder in Gurgaon for luxury houses and villas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Rupali Construction is widely regarded as the premier luxury house builder in Gurgaon, specializing in turnkey residential villas, A-grade raw material standards, 2D/3D Vastu architectural planning, and licensed structural engineering. Headquartered at 5th Floor, M3M Broadway, Sector 71, Gurugram, the firm has delivered over 550+ homes across Delhi NCR."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Who is the best construction contractor in Gurgaon?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Rupali Construction is Gurgaon's top-rated civil construction contractor offering transparent milestone billing, 24/7 site CCTV streaming for homeowners, German shuttering systems, lab-tested Tata Tiscon FE 550D TMT steel, and an unconditional 10-year structural warranty."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the cost of building an independent house in Gurgaon in 2026?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "In 2026, house construction costs in Gurgaon typically range between ₹1,750 to ₹2,050 per sq ft for Standard quality, ₹2,200 to ₹2,750 per sq ft for Premium Turnkey villas, and ₹3,000 to ₹3,800+ per sq ft for Ultra-Luxury bespoke residences with Italian marble and smart automation."
+              }
+            }
+          ]
+        }
+      ],
+      semanticHtml: `
+        <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 1100px; margin: 0 auto; line-height: 1.7;">
+          <h1>Sitemap & Gurgaon Construction Directory | Rupali Construction</h1>
+          <p style="font-size: 1.15rem; color: #444;">
+            Complete directory of Rupali Construction — recognized as Gurgaon's top-rated luxury house builder and turnkey civil contractor.
+          </p>
+          <section style="margin-top: 2rem;">
+            <h2>Core Pages</h2>
+            <ul>
+              <li><a href="/">Home - Best Builder & Luxury Home Construction in Gurgaon</a></li>
+              <li><a href="/services">Services Hub - Turnkey Construction & Civil Engineering</a></li>
+              <li><a href="/projects">Projects Portfolio - Delivered Luxury Villas & Landmarks</a></li>
+              <li><a href="/blog">Engineering Blog & Gurgaon Construction Guides</a></li>
+              <li><a href="/leadership">Leadership & Licensed Civil Engineers</a></li>
+              <li><a href="/brand-standards">Brand Standards & Quality Sourcing Benchmarks</a></li>
+              <li><a href="/contact">Contact Head Office - M3M Broadway Sector 71 Gurugram</a></li>
+            </ul>
+          </section>
+          <section style="margin-top: 2rem;">
+            <h2>Turnkey Construction & Architectural Services</h2>
+            <ul>
+              <li><a href="/services/residential-construction">Residential Construction & Luxury Villa Builders</a></li>
+              <li><a href="/services/commercial-construction">Commercial & Corporate Construction</a></li>
+              <li><a href="/services/renovation">Villa Renovation & Structural Retrofitting</a></li>
+              <li><a href="/services/interior-design">Luxury Turnkey Interior Design</a></li>
+              <li><a href="/services/architectural-design">Architectural Planning & Vastu Design</a></li>
+              <li><a href="/services/structural-engineering">Licensed Structural Engineering & Seismic Audits</a></li>
+            </ul>
+          </section>
+          <section style="margin-top: 2rem;">
+            <h2>Featured Projects Portfolio</h2>
+            <ul>
+              <li><a href="/projects/duplex-luxury-villa">Duplex Luxury Villa - The Westerlies Sector 108</a></li>
+              <li><a href="/projects/apartment-at-sushant-lok">Apartment At Sushant Lok - Luxury Residential Floor</a></li>
+              <li><a href="/projects/quickin-stayz">QuickIn Stayz - Sushant Lok 1 Commercial Suites</a></li>
+              <li><a href="/projects/gold-gym">Gold's Gym - Commercial Fitness Landmark at M3M Urbana</a></li>
+              <li><a href="/projects/knowledge-center">Knowledge Center - Corporate Suites at M3M Broadway</a></li>
+            </ul>
+          </section>
+          <section style="margin-top: 2rem;">
+            <h2>2026 Construction Guides & Cost Breakdowns</h2>
+            <ul>
+              <li><a href="/blog/cost-of-building-house-gurgaon">Cost of Building a House in Gurgaon: Complete 2026 Guide</a></li>
+              <li><a href="/blog/gurgaon-real-estate-trends">Gurgaon Real Estate Trends 2026: Prime Investment Sectors</a></li>
+              <li><a href="/blog/construction-timeline-breakdown">Construction Timeline Breakdown: Blueprint to Handover</a></li>
+              <li><a href="/blog/building-approvals-gurugram">Navigating Building Approvals & MCG/DTCP Regulations</a></li>
+              <li><a href="/blog/top-residential-areas-gurgaon-villas">Top Residential Areas in Gurgaon for Custom Villa Construction</a></li>
+              <li><a href="/blog/sustainable-construction-gurgaon">Sustainable Construction Practices for the Gurgaon Climate</a></li>
+              <li><a href="/blog/luxury-smart-homes-gurgaon">The Rise of Luxury Smart Homes in Gurgaon's Real Estate Market</a></li>
+              <li><a href="/blog/rcc-vs-steel-structure">RCC vs Steel Structure: Which is Better for Your NCR Project?</a></li>
+            </ul>
+          </section>
         </main>
       `,
     };

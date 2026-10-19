@@ -18,6 +18,7 @@ const AdminLogin = lazy(() => import('./pages/AdminLogin'))
 const Login = lazy(() => import('./pages/Login'))
 const CompleteProfile = lazy(() => import('./pages/CompleteProfile'))
 const Profile = lazy(() => import('./pages/Profile'))
+const SitemapPage = lazy(() => import('./pages/SitemapPage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const ChatWidget = lazy(() => import('./components/ChatWidget'))
 const FloatingActions = lazy(() => import('./components/FloatingActions'))
@@ -97,6 +98,8 @@ export default function App() {
                     <Route path="/leadership" element={<Leadership />} />
                     <Route path="/brand-standards" element={<BrandStandards />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/sitemap" element={<SitemapPage />} />
+                    <Route path="/site-map" element={<SitemapPage />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/admin-login" element={<AdminLogin />} />
                     <Route path="/login" element={<Login />} />

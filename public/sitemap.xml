@@ -133,6 +133,16 @@
     </image:image>
   </url>
   <url>
+    <loc>https://rupaliconstruction.com/sitemap</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://rupaliconstruction.com/logo-main.webp</image:loc>
+      <image:title>Rupali Construction Complete Sitemap &amp; Gurgaon Builder Directory</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://rupaliconstruction.com/projects/quickin-stayz</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>

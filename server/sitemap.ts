@@ -148,6 +148,14 @@ export async function generateSitemapXml(): Promise<string> {
       image: `${baseUrl}/logo-main.webp`,
       imageTitle: "Contact Rupali Construction - M3M Broadway Sector 71 Gurugram",
     },
+    {
+      url: "/sitemap",
+      priority: "0.95",
+      changefreq: "daily",
+      lastmod: today,
+      image: `${baseUrl}/logo-main.webp`,
+      imageTitle: "Rupali Construction Complete Sitemap & Gurgaon Builder Directory",
+    },
   ];
 
   // Base fallback projects

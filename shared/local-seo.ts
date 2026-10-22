@@ -1,7 +1,7 @@
 export const homeSeo = {
   title: "Best Builder & Contractor in Gurgaon | Rupali Construction",
   description: "Looking for the best builder in Gurgaon? Explore Rupali Construction for home building, turnkey contracting, architecture and interiors in Gurugram.",
-  keywords: "best builder in gurugram, best contractor in gurugram, best builder in gurgaon, best contractor in gurgaon, construction company in gurugram, home construction gurgaon, turnkey construction gurugram, Rupali Construction",
+  keywords: "best builder in gurugram, best contractor in gurugram, best builder in gurgaon, best contractor in gurgaon, construction company in gurugram, home construction gurgaon, turnkey construction gurugram, residential construction company gurgaon, independent house construction gurugram, villa construction gurgaon, building contractor gurgaon, civil contractor gurugram, commercial construction gurgaon, home renovation gurugram, interior design gurgaon, architectural design gurugram, structural engineering gurgaon, house construction cost gurgaon, construction cost calculator gurugram, Rupali Construction",
 };
 
 // Coordinates and business identity from the owner's Google Maps listing.
@@ -53,11 +53,11 @@ export const localBusinessSchema = {
 
 export const localFaqs = [
   {
-    question: "How do I choose the best builder in Gurugram for my home?",
+    question: "How should I compare builders for my home?",
     answer: "Compare completed projects, written specifications, material brands, a detailed cost estimate and the proposed schedule. Ask how changes and site updates are handled. Explore Rupali Construction's projects and brand standards, then discuss your plot and requirements with our team.",
   },
   {
-    question: "What should I ask the best contractor in Gurugram before starting?",
+    question: "What should I agree with my contractor before starting?",
     answer: "Ask for a clear scope covering civil work, materials, architecture, interiors and exclusions. Agree on milestones, payment terms, responsibilities and handover requirements in writing. Rupali Construction offers residential construction and turnkey services in Gurugram (Gurgaon).",
   },
   {

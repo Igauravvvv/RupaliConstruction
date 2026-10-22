@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Building2, Hammer, Paintbrush, Compass, HardHat, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Home, Building2, Hammer, Paintbrush, Compass, HardHat, Sparkles, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import BuildingLineArt from "@/components/BuildingLineArt";
@@ -60,7 +60,7 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
   const [consultService, setConsultService] = useState<string | null>(null);
 
   return (
-    <section id="services" className={`py-16 md:py-24 lg:py-32 relative overflow-hidden ${transparentBg ? 'bg-transparent' : 'bg-[var(--rc-gray)]'}`}>
+    <section id="services" className={`py-12 md:py-24 lg:py-32 relative overflow-hidden ${transparentBg ? 'bg-transparent' : 'bg-[var(--rc-gray)]'}`}>
       <BuildingLineArt className="opacity-40 scale-75 md:scale-90 absolute right-0 -top-12 md:-top-24 origin-right md:translate-x-12 lg:translate-x-24" colorClass="text-[var(--rc-orange)]" />
       
       <div className="container-rc relative z-10">
@@ -71,7 +71,7 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
           variants={{
             visible: { transition: { staggerChildren: 0.15 } }
           }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-16"
         >
           <motion.p 
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
@@ -89,12 +89,12 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
             className="text-[var(--rc-muted)] mt-4 max-w-2xl mx-auto text-sm sm:text-base"
           >
-            Explore our specialized categories to see our step-by-step execution methodology, technical quality checks, and guaranteed USPs.
+            From residential and commercial construction to renovation, interiors, architecture and structural engineering—explore the support your project needs.
           </motion.p>
         </motion.div>
 
         {/* Responsive Horizontal Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 md:gap-8">
           {services.map((service, i) => (
             <motion.div
               key={service.title}
@@ -104,20 +104,20 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
               <div
-                className="service-card group relative p-5 sm:p-7 md:p-8 rounded-3xl bg-white border border-[var(--rc-border)] hover:border-[var(--rc-orange)]/40 transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-xl hover:shadow-[var(--rc-orange)]/5 flex flex-col justify-between h-full"
+                className="service-card group relative p-3.5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl bg-white border border-[var(--rc-border)] hover:border-[var(--rc-orange)]/40 transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-xl hover:shadow-[var(--rc-orange)]/5 flex flex-col justify-between h-full"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--rc-orange)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 
                 <div>
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[var(--rc-blue)] flex items-center justify-center group-hover:scale-105 group-hover:bg-[var(--rc-orange)] transition-all duration-500 shadow-md shrink-0">
-                      <service.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                  <div className="flex items-start justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-[var(--rc-blue)] flex items-center justify-center group-hover:scale-105 group-hover:bg-[var(--rc-orange)] transition-all duration-500 shadow-md shrink-0">
+                      <service.icon className="w-5 h-5 sm:w-8 sm:h-8 text-white" />
                     </div>
 
                     <button
                       type="button"
                       onClick={() => setConsultService(service.title)}
-                      className="px-3.5 py-1.5 rounded-full bg-orange-50 hover:bg-orange-100 text-[var(--rc-orange)] text-xs font-bold border border-orange-200 transition-all active:scale-95 flex items-center gap-1.5 shadow-xs shrink-0"
+                      className="hidden sm:flex px-3.5 py-1.5 rounded-full bg-orange-50 hover:bg-orange-100 text-[var(--rc-orange)] text-xs font-bold border border-orange-200 transition-all active:scale-95 items-center gap-1.5 shadow-xs shrink-0"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
                       Book Consult
@@ -125,17 +125,17 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
                   </div>
                   
                   <Link to={service.link} className="block group-hover:text-[var(--rc-orange)] transition-colors">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-bold text-[var(--rc-dark)] mb-2 group-hover:text-[var(--rc-orange)] transition-colors">
+                    <h3 className="text-[15px] sm:text-xl md:text-2xl leading-snug min-h-[2.75rem] sm:min-h-0 font-serif font-bold text-[var(--rc-dark)] mb-2 group-hover:text-[var(--rc-orange)] transition-colors">
                       {service.title}
                     </h3>
                   </Link>
 
-                  <p className="text-[var(--rc-muted)] text-xs sm:text-sm md:text-base leading-relaxed mb-4">
+                  <p className="text-[var(--rc-muted)] text-xs sm:text-sm md:text-base leading-relaxed line-clamp-3 sm:line-clamp-none mb-3 sm:mb-4">
                     {service.desc}
                   </p>
 
                   {/* Highlights Pills */}
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-6">
+                  <div className="hidden sm:flex flex-wrap gap-2 mb-6">
                     {service.highlights.map((h, hIdx) => (
                       <span 
                         key={hIdx} 
@@ -148,19 +148,19 @@ export default function Services({ transparentBg = false }: { transparentBg?: bo
                 </div>
 
                 {/* Bottom Action Links */}
-                <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
+                <div className="pt-3 sm:pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
                   <Link 
                     to={service.link}
                     className="inline-flex items-center text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)] transition-colors"
                   >
-                    Explore Steps & Checks
+                    <span className="sm:hidden">Explore</span><span className="hidden sm:inline">Explore Steps &amp; Checks</span>
                     <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
                   </Link>
 
                   <button
                     type="button"
                     onClick={() => setConsultService(service.title)}
-                    className="text-xs font-semibold text-gray-500 hover:text-[var(--rc-orange)] transition-colors"
+                    className="hidden sm:block text-xs font-semibold text-gray-500 hover:text-[var(--rc-orange)] transition-colors"
                   >
                     Request a Call
                   </button>

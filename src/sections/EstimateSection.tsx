@@ -1,94 +1,41 @@
-import ConstructionEstimator from "@/components/ConstructionEstimator";
-import { motion } from "framer-motion";
+import { lazy, Suspense, useState } from "react";
+import { ArrowRight, Calculator, Loader2 } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
+const ConstructionEstimator = lazy(() => import("@/components/ConstructionEstimator"));
 
 export default function EstimateSection() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <section id="estimate" className="py-24 bg-[var(--rc-white)] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-[var(--rc-gray)] rounded-l-3xl -z-10 hidden xl:block" />
-      
-      <div className="container-rc flex flex-col items-center">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] mb-2 drop-shadow-sm"
-            >
-              Estimate
-            </motion.p>
-            <h2 className="text-xl md:text-2xl font-medium text-[var(--rc-dark)] mb-6">
-              Calculate Your Construction Cost
-            </h2>
-            <p className="text-lg text-[var(--rc-muted)] leading-relaxed">
-              Use our interactive estimator to get a detailed breakdown of your construction costs. 
-              Choose a starter package and customize individual materials to fit your exact needs.
-            </p>
-        </div>
-        
-        <div className="w-full">
-          <ConstructionEstimator />
-        </div>
-
-        {/* Indexable SEO & AI Overviews Summary Table */}
-        <div className="mt-16 w-full max-w-5xl bg-[#F8F9FA] rounded-3xl p-6 sm:p-10 border border-gray-200">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-[var(--rc-orange)] mb-1">
-                2026 Construction Cost Benchmarks
-              </p>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[var(--rc-dark)]">
-                Average Independent House Construction Rates in Gurugram
-              </h3>
-            </div>
-            <a
-              href="/blog/cost-of-building-house-gurgaon"
-              className="text-xs sm:text-sm font-semibold text-[var(--rc-blue)] hover:text-[var(--rc-orange)] underline underline-offset-4 transition-colors"
-            >
-              Read Complete 2026 Cost Guide &rarr;
-            </a>
+    <section id="estimate" className="py-12 md:py-20 bg-[var(--rc-white)]">
+      <div className="container-rc">
+        <div className="relative overflow-hidden rounded-3xl bg-[var(--rc-dark)] p-6 sm:p-10 lg:p-12 text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
+          <div className="absolute -right-12 -top-16 h-64 w-64 rounded-full border border-white/10 pointer-events-none" aria-hidden="true" />
+          <div className="relative max-w-2xl">
+            <p className="text-xs uppercase font-bold tracking-[0.18em] text-orange-300 mb-3">Plan your budget</p>
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">What could your home cost?</h2>
+            <p className="text-sm sm:text-base text-white/75 leading-relaxed">Explore your construction budget in a few steps. Add your project details, compare packages and adjust materials to suit your plans.</p>
+            <p className="text-xs text-white/55 mt-3">An indicative estimate to help you plan. Your final quote depends on the agreed scope and site conditions.</p>
           </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs sm:text-sm">
-              <thead>
-                <tr className="border-b border-gray-300 text-gray-500 font-semibold uppercase tracking-wider text-[11px]">
-                  <th className="py-3 px-3">Specification Tier</th>
-                  <th className="py-3 px-3">Cost / Sq. Ft.</th>
-                  <th className="py-3 px-3">Structural Materials</th>
-                  <th className="py-3 px-3">Finishing Standards</th>
-                  <th className="py-3 px-3">Best Suited For</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 text-gray-700">
-                <tr className="hover:bg-white/60 transition-colors">
-                  <td className="py-3.5 px-3 font-bold text-[var(--rc-dark)]">Standard</td>
-                  <td className="py-3.5 px-3 font-semibold text-[var(--rc-blue)]">₹1,600 – ₹1,900</td>
-                  <td className="py-3.5 px-3">Fe-500 Steel, Ambuja/ACC 43, Red Clay Bricks</td>
-                  <td className="py-3.5 px-3">Double-charged Vitrified Tiles, Cera/Hindware Fittings</td>
-                  <td className="py-3.5 px-3">Rental floors, standard family homes</td>
-                </tr>
-                <tr className="hover:bg-white/60 transition-colors bg-white/40">
-                  <td className="py-3.5 px-3 font-bold text-[var(--rc-dark)]">Premium Turnkey</td>
-                  <td className="py-3.5 px-3 font-semibold text-[var(--rc-orange)]">₹2,100 – ₹2,600</td>
-                  <td className="py-3.5 px-3">UltraTech M25, Tata/JSW Fe-500D, AAC Blocks</td>
-                  <td className="py-3.5 px-3">Fenesta UPVC, 4x2 Porcelain / Indian Marble, Kohler</td>
-                  <td className="py-3.5 px-3">Modern villas in Sector 57, 43, 71, Sushant Lok</td>
-                </tr>
-                <tr className="hover:bg-white/60 transition-colors">
-                  <td className="py-3.5 px-3 font-bold text-[var(--rc-dark)]">Ultra Bespoke</td>
-                  <td className="py-3.5 px-3 font-semibold text-[var(--rc-dark)]">₹2,800 – ₹3,500+</td>
-                  <td className="py-3.5 px-3">M30 Concrete, Tata Tiscon Fe-550D, Raft Foundation</td>
-                  <td className="py-3.5 px-3">Italian Statuario Marble, Schüco Slim Windows, Grohe/Bravat</td>
-                  <td className="py-3.5 px-3">Signature luxury estates in DLF 1–5, Golf Course Rd</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <p className="mt-4 text-[11px] sm:text-xs text-gray-500 leading-relaxed">
-            * All estimates exclude land registry, exterior municipal road-cutting charges, and interior loose furniture. Every project executed by Rupali Construction includes an engineering soil test (SPT), Seismic Zone IV structural design, and a 10-year structural stability warranty.
-          </p>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <button className="relative inline-flex items-center justify-center gap-3 rounded-full bg-[var(--rc-orange)] px-6 py-4 text-sm font-semibold text-white hover:bg-orange-600 transition-colors shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                <Calculator className="w-5 h-5" aria-hidden="true" />Calculate your estimate<ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="w-[calc(100%-1rem)] max-w-[calc(100%-1rem)] sm:max-w-6xl max-h-[92dvh] gap-0 p-0 rounded-2xl bg-white overflow-hidden z-[100]">
+              <DialogHeader className="px-5 py-4 pr-12 border-b border-[var(--rc-border)] text-left">
+                <DialogTitle className="text-[var(--rc-dark)]">Construction cost calculator</DialogTitle>
+                <DialogDescription>Set up your project and explore an indicative construction estimate.</DialogDescription>
+              </DialogHeader>
+              <div data-lenis-prevent className="max-h-[calc(92dvh-6rem)] overflow-y-auto overscroll-contain p-2 sm:p-4">
+                {open && <Suspense fallback={<div role="status" className="flex items-center justify-center gap-3 py-16 text-[var(--rc-muted)]"><Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />Loading calculator…</div>}>
+                  <ConstructionEstimator />
+                </Suspense>}
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </section>

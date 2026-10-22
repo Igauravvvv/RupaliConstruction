@@ -137,9 +137,9 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            <h1 className="text-xl sm:text-2xl font-semibold text-[var(--rc-dark)] mb-4">Looking for the best builder in Gurgaon?</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-[var(--rc-dark)] mb-4">Your home. Thoughtfully built.</h1>
             <motion.p variants={fadeUp} className="text-base sm:text-lg md:text-xl lg:text-xl text-[var(--rc-text)] max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed font-medium text-center">
-              Choose a contractor in Gurgaon with a clear scope, material specifications and a written estimate. Rupali Construction builds homes and turnkey villas across Gurugram & Delhi NCR.
+              Home construction, turnkey villas and interiors in Gurgaon and Delhi NCR, with clear planning from your first idea to the final handover.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">

@@ -11,7 +11,7 @@ it("loads shared search HTML in Node ESM without a bundler resolving its imports
   const directory = await mkdtemp(path.join(tmpdir(), "rupali-seo-runtime-"));
   try {
     await writeFile(path.join(directory, "package.json"), '{"type":"module"}');
-    for (const name of ["local-seo", "home-html"]) {
+    for (const name of ["local-seo", "construction-concerns", "home-html"]) {
       const source = await readFile(path.resolve("shared", `${name}.ts`), "utf8");
       const compiled = ts.transpileModule(source, {
         compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
@@ -22,7 +22,7 @@ it("loads shared search HTML in Node ESM without a bundler resolving its imports
     const { stdout } = await promisify(execFile)(process.execPath, ["--input-type=module", "-e",
       `const {homeHtml} = await import(${JSON.stringify(entry)}); console.log(homeHtml());`,
     ]);
-    expect(stdout).toContain("Looking for the best builder in Gurgaon?");
+    expect(stdout).toContain("Your home. Thoughtfully built.");
     expect(stdout).toContain("11701277791317730988");
   } finally {
     await rm(directory, { recursive: true, force: true });

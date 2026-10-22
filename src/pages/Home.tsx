@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/sections/Hero";
 import CinematicReveal from "@/sections/CinematicReveal";
 import TrustBar from "@/sections/TrustBar";
+import ConstructionConcerns from "@/sections/ConstructionConcerns";
 import WhyUs from "@/sections/WhyUs";
 import Services from "@/sections/Services";
 import Projects from "@/sections/Projects";
@@ -29,6 +30,7 @@ export default function Home() {
       <CinematicReveal />
       <TrustBar />
       <WhyUs />
+      <ConstructionConcerns />
       <Services />
       <Projects />
       <InstagramFeed />

@@ -1,3 +1,4 @@
+import { business, localBusinessSchema } from "../../shared/local-seo";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 import { trpc } from "@/providers/trpc";
@@ -51,21 +52,7 @@ export default function Contact() {
             "@type": "ContactPage",
             "name": "Contact Rupali Construction",
             "description": "Get in touch with Rupali Construction for residential villa construction and architecture consultation in Gurgaon.",
-            "mainEntity": {
-              "@type": "HomeAndConstructionBusiness",
-              "name": "Rupali Construction",
-              "telephone": "+919311830088",
-              "email": "ujjwalt.rg@rupalihomes.com",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "5th floor, M3M Broadway, Sector 71",
-                "addressLocality": "Gurugram",
-                "addressRegion": "Haryana",
-                "postalCode": "122004",
-                "addressCountry": "IN"
-              },
-              "openingHours": "Mo-Sa 09:00-19:00"
-            }
+            "mainEntity": { "@id": localBusinessSchema["@id"] }
           },
           {
             "@context": "https://schema.org",
@@ -330,7 +317,7 @@ export default function Contact() {
               <div className="rounded-2xl overflow-hidden border border-[var(--rc-border)] shadow-md bg-white">
                 <div className="aspect-square w-full">
                   <iframe
-                    src="https://www.google.com/maps?q=28.3971,77.0370&hl=en&z=16&output=embed"
+                    src={business.mapsEmbedUrl}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -342,14 +329,15 @@ export default function Contact() {
                 </div>
                 <div className="p-4 bg-white border-t border-[var(--rc-border)] text-center">
                   <a
-                    href="https://www.google.com/maps/dir/?api=1&destination=28.3971,77.0370"
+                    href={business.directionsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[var(--rc-blue)] text-white text-xs font-bold rounded-xl hover:bg-[var(--rc-orange)] transition-colors uppercase tracking-wider"
                   >
                     <MapPin className="w-3.5 h-3.5" />
-                    Get Directions to M3M Broadway
+                    Get Directions to Rupali Construction
                   </a>
+                  <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-sm text-[var(--rc-blue)] underline underline-offset-4">View Rupali Construction on Google Maps</a>
                 </div>
               </div>
             </div>

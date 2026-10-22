@@ -1,3 +1,4 @@
+import { business, homeSeo, localBusinessSchema, localFaqs, localFaqSchema } from "../shared/local-seo.js";
 import type { Context } from "hono";
 import fs from "fs";
 import path from "path";
@@ -61,33 +62,7 @@ function getHtmlTemplate(): string {
 function getDefaultJsonLd(pageDescription?: string): Array<Record<string, any>> {
   const desc = pageDescription || "At Rupali Construction, we provide turnkey home construction and architectural solutions with licensed structural engineers, quality material sourcing, and detailed 2D/3D Vastu designs in Gurgaon and Delhi NCR.";
   return [
-    {
-      "@context": "https://schema.org",
-      "@type": "HomeAndConstructionBusiness",
-      "@id": `${BASE_URL}/#organization`,
-      "name": "Rupali Construction",
-      "alternateName": ["Rupali Homes", "Rupali Construction Gurgaon"],
-      "url": BASE_URL,
-      "logo": "https://rupaliconstruction.com/favicon-512x512.png",
-      "image": DEFAULT_IMAGE,
-      "description": desc,
-      "telephone": "+919311830088",
-      "email": "ujjwalt.rg@rupalihomes.com",
-      "priceRange": "$$$",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "5th floor, M3M Broadway, Sector 71",
-        "addressLocality": "Gurugram",
-        "addressRegion": "Haryana",
-        "postalCode": "122004",
-        "addressCountry": "IN",
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 28.3971,
-        "longitude": 77.0370,
-      },
-    },
+    localBusinessSchema,
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -126,50 +101,26 @@ async function resolvePageData(pathname: string): Promise<PageData> {
   // Default homepage & General SEO fallback
   if (cleanPath === "/" || cleanPath === "/home") {
     return {
-      title: "Best Builder in Gurgaon | Best Contractor | Rupali Construction Luxury Villa Builders",
-      description: "Rupali Construction is Gurgaon's top-rated builder and turnkey civil construction contractor. Delivering luxury independent villas, 2D/3D Vastu designs, licensed structural engineering, and transparent pricing across Gurugram & Delhi NCR.",
-      canonical: BASE_URL,
+      title: homeSeo.title,
+      description: homeSeo.description,
+      canonical: `${BASE_URL}/`,
       ogImage: DEFAULT_IMAGE,
-      jsonLd: getDefaultJsonLd(),
+      jsonLd: [...getDefaultJsonLd(), localFaqSchema],
       semanticHtml: `
-        <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto;">
-          <header>
-            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Best Builder & Turnkey Construction Contractor in Gurgaon | Rupali Construction</h1>
-            <p style="font-size: 1.2rem; color: #555;">Crafting Luxury Residences, Turnkey Commercial Spaces, and Bespoke Villas across Gurgaon & Delhi NCR since foundation.</p>
-          </header>
-          <section style="margin-top: 2rem;">
-            <h2>Our Core Engineering & Construction Services</h2>
-            <ul>
-              <li><strong>Luxury Residential Villas:</strong> Custom architectural design, Grade-A structural engineering, earthquake resistance, and premium finishing.</li>
-              <li><strong>Turnkey Interiors & Execution:</strong> Complete bespoke interior transformations with Italian marble, custom carpentry, modular kitchens, and HVAC integration.</li>
-              <li><strong>Commercial Building Construction:</strong> High-efficiency corporate spaces, retail complex construction, and compliant fire & safety designs.</li>
-              <li><strong>Vastu Shastra & Architectural Consulting:</strong> Harmonized spatial floor plans optimized for natural lighting, structural longevity, and positive energy flow.</li>
-              <li><strong>Real Estate Resale & Development:</strong> Verified luxury property consulting across prime Gurugram sectors including Sector 71, Golf Course Extension, and Southern Peripheral Road.</li>
-            </ul>
-          </section>
-          <section style="margin-top: 2rem;">
-            <h2>Why Choose Rupali Construction?</h2>
-            <p>We combine advanced digital cost forecasting, transparent Milestone-based billing, standard-exceeding raw material quality (TATA Tata Steel, UltraTech Cement, Fenesta animations), and strictly adhered project completion timelines.</p>
-          </section>
-          <section style="margin-top: 2rem;">
-            <h2>Frequently Asked Questions</h2>
-            <div>
-              <h3>What is the starting construction cost per square foot in Gurgaon?</h3>
-              <p>Our turnkey construction packages start from competitive standard luxury tiers up to ultra-luxury bespoke specifications, complete with itemized material billing and strict zero-hidden-cost policies.</p>
-            </div>
-            <div>
-              <h3>Do you assist with architectural floor planning and architectural sanctions in Gurugram?</h3>
-              <p>Yes, our internal studio of architectural engineers manages comprehensive blueprint generation, HUDA/MCG building approvals, structural stress evaluations, and 3D architectural walk-throughs.</p>
-            </div>
-          </section>
-          <footer style="margin-top: 3rem; border-top: 1px solid #ccc; padding-top: 1.5rem;">
-            <h2>Contact Rupali Construction</h2>
-            <p><strong>Corporate Office:</strong> 5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122004</p>
-            <p><strong>Direct Consultation:</strong> +91 93118 30088 | ujjwalt.rg@rupalihomes.com</p>
-            <nav style="margin-top: 1rem;">
-              <a href="/services">Services</a> | <a href="/projects">Projects Portfolio</a> | <a href="/blog">Engineering Blog</a> | <a href="/leadership">Leadership</a> | <a href="/brand-standards">Brand Standards</a> | <a href="/contact">Contact Us</a>
-            </nav>
-          </footer>
+        <main class="seo-prerender-container" style="padding:2rem;max-width:1000px;margin:auto;font-family:sans-serif;line-height:1.6">
+          <h1>Rupali Construction — Builder and Contractor in Gurugram</h1>
+          <p>Looking for the best builder in Gurugram or the best contractor in Gurugram? Build your home with Rupali Construction — turnkey villas, architecture and interiors across Gurgaon &amp; Delhi NCR.</p>
+          <h2>Looking for the best builder in Gurugram?</h2>
+          <p>Rupali Construction provides home construction, turnkey villas, architecture, renovation and interiors in Gurugram (Gurgaon) and Delhi NCR. Discuss your plot, design and budget with our team at M3M Broadway, Sector 71.</p>
+          <h2>Choose the best contractor in Gurugram for your project</h2>
+          <p>Compare completed work, material specifications, a clear scope and a written estimate before choosing your contractor. Review our projects and construction standards to see how we approach your home.</p>
+          <nav><a href="/services">Construction services</a> | <a href="/projects">View our projects</a> | <a href="/brand-standards">Material standards</a> | <a href="/contact">Contact us</a></nav>
+          <h2>Frequently Asked Questions</h2>
+          ${localFaqs.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3><p>${escapeHtml(answer)}</p>`).join("\n")}
+          <h2>Visit Rupali Construction</h2>
+          <address>${escapeHtml(business.address)}</address>
+          <p>Monday–Saturday, 9:00 AM–7:00 PM. <a href="tel:+919311830088">+91 93118 30088</a> | <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
+          <p><a href="${business.mapsUrl}">Rupali Construction on Google Maps</a> | <a href="${business.directionsUrl}">Get directions</a></p>
         </main>
       `,
     };
@@ -579,6 +530,7 @@ async function resolvePageData(pathname: string): Promise<PageData> {
             <p><strong>Email Address:</strong> <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
             <p><strong>Working Hours:</strong> Monday – Saturday, 9:00 AM – 7:00 PM IST</p>
           </address>
+          <p><a href="${business.mapsUrl}">Rupali Construction on Google Maps</a> | <a href="${business.directionsUrl}">Get directions</a></p>
         </main>
       `,
     };
@@ -731,13 +683,16 @@ export async function seoPrerenderHandler(c: Context) {
     const geoMeta = isPrivateAppRoute ? "" : `
     <meta name="geo.region" content="IN-HR" />
     <meta name="geo.placename" content="Gurugram" />
-    <meta name="geo.position" content="28.3971;77.0370" />
-    <meta name="ICBM" content="28.3971, 77.0370" />`;
+    <meta name="geo.position" content="${business.latitude};${business.longitude}" />
+    <meta name="ICBM" content="${business.latitude}, ${business.longitude}" />`;
+
+    html = html.replace(/<meta\b[^>]*(?:name|property)=["'](?:og:[^"']+|twitter:[^"']+|robots|googlebot|geo\.[^"']+|ICBM)["'][^>]*>/gi, "");
+    html = html.replace(/<link\b[^>]*rel=["']sitemap["'][^>]*>/gi, "");
 
     // Inject OpenGraph & Twitter tags and JSON-LD schema into head
     const schemaScript = Array.isArray(pageData.jsonLd)
-      ? pageData.jsonLd.map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")
-      : `<script type="application/ld+json">${JSON.stringify(pageData.jsonLd)}</script>`;
+      ? pageData.jsonLd.map(s => `<script type="application/ld+json">${JSON.stringify(s).replace(/</g, "\\u003c")}</script>`).join("\n")
+      : `<script type="application/ld+json">${JSON.stringify(pageData.jsonLd).replace(/</g, "\\u003c")}</script>`;
 
     const ogTags = `
     <link rel="sitemap" type="application/xml" title="Sitemap" href="${BASE_URL}/sitemap.xml" />
@@ -763,7 +718,7 @@ export async function seoPrerenderHandler(c: Context) {
 
     // Inject Semantic Content directly into root container for AI bots and immediate FCP
     if (!isPrivateAppRoute) {
-      html = html.replace(/<div id=["']root["']>\s*<\/div>/i, `<div id="root"><div style="opacity:0; position:absolute; pointer-events:none; z-index:-9999; height:0; overflow:hidden;" aria-hidden="true">${pageData.semanticHtml}</div></div>`);
+      html = html.replace(/<div id=["']root["']>\s*<\/div>/i, `<div id="root">${pageData.semanticHtml}</div>`);
     }
 
     c.header("Content-Type", "text/html; charset=utf-8");

@@ -1,3 +1,4 @@
+import { business } from "../../shared/local-seo";
 import { Link } from "react-router";
 import { MapPin, Phone, Mail, ArrowUp, ChevronRight, MessageSquare, Plus, Minus } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
@@ -162,9 +163,9 @@ export default function Footer() {
                 <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--rc-orange)] group-hover:border-[var(--rc-orange)] transition-all group-hover:scale-110">
                   <MapPin className="w-4 h-4 text-white/70 group-hover:text-white" />
                 </div>
-                <span className="text-sm text-white/70 pt-1 leading-relaxed">
-                  5th floor, M3M broadway,<br />Sector 71, Gurgaon
-                </span>
+                <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 pt-1 leading-relaxed hover:text-white">
+                  {business.address}<br /><span className="underline">View on Google Maps</span>
+                </a>
               </li>
               <li className="flex items-center gap-4 group">
                 <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--rc-orange)] group-hover:border-[var(--rc-orange)] transition-all group-hover:scale-110">
@@ -287,7 +288,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-1.5 text-white/30 text-[10px]">
               <MapPin className="w-3 h-3 text-[var(--rc-orange)]" />
-              <span>5th floor, M3M Broadway, Sector 71, Gurgaon</span>
+              <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer" className="underline">{business.address}</a>
             </div>
           </div>
           

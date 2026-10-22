@@ -1,7 +1,9 @@
+import { localFaqs } from "../../shared/local-seo";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
+  ...localFaqs,
   {
     question: "How long does construction typically take?",
     answer: "Standard residential projects (2000-3000 sq ft) typically take 8-12 months. Commercial timelines vary. A detailed schedule is provided during planning.",
@@ -54,6 +56,8 @@ export default function FAQ() {
                 className="border border-[var(--rc-border)] rounded-lg overflow-hidden"
               >
                 <button
+                  aria-expanded={open === i}
+                  aria-controls={`faq-answer-${i}`}
                   onClick={() => setOpen(open === i ? null : i)}
                   className="w-full flex items-center justify-between px-3 py-2 text-left hover:bg-[var(--rc-gray)]/50 transition-colors"
                 >
@@ -67,6 +71,7 @@ export default function FAQ() {
                   />
                 </button>
                 <div
+                  id={`faq-answer-${i}`}
                   className={`overflow-hidden transition-all duration-300 ${
                     open === i ? "max-h-96" : "max-h-0"
                   }`}

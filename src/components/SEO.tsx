@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { business, homeSeo, localBusinessSchema } from '../../shared/local-seo';
 
 interface SEOProps {
   title?: string;
@@ -12,9 +13,9 @@ interface SEOProps {
 }
 
 export default function SEO({ 
-  title = "Best Builder in Gurgaon | Best Contractor | Rupali Construction Luxury Villa Builders", 
-  description = "Rupali Construction is Gurgaon's top-rated builder and turnkey civil construction contractor. Delivering luxury independent villas, 2D/3D Vastu designs, licensed structural engineering, and transparent pricing across Gurugram & Delhi NCR.", 
-  keywords = "best builder in gurgaon, best contractor in gurgaon, rupali construction, top construction company in gurugram, luxury home builders gurgaon, turnkey villa construction contractor, independent house construction, civil contractor sector 71 gurgaon, house construction cost gurgaon, dlf phase builders, golf course road construction",
+  title = homeSeo.title,
+  description = homeSeo.description,
+  keywords = homeSeo.keywords,
   type = "website",
   image = "https://rupaliconstruction.com/logo-main.png",
   url = "https://rupaliconstruction.com",
@@ -26,59 +27,13 @@ export default function SEO({
 
   // Default WebSite & Organization schema for Google Search Console & Knowledge Graph Listings
   const defaultSchema = [
-    {
-      "@context": "https://schema.org",
-      "@type": "HomeAndConstructionBusiness",
-      "name": "Rupali Construction",
-      "alternateName": "Rupali Homes",
-      "url": "https://rupaliconstruction.com",
-      "logo": "https://rupaliconstruction.com/logo-icon.png",
-      "image": "https://rupaliconstruction.com/logo-main.png",
-      "description": description,
-      "telephone": "+919311830088",
-      "email": "ujjwalt.rg@rupalihomes.com",
-      "priceRange": "$$$",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "5th floor, M3M Broadway, Sector 71",
-        "addressLocality": "Gurugram",
-        "addressRegion": "Haryana",
-        "postalCode": "122004",
-        "addressCountry": "IN"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 28.3971,
-        "longitude": 77.0370
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday"
-        ],
-        "opens": "09:00",
-        "closes": "19:00"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Gurugram"
-      }
-    },
+    localBusinessSchema,
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Rupali Construction",
       "url": "https://rupaliconstruction.com",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://rupaliconstruction.com/projects?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "publisher": { "@id": localBusinessSchema["@id"] }
     },
     {
       "@context": "https://schema.org",
@@ -131,7 +86,7 @@ export default function SEO({
     }
   ];
 
-  const finalSchema = schema ? (Array.isArray(schema) ? schema : [schema]) : defaultSchema;
+  const finalSchema = schema ? [...defaultSchema, ...(Array.isArray(schema) ? schema : [schema])] : defaultSchema;
 
   return (
     <Helmet>
@@ -180,8 +135,8 @@ export default function SEO({
       {/* Local SEO Geo Tags for Gurugram */}
       {!noindex && <meta name="geo.region" content="IN-HR" />}
       {!noindex && <meta name="geo.placename" content="Gurugram" />}
-      {!noindex && <meta name="geo.position" content="28.3971;77.0370" />}
-      {!noindex && <meta name="ICBM" content="28.3971, 77.0370" />}
+      {!noindex && <meta name="geo.position" content={`${business.latitude};${business.longitude}`} />}
+      {!noindex && <meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />}
 
       {/* Structured Data (JSON-LD) for Google Search Listings & Rich Snippets */}
       {!noindex && finalSchema.map((item, index) => (

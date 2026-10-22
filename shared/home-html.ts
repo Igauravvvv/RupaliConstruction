@@ -18,7 +18,7 @@ export function homeHtml(): string {
           ${localFaqs.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3><p>${escapeHtml(answer)}</p>`).join("\n")}
           <h2>Visit Rupali Construction</h2>
           <address>${escapeHtml(business.address)}</address>
-          <p>Monday–Saturday, 9:00 AM–7:00 PM. <a href="tel:+919311830088">+91 93118 30088</a> | <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
+          <p>Every day, 10:00 AM–7:00 PM. <a href="tel:+919311830088">+91 93118 30088</a> | <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
           <p><a href="${business.mapsUrl}">Rupali Construction on Google Maps</a> | <a href="${business.directionsUrl}">Get directions</a></p>
         </main>
       `;

@@ -453,10 +453,10 @@ async function resolvePageData(pathname: string): Promise<PageData> {
           <h1>Contact Our Architectural & Construction Studio</h1>
           <p>Schedule an in-person meeting at our corporate headquarters or book a virtual Vastu & architectural appraisal.</p>
           <address style="font-style: normal; margin-top: 2rem; line-height: 1.8; background: #f4f4f4; padding: 1.5rem; border-radius: 8px;">
-            <p><strong>Corporate Headquarters:</strong> 5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122004</p>
+            <p><strong>Corporate Headquarters:</strong> 5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122001</p>
             <p><strong>Phone Consultation:</strong> <a href="tel:+919311830088">+91 93118 30088</a></p>
             <p><strong>Email Address:</strong> <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
-            <p><strong>Working Hours:</strong> Monday – Saturday, 9:00 AM – 7:00 PM IST</p>
+            <p><strong>Working Hours:</strong> Every day, 10:00 AM – 7:00 PM IST</p>
           </address>
           <p><a href="${business.mapsUrl}">Rupali Construction on Google Maps</a> | <a href="${business.directionsUrl}">Get directions</a></p>
         </main>

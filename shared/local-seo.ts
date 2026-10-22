@@ -8,7 +8,7 @@ export const homeSeo = {
 export const business = {
   name: "Rupali Construction",
   url: "https://rupaliconstruction.com",
-  address: "5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122004",
+  address: "5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122001",
   mapsUrl: "https://www.google.com/maps?cid=11701277791317730988",
   mapsEmbedUrl: "https://www.google.com/maps?cid=11701277791317730988&output=embed",
   directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=28.4014816,77.0190575",
@@ -35,14 +35,14 @@ export const localBusinessSchema = {
     streetAddress: "5th floor, M3M Broadway, Sector 71",
     addressLocality: "Gurugram",
     addressRegion: "Haryana",
-    postalCode: "122004",
+    postalCode: "122001",
     addressCountry: "IN",
   },
   geo: { "@type": "GeoCoordinates", latitude: business.latitude, longitude: business.longitude },
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    opens: "09:00",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    opens: "10:00",
     closes: "19:00",
   },
   areaServed: [
@@ -62,7 +62,7 @@ export const localFaqs = [
   },
   {
     question: "Where is Rupali Construction's office and how can I visit?",
-    answer: `Our office is at ${business.address}. Call +91 93118 30088 to arrange a visit, Monday to Saturday, 9:00 AM to 7:00 PM. Use the Google Maps link on our contact page for directions.`,
+    answer: `Our office is at ${business.address}. Call +91 93118 30088 to arrange a visit, every day, 10:00 AM to 7:00 PM. Use the Google Maps link on our contact page for directions.`,
   },
 ];
 

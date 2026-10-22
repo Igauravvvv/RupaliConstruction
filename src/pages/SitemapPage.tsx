@@ -8,8 +8,8 @@ import { fallbackPosts } from "../../shared/blog-content";
 import { fallbackProjects } from "../../shared/project-content";
 
 export default function SitemapPage() {
-  const { data: projectData } = trpc.project.list.useQuery({ limit: 100 });
-  const { data: blogData } = trpc.blog.list.useQuery({ limit: 100 });
+  const { data: projectData } = trpc.project.list.useQuery({ limit: 50 });
+  const { data: blogData } = trpc.blog.list.useQuery({ limit: 50 });
   const projects = projectData?.items?.length ? projectData.items : fallbackProjects;
   const posts = blogData?.items?.length ? blogData.items : fallbackPosts;
   const groups = [

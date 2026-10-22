@@ -1,3 +1,4 @@
+import { publicResponseMeta } from "../server/public-content-cache.js";
 import { handle } from "@hono/node-server/vercel";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import app from "../server/boot.js";
@@ -64,6 +65,7 @@ export default async function handler(req: any, res: any) {
       endpoint: "/api/trpc",
       req: request,
       router: appRouter,
+      responseMeta: ({ paths, errors, type }) => publicResponseMeta(paths, errors, type),
       createContext,
     });
 

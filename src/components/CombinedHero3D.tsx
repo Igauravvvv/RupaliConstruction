@@ -125,7 +125,7 @@ function CitySkyline() {
 }
 
 function DataParticles() {
-  const count = 1000;
+  const count = 250;
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -297,11 +297,28 @@ function ModernVilla() {
   );
 }
 
+function FrameBudget({ active }: { active: boolean }) {
+  const invalidate = useThree(state => state.invalidate);
+  useEffect(() => {
+    if (!active) return;
+    invalidate();
+    const timer = window.setInterval(invalidate, 1000 / 30);
+    return () => window.clearInterval(timer);
+  }, [active, invalidate]);
+  return null;
+}
+
 // --- UNIFIED SCENE COMPONENT ---
 export default function CombinedHero3D() {
   const [isMobile, setIsMobile] = useState(false);
   const [isInView, setIsInView] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [pageVisible, setPageVisible] = useState(true);
+  useEffect(() => {
+    const update = () => setPageVisible(!document.hidden);
+    update(); document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -329,12 +346,13 @@ export default function CombinedHero3D() {
     <div ref={containerRef} className="absolute inset-0 bg-[var(--rc-white)] overflow-hidden pointer-events-none">
       <div className="absolute inset-0 w-full h-full">
         <Canvas 
-          frameloop={isInView ? "always" : "never"}
-          dpr={isMobile ? [1, 1.25] : [1, 1.5]} 
+          frameloop="demand"
+          dpr={[1, 1.25]} 
           camera={{ position: [0, 8, 22], fov: 45 }} 
-          gl={{ powerPreference: "high-performance", antialias: true, alpha: true, stencil: false, depth: true }}
+          gl={{ powerPreference: "low-power", antialias: false, alpha: true, stencil: false, depth: true }}
           className={isMobile ? "pointer-events-none" : "pointer-events-auto cursor-grab active:cursor-grabbing"}
         >
+          <FrameBudget active={isInView && pageVisible} />
           <ambientLight intensity={0.7} />
           {/* Shared lighting for the entire scene */}
           <directionalLight position={[10, 10, 5]} intensity={1.5} color="#0b2e59" />

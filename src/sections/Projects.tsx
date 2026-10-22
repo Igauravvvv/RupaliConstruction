@@ -1,6 +1,5 @@
 import { fallbackProjects } from "../../shared/project-content";
 export { fallbackProjects } from "../../shared/project-content";
-import { useEffect, useRef } from "react";
 import { trpc } from "@/providers/trpc";
 import { MapPin, Maximize2, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
@@ -22,34 +21,12 @@ export default function Projects() {
     }
   };
 
-  const gridRef = useRef<HTMLDivElement>(null);
-
   const { data } = trpc.project.list.useQuery({
     type: activeFilter === "all" ? undefined : (activeFilter as "residential" | "commercial" | "renovation" | "interior"),
     limit: 50,
   });
 
   const projects = data?.items || [];
-
-  useEffect(() => {
-    const items = gridRef.current?.querySelectorAll(".project-card");
-    if (!items) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-in");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    items.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
-  }, [projects]);
 
   const getProjectImage = (project: any) => {
     if (project.images) {
@@ -114,7 +91,7 @@ export default function Projects() {
 
         {/* Desktop Grid - hidden on mobile */}
         {/* Desktop Grid - hidden on mobile */}
-        <div ref={gridRef} className="hidden md:flex md:flex-wrap justify-center gap-6">
+        <div className="hidden md:flex md:flex-wrap justify-center gap-6">
           {projects.length > 0 ? (
             projects.map((project, i) => {
               const areaToShow = project.area || fallbackProjects.find(f => f.slug === project.slug)?.area;
@@ -122,7 +99,7 @@ export default function Projects() {
                 <Link
                   key={project.id}
                   to={`/projects/${project.slug}`}
-                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block w-full md:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48.5px)/3)]"
+                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] block w-full md:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48.5px)/3)]"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div className="aspect-[4/3] relative overflow-hidden group">
@@ -172,8 +149,8 @@ export default function Projects() {
                 .map((project, i) => (
                 <Link
                   key={project.name}
-                  to={`/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] opacity-0 translate-y-6 block w-full md:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48.5px)/3)]"
+                  to={`/projects/${project.slug}`}
+                  className="project-card group relative rounded-2xl overflow-hidden bg-[var(--rc-dark)] block w-full md:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48.5px)/3)]"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div className="aspect-[4/3] relative overflow-hidden">
@@ -268,17 +245,7 @@ export default function Projects() {
         </div>
       </div>
 
-      <style>{`
-        .project-card {
-          will-change: transform, opacity;
-          transform: translateZ(0);
-        }
-        .project-card.animate-in {
-          opacity: 1;
-          transform: translateY(0) translateZ(0);
-          transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-      `}</style>
+
     </section>
   );
 }

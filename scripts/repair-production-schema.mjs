@@ -26,6 +26,7 @@ const statements = [
   `ALTER TABLE local_users ADD COLUMN IF NOT EXISTS "profileCompleted" boolean DEFAULT false NOT NULL`,
   `ALTER TABLE local_users ADD COLUMN IF NOT EXISTS "lastSignInAt" timestamp DEFAULT now() NOT NULL`,
   `ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS "userId" integer DEFAULT 0 NOT NULL`,
+  `ALTER TABLE projects ADD COLUMN IF NOT EXISTS process_steps text`,
   `ALTER TABLE projects ADD COLUMN IF NOT EXISTS "reviewerName" varchar(120)`,
   `ALTER TABLE projects ADD COLUMN IF NOT EXISTS "reviewerRole" varchar(160)`,
   `ALTER TABLE projects ADD COLUMN IF NOT EXISTS "reviewText" text`,

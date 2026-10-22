@@ -1,3 +1,4 @@
+import { publicResponseMeta } from "./public-content-cache.js";
 import { Hono } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import type { HttpBindings } from "@hono/node-server";
@@ -234,6 +235,7 @@ app.all("/api/trpc/*", async (c) => {
     endpoint: "/api/trpc",
     req: c.req.raw,
     router: appRouter,
+    responseMeta: ({ paths, errors, type }) => publicResponseMeta(paths, errors, type),
     createContext: createContext as any,
   });
 });

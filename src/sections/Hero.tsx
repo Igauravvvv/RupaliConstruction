@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import HeroBlueprint from "@/components/HeroBlueprint";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { ArrowRight, ChevronDown, Activity, MapPin, HardHat, Wrench, Hammer, Ruler } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, useInView } from "framer-motion";
 import { lazy, Suspense } from "react";
 const CombinedHero3D = lazy(() => import("@/components/CombinedHero3D"));
 
@@ -37,19 +38,30 @@ const words = ["ARTS", "HOMES", "DREAMS", "ARCHITECTURE"];
 
 export default function Hero() {
   const [wordIndex, setWordIndex] = useState(0);
+  const [show3D, setShow3D] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const inView = useInView(heroRef, { margin: "100px" });
+  const reduceMotion = useReducedMotion();
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+    let timer: ReturnType<typeof setTimeout>;
+    const update = () => { clearTimeout(timer); setShow3D(false); if (media.matches) timer = setTimeout(() => setShow3D(true), 800); };
+    update(); media.addEventListener("change", update);
+    return () => { clearTimeout(timer); media.removeEventListener("change", update); };
+  }, []);
 
   useEffect(() => {
+    if (reduceMotion || !inView) return;
     const interval = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % words.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [reduceMotion, inView]);
 
   return (
-    <section className="relative min-h-[100dvh] flex items-center overflow-hidden bg-transparent text-[var(--rc-text)] pt-20">
-      <Suspense fallback={null}>
-        <CombinedHero3D />
-      </Suspense>
+    <section ref={heroRef} className="relative min-h-[100svh] flex items-center overflow-hidden bg-transparent text-[var(--rc-text)] pt-24 pb-28 sm:pb-24">
+      <HeroBlueprint />
+      {show3D && <Suspense fallback={null}><CombinedHero3D /></Suspense>}
 
       <div className="relative z-10 container-rc w-full h-full flex items-center justify-center pointer-events-none">
 
@@ -58,7 +70,7 @@ export default function Hero() {
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto py-2 pb-16 md:pb-6 lg:pb-0"
+            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto py-2"
           >
             <motion.div variants={fadeUp} className="mb-3 sm:mb-5 lg:mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[var(--rc-blue)]/20 bg-white/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[var(--rc-orange)]/50 transition-all duration-300 cursor-default">
               <span className="w-2 h-2 rounded-full bg-[var(--rc-orange)] animate-pulse"></span>
@@ -74,7 +86,7 @@ export default function Hero() {
                 {/* Crafting - Elegant Serif Neutral */}
                 <motion.div className="flex justify-center items-center mb-0.5 sm:mb-1">
                   <motion.span
-                    className="text-4xl sm:text-6xl md:text-6xl lg:text-[4.75rem] xl:text-[5.75rem] 2xl:text-[6.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
+                    className="text-4xl sm:text-6xl md:text-6xl lg:text-[4.75rem] xl:text-[5rem] 2xl:text-[5.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
@@ -84,14 +96,14 @@ export default function Hero() {
                 </motion.div>
 
                 {/* Looping Word - Premium Copper/Orange Shimmer */}
-                <motion.div className="flex flex-col items-center justify-center relative my-1 sm:my-2 z-20 h-[3.5rem] sm:h-[5.5rem] md:h-[6.5rem] lg:h-[7.5rem] xl:h-[9.5rem]">
+                <motion.div className="flex flex-col items-center justify-center relative my-1 sm:my-2 z-20 h-[3.5rem] sm:h-[5.5rem] md:h-[6.5rem] lg:h-[7.5rem] xl:h-[8rem]">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={wordIndex}
                       className={`font-black uppercase tracking-tighter text-transparent block leading-none px-4 drop-shadow-[0_4px_10px_rgba(240,113,43,0.2)] cursor-default ${
                         words[wordIndex] === "ARCHITECTURE"
-                          ? "text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[6.75rem] 2xl:text-[7.5rem]"
-                          : "text-5xl sm:text-7xl md:text-7xl lg:text-[6.5rem] xl:text-8xl 2xl:text-[9rem]"
+                          ? "text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[5.75rem] 2xl:text-[6.25rem]"
+                          : "text-5xl sm:text-7xl md:text-7xl lg:text-[6.5rem] xl:text-[7rem] 2xl:text-[7.5rem]"
                       }`}
                       style={{ WebkitTextStroke: "2px var(--rc-orange)", WebkitTextFillColor: "transparent" }}
                       initial={{ y: 30, opacity: 0, scale: 0.95, rotateX: 15 }}

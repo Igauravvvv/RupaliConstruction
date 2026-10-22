@@ -1,3 +1,5 @@
+import { publicProjectFields } from "./queries/project-fields.js";
+import { cachedPublicContent } from "./public-content-cache.js";
 import { getServiceBySlug } from "../src/data/servicesData.js";
 import { homeHtml } from "../shared/home-html.js";
 import { buildingGuide } from "../shared/building-guide.js";
@@ -200,7 +202,7 @@ async function resolvePageData(pathname: string): Promise<PageData> {
     let projectsHtml = fallbackProjects.map(p => `<article><h2><a href="/projects/${escapeHtml(p.slug)}">${escapeHtml(p.name)}</a></h2><p>${escapeHtml(p.description)}</p></article>`).join("");
     try {
       const db = getDb();
-      const latestProjects = await db.select().from(projects).orderBy(desc(projects.createdAt)).limit(12);
+      const latestProjects = await db.select(publicProjectFields).from(projects).orderBy(desc(projects.createdAt)).limit(12);
       if (latestProjects.length > 0) {
         projectsHtml = latestProjects.map(p => `
           <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
@@ -235,10 +237,10 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath.startsWith("/projects/")) {
     const slug = cleanPath.replace("/projects/", "");
-    let proj: (typeof fallbackProjects)[number] & {status?: string; cost?: string | null} | typeof projects.$inferSelect | undefined = fallbackProjects.find(item => item.slug === slug);
+    let proj: (typeof fallbackProjects)[number] & {status?: string; cost?: string | null} | Omit<typeof projects.$inferSelect, "cost"> | undefined = fallbackProjects.find(item => item.slug === slug);
     let queryFailed = false;
     try {
-      const [record] = await getDb().select().from(projects).where(eq(projects.slug, slug)).limit(1);
+      const [record] = await getDb().select(publicProjectFields).from(projects).where(eq(projects.slug, slug)).limit(1);
       proj = record || proj;
     } catch { queryFailed = true; }
     if (proj) {
@@ -283,7 +285,6 @@ async function resolvePageData(pathname: string): Promise<PageData> {
               <article style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
                 <p>${escapeHtml(proj.description || "Project specifications under final processing.")}</p>
               </article>
-              ${proj.cost ? `<p><strong>Estimated Capital Value / Budget:</strong> ${escapeHtml(proj.cost)}</p>` : ""}
               ${proj.completionDate ? `<p><strong>Delivery Milestone:</strong> ${escapeHtml(proj.completionDate)}</p>` : ""}
               <footer style="margin-top: 3rem; background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
                 <h3>Interested in building a residence like ${escapeHtml(proj.name)}?</h3>
@@ -491,7 +492,9 @@ export async function seoPrerenderHandler(c: Context) {
       const service = getServiceBySlug(url.pathname.split("/")[2]);
       if (service && url.pathname !== `/services/${service.slug}`) return c.redirect(`/services/${service.slug}`, 301);
     }
-    const pageData = await resolvePageData(url.pathname);
+    const privatePage = /^\/(admin|admin-login|login|profile|complete-profile)(?:\/|$)/.test(url.pathname);
+    const pageData = privatePage ? await resolvePageData(url.pathname)
+      : await cachedPublicContent(`page:${url.pathname}`, () => resolvePageData(url.pathname));
     let html = getHtmlTemplate();
     // The static homepage is also the server template for all other routes.
     html = html.replace(/<script\b[^>]*data-seo-static=["']true["'][^>]*>[\s\S]*?<\/script>/gi, "");
@@ -556,7 +559,7 @@ export async function seoPrerenderHandler(c: Context) {
     }
 
     c.header("Content-Type", "text/html; charset=utf-8");
-    c.header("Cache-Control", "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400");
+    c.header("Cache-Control", (isPrivateAppRoute || pageData.status) ? "private, no-store" : "public, max-age=30, s-maxage=300, stale-while-revalidate=3600");
     return c.body(html);
   } catch (err) {
     console.error("Error in seoPrerenderHandler:", err);

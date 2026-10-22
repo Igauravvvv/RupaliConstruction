@@ -42,6 +42,21 @@ function getAllowedRequestOrigins(req: Request): Set<string> {
 
 const t = initTRPC.context<TrpcContext>().create({
   transformer: superjson,
+  errorFormatter({ shape, error }) {
+    // Keep SQL, parameters and credentials out of public error responses while
+    // retaining a safe database/network code for diagnosing production outages.
+    let cause: unknown = error.cause;
+    let serviceErrorCode: string | undefined;
+    for (let depth = 0; cause && typeof cause === "object" && depth < 5; depth++) {
+      const detail = cause as { code?: unknown; cause?: unknown };
+      if (typeof detail.code === "string" && /^[A-Z0-9_]{2,32}$/.test(detail.code)) serviceErrorCode = detail.code;
+      cause = detail.cause;
+    }
+    return { ...shape,
+      message: error.code === "INTERNAL_SERVER_ERROR" ? "This service is temporarily unavailable." : shape.message,
+      data: { ...shape.data, serviceErrorCode },
+    };
+  },
 });
 
 const errorLogger = t.middleware(async (opts) => {

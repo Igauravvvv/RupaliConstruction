@@ -1,13 +1,10 @@
+import { publicProjectFields } from "./queries/project-fields.js";
+import { cachedPublicContent, clearPublicContentCache } from "./public-content-cache.js";
 import { z } from "zod";
 import { createRouter, publicQuery, adminQuery } from "./middleware.js";
 import { getDb } from "./queries/connection.js";
 import { projects } from "../db/schema.js";
 import { eq, desc, and, sql } from "drizzle-orm";
-
-function withoutProjectCost<T extends { cost?: unknown }>(project: T) {
-  const { cost: _cost, ...publicProject } = project;
-  return publicProject;
-}
 
 export const projectRouter = createRouter({
   list: publicQuery
@@ -22,7 +19,7 @@ export const projectRouter = createRouter({
         })
         .optional()
     )
-    .query(async ({ input }) => {
+    .query(async ({ input }) => cachedPublicContent(`projects:${JSON.stringify(input || {})}`, async () => {
       const db = getDb();
       const conditions: any[] = [];
 
@@ -34,14 +31,14 @@ export const projectRouter = createRouter({
 
       const items = where
         ? await db
-            .select()
+            .select(publicProjectFields)
             .from(projects)
             .where(where)
             .orderBy(desc(projects.createdAt))
             .limit(input?.limit || 10)
             .offset(input?.offset || 0)
         : await db
-            .select()
+            .select(publicProjectFields)
             .from(projects)
             .orderBy(desc(projects.createdAt))
             .limit(input?.limit || 10)
@@ -51,19 +48,17 @@ export const projectRouter = createRouter({
         ? await db.select({ count: sql<number>`count(*)` }).from(projects).where(where)
         : await db.select({ count: sql<number>`count(*)` }).from(projects);
       return {
-        items: items.map(withoutProjectCost),
+        items,
         total: Number(countResult[0]?.count ?? 0),
       };
-    }),
+    })),
 
   bySlug: publicQuery
     .input(z.object({ slug: z.string() }))
     .query(async ({ input }) => {
       const db = getDb();
-      const project = await db.query.projects.findFirst({
-        where: eq(projects.slug, input.slug),
-      });
-      return project ? withoutProjectCost(project) : undefined;
+      const [project] = await cachedPublicContent(`project:${input.slug}`, () => db.select(publicProjectFields).from(projects).where(eq(projects.slug, input.slug)).limit(1));
+      return project;
     }),
 
   create: adminQuery
@@ -91,6 +86,7 @@ export const projectRouter = createRouter({
     .mutation(async ({ input }) => {
       const db = getDb();
       const result = await db.insert(projects).values(input).returning({ id: projects.id });
+      clearPublicContentCache();
       return { id: result[0]?.id, success: true };
     }),
 
@@ -121,6 +117,7 @@ export const projectRouter = createRouter({
       const { id, ...data } = input;
       const db = getDb();
       await db.update(projects).set(data).where(eq(projects.id, id));
+      clearPublicContentCache();
       return { success: true };
     }),
 
@@ -129,6 +126,7 @@ export const projectRouter = createRouter({
     .mutation(async ({ input }) => {
       const db = getDb();
       await db.delete(projects).where(eq(projects.id, input.id));
+      clearPublicContentCache();
       return { success: true };
     }),
 });

@@ -32,59 +32,42 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   return (
-    <section className="py-16 lg:py-24 bg-[var(--rc-white)]">
+    <section aria-labelledby="faq-heading" className="py-12 lg:py-24 bg-[var(--rc-white)]">
       <div className="container-rc">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-16">
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <p className="text-label text-[var(--rc-orange)] mb-3">FAQ</p>
-            <h2 className="text-display-2 text-[var(--rc-dark)] mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-[var(--rc-muted)] leading-snug">
-              Got questions about building with us? Here are answers to the most
-              common queries from our clients. For more details, feel free to
-              reach out directly. Read our{" "}
-              <Link to="/building-guide-gurgaon" className="text-[var(--rc-blue)] underline underline-offset-4">guide to choosing a builder and contractor in Gurgaon</Link>
-              {" "}for help comparing quotes and project scope.
+            <p className="text-label text-[var(--rc-orange)] mb-3">Good to know</p>
+            <h2 id="faq-heading" className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[var(--rc-dark)] mb-3">Questions, answered.</h2>
+            <p className="text-sm sm:text-base text-[var(--rc-muted)] leading-relaxed max-w-md">
+              A little clarity before you build. Explore the essentials here or read our{" "}
+              <Link to="/building-guide-gurgaon" className="text-[var(--rc-blue)] underline underline-offset-4">homeowner guide</Link>.
             </p>
           </div>
-
-          <div className="flex flex-col gap-1">
-            {faqs.map((faq, i) => (
-              <div
-                key={i}
-                className="border border-[var(--rc-border)] rounded-lg overflow-hidden"
-              >
-                <button
-                  aria-expanded={open === i}
-                  aria-controls={`faq-answer-${i}`}
-                  onClick={() => setOpen(open === i ? null : i)}
-                  className="w-full flex items-center justify-between px-3 py-2 text-left hover:bg-[var(--rc-gray)]/50 transition-colors"
-                >
-                  <span className="font-medium text-sm text-[var(--rc-dark)] pr-4 leading-tight">
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-[var(--rc-blue)] flex-shrink-0 transition-transform ${
-                      open === i ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                <div
-                  id={`faq-answer-${i}`}
-                  className={`overflow-hidden transition-all duration-300 ${
-                    open === i ? "max-h-96" : "max-h-0"
-                  }`}
-                >
-                  <p className="px-3 pb-2.5 text-sm text-[var(--rc-muted)] leading-snug">
-                    {faq.answer}
-                  </p>
+          <div>
+            <div className="flex flex-col gap-2" id="faq-list">
+              {faqs.map((faq, i) => (
+                <div key={faq.question} className={`${i >= 4 && !showAll ? "hidden sm:block" : ""} border rounded-2xl overflow-hidden transition-colors ${open === i ? "border-[var(--rc-blue)]/20 bg-slate-50" : "border-[var(--rc-border)] bg-white"}`}>
+                  <button aria-expanded={open === i} aria-controls={`faq-answer-${i}`}
+                    onClick={() => setOpen(open === i ? null : i)}
+                    className="w-full flex items-center justify-between gap-4 p-4 text-left hover:bg-slate-50 transition-colors">
+                    <span className="font-medium text-sm sm:text-base text-[var(--rc-dark)] leading-snug">{faq.question}</span>
+                    <ChevronDown aria-hidden="true" className={`w-4 h-4 text-[var(--rc-orange)] shrink-0 transition-transform ${open === i ? "rotate-180" : ""}`} />
+                  </button>
+                  <div id={`faq-answer-${i}`} hidden={open !== i}>
+                    <p className="px-4 pb-4 text-sm text-[var(--rc-muted)] leading-relaxed">{faq.answer}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <button type="button" aria-expanded={showAll} aria-controls="faq-list"
+              onClick={() => { setShowAll(!showAll); if (showAll && open !== null && open >= 4) setOpen(null); }}
+              className="sm:hidden w-full mt-4 py-3 rounded-full border border-[var(--rc-border)] text-sm font-semibold text-[var(--rc-blue)] hover:bg-slate-50">
+              {showAll ? "Show fewer questions" : `Show all ${faqs.length} questions`}
+            </button>
           </div>
         </div>
       </div>

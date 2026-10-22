@@ -1,4 +1,4 @@
-import { business, localFaqs } from "./local-seo";
+import { business, localFaqs } from "./local-seo.js";
 
 export function escapeHtml(str: string): string {
   return str.replace(/[&<>"\']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "\'": "&#039;" }[char]!));

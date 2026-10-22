@@ -28,9 +28,9 @@ Keep the homepage as the primary broad builder/contractor page. Do not create ne
 
 ## Google Business Profile: concrete proposal, requires owner sign-in
 
-The browser currently reaches Google sign-in; no profile edits have been made. Preserve the existing listing, reviews and ownership. Do not create a duplicate.
+The owner signed in and Google confirmed “You manage this Business Profile”. The editing panel then returned an HTTP 401 error and requested a separate sign-in; no profile edits have been made. The public result showed a 4.6 rating from 9 Google reviews at the time of inspection. Preserve the existing listing, reviews and ownership. Do not create a duplicate.
 
-1. Verify that the business is claimed and eligible, and that the map pin and customer-facing office details are correct. The owner-supplied listing identifies coordinates 28.4014816, 77.0190575; the website address is 5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122004. Confirm the street address against the profile before changing either one.
+1. Verify that the business is claimed and eligible, and that the map pin and customer-facing office details are correct. The owner-supplied listing identifies coordinates 28.4014816, 77.0190575; the website address is 5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122004. The public Google result currently shows a plus-code address in Sector 71 with postcode 122101, which differs from the website postcode 122004. Confirm the street address against the profile before changing either one.
 2. Keep the real business name **Rupali Construction**. Do not append “best builder in Gurgaon” to the business name unless it is genuinely the established real-world business name.
 3. Inspect the available category choices and choose the most accurate primary category for the actual main business. Compare “Construction company”, “General contractor” and “Home builder” where available; add only accurate secondary categories. Category availability must be checked inside the profile.
 4. Confirm +91 93118 30088 and Monday–Saturday 09:00–19:00, including holiday hours and whether customers can visit the office. These are existing website details, not independently verified operating facts.
@@ -47,7 +47,7 @@ The browser currently reaches Google sign-in; no profile edits have been made. P
 | Google Search Console | Inspect the existing property; verify ownership if needed; submit `https://rupaliconstruction.com/sitemap.xml`; inspect home, guide and key service URLs; request indexing where available | Existing Google verification files are present; ownership and submission status are unverified |
 | Bing Webmaster Tools | Inspect/import the property, submit the sitemap and check URL Inspection and IndexNow reporting | No authenticated account available in this session |
 | Yandex Webmaster | Verify the site, submit the sitemap and inspect crawl errors and indexing exclusions | No authenticated account available in this session |
-| Google Business Profile | Apply the proposal above after reviewing current profile fields and confirming business facts | Owner sign-in required |
+| Google Business Profile | Apply the proposal above after reviewing current profile fields and confirming business facts | Owner confirmed; editing panel requires reauthentication |
 | Analytics | Check whether an existing property measures enquiries, successful form submissions and telephone clicks; retain consent requirements | No analytics property inspected; no new tracking deployed |
 
 Do not fabricate verification codes. Preserve existing Google verification files. Google no longer supports the old sitemap ping endpoint. IndexNow is a notification channel for participating engines; it is not a Google indexing API. Do not use Google's restricted Indexing API for ordinary construction pages.

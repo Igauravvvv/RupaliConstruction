@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { localFaqs } from "../../shared/local-seo";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
@@ -45,7 +46,9 @@ export default function FAQ() {
             <p className="text-[var(--rc-muted)] leading-snug">
               Got questions about building with us? Here are answers to the most
               common queries from our clients. For more details, feel free to
-              reach out directly.
+              reach out directly. Read our{" "}
+              <Link to="/building-guide-gurgaon" className="text-[var(--rc-blue)] underline underline-offset-4">guide to choosing a builder and contractor in Gurgaon</Link>
+              {" "}for help comparing quotes and project scope.
             </p>
           </div>
 

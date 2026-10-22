@@ -7,9 +7,9 @@ import ConstructionProcess from "@/components/ConstructionProcess";
 import SEO from "@/components/SEO";
 import { servicesData, ServiceDetailItem } from "@/data/servicesData";
 import ConsultationModal from "@/components/ConsultationModal";
-import { 
-  Sparkles, CheckCircle2, ShieldCheck, Clock, 
-  ArrowRight, Home, Building2, Hammer, Paintbrush, Compass, HardHat 
+import {
+  Sparkles, CheckCircle2, ShieldCheck, Clock,
+  ArrowRight, Home, Building2, Hammer, Paintbrush, Compass, HardHat
 } from "lucide-react";
 
 const iconMap = {
@@ -25,15 +25,15 @@ export default function Services() {
   const [selectedServiceId, setSelectedServiceId] = useState<string>("residential-construction");
   const [consultService, setConsultService] = useState<string | null>(null);
 
-  const activeService: ServiceDetailItem = 
+  const activeService: ServiceDetailItem =
     servicesData.find(s => s.id === selectedServiceId) || servicesData[0];
-  
+
   const ActiveIcon = iconMap[activeService.iconName] || Home;
 
   return (
     <div className="min-h-screen bg-[var(--rc-white)] overflow-x-hidden relative">
-      <SEO 
-        title="Luxury Construction & Architectural Services in Gurgaon | Rupali Construction" 
+      <SEO
+        title="Construction & Contractor Services in Gurgaon | Rupali Construction"
         description="Explore our comprehensive suite of luxury residential construction, turnkey interior design, villa renovation, architectural engineering, and commercial assets in Gurugram."
         keywords="luxury construction Gurgaon, villa construction services, interior design Sector 71 Gurgaon, architecture company Haryana, turnkey contractor Gurgaon"
         url="/services"
@@ -73,12 +73,12 @@ export default function Services() {
         ]}
       />
       <Navbar />
-      
+
       {/* Background Image with Premium Gradient Fade */}
       <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
         <div className="sticky top-0 w-full h-screen">
-          <img 
-            src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+          <img
+            src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
             srcSet="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=70 800w, https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80 1920w"
             sizes="100vw"
             alt="Professional Construction Team Services"
@@ -90,7 +90,7 @@ export default function Services() {
 
       <main className="relative z-10">
         <div className="relative z-10">
-          
+
           {/* Main 6 Category Cards Grid */}
           <div className="pt-24 lg:pt-32 bg-transparent pb-10">
              <ServicesSection transparentBg />
@@ -99,7 +99,7 @@ export default function Services() {
           {/* Interactive Category Deep-Dive Section */}
           <section className="container-rc pb-20 pt-6">
             <div className="bg-white rounded-[32px] border border-gray-200/80 shadow-xl overflow-hidden p-6 sm:p-10 md:p-12">
-              
+
               <div className="text-center max-w-2xl mx-auto mb-10">
                 <span className="text-xs font-bold text-[var(--rc-orange)] uppercase tracking-widest px-3 py-1 rounded-full bg-orange-50 border border-orange-100 inline-block mb-3">
                   In-Depth Category Breakdown
@@ -137,7 +137,7 @@ export default function Services() {
 
               {/* Active Category Content Display */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                
+
                 {/* Left Column: Category Overview & Direct CTA */}
                 <div className="lg:col-span-1 bg-gray-50/70 p-6 sm:p-8 rounded-3xl border border-gray-200/70 flex flex-col justify-between h-full">
                   <div>
@@ -185,7 +185,7 @@ export default function Services() {
 
                 {/* Right Columns: Steps & Quality Checks */}
                 <div className="lg:col-span-2 space-y-8">
-                  
+
                   {/* Steps Preview */}
                   <div>
                     <h4 className="text-base sm:text-lg font-serif font-bold text-[var(--rc-dark)] mb-4 flex items-center gap-2">
@@ -260,7 +260,7 @@ export default function Services() {
         serviceName={consultService || activeService.title}
         defaultMessage={consultService ? `I would like to book a consultation for ${consultService}.` : ""}
       />
-      
+
       <Footer />
     </div>
   );

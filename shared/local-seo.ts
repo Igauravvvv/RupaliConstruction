@@ -1,6 +1,6 @@
 export const homeSeo = {
-  title: "Best Builder in Gurugram | Best Contractor in Gurugram | Rupali Construction",
-  description: "Looking for the best builder or contractor in Gurugram? Rupali Construction offers home construction, turnkey villas, architecture and interiors in Gurgaon & Delhi NCR.",
+  title: "Best Builder & Contractor in Gurgaon | Rupali Construction",
+  description: "Looking for the best builder in Gurgaon? Explore Rupali Construction for home building, turnkey contracting, architecture and interiors in Gurugram.",
   keywords: "best builder in gurugram, best contractor in gurugram, best builder in gurgaon, best contractor in gurgaon, construction company in gurugram, home construction gurgaon, turnkey construction gurugram, Rupali Construction",
 };
 

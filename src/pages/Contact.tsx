@@ -42,8 +42,8 @@ export default function Contact() {
   return (
     <div className="min-h-screen relative">
       <SEO 
-        title="Contact Us & Get a Construction Quote | Rupali Construction Gurgaon"
-        description="Connect with Rupali Construction in Gurugram for your luxury home building, architecture, interior design, or real estate consultation. Visit our office at M3M Broadway, Sector 71."
+        title="Contact Rupali Construction | Builder & Contractor in Gurgaon"
+        description="Contact Rupali Construction at M3M Broadway, Sector 71, Gurugram. Discuss home construction, contracting and interiors, or get directions on Google Maps."
         keywords="Rupali Construction address, construction quote Gurgaon, home contractors Sector 71 Gurgaon, phone number Rupali Construction, construction companies near M3M Broadway"
         url="/contact"
         schema={[

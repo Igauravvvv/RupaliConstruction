@@ -3,6 +3,7 @@ import React, { Component, ReactNode, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HelmetProvider } from 'react-helmet-async'
 
+const BuildingGuide = lazy(() => import('./pages/BuildingGuide'))
 const Home = lazy(() => import('./pages/Home'))
 const Services = lazy(() => import('./pages/Services'))
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
@@ -89,6 +90,7 @@ export default function App() {
                 <RouteErrorBoundary>
                   <Routes location={location}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/building-guide-gurgaon" element={<BuildingGuide />} />
                     <Route path="/services" element={<Services />} />
                     <Route path="/services/:slug" element={<ServiceDetail />} />
                     <Route path="/blog" element={<Blog />} />

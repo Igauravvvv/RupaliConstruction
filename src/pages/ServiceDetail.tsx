@@ -117,8 +117,8 @@ export default function ServiceDetail() {
   return (
     <div className="min-h-screen bg-[#FAFAFA] font-sans selection:bg-[var(--rc-orange)]/20 selection:text-[var(--rc-dark)]">
       <SEO
-        title={`${service.title} | Rupali Construction Gurgaon`}
-        description={service.overview}
+        title={`${service.shortTitle} in Gurgaon | Rupali Construction`}
+        description={`${service.shortTitle} services in Gurgaon (Gurugram). Discuss your project scope, material specifications and construction requirements with Rupali Construction.`}
         keywords={`${service.shortTitle} Gurgaon, ${service.title}, construction DLF Sushant Lok, best ${service.shortTitle} contractor Gurgaon, Rupali Construction`}
         image={service.heroImage}
         url={`/services/${service.slug}`}

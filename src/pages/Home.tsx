@@ -39,6 +39,7 @@ export default function Home() {
             <Link to="/services">Construction services</Link>
             <Link to="/projects">View our projects</Link>
             <Link to="/brand-standards">Material standards</Link>
+            <Link to="/building-guide-gurgaon">How to choose your builder</Link>
             <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">Rupali Construction on Google Maps</a>
           </div>
         </div>

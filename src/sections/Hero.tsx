@@ -52,7 +52,7 @@ export default function Hero() {
       </Suspense>
 
       <div className="relative z-10 container-rc w-full h-full flex items-center justify-center pointer-events-none">
-          
+
           {/* Center Column: Typography & CTAs */}
           <motion.div
             variants={staggerContainer}
@@ -69,11 +69,11 @@ export default function Hero() {
 
             <motion.div variants={fadeUp} className="mb-4 sm:mb-6 w-full flex flex-col items-center justify-center relative z-10">
               <div className="absolute -inset-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85)_0%,transparent_60%)] blur-2xl -z-10 rounded-full" />
-              <h1 className="leading-[1.1] w-full relative flex flex-col items-center">
-                
+              <div className="leading-[1.1] w-full relative flex flex-col items-center" aria-hidden="true">
+
                 {/* Crafting - Elegant Serif Neutral */}
                 <motion.div className="flex justify-center items-center mb-0.5 sm:mb-1">
-                  <motion.span 
+                  <motion.span
                     className="text-4xl sm:text-6xl md:text-6xl lg:text-[4.75rem] xl:text-[5.75rem] 2xl:text-[6.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -86,23 +86,23 @@ export default function Hero() {
                 {/* Looping Word - Premium Copper/Orange Shimmer */}
                 <motion.div className="flex flex-col items-center justify-center relative my-1 sm:my-2 z-20 h-[3.5rem] sm:h-[5.5rem] md:h-[6.5rem] lg:h-[7.5rem] xl:h-[9.5rem]">
                   <AnimatePresence mode="wait">
-                    <motion.span 
+                    <motion.span
                       key={wordIndex}
                       className={`font-black uppercase tracking-tighter text-transparent block leading-none px-4 drop-shadow-[0_4px_10px_rgba(240,113,43,0.2)] cursor-default ${
-                        words[wordIndex] === "ARCHITECTURE" 
-                          ? "text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[6.75rem] 2xl:text-[7.5rem]" 
+                        words[wordIndex] === "ARCHITECTURE"
+                          ? "text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[6.75rem] 2xl:text-[7.5rem]"
                           : "text-5xl sm:text-7xl md:text-7xl lg:text-[6.5rem] xl:text-8xl 2xl:text-[9rem]"
                       }`}
                       style={{ WebkitTextStroke: "2px var(--rc-orange)", WebkitTextFillColor: "transparent" }}
                       initial={{ y: 30, opacity: 0, scale: 0.95, rotateX: 15 }}
-                      animate={{ 
-                        y: 0, 
-                        opacity: 1, 
+                      animate={{
+                        y: 0,
+                        opacity: 1,
                         scale: 1,
                         rotateX: 0
                       }}
                       exit={{ y: -30, opacity: 0, scale: 1.05, rotateX: -15 }}
-                      transition={{ 
+                      transition={{
                         y: { type: "spring", stiffness: 400, damping: 30 },
                         opacity: { duration: 0.3 },
                         scale: { duration: 0.3 },
@@ -114,7 +114,7 @@ export default function Hero() {
                     </motion.span>
                   </AnimatePresence>
                   {/* Very soft glow, not overpowering */}
-                  <motion.div 
+                  <motion.div
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 rounded-full"
                     style={{ background: 'radial-gradient(ellipse at center, rgba(240,113,43,0.15) 0%, transparent 60%)' }}
                     animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.9, 1.05, 0.9] }}
@@ -124,7 +124,7 @@ export default function Hero() {
 
                 {/* Into Reality - Minimalist Light Sans */}
                 <motion.div className="flex justify-center items-center mt-1 sm:mt-2">
-                  <motion.span 
+                  <motion.span
                     className="text-2xl sm:text-4xl md:text-4xl lg:text-[2.75rem] xl:text-[3.5rem] 2xl:text-[4rem] font-light tracking-wide text-[var(--rc-text)]/80 block"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -133,12 +133,13 @@ export default function Hero() {
                     Into Reality
                   </motion.span>
                 </motion.div>
-                <span className="sr-only"> - Rupali Construction, Builder and Contractor in Gurugram</span>
-              </h1>
+
+              </div>
             </motion.div>
 
+            <h1 className="text-xl sm:text-2xl font-semibold text-[var(--rc-dark)] mb-4">Looking for the best builder in Gurgaon?</h1>
             <motion.p variants={fadeUp} className="text-base sm:text-lg md:text-xl lg:text-xl text-[var(--rc-text)] max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed font-medium text-center">
-              Looking for the best builder in Gurugram or the best contractor in Gurugram? Build your home with Rupali Construction — turnkey villas, architecture and interiors across Gurgaon & Delhi NCR.
+              Choose a contractor in Gurgaon with a clear scope, material specifications and a written estimate. Rupali Construction builds homes and turnkey villas across Gurugram & Delhi NCR.
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
@@ -153,14 +154,14 @@ export default function Hero() {
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-[var(--rc-orange)] transition-all" />
                   </span>
                 </Link>
-                
+
                 {/* Tiny Animated Construction Icons */}
                 <HardHat className="absolute top-2 left-6 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-6 group-hover:-translate-x-6 transition-all duration-500 ease-out z-0 -rotate-12 scale-50 group-hover:scale-100 pointer-events-none" />
                 <Hammer className="absolute top-2 left-10 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-7 group-hover:-translate-x-1 transition-all duration-500 delay-75 ease-out z-0 -rotate-45 scale-50 group-hover:scale-100 pointer-events-none" />
                 <Wrench className="absolute top-2 right-6 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-6 group-hover:translate-x-6 transition-all duration-500 delay-100 ease-out z-0 rotate-12 scale-50 group-hover:scale-100 pointer-events-none" />
                 <Ruler className="absolute top-2 right-10 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-7 group-hover:translate-x-1 transition-all duration-500 delay-150 ease-out z-0 rotate-45 scale-50 group-hover:scale-100 pointer-events-none" />
               </div>
-              
+
               <Link
                 to="/projects"
                 className="group px-6 py-3.5 md:py-4 bg-transparent text-[var(--rc-text)] font-bold hover:text-[var(--rc-orange)] focus:outline-none transition-colors inline-flex items-center gap-2 tracking-widest uppercase text-xs relative"
@@ -175,7 +176,7 @@ export default function Hero() {
 
       <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
         <div className="transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-90 xl:scale-100 origin-bottom">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6, type: "spring" }}

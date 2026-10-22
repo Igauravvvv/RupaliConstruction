@@ -1,3 +1,6 @@
+import { fallbackPosts } from "../shared/blog-content.js";
+import { fallbackProjects } from "../shared/project-content.js";
+import { buildingGuide } from "../shared/building-guide.js";
 import type { Context } from "hono";
 import { getDb } from "./queries/connection.js";
 import { projects, blogPosts } from "../db/schema.js";
@@ -26,37 +29,31 @@ function escapeXml(unsafe?: string | null): string {
   });
 }
 
-function formatDate(dateValue?: string | Date | null, fallbackDate?: string): string {
-  const fallback = fallbackDate || new Date().toISOString().split("T")[0];
-  if (!dateValue) return fallback;
-  try {
-    const d = typeof dateValue === "string" ? new Date(dateValue) : dateValue;
-    if (isNaN(d.getTime())) return fallback;
-    return d.toISOString().split("T")[0];
-  } catch {
-    return fallback;
-  }
+function formatDate(dateValue?: string | Date | null): string | undefined {
+  if (!dateValue) return undefined;
+  const date = typeof dateValue === "string" ? new Date(dateValue) : dateValue;
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString().split("T")[0];
 }
 
 export async function generateSitemapXml(): Promise<string> {
   const baseUrl = "https://rupaliconstruction.com";
-  const today = new Date().toISOString().split("T")[0];
+  const staticModified = "2026-10-22";
 
   // Core Static Routes & Service Landing Pages
   const staticRoutes: SitemapEntry[] = [
     {
-      url: "",
+      url: "/",
       priority: "1.0",
       changefreq: "daily",
-      lastmod: today,
+      lastmod: staticModified,
       image: `${baseUrl}/logo-main.webp`,
-      imageTitle: "Rupali Construction - AI-Powered Luxury Home Builders in Gurgaon",
+      imageTitle: "Rupali Construction - Builder and Contractor in Gurgaon",
     },
     {
       url: "/services",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80",
       imageTitle: "Luxury Construction & Architectural Services in Gurgaon",
     },
@@ -64,7 +61,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/services/residential-construction",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80",
       imageTitle: "Luxury Residential & Turnkey Villa Construction Gurgaon",
     },
@@ -72,7 +69,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/services/renovation",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
       imageTitle: "Structural Renovation & Villa Modernization Gurgaon",
     },
@@ -80,7 +77,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/services/commercial-construction",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80",
       imageTitle: "Commercial & Corporate Construction Gurgaon",
     },
@@ -88,7 +85,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/services/interior-design",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80",
       imageTitle: "Luxury Turnkey Interior Design Gurgaon",
     },
@@ -96,7 +93,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/services/architectural-design",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
       imageTitle: "Architectural Design & Vastu Planning Gurgaon",
     },
@@ -104,7 +101,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/services/structural-engineering",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1541888081691-1cb11354b670?auto=format&fit=crop&q=80",
       imageTitle: "Advanced Structural Engineering & Health Audits Gurgaon",
     },
@@ -112,7 +109,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/projects",
       priority: "0.9",
       changefreq: "weekly",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80",
       imageTitle: "Delivered Luxury Villa & Commercial Projects Portfolio Gurgaon",
     },
@@ -120,7 +117,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/blog",
       priority: "0.8",
       changefreq: "daily",
-      lastmod: today,
+      lastmod: staticModified,
       image: "https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?auto=format&fit=crop&w=1920&q=80",
       imageTitle: "Construction Insights, Vastu Tips & Cost Guides Gurgaon",
     },
@@ -128,7 +125,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/leadership",
       priority: "0.8",
       changefreq: "monthly",
-      lastmod: today,
+      lastmod: staticModified,
       image: `${baseUrl}/logo-main.webp`,
       imageTitle: "Rupali Construction Leadership Team & Master Civil Engineers",
     },
@@ -136,7 +133,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/brand-standards",
       priority: "0.8",
       changefreq: "monthly",
-      lastmod: today,
+      lastmod: staticModified,
       image: `${baseUrl}/logo-main.webp`,
       imageTitle: "Rupali Construction Benchmark Brand & Raw Material Standards",
     },
@@ -144,7 +141,7 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/contact",
       priority: "0.8",
       changefreq: "monthly",
-      lastmod: today,
+      lastmod: staticModified,
       image: `${baseUrl}/logo-main.webp`,
       imageTitle: "Contact Rupali Construction - M3M Broadway Sector 71 Gurugram",
     },
@@ -152,84 +149,19 @@ export async function generateSitemapXml(): Promise<string> {
       url: "/sitemap",
       priority: "0.95",
       changefreq: "daily",
-      lastmod: today,
+      lastmod: staticModified,
       image: `${baseUrl}/logo-main.webp`,
       imageTitle: "Rupali Construction Complete Sitemap & Gurgaon Builder Directory",
     },
   ];
 
-  // Base fallback projects
-  const fallbackProjectsMap: Record<string, { title: string; image: string; date: string }> = {
-    "quickin-stayz": {
-      title: "QuickIn Stayz Commercial Hospitality Suites Gurgaon",
-      image: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/f817e291-940c-43d3-a8af-b116265e6f2e.png",
-      date: "2024-01-01",
-    },
-    "gold-gym": {
-      title: "Gold Gym Commercial Fitness Landmark M3M Urbana Gurgaon",
-      image: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/5416e429-298b-40a5-bd2b-cd8d4ce1c820.png",
-      date: "2024-01-01",
-    },
-    "knowledge-center": {
-      title: "Knowledge Center Corporate Innovation Suites M3M Broadway Gurgaon",
-      image: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/7b1e9a0b-32c8-4e0b-9bbf-63b7b451ec68.png",
-      date: "2024-01-01",
-    },
-    "duplex-luxury-villa": {
-      title: "Duplex Luxury Villa The Westerlies Sector 108 Gurugram",
-      image: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/a1d1885c-72d6-4bf5-9202-c8352529603d.jpg",
-      date: "2024-01-01",
-    },
-    "apartment-at-sushant-lok": {
-      title: "Apartment At Sushant Lok Luxury Residential Floor Gurgaon",
-      image: "https://jyprnabdmsplvlazwtvo.supabase.co/storage/v1/object/public/image/9b0bd635-2175-4371-a8fc-50e7a50983db.png",
-      date: "2024-01-01",
-    },
-  };
-
-  // Base fallback blogs
-  const fallbackBlogsMap: Record<string, { title: string; image: string; date: string }> = {
-    "cost-of-building-house-gurgaon": {
-      title: "Cost of Building a House in Gurgaon: Complete 2026 Guide",
-      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
-      date: "2026-06-15",
-    },
-    "gurgaon-real-estate-trends": {
-      title: "Gurgaon Real Estate Trends 2026: Where to Invest in Residential Properties",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80",
-      date: "2026-05-22",
-    },
-    "construction-timeline-breakdown": {
-      title: "Construction Timeline Breakdown: From Blueprint to Handover in NCR",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f35aa2e?auto=format&fit=crop&q=80",
-      date: "2026-04-10",
-    },
-    "building-approvals-gurugram": {
-      title: "Navigating Building Approvals and Regulations in Gurugram (MCG/DTCP)",
-      image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80",
-      date: "2026-03-05",
-    },
-    "top-residential-areas-gurgaon-villas": {
-      title: "Top Residential Areas in Gurgaon for Custom Villa Construction",
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80",
-      date: "2026-02-18",
-    },
-    "sustainable-construction-gurgaon": {
-      title: "Sustainable Construction Practices for the Gurgaon Climate",
-      image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80",
-      date: "2026-01-30",
-    },
-    "luxury-smart-homes-gurgaon": {
-      title: "The Rise of Luxury Smart Homes in Gurgaon's Real Estate Market",
-      image: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80",
-      date: "2025-12-10",
-    },
-    "rcc-vs-steel-structure": {
-      title: "RCC vs Steel Structure: Which is Better for Your NCR Project?",
-      image: "https://images.unsplash.com/photo-1541888081691-1cb11354b670?auto=format&fit=crop&q=80",
-      date: "2025-11-22",
-    },
-  };
+  staticRoutes.push({ url: buildingGuide.path, priority: "0.8", changefreq: "monthly", lastmod: staticModified });
+  const fallbackProjectsMap = Object.fromEntries(fallbackProjects.map(project => [project.slug, {
+    title: project.name, image: project.coverImage,
+  }]));
+  const fallbackBlogsMap = Object.fromEntries(fallbackPosts.map(post => [post.slug, {
+    title: post.title, image: post.coverImage, date: formatDate(post.createdAt),
+  }]));
 
   const projectEntriesMap = new Map<string, SitemapEntry>();
   // Populate fallback projects
@@ -238,7 +170,6 @@ export async function generateSitemapXml(): Promise<string> {
       url: `/projects/${slug}`,
       priority: "0.8",
       changefreq: "monthly",
-      lastmod: item.date,
       image: item.image,
       imageTitle: item.title,
     });
@@ -297,7 +228,7 @@ export async function generateSitemapXml(): Promise<string> {
         url: `/projects/${cleanSlug}`,
         priority: "0.8",
         changefreq: "monthly",
-        lastmod: formatDate(proj.createdAt, today),
+        lastmod: proj.createdAt ? formatDate(proj.createdAt) : undefined,
         image: firstImage || fallbackProjectsMap[cleanSlug]?.image || `${baseUrl}/logo-main.webp`,
         imageTitle: proj.name || fallbackProjectsMap[cleanSlug]?.title || "Luxury Project Gurgaon",
       });
@@ -310,7 +241,7 @@ export async function generateSitemapXml(): Promise<string> {
         url: `/blog/${cleanSlug}`,
         priority: "0.7",
         changefreq: "weekly",
-        lastmod: formatDate(blog.updatedAt || blog.createdAt, today),
+        lastmod: blog.updatedAt || blog.createdAt ? formatDate(blog.updatedAt || blog.createdAt) : undefined,
         image: blog.coverImage || fallbackBlogsMap[cleanSlug]?.image || `${baseUrl}/logo-main.webp`,
         imageTitle: blog.title || fallbackBlogsMap[cleanSlug]?.title || "Construction Insight Gurgaon",
       });
@@ -336,8 +267,8 @@ export async function generateSitemapXml(): Promise<string> {
       : "";
 
     return `  <url>
-    <loc>${loc}</loc>
-    <lastmod>${entry.lastmod || today}</lastmod>
+    <loc>${escapeXml(loc)}</loc>
+    ${entry.lastmod ? `<lastmod>${entry.lastmod}</lastmod>` : ""}
     <changefreq>${entry.changefreq}</changefreq>
     <priority>${entry.priority}</priority>${imageTag}
   </url>`;

@@ -1,4 +1,9 @@
-import { business, homeSeo, localBusinessSchema, localFaqs, localFaqSchema } from "../shared/local-seo.js";
+import { getServiceBySlug } from "../src/data/servicesData.js";
+import { homeHtml } from "../shared/home-html.js";
+import { buildingGuide } from "../shared/building-guide.js";
+import { fallbackPosts } from "../shared/blog-content.js";
+import { fallbackProjects } from "../shared/project-content.js";
+import { business, homeSeo, localBusinessSchema, localFaqSchema } from "../shared/local-seo.js";
 import type { Context } from "hono";
 import fs from "fs";
 import path from "path";
@@ -13,6 +18,7 @@ interface PageData {
   ogImage: string;
   jsonLd: Record<string, any> | Array<Record<string, any>>;
   semanticHtml: string;
+  status?: 404 | 503;
 }
 
 const BASE_URL = "https://rupaliconstruction.com";
@@ -95,6 +101,13 @@ function getDefaultJsonLd(pageDescription?: string): Array<Record<string, any>> 
   ];
 }
 
+function missingPage(pathname: string, status: 404 | 503 = 404): PageData {
+  return { title: status === 404 ? "Page Not Found | Rupali Construction" : "Temporarily Unavailable | Rupali Construction",
+    description: "Browse Rupali Construction services and projects in Gurgaon.", canonical: `${BASE_URL}${pathname}`,
+    ogImage: DEFAULT_IMAGE, jsonLd: [], status,
+    semanticHtml: `<main class="seo-prerender-container"><h1>${status === 404 ? "Page not found" : "Temporarily unavailable"}</h1><p>Please browse our <a href="/services">services</a> or <a href="/">return home</a>.</p></main>` };
+}
+
 async function resolvePageData(pathname: string): Promise<PageData> {
   const cleanPath = pathname.replace(/\/$/, "") || "/";
 
@@ -106,29 +119,26 @@ async function resolvePageData(pathname: string): Promise<PageData> {
       canonical: `${BASE_URL}/`,
       ogImage: DEFAULT_IMAGE,
       jsonLd: [...getDefaultJsonLd(), localFaqSchema],
-      semanticHtml: `
-        <main class="seo-prerender-container" style="padding:2rem;max-width:1000px;margin:auto;font-family:sans-serif;line-height:1.6">
-          <h1>Rupali Construction — Builder and Contractor in Gurugram</h1>
-          <p>Looking for the best builder in Gurugram or the best contractor in Gurugram? Build your home with Rupali Construction — turnkey villas, architecture and interiors across Gurgaon &amp; Delhi NCR.</p>
-          <h2>Looking for the best builder in Gurugram?</h2>
-          <p>Rupali Construction provides home construction, turnkey villas, architecture, renovation and interiors in Gurugram (Gurgaon) and Delhi NCR. Discuss your plot, design and budget with our team at M3M Broadway, Sector 71.</p>
-          <h2>Choose the best contractor in Gurugram for your project</h2>
-          <p>Compare completed work, material specifications, a clear scope and a written estimate before choosing your contractor. Review our projects and construction standards to see how we approach your home.</p>
-          <nav><a href="/services">Construction services</a> | <a href="/projects">View our projects</a> | <a href="/brand-standards">Material standards</a> | <a href="/contact">Contact us</a></nav>
-          <h2>Frequently Asked Questions</h2>
-          ${localFaqs.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3><p>${escapeHtml(answer)}</p>`).join("\n")}
-          <h2>Visit Rupali Construction</h2>
-          <address>${escapeHtml(business.address)}</address>
-          <p>Monday–Saturday, 9:00 AM–7:00 PM. <a href="tel:+919311830088">+91 93118 30088</a> | <a href="mailto:ujjwalt.rg@rupalihomes.com">ujjwalt.rg@rupalihomes.com</a></p>
-          <p><a href="${business.mapsUrl}">Rupali Construction on Google Maps</a> | <a href="${business.directionsUrl}">Get directions</a></p>
-        </main>
-      `,
+      semanticHtml: homeHtml(),
+    };
+  }
+
+  if (cleanPath === buildingGuide.path) {
+    return {
+      title: buildingGuide.title, description: buildingGuide.description,
+      canonical: `${BASE_URL}${buildingGuide.path}`, ogImage: DEFAULT_IMAGE,
+      jsonLd: getDefaultJsonLd(),
+      semanticHtml: `<main class="seo-prerender-container" style="padding:2rem;max-width:900px;margin:auto;font-family:sans-serif;line-height:1.7">
+        <nav><a href="/">Home</a> / Building guide</nav><h1>${escapeHtml(buildingGuide.heading)}</h1><p>${escapeHtml(buildingGuide.intro)}</p>
+        ${buildingGuide.sections.map(section => `<section><h2>${escapeHtml(section.heading)}</h2><p>${escapeHtml(section.text)}</p></section>`).join("")}
+        <nav><a href="/services/residential-construction">Home construction services</a> | <a href="/projects">Project portfolio</a> | <a href="/brand-standards">Material standards</a> | <a href="/contact">Request a construction consultation</a></nav>
+      </main>`,
     };
   }
 
   if (cleanPath === "/services") {
     return {
-      title: "House Construction, Gurugram & Delhi NCR | Rupali Construction Services",
+      title: "Construction & Contractor Services in Gurgaon | Rupali Construction",
       description: "Rupali Construction is a leading construction company in Gurgaon delivering turnkey luxury villas, structural architecture, and Vastu-compliant floor designs.",
       canonical: `${BASE_URL}/services`,
       ogImage: DEFAULT_IMAGE,
@@ -160,56 +170,34 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath.startsWith("/services/")) {
     const serviceSlug = cleanPath.replace("/services/", "").toLowerCase().trim();
-    const serviceTitles: Record<string, { title: string; desc: string }> = {
-      "residential-construction": {
-        title: "Luxury Residential & Turnkey Villa Construction Gurgaon | Rupali Construction",
-        desc: "End-to-end bespoke luxury villa and builder floor construction in DLF and Sushant Lok with fixed pricing and 10-year warranty."
-      },
-      "renovation": {
-        title: "Structural Renovation & Villa Modernization Gurgaon | Rupali Construction",
-        desc: "Complete home and villa renovation services in Gurgaon with NDT structural audits, modern facade upgrades, and 5-year seepage warranty."
-      },
-      "commercial-construction": {
-        title: "Commercial & Corporate Construction Gurgaon | Rupali Construction",
-        desc: "High-grade office buildings, retail spaces, and institutional facilities engineered for modern business needs in Gurgaon."
-      },
-      "interior-design": {
-        title: "Luxury Turnkey Interior Design Gurgaon | Rupali Construction",
-        desc: "Bespoke residential interior design featuring 100% German CNC factory-finished modular woodwork and guaranteed 3D render match."
-      },
-      "architectural-design": {
-        title: "Architectural Design & Vastu Planning Gurgaon | Rupali Construction",
-        desc: "Award-winning architectural studio delivering Vastu-compliant master blueprints, 3D elevations, and DTCP sanction drawings."
-      },
-      "structural-engineering": {
-        title: "Advanced Structural Engineering & Health Audits Gurgaon | Rupali Construction",
-        desc: "Seismic Zone IV engineering, STAAD/ETABS 3D modeling, and certified non-destructive structural stability audits in Gurgaon."
-      }
-    };
-
-    const info = serviceTitles[serviceSlug] || {
-      title: "Specialized Construction Services Gurgaon | Rupali Construction",
-      desc: "Precision engineering, turnkey luxury construction, and architectural design services in Gurgaon by Rupali Construction."
-    };
+    const service = getServiceBySlug(serviceSlug);
+    if (!service) return missingPage(cleanPath);
+    const info = { title: `${service.shortTitle} in Gurgaon | Rupali Construction`, desc: `${service.shortTitle} services in Gurgaon (Gurugram). Discuss your project scope, material specifications and construction requirements with Rupali Construction.` };
 
     return {
       title: info.title,
       description: info.desc,
       canonical: `${BASE_URL}/services/${serviceSlug}`,
       ogImage: DEFAULT_IMAGE,
-      jsonLd: getDefaultJsonLd(info.desc),
+      jsonLd: [...getDefaultJsonLd(info.desc), {
+        "@context": "https://schema.org", "@type": "Service", name: service.title,
+        serviceType: service.shortTitle, url: `${BASE_URL}/services/${service.slug}`,
+        provider: { "@id": localBusinessSchema["@id"] }, areaServed: { "@type": "City", name: "Gurugram", alternateName: "Gurgaon" },
+      }],
       semanticHtml: `
         <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 1200px; margin: 0 auto;">
           <h1>${info.title}</h1>
           <p>${info.desc}</p>
-          <div style="margin-top: 2rem;"><a href="/contact">Book a Consultation Call</a></div>
+          <h2>Our construction process</h2><ol>${service.steps.map(step => `<li><h3>${escapeHtml(step.title)}</h3><p>${escapeHtml(step.desc)}</p></li>`).join("")}</ol>
+          <h2>Questions about ${escapeHtml(service.shortTitle)}</h2>${service.faqs.map(faq => `<h3>${escapeHtml(faq.question)}</h3><p>${escapeHtml(faq.answer)}</p>`).join("")}
+          <nav><a href="/projects">Project portfolio</a> | <a href="/building-guide-gurgaon">Compare builders and contractors</a> | <a href="/contact">Book a Consultation Call</a></nav>
         </main>
       `,
     };
   }
 
   if (cleanPath === "/projects") {
-    let projectsHtml = "<p>Loading recent projects...</p>";
+    let projectsHtml = fallbackProjects.map(p => `<article><h2><a href="/projects/${escapeHtml(p.slug)}">${escapeHtml(p.name)}</a></h2><p>${escapeHtml(p.description)}</p></article>`).join("");
     try {
       const db = getDb();
       const latestProjects = await db.select().from(projects).orderBy(desc(projects.createdAt)).limit(12);
@@ -247,10 +235,14 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath.startsWith("/projects/")) {
     const slug = cleanPath.replace("/projects/", "");
+    let proj: (typeof fallbackProjects)[number] & {status?: string; cost?: string | null} | typeof projects.$inferSelect | undefined = fallbackProjects.find(item => item.slug === slug);
+    let queryFailed = false;
     try {
-      const db = getDb();
-      const [proj] = await db.select().from(projects).where(eq(projects.slug, slug)).limit(1);
-      if (proj) {
+      const [record] = await getDb().select().from(projects).where(eq(projects.slug, slug)).limit(1);
+      proj = record || proj;
+    } catch { queryFailed = true; }
+    if (proj) {
+
         const title = `${proj.name} | Luxury Architecture in ${proj.location || "Gurugram"} by Rupali Construction`;
         const description = (proj.description || `Explore ${proj.name}, a turnkey ${proj.type} architectural masterpiece built by Rupali Construction in ${proj.location || "Gurugram"}.`).substring(0, 300);
         let imageUrl = DEFAULT_IMAGE;
@@ -266,21 +258,10 @@ async function resolvePageData(pathname: string): Promise<PageData> {
         }
 
         const jsonLd = {
-          "@context": "https://schema.org",
-          "@type": "Product",
-          "name": proj.name,
-          "image": imageUrl,
-          "description": description,
-          "brand": {
-            "@type": "Brand",
-            "name": "Rupali Construction"
-          },
-          "offers": {
-            "@type": "Offer",
-            "priceCurrency": "INR",
-            "price": "On Request",
-            "availability": "https://schema.org/InStock",
-          }
+          "@context": "https://schema.org", "@type": "CreativeWork",
+          name: proj.name, image: imageUrl, description,
+          url: `${BASE_URL}/projects/${proj.slug}`,
+          creator: { "@id": localBusinessSchema["@id"] },
         };
 
         return {
@@ -296,7 +277,7 @@ async function resolvePageData(pathname: string): Promise<PageData> {
               <div style="color: #666; margin-bottom: 1.5rem;">
                 <span><strong>Location:</strong> ${escapeHtml(proj.location || "Gurgaon, NCR")}</span> |
                 <span><strong>Type:</strong> ${escapeHtml(proj.type.toUpperCase())}</span> |
-                <span><strong>Status:</strong> ${escapeHtml(proj.status.toUpperCase())}</span> |
+                <span><strong>Status:</strong> ${escapeHtml((proj.status || "completed").toUpperCase())}</span> |
                 <span><strong>Built Area:</strong> ${escapeHtml(proj.area || "Custom Plan")}</span>
               </div>
               <article style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
@@ -312,42 +293,12 @@ async function resolvePageData(pathname: string): Promise<PageData> {
             </main>
           `,
         };
-      }
-    } catch (err) {
-      console.error(`Error fetching project ${slug} for prerender:`, err);
     }
-
-    const title = `${escapeHtml(slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()))} | Luxury Project in Gurugram by Rupali Construction`;
-    const description = "Explore this turnkey residential villa and commercial construction installation engineered by Rupali Construction in Gurugram, Haryana.";
-    return {
-      title,
-      description,
-      canonical: `${BASE_URL}/projects/${slug}`,
-      ogImage: DEFAULT_IMAGE,
-      jsonLd: getDefaultJsonLd("Turnkey residential villa and commercial structural development in Gurgaon engineered by Rupali Construction."),
-      semanticHtml: `
-        <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 1000px; margin: 0 auto;">
-          <nav><a href="/projects">← Back to All Projects</a></nav>
-          <h1 style="font-size: 2.2rem; margin-top: 1rem;">${escapeHtml(slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()))}</h1>
-          <div style="color: #666; margin-bottom: 1.5rem;">
-            <span><strong>Location:</strong> Gurugram, Haryana</span> |
-            <span><strong>Type:</strong> LUXURY ARCHITECTURAL BUILD</span>
-          </div>
-          <article style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-            <p>Explore this bespoke turnkey construction project designed and developed by Rupali Construction's architectural studio in Gurugram. Engineered with Grade Fe500D primary steel reinforcement, earthquake-resistant structural RCC frameworks, Italian marble interior layouts, and custom Vastu spatial orientation.</p>
-          </article>
-          <footer style="margin-top: 3rem; background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
-            <h3>Interested in building a custom residence or commercial asset in Gurugram?</h3>
-            <p>Contact our structural engineers and architectural directors for plot appraisal and itemized cost forecasting.</p>
-            <a href="/contact">Request Project Cost Estimate →</a>
-          </footer>
-        </main>
-      `,
-    };
+    return missingPage(cleanPath, queryFailed ? 503 : 404);
   }
 
   if (cleanPath === "/blog") {
-    let blogsHtml = "<p>Loading latest engineering publications...</p>";
+    let blogsHtml = fallbackPosts.map(p => `<article><h2><a href="/blog/${escapeHtml(p.slug)}">${escapeHtml(p.title)}</a></h2><p>${escapeHtml(p.excerpt)}</p></article>`).join("");
     try {
       const db = getDb();
       const latestBlogs = await db.select().from(blogPosts).where(eq(blogPosts.published, true)).orderBy(desc(blogPosts.createdAt)).limit(15);
@@ -385,10 +336,15 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath.startsWith("/blog/")) {
     const slug = cleanPath.replace("/blog/", "");
+    let post: (typeof fallbackPosts)[number] & {updatedAt?: Date | string | null} | typeof blogPosts.$inferSelect | undefined = fallbackPosts.find(item => item.slug === slug);
+    let queryFailed = false;
     try {
-      const db = getDb();
-      const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
-      if (post) {
+      const [record] = await getDb().select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
+      if (record && !record.published) return missingPage(cleanPath);
+      post = record || post;
+    } catch { queryFailed = true; }
+    if (post) {
+
         const title = `${post.title} | Rupali Construction Blog`;
         const description = (post.excerpt || post.content || "").substring(0, 280);
         const imageUrl = post.coverImage ? (post.coverImage.startsWith("http") ? post.coverImage : `${BASE_URL}${post.coverImage.startsWith("/") ? "" : "/"}${post.coverImage}`) : DEFAULT_IMAGE;
@@ -438,36 +394,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
             </main>
           `,
         };
-      }
-    } catch (err) {
-      console.error(`Error fetching blog post ${slug} for prerender:`, err);
     }
-
-    const title = `${escapeHtml(slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()))} | Rupali Construction Engineering Blog`;
-    const description = "Read authoritative architectural and engineering construction guidance from Rupali Construction's master civil design studio in Gurgaon.";
-    return {
-      title,
-      description,
-      canonical: `${BASE_URL}/blog/${slug}`,
-      ogImage: DEFAULT_IMAGE,
-      jsonLd: getDefaultJsonLd(),
-      semanticHtml: `
-        <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 850px; margin: 0 auto;">
-          <nav><a href="/blog">← Back to Blog Articles</a></nav>
-          <article style="margin-top: 1.5rem;">
-            <h1 style="font-size: 2.4rem; line-height: 1.3;">${escapeHtml(slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()))}</h1>
-            <p style="color: #777; margin-bottom: 2rem;">By <strong>Rupali Construction Engineering Studio</strong> | Category: <em>Architectural Guides & Construction Standards</em></p>
-            <div style="font-size: 1.15rem; line-height: 1.8; color: #222;">
-              <p>Discover advanced engineering methodologies, construction cost breakdowns, structural durability metrics, and spatial design best practices for homeowners building in Gurgaon and Delhi NCR. Our internal studio of master civil engineers combines modern biometric energy modeling with classical Vastu orientations to deliver enduring residential villas and corporate workspaces across Sector 71, Golf Course Extension Road, and Southern Peripheral Road.</p>
-            </div>
-          </article>
-          <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #ccc;">
-            <h3>Discuss your construction blueprints with our engineering directors</h3>
-            <a href="/contact">Contact Rupali Construction Corporate Studio →</a>
-          </footer>
-        </main>
-      `,
-    };
+    return missingPage(cleanPath, queryFailed ? 503 : 404);
   }
 
   if (cleanPath === "/leadership") {
@@ -515,8 +443,8 @@ async function resolvePageData(pathname: string): Promise<PageData> {
 
   if (cleanPath === "/contact") {
     return {
-      title: "Best Luxury Construction Studio In Gurgaon | Contact Rupali Construction",
-      description: "Schedule an architectural consultation and Vastu plot appraisal with Rupali Construction's corporate engineering studio in Sector 71, Gurugram.",
+      title: "Contact Rupali Construction | Builder & Contractor in Gurgaon",
+      description: "Contact Rupali Construction at M3M Broadway, Sector 71, Gurugram. Discuss home construction, contracting and interiors, or get directions on Google Maps.",
       canonical: `${BASE_URL}/contact`,
       ogImage: DEFAULT_IMAGE,
       jsonLd: getDefaultJsonLd("Contact information and Gurugram headquarters for Rupali Construction."),
@@ -537,137 +465,43 @@ async function resolvePageData(pathname: string): Promise<PageData> {
   }
 
   if (cleanPath === "/sitemap" || cleanPath === "/site-map") {
-    return {
-      title: "Sitemap & Gurgaon Construction Directory | Best Builder & Contractor | Rupali Construction",
-      description: "Browse the complete directory of Rupali Construction. Search for best builder in Gurgaon, best contractor in Gurgaon, luxury residential villas, and 2026 construction guides.",
-      canonical: `${BASE_URL}/sitemap`,
-      ogImage: DEFAULT_IMAGE,
-      jsonLd: [
-        ...getDefaultJsonLd("Complete site architecture and directory of Rupali Construction - Gurgaon's premier home builder and turnkey civil contractor."),
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Who is the best builder in Gurgaon for luxury houses and villas?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Rupali Construction is widely regarded as the premier luxury house builder in Gurgaon, specializing in turnkey residential villas, A-grade raw material standards, 2D/3D Vastu architectural planning, and licensed structural engineering. Headquartered at 5th Floor, M3M Broadway, Sector 71, Gurugram, the firm has delivered over 550+ homes across Delhi NCR."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Who is the best construction contractor in Gurgaon?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Rupali Construction is Gurgaon's top-rated civil construction contractor offering transparent milestone billing, 24/7 site CCTV streaming for homeowners, German shuttering systems, lab-tested Tata Tiscon FE 550D TMT steel, and an unconditional 10-year structural warranty."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is the cost of building an independent house in Gurgaon in 2026?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "In 2026, house construction costs in Gurgaon typically range between ₹1,750 to ₹2,050 per sq ft for Standard quality, ₹2,200 to ₹2,750 per sq ft for Premium Turnkey villas, and ₹3,000 to ₹3,800+ per sq ft for Ultra-Luxury bespoke residences with Italian marble and smart automation."
-              }
-            }
-          ]
-        }
-      ],
-      semanticHtml: `
-        <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 1100px; margin: 0 auto; line-height: 1.7;">
-          <h1>Sitemap & Gurgaon Construction Directory | Rupali Construction</h1>
-          <p style="font-size: 1.15rem; color: #444;">
-            Complete directory of Rupali Construction — recognized as Gurgaon's top-rated luxury house builder and turnkey civil contractor.
-          </p>
-          <section style="margin-top: 2rem;">
-            <h2>Core Pages</h2>
-            <ul>
-              <li><a href="/">Home - Best Builder & Luxury Home Construction in Gurgaon</a></li>
-              <li><a href="/services">Services Hub - Turnkey Construction & Civil Engineering</a></li>
-              <li><a href="/projects">Projects Portfolio - Delivered Luxury Villas & Landmarks</a></li>
-              <li><a href="/blog">Engineering Blog & Gurgaon Construction Guides</a></li>
-              <li><a href="/leadership">Leadership & Licensed Civil Engineers</a></li>
-              <li><a href="/brand-standards">Brand Standards & Quality Sourcing Benchmarks</a></li>
-              <li><a href="/contact">Contact Head Office - M3M Broadway Sector 71 Gurugram</a></li>
-            </ul>
-          </section>
-          <section style="margin-top: 2rem;">
-            <h2>Turnkey Construction & Architectural Services</h2>
-            <ul>
-              <li><a href="/services/residential-construction">Residential Construction & Luxury Villa Builders</a></li>
-              <li><a href="/services/commercial-construction">Commercial & Corporate Construction</a></li>
-              <li><a href="/services/renovation">Villa Renovation & Structural Retrofitting</a></li>
-              <li><a href="/services/interior-design">Luxury Turnkey Interior Design</a></li>
-              <li><a href="/services/architectural-design">Architectural Planning & Vastu Design</a></li>
-              <li><a href="/services/structural-engineering">Licensed Structural Engineering & Seismic Audits</a></li>
-            </ul>
-          </section>
-          <section style="margin-top: 2rem;">
-            <h2>Featured Projects Portfolio</h2>
-            <ul>
-              <li><a href="/projects/duplex-luxury-villa">Duplex Luxury Villa - The Westerlies Sector 108</a></li>
-              <li><a href="/projects/apartment-at-sushant-lok">Apartment At Sushant Lok - Luxury Residential Floor</a></li>
-              <li><a href="/projects/quickin-stayz">QuickIn Stayz - Sushant Lok 1 Commercial Suites</a></li>
-              <li><a href="/projects/gold-gym">Gold's Gym - Commercial Fitness Landmark at M3M Urbana</a></li>
-              <li><a href="/projects/knowledge-center">Knowledge Center - Corporate Suites at M3M Broadway</a></li>
-            </ul>
-          </section>
-          <section style="margin-top: 2rem;">
-            <h2>2026 Construction Guides & Cost Breakdowns</h2>
-            <ul>
-              <li><a href="/blog/cost-of-building-house-gurgaon">Cost of Building a House in Gurgaon: Complete 2026 Guide</a></li>
-              <li><a href="/blog/gurgaon-real-estate-trends">Gurgaon Real Estate Trends 2026: Prime Investment Sectors</a></li>
-              <li><a href="/blog/construction-timeline-breakdown">Construction Timeline Breakdown: Blueprint to Handover</a></li>
-              <li><a href="/blog/building-approvals-gurugram">Navigating Building Approvals & MCG/DTCP Regulations</a></li>
-              <li><a href="/blog/top-residential-areas-gurgaon-villas">Top Residential Areas in Gurgaon for Custom Villa Construction</a></li>
-              <li><a href="/blog/sustainable-construction-gurgaon">Sustainable Construction Practices for the Gurgaon Climate</a></li>
-              <li><a href="/blog/luxury-smart-homes-gurgaon">The Rise of Luxury Smart Homes in Gurgaon's Real Estate Market</a></li>
-              <li><a href="/blog/rcc-vs-steel-structure">RCC vs Steel Structure: Which is Better for Your NCR Project?</a></li>
-            </ul>
-          </section>
-        </main>
-      `,
+    return { title: "Sitemap | Rupali Construction", description: "Find construction services, projects, building guides and contact details for Rupali Construction in Gurgaon.",
+      canonical: `${BASE_URL}/sitemap`, ogImage: DEFAULT_IMAGE, jsonLd: getDefaultJsonLd(),
+      semanticHtml: `<main class="seo-prerender-container"><h1>Rupali Construction sitemap</h1>
+        <nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/projects">Projects</a> | <a href="/blog">Blog</a> | <a href="/building-guide-gurgaon">Choosing a builder in Gurgaon</a> | <a href="/brand-standards">Material standards</a> | <a href="/leadership">Leadership</a> | <a href="/contact">Contact and Google Maps</a></nav>
+        <h2>Construction guides</h2><ul>${fallbackPosts.map(p => `<li><a href="/blog/${p.slug}">${escapeHtml(p.title)}</a></li>`).join("")}</ul>
+        <h2>Project portfolio</h2><ul>${fallbackProjects.map(p => `<li><a href="/projects/${p.slug}">${escapeHtml(p.name)}</a></li>`).join("")}</ul></main>`,
     };
   }
 
-  // Fallback for custom or admin routes
+  const privateRoute = /^\/(admin|admin-login|login|profile|complete-profile)(?:\/|$)/.test(cleanPath);
   return {
-    title: "Rupali Construction | Crafting Architecture into Reality in Gurugram",
-    description: "Rupali Construction is a premier Gurgaon-based architectural construction contractor specializing in luxury residential villas, turnkey interiors, commercial building, and real estate consulting.",
-    canonical: `${BASE_URL}${cleanPath}`,
-    ogImage: DEFAULT_IMAGE,
-    jsonLd: getDefaultJsonLd(),
-    semanticHtml: `
-      <main class="seo-prerender-container" style="padding: 2rem; font-family: sans-serif; max-width: 1100px; margin: 0 auto; line-height: 1.7;">
-        <h1>Rupali Construction | Crafting Architecture into Reality</h1>
-        <p style="font-size: 1.2rem; color: #555;">Premier architectural and construction engineering contractors headquartered in Gurgaon, Haryana.</p>
-        <section style="margin-top: 2rem;">
-          <h2>Our Architectural Studio & Engineering Services</h2>
-          <p>We deliver Grade-A residential villa construction, turnkey commercial interiors, real estate valuation consulting, and Vastu-compliant structural floor planning across prime sectors in Gurugram.</p>
-        </section>
-        <footer style="margin-top: 3rem; border-top: 1px solid #ddd; padding-top: 1.5rem;">
-          <p><strong>Corporate Office:</strong> 5th floor, M3M Broadway, Sector 71, Gurugram, Haryana 122004</p>
-          <nav style="margin-top: 1rem;">
-            <a href="/services">Services</a> | <a href="/projects">Projects Portfolio</a> | <a href="/blog">Engineering Blog</a> | <a href="/contact">Contact Us</a>
-          </nav>
-        </footer>
-      </main>
-    `,
+    title: privateRoute ? "Account | Rupali Construction" : "Page Not Found | Rupali Construction",
+    description: "Browse Rupali Construction services, projects and contact information.",
+    canonical: `${BASE_URL}${cleanPath}`, ogImage: DEFAULT_IMAGE,
+    jsonLd: [], status: privateRoute ? undefined : 404,
+    semanticHtml: '<main class="seo-prerender-container"><h1>Page not found</h1><p>This page does not exist.</p><a href="/">Home</a> | <a href="/services">Services</a></main>',
   };
 }
 
 export async function seoPrerenderHandler(c: Context) {
   try {
     const url = new URL(c.req.url);
+    if (url.pathname.startsWith("/services/")) {
+      const service = getServiceBySlug(url.pathname.split("/")[2]);
+      if (service && url.pathname !== `/services/${service.slug}`) return c.redirect(`/services/${service.slug}`, 301);
+    }
     const pageData = await resolvePageData(url.pathname);
     let html = getHtmlTemplate();
+    // The static homepage is also the server template for all other routes.
+    html = html.replace(/<script\b[^>]*data-seo-static=["']true["'][^>]*>[\s\S]*?<\/script>/gi, "");
+    html = html.replace(/<!--seo-content-start-->[\s\S]*?<!--seo-content-end-->/, "");
+    if (pageData.status) c.status(pageData.status);
 
     // Replace Title
-    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${pageData.title}</title>`);
+    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(pageData.title)}</title>`);
     if (!/<title>/i.test(html)) {
-      html = html.replace("</head>", `<title>${pageData.title}</title>\n</head>`);
+      html = html.replace("</head>", `<title>${escapeHtml(pageData.title)}</title>\n</head>`);
     }
 
     // Replace Description & Meta tags
@@ -676,7 +510,7 @@ export async function seoPrerenderHandler(c: Context) {
 
     const isPrivateAppRoute = url.pathname.startsWith('/admin') || url.pathname.startsWith('/profile') || url.pathname.startsWith('/login') || url.pathname.startsWith('/complete-profile');
 
-    const robotsMeta = isPrivateAppRoute
+    const robotsMeta = (isPrivateAppRoute || pageData.status)
       ? `<meta name="robots" content="noindex, nofollow" />\n    <meta name="googlebot" content="noindex, nofollow" />`
       : `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />`;
 
@@ -690,7 +524,7 @@ export async function seoPrerenderHandler(c: Context) {
     html = html.replace(/<link\b[^>]*rel=["']sitemap["'][^>]*>/gi, "");
 
     // Inject OpenGraph & Twitter tags and JSON-LD schema into head
-    const schemaScript = Array.isArray(pageData.jsonLd)
+    const schemaScript = (isPrivateAppRoute || pageData.status) ? "" : Array.isArray(pageData.jsonLd)
       ? pageData.jsonLd.map(s => `<script type="application/ld+json">${JSON.stringify(s).replace(/</g, "\\u003c")}</script>`).join("\n")
       : `<script type="application/ld+json">${JSON.stringify(pageData.jsonLd).replace(/</g, "\\u003c")}</script>`;
 

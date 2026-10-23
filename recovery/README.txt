@@ -15,7 +15,10 @@ To generate additive SQL: node --import tsx scripts/prepare-supabase-recovery.mj
 new-supabase.sql can be rerun without overwriting existing project/article edits.
 verify-media.sql updates only Gold Gym's gallery and checks recovery counts.
 
-Vercel production requires DATABASE_URL with the new project's transaction pooler URI.
+Vercel production supports DATABASE_URL as a complete transaction-pooler URI.
+Alternatively, DATABASE_URL may contain only the database password when SUPABASE_URL
+and SUPABASE_DB_POOLER_HOST are explicitly configured. The server URL-encodes it.
+For migration scripts that read DATABASE_URL directly, use a complete URI.
 Storage requires SUPABASE_URL, SUPABASE_BUCKET_NAME=images, and SUPABASE_SERVICE_ROLE_KEY saved as a Secret.
 Never put credentials in this repository or browser/client build variables.
 After saving environment changes, redeploy and verify project.list, blog.list, project detail pages, and authenticated uploads.

@@ -1,3 +1,4 @@
+import { resolveDatabaseUrl } from "./database-url.js";
 import * as dotenv from "dotenv";
 import * as path from "path";
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
@@ -8,7 +9,7 @@ export const env = {
   appId: e.APP_ID || e.VITE_APP_ID || "",
   appSecret: e.APP_SECRET || "",
   isProduction: e.NODE_ENV === "production",
-  databaseUrl: e.DATABASE_URL || "sqlite:memory",
+  databaseUrl: resolveDatabaseUrl(e),
   kimiAuthUrl: e.KIMI_AUTH_URL || e.VITE_KIMI_AUTH_URL || "https://auth.kimi.com",
   kimiOpenUrl: e.KIMI_OPEN_URL || "https://open.kimi.com",
   ownerUnionId: e.OWNER_UNION_ID ?? "",

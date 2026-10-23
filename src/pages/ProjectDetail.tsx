@@ -138,10 +138,10 @@ export default function ProjectDetail() {
     }
   }
   
-  const mainImage = images[0] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80";
-  const secondImage = images[1] || "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80";
+  const mainImage = images[0] || "/project-gallery.svg";
+  const secondImage = images[1] || "/project-gallery.svg";
   
-  const displayImages = images.length > 0 ? images : [mainImage, secondImage];
+  const displayImages = images.length > 0 ? images : [mainImage];
   const [aspectRatios, setAspectRatios] = useState<Record<string, 'portrait' | 'landscape'>>({});
 
   useEffect(() => {
@@ -577,7 +577,7 @@ export default function ProjectDetail() {
               } catch (e) {
                 opImages = op.images ? op.images.split(",").map((s: string) => s.trim()).filter(Boolean) : [];
               }
-              const opCover = opImages[0] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80";
+              const opCover = opImages[0] || "/project-gallery.svg";
               
               return (
                 <Link 
@@ -626,7 +626,7 @@ export default function ProjectDetail() {
             
             <div className="overflow-y-auto p-4 md:p-6 bg-gray-100 flex-1" data-lenis-prevent="true">
               <div className="flex flex-col gap-6">
-                {(images.length > 0 ? images : [mainImage, secondImage]).map((img: string, idx: number) => (
+                {(images.length > 0 ? images : [mainImage]).map((img: string, idx: number) => (
                   <div key={idx} className="w-full rounded-xl overflow-hidden shadow-sm bg-white">
                     <Image src={img} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-auto max-h-[75vh] object-contain mx-auto" />
                   </div>

@@ -35,12 +35,22 @@ export default function Projects() {
         if (raw.trim().startsWith("[") || raw.trim().startsWith("{")) {
           try {
             const imgs = JSON.parse(raw);
-            if (Array.isArray(imgs) && imgs.length > 0) return imgs[0];
+            if (Array.isArray(imgs) && imgs.length > 0) {
+              const firstValid = imgs.find((img: string) => typeof img === "string" && img.trim() && img.trim() !== "[]");
+              if (firstValid) return firstValid;
+            }
           } catch {}
+        } else {
+          const first = raw.split(",")[0]?.trim();
+          if (first && first !== "[]") return first;
         }
-        const first = raw.split(",")[0]?.trim();
-        if (first) return first;
+      } else if (Array.isArray(project.images) && project.images.length > 0) {
+        const firstValid = project.images.find((img: string) => typeof img === "string" && img.trim() && img.trim() !== "[]");
+        if (firstValid) return firstValid;
       }
+    }
+    if (project.coverImage && typeof project.coverImage === "string" && project.coverImage.trim() !== "[]") {
+      return project.coverImage;
     }
     const fallback = fallbackProjects.find((p) => p.name === project.name || p.slug === project.slug);
     return fallback?.coverImage || undefined;

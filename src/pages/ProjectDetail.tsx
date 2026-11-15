@@ -111,12 +111,13 @@ export default function ProjectDetail() {
 
   const activeProject = dbProject ? (() => {
     const fallback = fallbackMatch;
-    const hasImages = typeof dbProject.images === "string"
-      ? dbProject.images.trim() && dbProject.images.trim() !== "[]"
-      : Array.isArray(dbProject.images) && dbProject.images.length > 0;
+    const rawImages = dbProject.images as unknown;
+    const hasImages = typeof rawImages === "string"
+      ? Boolean(rawImages.trim() && rawImages.trim() !== "[]")
+      : Array.isArray(rawImages) && rawImages.length > 0;
     return {
       ...dbProject,
-      coverImage: dbProject.coverImage || fallback?.coverImage || "",
+      coverImage: (dbProject as any).coverImage || fallback?.coverImage || "",
       images: hasImages ? dbProject.images : fallback?.images || JSON.stringify([fallback?.coverImage].filter(Boolean)),
     };
   })() : (fallbackMatch ? {

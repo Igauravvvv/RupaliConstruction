@@ -199,19 +199,35 @@ async function resolvePageData(pathname: string): Promise<PageData> {
   }
 
   if (cleanPath === "/projects") {
-    let projectsHtml = fallbackProjects.map(p => `<article><h2><a href="/projects/${escapeHtml(p.slug)}">${escapeHtml(p.name)}</a></h2><p>${escapeHtml(p.description)}</p></article>`).join("");
+    let projectsHtml = fallbackProjects.map(p => {
+      const imgTag = p.coverImage ? `<img src="${escapeHtml(p.coverImage)}" alt="${escapeHtml(p.name)}" loading="lazy" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px; margin-bottom: 0.75rem;" />` : "";
+      return `<article style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">${imgTag}<h2><a href="/projects/${escapeHtml(p.slug)}">${escapeHtml(p.name)}</a></h2><p>${escapeHtml(p.description)}</p></article>`;
+    }).join("");
     try {
       const db = getDb();
       const latestProjects = await db.select(publicProjectFields).from(projects).orderBy(desc(projects.createdAt)).limit(12);
       if (latestProjects.length > 0) {
-        projectsHtml = latestProjects.map(p => `
+        projectsHtml = latestProjects.map(p => {
+          const fallback = fallbackProjects.find(f => f.slug === p.slug || f.name === p.name);
+          let coverImg = "";
+          try {
+            if (p.images && p.images.trim() && p.images.trim() !== "[]") {
+              const parsed = JSON.parse(p.images);
+              if (Array.isArray(parsed) && parsed.length > 0 && parsed[0] !== "[]") coverImg = parsed[0];
+            }
+          } catch {}
+          if (!coverImg) coverImg = fallback?.coverImage || "";
+          const imgTag = coverImg ? `<img src="${escapeHtml(coverImg)}" alt="${escapeHtml(p.name)}" loading="lazy" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px; margin-bottom: 0.75rem;" />` : "";
+          return `
           <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+            ${imgTag}
             <h2><a href="/projects/${escapeHtml(p.slug)}">${escapeHtml(p.name)}</a></h2>
             <p><strong>Location:</strong> ${escapeHtml(p.location || "Gurugram, Haryana")} | <strong>Type:</strong> ${escapeHtml(p.type)} | <strong>Status:</strong> ${escapeHtml(p.status)}</p>
             <p>${escapeHtml((p.description || "").substring(0, 250))}...</p>
             <a href="/projects/${escapeHtml(p.slug)}">View Full Specification & Gallery →</a>
           </div>
-        `).join("");
+        `;
+        }).join("");
       }
     } catch (err) {
       console.error("Error fetching projects for prerender:", err);
@@ -246,18 +262,25 @@ async function resolvePageData(pathname: string): Promise<PageData> {
     if (proj) {
 
         const title = `${proj.name} | Luxury Architecture in ${proj.location || "Gurugram"} by Rupali Construction`;
+        const fallback = fallbackProjects.find(f => f.slug === proj.slug || f.name === proj.name);
         const description = (proj.description || `Explore ${proj.name}, a turnkey ${proj.type} architectural masterpiece built by Rupali Construction in ${proj.location || "Gurugram"}.`).substring(0, 300);
         let imageUrl = DEFAULT_IMAGE;
         try {
-          if (proj.images) {
-            const parsed = JSON.parse(proj.images);
-            if (Array.isArray(parsed) && parsed.length > 0) {
+          const rawImgs = (proj.images && proj.images.trim() && proj.images.trim() !== "[]") ? proj.images : fallback?.images;
+          if (rawImgs) {
+            const parsed = typeof rawImgs === "string" ? JSON.parse(rawImgs) : rawImgs;
+            if (Array.isArray(parsed) && parsed.length > 0 && parsed[0] !== "[]") {
               imageUrl = parsed[0].startsWith("http") ? parsed[0] : `${BASE_URL}${parsed[0].startsWith("/") ? "" : "/"}${parsed[0]}`;
             }
+          }
+          if (imageUrl === DEFAULT_IMAGE && fallback?.coverImage) {
+            imageUrl = fallback.coverImage.startsWith("http") ? fallback.coverImage : `${BASE_URL}${fallback.coverImage.startsWith("/") ? "" : "/"}${fallback.coverImage}`;
           }
         } catch {
           // Ignore json parse error for image fallback
         }
+
+        const heroImageTag = imageUrl !== DEFAULT_IMAGE ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(proj.name)}" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px; margin: 1.5rem 0;" />` : "";
 
         const jsonLd = {
           "@context": "https://schema.org", "@type": "CreativeWork",
@@ -282,6 +305,7 @@ async function resolvePageData(pathname: string): Promise<PageData> {
                 <span><strong>Status:</strong> ${escapeHtml((proj.status || "completed").toUpperCase())}</span> |
                 <span><strong>Built Area:</strong> ${escapeHtml(proj.area || "Custom Plan")}</span>
               </div>
+              ${heroImageTag}
               <article style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
                 <p>${escapeHtml(proj.description || "Project specifications under final processing.")}</p>
               </article>

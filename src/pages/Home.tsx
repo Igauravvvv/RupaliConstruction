@@ -4,7 +4,6 @@ import Hero from "@/sections/Hero";
 import CinematicReveal from "@/sections/CinematicReveal";
 import TrustBar from "@/sections/TrustBar";
 import ConstructionConcerns from "@/sections/ConstructionConcerns";
-import WhyUs from "@/sections/WhyUs";
 import Services from "@/sections/Services";
 import Projects from "@/sections/Projects";
 import Testimonials from "@/sections/Testimonials";
@@ -29,13 +28,12 @@ export default function Home() {
       <Hero />
       <CinematicReveal />
       <TrustBar />
-      <WhyUs />
-      <ConstructionConcerns />
-      <Services />
+      <Services homePreview />
       <Projects />
-      <InstagramFeed />
+      <ConstructionConcerns />
       <Testimonials />
-      <EstimateSection />
+      <InstagramFeed />
+      <EstimateSection compact />
       <FAQ />
       <Footer />
       <PromoPopup />

@@ -4,18 +4,18 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 
 const ConstructionEstimator = lazy(() => import("@/components/ConstructionEstimator"));
 
-export default function EstimateSection() {
+export default function EstimateSection({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <section id="estimate" className="py-12 md:py-20 bg-[var(--rc-white)]">
+    <section id="estimate" className={`${compact ? "py-8 md:py-12" : "py-12 md:py-20"} bg-[var(--rc-white)]`}>
       <div className="container-rc">
-        <div className="relative overflow-hidden rounded-3xl bg-[var(--rc-dark)] p-6 sm:p-10 lg:p-12 text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
+        <div className={`relative overflow-hidden rounded-3xl bg-[var(--rc-dark)] ${compact ? "p-6 sm:px-9 sm:py-7" : "p-6 sm:p-10 lg:p-12"} text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7`}>
           <div className="absolute -right-12 -top-16 h-64 w-64 rounded-full border border-white/10 pointer-events-none" aria-hidden="true" />
           <div className="relative max-w-2xl">
             <p className="text-xs uppercase font-bold tracking-[0.18em] text-orange-300 mb-3">Plan your budget</p>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">What could your home cost?</h2>
-            <p className="text-sm sm:text-base text-white/75 leading-relaxed">Explore your construction budget in a few steps. Add your project details, compare packages and adjust materials to suit your plans.</p>
+            <h2 className={`${compact ? "text-2xl sm:text-3xl mb-2" : "text-3xl sm:text-4xl mb-4"} font-semibold tracking-tight`}>What could your home cost?</h2>
+            <p className="text-sm sm:text-base text-white/75 leading-relaxed">{compact ? "Explore packages and materials with our construction cost calculator." : "Explore your construction budget in a few steps. Add your project details, compare packages and adjust materials to suit your plans."}</p>
             <p className="text-xs text-white/55 mt-3">An indicative estimate to help you plan. Your final quote depends on the agreed scope and site conditions.</p>
           </div>
           <Dialog open={open} onOpenChange={setOpen}>

@@ -56,7 +56,7 @@ export default function Projects() {
         />
       </div>
       <div className="container-rc relative z-10">
-        <div className="flex flex-col items-center justify-center text-center mb-12">
+        <div className="mb-6 flex flex-col items-center justify-center text-center sm:mb-9">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,23 +64,24 @@ export default function Projects() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <p className="text-5xl lg:text-[6rem] leading-none font-serif italic text-[var(--rc-orange)] mb-3 drop-shadow-sm">
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--rc-orange)] sm:text-xs">
               Portfolio
             </p>
-            <h2 className="text-xl md:text-2xl font-medium text-[var(--rc-dark)]">
+            <h2 className="font-serif text-3xl leading-tight tracking-tight text-[var(--rc-dark)] sm:text-5xl lg:text-6xl">
               Featured Projects
             </h2>
           </motion.div>
 
-          <div className="flex gap-3 mt-8 justify-center flex-wrap">
+          <div role="group" aria-label="Filter projects by service" className="mt-5 grid w-full max-w-xl grid-cols-[0.6fr_1fr_1fr_1fr] gap-1 rounded-2xl border border-[var(--rc-blue)]/10 bg-[#eaf0f8] p-1 sm:mt-7 sm:gap-1.5 sm:p-1.5">
             {filterOptions.map((filter) => (
               <button
                 key={filter}
                 onClick={() => handleFilterClick(filter)}
-                className={`px-6 py-2.5 text-base font-medium rounded-full capitalize transition-all shadow-sm ${
+                aria-pressed={activeFilter === filter}
+                className={`min-h-11 rounded-xl px-1 py-2 text-[11px] font-semibold capitalize transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--rc-orange)] sm:px-4 sm:text-sm ${
                   activeFilter === filter
-                    ? "bg-[var(--rc-orange)] text-white shadow-md shadow-[var(--rc-orange)]/20"
-                    : "bg-white border border-[var(--rc-gray)] text-[var(--rc-muted)] hover:text-[var(--rc-orange)] hover:border-[var(--rc-orange)]/30 hover:bg-[var(--rc-orange)]/5"
+                    ? "bg-[var(--rc-blue)] text-white shadow-sm"
+                    : "text-[#586a83] hover:bg-white/80 hover:text-[var(--rc-blue)]"
                 }`}
               >
                 {filter}
@@ -255,6 +256,7 @@ function ProjectImage({ src, name }: { src?: string; name: string }) {
     return (
       <Image
         src={src}
+        sizes="(min-width: 1024px) 384px, (min-width: 768px) 50vw, 85vw"
         alt={`${name} - Construction and Architecture Project in Gurugram by Rupali Construction`}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       />

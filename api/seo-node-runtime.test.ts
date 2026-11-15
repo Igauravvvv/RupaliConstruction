@@ -22,7 +22,7 @@ it("loads shared search HTML in Node ESM without a bundler resolving its imports
     const { stdout } = await promisify(execFile)(process.execPath, ["--input-type=module", "-e",
       `const {homeHtml} = await import(${JSON.stringify(entry)}); console.log(homeHtml());`,
     ]);
-    expect(stdout).toContain("Your home. Thoughtfully built.");
+    expect(stdout).toContain("Built around your life.");
     expect(stdout).toContain("11701277791317730988");
   } finally {
     await rm(directory, { recursive: true, force: true });

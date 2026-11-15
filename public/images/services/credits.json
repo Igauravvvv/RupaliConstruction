@@ -1,0 +1,22 @@
+{
+  "license": "https://www.pexels.com/license/",
+  "usage": "Illustrative service photography; not portfolio projects.",
+  "photos": [
+    {
+      "file": "residential.webp",
+      "source": "https://www.pexels.com/photo/workmen-building-apartment-house-on-construction-site-5335018/"
+    },
+    {
+      "file": "commercial.webp",
+      "source": "https://www.pexels.com/photo/cranes-over-building-under-construction-18162494/"
+    },
+    {
+      "file": "renovation.webp",
+      "source": "https://www.pexels.com/photo/construction-workers-renovating-a-house-5493654/"
+    },
+    {
+      "file": "interiors.webp",
+      "source": "https://www.pexels.com/photo/interior-design-decorative-samples-6580007/"
+    }
+  ]
+}

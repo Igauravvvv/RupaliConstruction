@@ -1,227 +1,36 @@
-import HeroBlueprint from "@/components/HeroBlueprint";
-import { useState, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link } from "react-router";
-import { ArrowRight, ChevronDown, Activity, MapPin, HardHat, Wrench, Hammer, Ruler } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion, useInView } from "framer-motion";
-import { lazy, Suspense } from "react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+
 const CombinedHero3D = lazy(() => import("@/components/CombinedHero3D"));
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.15,
-    },
-  },
-};
-
-const fadeUp: any = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-const floatAnimation = {
-  initial: { y: 0 },
-  animate: {
-    y: [0, -10, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-};
-
-const words = ["ARTS", "HOMES", "DREAMS", "ARCHITECTURE"];
-
 export default function Hero() {
-  const [wordIndex, setWordIndex] = useState(0);
   const [show3D, setShow3D] = useState(false);
-  const heroRef = useRef<HTMLElement>(null);
-  const inView = useInView(heroRef, { margin: "100px" });
   const reduceMotion = useReducedMotion();
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
-    let timer: ReturnType<typeof setTimeout>;
-    const update = () => { clearTimeout(timer); setShow3D(false); if (media.matches) timer = setTimeout(() => setShow3D(true), 800); };
-    update(); media.addEventListener("change", update);
-    return () => { clearTimeout(timer); media.removeEventListener("change", update); };
+    const timer = window.setTimeout(() => setShow3D(true), 250);
+    return () => window.clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    if (reduceMotion || !inView) return;
-    const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % words.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [reduceMotion, inView]);
-
-  return (
-    <section ref={heroRef} className="relative min-h-[100svh] flex items-center overflow-hidden bg-transparent text-[var(--rc-text)] pt-24 pb-28 sm:pb-24">
-      <HeroBlueprint />
-      {show3D && <Suspense fallback={null}><CombinedHero3D /></Suspense>}
-
-      <div className="relative z-10 container-rc w-full h-full flex items-center justify-center pointer-events-none">
-
-          {/* Center Column: Typography & CTAs */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-            className="flex flex-col items-center justify-center text-center pointer-events-auto z-10 w-full max-w-4xl mx-auto py-2"
-          >
-            <motion.div variants={fadeUp} className="mb-3 sm:mb-5 lg:mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[var(--rc-blue)]/20 bg-white/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-[var(--rc-orange)]/50 transition-all duration-300 cursor-default">
-              <span className="w-2 h-2 rounded-full bg-[var(--rc-orange)] animate-pulse"></span>
-              <span className="text-[10px] sm:text-xs font-bold tracking-widest text-[var(--rc-blue)] uppercase">
-                Established Since 2001
-              </span>
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="mb-4 sm:mb-6 w-full flex flex-col items-center justify-center relative z-10">
-              <div className="absolute -inset-10 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85)_0%,transparent_60%)] blur-2xl -z-10 rounded-full" />
-              <div className="leading-[1.1] w-full relative flex flex-col items-center" aria-hidden="true">
-
-                {/* Crafting - Elegant Serif Neutral */}
-                <motion.div className="flex justify-center items-center mb-0.5 sm:mb-1">
-                  <motion.span
-                    className="text-4xl sm:text-6xl md:text-6xl lg:text-[4.75rem] xl:text-[5rem] 2xl:text-[5.5rem] font-serif italic text-[var(--rc-dark)] block tracking-tight leading-normal"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  >
-                    Crafting
-                  </motion.span>
-                </motion.div>
-
-                {/* Looping Word - Premium Copper/Orange Shimmer */}
-                <motion.div className="flex flex-col items-center justify-center relative my-1 sm:my-2 z-20 h-[3.5rem] sm:h-[5.5rem] md:h-[6.5rem] lg:h-[7.5rem] xl:h-[8rem]">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={wordIndex}
-                      className={`font-black uppercase tracking-tighter text-transparent block leading-none px-4 drop-shadow-[0_4px_10px_rgba(240,113,43,0.2)] cursor-default ${
-                        words[wordIndex] === "ARCHITECTURE"
-                          ? "text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] xl:text-[5.75rem] 2xl:text-[6.25rem]"
-                          : "text-5xl sm:text-7xl md:text-7xl lg:text-[6.5rem] xl:text-[7rem] 2xl:text-[7.5rem]"
-                      }`}
-                      style={{ WebkitTextStroke: "2px var(--rc-orange)", WebkitTextFillColor: "transparent" }}
-                      initial={{ y: 30, opacity: 0, scale: 0.95, rotateX: 15 }}
-                      animate={{
-                        y: 0,
-                        opacity: 1,
-                        scale: 1,
-                        rotateX: 0
-                      }}
-                      exit={{ y: -30, opacity: 0, scale: 1.05, rotateX: -15 }}
-                      transition={{
-                        y: { type: "spring", stiffness: 400, damping: 30 },
-                        opacity: { duration: 0.3 },
-                        scale: { duration: 0.3 },
-                        rotateX: { duration: 0.3 }
-                      }}
-                      whileHover={{ scale: 1.05, textShadow: "0 0 20px rgba(240,113,43,0.5)" }}
-                    >
-                      {words[wordIndex]}
-                    </motion.span>
-                  </AnimatePresence>
-                  {/* Very soft glow, not overpowering */}
-                  <motion.div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 rounded-full"
-                    style={{ background: 'radial-gradient(ellipse at center, rgba(240,113,43,0.15) 0%, transparent 60%)' }}
-                    animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.9, 1.05, 0.9] }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                  />
-                </motion.div>
-
-                {/* Into Reality - Minimalist Light Sans */}
-                <motion.div className="flex justify-center items-center mt-1 sm:mt-2">
-                  <motion.span
-                    className="text-2xl sm:text-4xl md:text-4xl lg:text-[2.75rem] xl:text-[3.5rem] 2xl:text-[4rem] font-light tracking-wide text-[var(--rc-text)]/80 block"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-                  >
-                    Into Reality
-                  </motion.span>
-                </motion.div>
-
-              </div>
-            </motion.div>
-
-            <h1 className="text-xl sm:text-2xl font-semibold text-[var(--rc-dark)] mb-4">Your home. Thoughtfully built.</h1>
-            <motion.p variants={fadeUp} className="text-base sm:text-lg md:text-xl lg:text-xl text-[var(--rc-text)] max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed font-medium text-center">
-              Home construction, turnkey villas and interiors in Gurgaon and Delhi NCR, with clear planning from your first idea to the final handover.
-            </motion.p>
-
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
-              <div className="relative group">
-                <Link
-                  to="/contact"
-                  className="relative px-7 py-3.5 md:px-8 md:py-4 bg-[var(--rc-blue)] text-white font-bold rounded-full hover:bg-[var(--rc-dark)] shadow-[0_0_20px_rgba(11,36,71,0.3)] hover:shadow-[0_0_30px_rgba(240,113,43,0.4)] focus:ring-2 focus:ring-offset-2 focus:ring-[var(--rc-orange)] focus:outline-none transition-all duration-300 flex items-center gap-3 overflow-hidden z-10"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
-                  <span className="relative z-10 flex items-center gap-2 tracking-widest uppercase text-xs">
-                    Start a Project
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-[var(--rc-orange)] transition-all" />
-                  </span>
-                </Link>
-
-                {/* Tiny Animated Construction Icons */}
-                <HardHat className="absolute top-2 left-6 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-6 group-hover:-translate-x-6 transition-all duration-500 ease-out z-0 -rotate-12 scale-50 group-hover:scale-100 pointer-events-none" />
-                <Hammer className="absolute top-2 left-10 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-7 group-hover:-translate-x-1 transition-all duration-500 delay-75 ease-out z-0 -rotate-45 scale-50 group-hover:scale-100 pointer-events-none" />
-                <Wrench className="absolute top-2 right-6 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-6 group-hover:translate-x-6 transition-all duration-500 delay-100 ease-out z-0 rotate-12 scale-50 group-hover:scale-100 pointer-events-none" />
-                <Ruler className="absolute top-2 right-10 w-3.5 h-3.5 text-[var(--rc-orange)] opacity-0 group-hover:opacity-100 group-hover:-translate-y-7 group-hover:translate-x-1 transition-all duration-500 delay-150 ease-out z-0 rotate-45 scale-50 group-hover:scale-100 pointer-events-none" />
-              </div>
-
-              <Link
-                to="/projects"
-                className="group px-6 py-3.5 md:py-4 bg-transparent text-[var(--rc-text)] font-bold hover:text-[var(--rc-orange)] focus:outline-none transition-colors inline-flex items-center gap-2 tracking-widest uppercase text-xs relative"
-              >
-                View Portfolio
-                <span className="absolute bottom-2 left-6 right-6 h-[1px] bg-[var(--rc-text)]/20 group-hover:bg-[var(--rc-orange)] group-hover:w-auto transition-all duration-300"></span>
-              </Link>
-            </motion.div>
-          </motion.div>
-
+  return <section id="home-hero" className="relative isolate min-h-[900px] overflow-hidden bg-[#eaf1fc] pt-28 sm:min-h-[1040px] sm:pt-36 lg:flex lg:min-h-[max(800px,100svh)] lg:items-center lg:pb-44 lg:pt-28">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_24%,#ffffff_0%,transparent_62%),radial-gradient(ellipse_at_5%_80%,#bad0f3_0%,transparent_52%),radial-gradient(ellipse_at_100%_65%,#c5d8f6_0%,transparent_50%),linear-gradient(180deg,#f5f8ff_0%,#e8effc_55%,#d3e1f7_100%)]" />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.045]" style={{backgroundImage:"linear-gradient(#7291bf 1px,transparent 1px),linear-gradient(90deg,#7291bf 1px,transparent 1px)",backgroundSize:"80px 80px",maskImage:"linear-gradient(transparent 35%,black 100%)"}} />
+    <svg aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%] w-full opacity-40" viewBox="0 0 1440 400" preserveAspectRatio="none" fill="none"><defs><linearGradient id="hero-landscape" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#b4c9ed" stopOpacity="0" /><stop offset="1" stopColor="#82a7df" stopOpacity="0.5" /></linearGradient></defs><path d="M0 180C200 80 340 260 580 210S1000 70 1440 170V400H0Z" fill="url(#hero-landscape)" /><path d="M0 280C280 170 450 340 760 260S1160 220 1440 280V400H0Z" fill="#a9c2e9" fillOpacity="0.3" /></svg>
+    <svg aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-12 h-[45%] w-full text-[#446ba3] opacity-[0.22] lg:inset-0 lg:h-full" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none" stroke="currentColor" strokeWidth="1">
+      <ellipse cx="235" cy="630" rx="215" ry="78" transform="rotate(-22 235 630)" />
+      <ellipse cx="1160" cy="670" rx="210" ry="76" transform="rotate(18 1160 670)" />
+      <ellipse cx="720" cy="650" rx="660" ry="156" transform="rotate(-10 720 650)" strokeDasharray="5 10" strokeOpacity="0.6" />
+    </svg>
+    <div className="absolute inset-x-0 bottom-16 h-[450px] sm:bottom-12 sm:h-[430px] lg:inset-0 lg:h-full">{show3D && <Suspense fallback={null}><CombinedHero3D integrated /></Suspense>}</div>
+    <motion.div initial={reduceMotion ? false : {opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:0.8}} className="container-rc pointer-events-none relative z-20 mx-auto flex flex-col items-center text-center">
+      <p className="mb-7 flex items-center gap-3 text-[9px] font-semibold uppercase tracking-[0.22em] text-[#526886] sm:text-[10px]"><span className="h-px w-6 bg-[var(--rc-orange)]" />Gurugram · Since 2001<span className="h-px w-6 bg-[var(--rc-orange)]" /></p>
+      <h1 className="font-serif text-[clamp(3.5rem,6.5vw,6.5rem)] sm:text-[clamp(4.5rem,7vw,6.5rem)] lg:text-[clamp(4.5rem,6.5vw,6.5rem)] leading-[0.98] tracking-[-0.045em] text-[var(--rc-blue)]">Built around<br /><span className="italic text-[var(--rc-orange)]">your life.</span></h1>
+      <p className="mt-6 max-w-[290px] text-sm leading-relaxed text-[#5b6c86] sm:max-w-[350px] sm:text-base">Thoughtfully designed. Carefully constructed.<br className="hidden sm:block" /> Homes and spaces that feel like you.</p>
+      <div className="pointer-events-auto mt-7 flex flex-wrap items-center justify-center gap-3">
+        <Link to="/contact" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[var(--rc-blue)] px-6 py-3 text-xs font-semibold text-white shadow-lg shadow-[#0b2e59]/20 transition-colors hover:bg-[#17477f]">Let’s Build Together<ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+        <Link to="/projects" className="inline-flex min-h-12 items-center gap-2 px-3 py-3 text-xs font-semibold text-[var(--rc-blue)] underline decoration-[#0b2e59]/30 underline-offset-8 transition-colors hover:text-[var(--rc-orange)]">Explore Our Work<ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
       </div>
-
-      <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 w-full flex justify-center pointer-events-none z-20">
-        <div className="transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-90 xl:scale-100 origin-bottom">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6, type: "spring" }}
-            className="flex flex-col items-center gap-2 pointer-events-auto cursor-pointer group"
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-          >
-        <span className="text-xs uppercase tracking-[0.25em] font-bold text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)] transition-colors duration-300 animate-pulse">Scroll to explore</span>
-        <div className="flex flex-col items-center">
-          <div className="w-7 h-11 border-2 border-[var(--rc-blue)] group-hover:border-[var(--rc-orange)] rounded-full flex justify-center p-1 transition-colors duration-300 bg-white/40 backdrop-blur-sm shadow-[0_4px_10px_rgba(0,0,0,0.05)]">
-             <motion.div
-                animate={{ y: [0, 18, 0], opacity: [1, 0, 1] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                className="w-1.5 h-3 bg-[var(--rc-orange)] rounded-full shadow-[0_0_8px_rgba(240,113,43,0.8)]"
-             />
-          </div>
-          <motion.div
-            animate={{ y: [0, 6, 0], opacity: [0.6, 1, 0.6] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: 0.1 }}
-            className="mt-1"
-          >
-            <ChevronDown className="w-5 h-5 text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)] transition-colors" />
-          </motion.div>
-          <motion.div
-            animate={{ y: [0, 6, 0], opacity: [0.2, 0.8, 0.2] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: 0.3 }}
-            className="-mt-3"
-          >
-            <ChevronDown className="w-5 h-5 text-[var(--rc-blue)] group-hover:text-[var(--rc-orange)] transition-colors" />
-          </motion.div>
-        </div>
-        </motion.div>
-        </div>
-      </div>
-    </section>
-  );
+    </motion.div>
+    <a href="#cinematic-reveal-section" className="absolute bottom-4 left-1/2 z-20 inline-flex min-h-6 -translate-x-1/2 items-center gap-2 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.18em] text-[#526886] lg:bottom-5">From the ground up<ArrowDown className="h-3 w-3" aria-hidden="true" /></a>
+  </section>;
 }

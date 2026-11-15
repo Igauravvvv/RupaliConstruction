@@ -1,3 +1,4 @@
+import { getResponsiveImage } from '@/lib/responsive-images';
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router";
 import useEmblaCarousel from "embla-carousel-react";
@@ -144,25 +145,6 @@ export default function ProjectDetail() {
   const displayImages = images.length > 0 ? images : [mainImage];
   const [aspectRatios, setAspectRatios] = useState<Record<string, 'portrait' | 'landscape'>>({});
 
-  useEffect(() => {
-    let isMounted = true;
-    displayImages.forEach(src => {
-      if (!aspectRatios[src]) {
-        const img = new window.Image();
-        img.onload = () => {
-          if (isMounted) {
-            setAspectRatios(prev => ({
-              ...prev,
-              [src]: img.naturalWidth >= img.naturalHeight ? 'landscape' : 'portrait'
-            }));
-          }
-        };
-        img.src = src;
-      }
-    });
-    return () => { isMounted = false; };
-  }, [displayImages]);
-
   // Parse numeric values out of area or use fallbacks for UI demonstration
   const parsedArea = activeProject?.area ? activeProject.area.replace(/[^0-9]/g, "") : "2945";
 
@@ -264,7 +246,8 @@ export default function ProjectDetail() {
               >
                 <div className="flex -ml-4">
                   {displayImages.map((src, idx) => {
-                    const ratio = aspectRatios[src] || 'landscape';
+                    const dimensions = getResponsiveImage(src);
+                    const ratio = dimensions ? (dimensions.width >= dimensions.height ? 'landscape' : 'portrait') : aspectRatios[src] || 'landscape';
                     // Mobile: 1 photo (100% width). Desktop: 3 photos if portrait (33.333% width each), 1 photo if landscape.
                     const widthClass = ratio === 'portrait' 
                       ? 'flex-[0_0_100%] md:flex-[0_0_33.333%]' 
@@ -283,7 +266,17 @@ export default function ProjectDetail() {
                           }}
                         >
                           <Image 
-                            src={src} 
+                            src={src}
+                            loading={idx === 0 ? 'eager' : 'lazy'}
+                            fetchPriority={idx === 0 ? 'high' : 'auto'}
+                            sizes={ratio === 'portrait' ? '(min-width: 768px) 33vw, 100vw' : '100vw'}
+                            onLoad={event => {
+                              if (!dimensions) {
+                                const image = event.currentTarget;
+                                const orientation = image.naturalWidth >= image.naturalHeight ? 'landscape' : 'portrait';
+                                setAspectRatios(previous => previous[src] === orientation ? previous : { ...previous, [src]: orientation });
+                              }
+                            }}
                             alt={`${activeProject.name} in ${activeProject.location || "Gurugram"} - Luxury Construction & Architectural Design photo ${idx + 1} by Rupali Construction`} 
                             className="w-full h-full object-cover pointer-events-none select-none" 
                           />
@@ -374,6 +367,7 @@ export default function ProjectDetail() {
                         >
                           <Image
                             src={src}
+                            sizes="112px"
                             alt={`${activeProject.name} thumbnail ${idx + 1}`}
                             className="w-full h-full object-cover"
                           />
@@ -628,7 +622,7 @@ export default function ProjectDetail() {
               <div className="flex flex-col gap-6">
                 {(images.length > 0 ? images : [mainImage]).map((img: string, idx: number) => (
                   <div key={idx} className="w-full rounded-xl overflow-hidden shadow-sm bg-white">
-                    <Image src={img} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-auto max-h-[75vh] object-contain mx-auto" />
+                    <Image fullResolution src={img} alt={`${activeProject.name} photo ${idx + 1}`} className="w-full h-auto max-h-[75vh] object-contain mx-auto" />
                   </div>
                 ))}
               </div>

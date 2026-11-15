@@ -1,393 +1,348 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { ArrowRight, Check, Search, Layers3 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
-import { categories, Category, brandDomains } from "@/data/brandStandardsData";
+import SEO from "@/components/SEO";
+import {
+  categories,
+  type Category,
+  type SubCategory,
+} from "@/data/brandStandardsData";
 import CategoryModal from "@/components/brand-standards/CategoryModal";
 import ContactModal from "@/components/brand-standards/ContactModal";
-import { motion } from "framer-motion";
-import { 
-  ShieldCheck, 
-  ArrowRight,
-  MessageSquare,
-  BadgeCheck,
-  Clock,
-  Truck
-} from "lucide-react";
-import SEO from "@/components/SEO";
 
 export default function BrandStandards() {
-  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
-  const [showAllBrands, setShowAllBrands] = useState(false);
-
-  // Extract all unique brand names from categories
-  const allBrands = Array.from(new Set(
-    categories.flatMap(c => c.subcategories.flatMap(s => s.brands.map(b => b.name)))
-  )).filter(name => !name.includes("Local") && !name.includes("Custom"));
-  
-  const displayedBrands = showAllBrands ? allBrands : allBrands.slice(0, 15);
+  const [selected, setSelected] = useState(categories[0].name);
+  const [query, setQuery] = useState("");
+  const [detail, setDetail] = useState<{
+    category: Category;
+    material: SubCategory;
+  } | null>(null);
+  const materials = categories.flatMap(category =>
+    category.subcategories.map(material => ({ category, material }))
+  );
+  const brands = new Set(
+    materials.flatMap(({ material }) =>
+      material.brands.map(brand => brand.name)
+    )
+  );
+  const results = useMemo(
+    () =>
+      materials.filter(({ category, material }) => {
+        if (!query.trim()) return category.name === selected;
+        return [
+          material.name,
+          material.description,
+          category.name,
+          ...material.brands.map(b => b.name),
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(query.trim().toLowerCase());
+      }),
+    [selected, query]
+  );
+  const active = categories.find(category => category.name === selected)!;
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
-      <SEO 
-        title="Luxury Material & Brand Standards | Rupali Construction"
-        description="Explore the benchmark quality brand standards, luxury fitting brands, architectural specifications, and proven structural materials utilized by Rupali Construction in Gurugram."
-        keywords="construction brands Gurgaon, luxury fittings brands India, build quality standards NCR, home construction materials Sector 71 Gurgaon"
+    <div className="min-h-screen bg-[#f5f7fb] text-[#0B2E59]">
+      <SEO
+        title="Materials & Brand Standards | Rupali Construction"
+        description="Explore our structural, MEP, interior and finishing material guide. Compare brands, understand applications and review quality checks for your project."
         url="/brand-standards"
-        schema={[
-          {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Luxury Brand & Quality Standards - Rupali Construction",
-            "description": "Benchmark quality architectural standards and trusted brand fittings utilized by Rupali Construction."
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://rupaliconstruction.com"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Brand Standards",
-                "item": "https://rupaliconstruction.com/brand-standards"
-              }
-            ]
-          }
-        ]}
       />
       <Navbar />
-
-      {/* ─── UNIFIED HERO & CATEGORY SECTION ─── */}
-      <section className="relative min-h-[90vh] bg-white pt-32 pb-24 overflow-hidden">
-        {/* Background Image with Premium Gradient Fade */}
-        <div className="absolute top-0 left-0 w-full h-[70%] z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80" 
-            alt="Modern Construction"
-            className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/80 to-[#F8FAFC]" />
-        </div>
-
-        <div className="container-rc relative z-10">
-          
-          {/* Top Content */}
-          <div className="max-w-3xl mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className="text-[#FF6A00] font-bold text-sm tracking-widest uppercase mb-4 flex items-center gap-2">
-                <span className="w-8 h-px bg-[#FF6A00]"></span> Material Knowledge Center
+      <div className="h-20 lg:h-24 bg-white" aria-hidden="true" />
+      <main>
+        <section className="relative overflow-hidden bg-[#0B2E59] pt-12 pb-14 sm:pt-20 sm:pb-20">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(77,122,182,0.35),transparent_65%)]" />
+          <div className="container mx-auto px-5 sm:px-8 relative grid lg:grid-cols-[1.15fr_1fr] items-center gap-10 lg:gap-20">
+            <div>
+              <p className="text-xs uppercase tracking-[.24em] text-orange-300 font-semibold mb-5">
+                The Rupali material library
               </p>
-              <h1 className="text-4xl lg:text-[3.5rem] font-bold leading-[1.1] mb-6 text-[#0A1D3A] tracking-tight">
-                Discover Our Curated <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0A1D3A] to-[#FF6A00]">Construction Standards</span>
+              <h1 className="font-serif text-4xl sm:text-6xl xl:text-7xl leading-[1.07] text-white">
+                A better build.
+                <br />
+                <span className="text-[#c5d8f3]">Down to the details.</span>
               </h1>
-              <p className="text-gray-600 text-lg sm:text-xl mb-10 max-w-2xl font-light leading-relaxed">
-                Explore the materials, brands, and standards that make our projects stand the test of time. A complete educational guide to premium construction.
+              <p className="mt-6 max-w-lg text-base sm:text-lg leading-relaxed text-blue-100/80">
+                Behind every finish is a choice. Get to know the materials,
+                brands and checks that go into your space.
               </p>
-
-              {/* Badges */}
-              <div className="flex flex-wrap gap-4">
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-4 flex items-center gap-4 shadow-sm border border-gray-100 flex-1 min-w-[220px] hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-xl border border-orange-100 flex items-center justify-center bg-orange-50 shrink-0">
-                    <ShieldCheck className="w-6 h-6 text-[#FF6A00]" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-base text-[#0A1D3A]">Verified Quality</p>
-                    <p className="text-xs text-gray-500 font-medium mt-0.5">Strict multi-point checks</p>
-                  </div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-4 flex items-center gap-4 shadow-sm border border-gray-100 flex-1 min-w-[220px] hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-xl border border-blue-100 flex items-center justify-center bg-blue-50 shrink-0">
-                    <BadgeCheck className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-base text-[#0A1D3A]">Expert Approved</p>
-                    <p className="text-xs text-gray-500 font-medium mt-0.5">Recommended by engineers</p>
-                  </div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-md rounded-2xl p-4 flex items-center gap-4 shadow-sm border border-gray-100 flex-1 min-w-[220px] hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-xl border border-green-100 flex items-center justify-center bg-green-50 shrink-0">
-                    <Truck className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-base text-[#0A1D3A]">Trusted Brands</p>
-                    <p className="text-xs text-gray-500 font-medium mt-0.5">Industry leading partners</p>
-                  </div>
-                </div>
+              <a
+                href="#material-library"
+                className="inline-flex items-center gap-3 rounded-full bg-[#ff6b14] text-white px-6 py-3.5 mt-7 font-semibold text-sm"
+              >
+                Explore the materials <ArrowRight size={17} />
+              </a>
+              <div className="mt-9 flex gap-7 sm:gap-10 border-t border-white/15 pt-6 text-blue-100/70 text-xs sm:text-sm">
+                <span>
+                  <strong className="block text-2xl text-white font-medium mb-1">
+                    04
+                  </strong>
+                  Build stages
+                </span>
+                <span>
+                  <strong className="block text-2xl text-white font-medium mb-1">
+                    {materials.length}
+                  </strong>
+                  Material guides
+                </span>
+                <span>
+                  <strong className="block text-2xl text-white font-medium mb-1">
+                    {brands.size}
+                  </strong>
+                  Listed brands & sources
+                </span>
               </div>
-            </motion.div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-            {categories.map((category, index) => {
-              const borderColor = category.name === 'Structural' ? 'border-[#0A1D3A]' : 
-                                  category.name === 'MEP' ? 'border-[#FF6A00]' : 
-                                  category.name === 'Interior' ? 'border-[#2BA745]' : 'border-[#6C5CE7]';
-              
-              const hoverColor = category.name === 'Structural' ? 'group-hover:text-[#0A1D3A]' : 
-                                 category.name === 'MEP' ? 'group-hover:text-[#FF6A00]' : 
-                                 category.name === 'Interior' ? 'group-hover:text-[#2BA745]' : 'group-hover:text-[#6C5CE7]';
-              
-              return (
-                <motion.div
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {categories.map((category, i) => (
+                <a
                   key={category.name}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "50px" }}
-                  transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
-                  className="h-full"
+                  href="#material-library"
+                  onClick={() => {
+                    setSelected(category.name);
+                    setQuery("");
+                  }}
+                  className={`group relative overflow-hidden rounded-2xl aspect-[1.18] border border-white/15 ${i % 2 ? "translate-y-4" : ""}`}
                 >
-                  <div 
-                    className={`group bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl border border-gray-100 flex flex-col cursor-pointer h-full border-b-[6px] ${borderColor} transition-all duration-500 hover:-translate-y-2`}
-                    onClick={() => setActiveCategory(category)}
-                  >
-                    {/* Top Image */}
-                    <div className="h-56 relative overflow-hidden shrink-0 bg-gray-100">
-                      <img loading="lazy" 
-                        src={category.image} 
-                        alt={category.name}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1541888087425-ce81dfc46928?w=600&q=80";
-                        }}
-                      />
-                      
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80" />
-                      
-                      {/* Top Badges */}
-                      <div className="absolute top-5 left-5 right-5 flex flex-wrap gap-2">
-                        <span className="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 rounded-full border border-white/20 uppercase tracking-widest shadow-sm">
-                          {category.materialCount || category.subcategories.length} Materials
-                        </span>
-                        <span className="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 rounded-full border border-white/20 uppercase tracking-widest shadow-sm">
-                          {category.brandCount || 0} Brands
-                        </span>
-                      </div>
-
-                      <div className="absolute bottom-6 left-6 right-6">
-                        <h3 className="text-3xl font-bold text-white mb-1 drop-shadow-md">{category.name}</h3>
-                        {category.tagline && (
-                          <p className="text-white/80 text-sm font-medium drop-shadow-sm">{category.tagline}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-8 pt-6 flex-1 flex flex-col bg-white relative z-0">
-                      <p className="text-gray-600 text-sm leading-relaxed mb-8 flex-1 font-medium">
-                        {category.description}
-                      </p>
-                      
-                      <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-6">
-                        <span className={`font-bold text-sm tracking-wide uppercase transition-colors duration-300 text-gray-400 ${hoverColor}`}>
-                          Explore Category
-                        </span>
-                        <button className={`w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 transition-all duration-300 group-hover:bg-gray-50 ${hoverColor} group-hover:border-transparent group-hover:shadow-md`}>
-                          <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                        </button>
-                      </div>
-                    </div>
+                  <img
+                    src={category.image}
+                    alt={`${category.name} materials`}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#06182d]/95 via-[#06182d]/10 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 flex justify-between items-center text-white">
+                    <span className="text-sm sm:text-lg font-medium">
+                      {category.name === "Interior"
+                        ? "Interiors"
+                        : category.name}
+                    </span>
+                    <ArrowRight size={17} />
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Footer Stats Pill */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-            className="mt-16 mx-auto w-max bg-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 py-4 px-8 flex items-center gap-6 relative z-10"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-[#FF6A00] shrink-0">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <span className="font-bold text-[#0A1D3A] text-sm whitespace-nowrap hidden sm:block">Building Trust</span>
+                </a>
+              ))}
             </div>
-            
-            <div className="w-px h-6 bg-gray-200 hidden sm:block"></div>
-            
-            <span className="text-sm whitespace-nowrap"><span className="font-bold text-[#FF6A00] text-base">30+</span> <span className="text-gray-500 font-medium">Materials</span></span>
-            
-            <div className="w-px h-6 bg-gray-200"></div>
-            
-            <span className="text-sm whitespace-nowrap"><span className="font-bold text-[#FF6A00] text-base">50+</span> <span className="text-gray-500 font-medium">Brands</span></span>
-            
-            <div className="w-px h-6 bg-gray-200"></div>
-            
-            <span className="text-sm whitespace-nowrap"><span className="font-bold text-[#FF6A00] text-base">100%</span> <span className="text-gray-500 font-medium">Verified</span></span>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* ─── 3. PARTNER LOGOS GRID ─── */}
-      <section className="py-24 bg-[#0A1D3A] dark-nav-trigger relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-900/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#FF6A00]/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
-        
-        <div className="container-rc relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-            <div className="max-w-2xl">
-              <p className="text-[#FF6A00] font-bold text-sm tracking-widest uppercase mb-4 flex items-center gap-2">
-                <span className="w-8 h-px bg-[#FF6A00]"></span> Our Verified Network
+        <section
+          id="material-library"
+          className="container mx-auto px-5 sm:px-8 py-14 sm:py-20 scroll-mt-24"
+        >
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[.2em] text-[#bd530f] mb-3">
+                Know what goes into your home
               </p>
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
-                Partnering with the Best
+              <h2 className="font-serif text-3xl sm:text-5xl">
+                Good choices start here.
               </h2>
-              <p className="text-blue-100 text-lg font-light leading-relaxed">
-                Every brand is carefully selected and verified to meet our strict quality, durability, and performance standards.
+            </div>
+            <label className="relative block w-full lg:w-80">
+              <Search
+                className="absolute left-4 top-3.5 text-slate-400"
+                size={19}
+              />
+              <span className="sr-only">Search materials or brands</span>
+              <input
+                type="search"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Try cement, UltraTech, lighting…"
+                className="w-full bg-white border border-[#d6dfed] rounded-full py-3 pl-11 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#0B2E59]/30"
+              />
+            </label>
+          </div>
+          <div
+            className="flex gap-2 overflow-x-auto pb-3 mb-7"
+            aria-label="Material categories"
+          >
+            {categories.map(category => (
+              <button
+                key={category.name}
+                aria-pressed={selected === category.name && !query}
+                onClick={() => {
+                  setSelected(category.name);
+                  setQuery("");
+                }}
+                className={`shrink-0 inline-flex items-center gap-2 px-4 sm:px-6 py-3 rounded-full text-sm border transition-colors ${selected === category.name && !query ? "bg-[#0B2E59] border-[#0B2E59] text-white" : "bg-white border-[#d6dfed] hover:bg-blue-50"}`}
+              >
+                <category.icon size={16} />
+                {category.name === "Interior" ? "Interiors" : category.name}
+                <span className="opacity-60 text-xs">
+                  {category.subcategories.length}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="mb-7 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-xl font-semibold">
+                {query
+                  ? "Search results"
+                  : `${selected === "Interior" ? "Interior" : selected} materials`}
+              </h3>
+              <p className="text-slate-500 text-sm mt-1">
+                {query
+                  ? `${results.length} matching material guides`
+                  : active.tagline}
               </p>
             </div>
-            <button 
-              onClick={() => setShowAllBrands(!showAllBrands)}
-              className="text-white border border-white/20 hover:bg-white/10 px-8 py-4 rounded-full text-sm font-bold tracking-wider transition-colors flex items-center gap-3 shrink-0"
-            >
-              {showAllBrands ? "SHOW LESS BRANDS" : "VIEW ALL BRANDS"} <ArrowRight className={`w-4 h-4 transition-transform ${showAllBrands ? "-rotate-90" : ""}`} />
-            </button>
+            <span className="hidden sm:inline-flex text-xs text-slate-500 items-center gap-2 pt-1">
+              <Layers3 size={15} /> Material → Brand → Details
+            </span>
           </div>
-
-          {showAllBrands ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-              {allBrands.map((brand, index) => (
-                <div 
-                  key={`${brand}-${index}`} 
-                  className="bg-white rounded-2xl h-40 flex flex-col items-center justify-center p-6 hover:shadow-xl transition-all cursor-pointer border border-transparent hover:border-[#FF6A00]/30 relative group hover:-translate-y-1"
-                >
-                  <div className="h-20 w-full flex items-center justify-center mb-3">
-                    <img loading="lazy" 
-                      src={`/images/brands/${brand.replace(/[^a-zA-Z0-9-]/g, '_')}.png`} 
-                      alt={brand}
-                      className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                      onError={(e) => {
-                        const img = e.currentTarget;
-                        if (!img.src.includes('ui-avatars')) {
-                          img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
-                        } else {
-                          img.style.display = 'none';
-                        }
-                      }}
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
+            {results.map(({ category, material }) => (
+              <button
+                key={`${category.name}-${material.name}`}
+                onClick={() => setDetail({ category, material })}
+                className="group flex flex-col text-left bg-white rounded-2xl border border-[#dce4ef] overflow-hidden hover:shadow-lg hover:border-[#b3c5df] transition-all focus-visible:ring-2 focus-visible:ring-[#0B2E59]"
+              >
+                <div className="h-28 min-[380px]:h-32 sm:h-48 w-full shrink-0 overflow-hidden bg-[#e8edf4]">
+                  <img
+                    src={material.image}
+                    alt={material.name}
+                    loading="lazy"
+                    className={`h-full w-full ${["Cement", "Plumbing", "Sealants", "Mechanical", "Hardware"].includes(material.name) ? "object-contain p-2 sm:p-4 bg-white" : "object-cover"} group-hover:scale-105 transition-transform duration-500`}
+                  />
+                </div>
+                <div className="p-3 sm:p-5 w-full flex flex-col flex-1">
+                  <div className="flex items-start sm:items-center justify-between gap-2 sm:gap-3 mb-2">
+                    <h4 className="font-serif text-base min-[380px]:text-lg sm:text-2xl leading-tight min-h-10 sm:min-h-0">
+                      <span className="sm:hidden">
+                        {material.name === "Ready-Mix Concrete (RMC)"
+                          ? "Ready-mix concrete"
+                          : material.name}
+                      </span>
+                      <span className="hidden sm:inline">{material.name}</span>
+                    </h4>
+                    <ArrowRight
+                      size={18}
+                      className="hidden sm:block text-[#e96516] shrink-0"
                     />
                   </div>
-                  <span className="font-bold text-[#0A1D3A] text-center text-sm opacity-80 group-hover:opacity-100 transition-opacity mt-auto">
-                    {brand}
+                  <p className="hidden sm:line-clamp-2 text-sm text-slate-500 leading-relaxed min-h-10">
+                    {material.description}
+                  </p>
+                  <div className="mt-auto sm:mt-4 border-t border-slate-100 pt-2 sm:pt-3">
+                    <p className="hidden sm:line-clamp-2 text-xs leading-relaxed text-[#526681]">
+                      {material.brands.map(b => b.name).join(" · ")}
+                    </p>
+                    <p className="sm:hidden text-[11px] text-[#526681]">
+                      {material.brands.length}{" "}
+                      {material.brands.length === 1 ? "brand" : "brands"}
+                    </p>
+                    <p className="text-[10px] sm:uppercase sm:tracking-[.14em] font-semibold mt-2 sm:mt-3 text-[#bd530f] flex items-center gap-1.5">
+                      <span className="sm:hidden">
+                        Explore{" "}
+                        <span className="sr-only">
+                          {material.name} materials and brands
+                        </span>
+                      </span>
+                      <span className="hidden sm:inline">
+                        Explore material & brands
+                      </span>
+                      <ArrowRight size={13} className="sm:hidden" />
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+          {!results.length && (
+            <div className="rounded-2xl bg-white p-10 text-center">
+              <p>
+                No materials found. Try a brand name or a different material.
+              </p>
+              <button
+                onClick={() => setQuery("")}
+                className="mt-4 text-sm underline"
+              >
+                Clear search
+              </button>
+            </div>
+          )}
+        </section>
+
+        <section className="bg-[#e9eff8] border-y border-[#d9e2f0] py-12 sm:py-16">
+          <div className="container mx-auto px-5 sm:px-8 grid lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-16">
+            <div>
+              <p className="uppercase text-xs tracking-[.2em] text-[#bd530f] font-semibold mb-3">
+                From selection to site
+              </p>
+              <h2 className="font-serif text-3xl sm:text-4xl">
+                The brand is only
+                <br />
+                part of the standard.
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6">
+              {[
+                [
+                  "01",
+                  "Specify clearly",
+                  "Agree on the product, grade, finish and scope before procurement.",
+                ],
+                [
+                  "02",
+                  "Check on arrival",
+                  "Match delivery labels, batches and condition to the agreed specification.",
+                ],
+                [
+                  "03",
+                  "Install with care",
+                  "Follow the approved drawings and manufacturer’s installation guidance.",
+                ],
+              ].map(([number, title, copy]) => (
+                <div key={number}>
+                  <span className="text-[#ad5b28] text-xs tracking-widest">
+                    {number} /
                   </span>
+                  <h3 className="font-semibold mt-3 mb-2">{title}</h3>
+                  <p className="text-sm leading-relaxed text-[#526681]">
+                    {copy}
+                  </p>
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="overflow-hidden relative -mx-4 px-4 md:mx-0 md:px-0 py-6">
-              {/* Gradient Mask for fading edges */}
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0A1D3A] to-transparent z-10 pointer-events-none"></div>
-              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0A1D3A] to-transparent z-10 pointer-events-none"></div>
-              
-              <motion.div 
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{ repeat: Infinity, ease: "linear", duration: displayedBrands.length * 4 }}
-                className="flex gap-6 w-max"
-              >
-                {[...displayedBrands, ...displayedBrands].map((brand, index) => (
-                  <div 
-                    key={`${brand}-${index}`} 
-                    className="w-56 shrink-0 bg-white rounded-2xl h-40 flex flex-col items-center justify-center p-6 hover:shadow-xl transition-all cursor-pointer border border-transparent hover:border-[#FF6A00]/30 relative group hover:-translate-y-1"
-                  >
-                    <div className="h-20 w-full flex items-center justify-center mb-3">
-                      <img loading="lazy" 
-                        src={`/images/brands/${brand.replace(/[^a-zA-Z0-9-]/g, '_')}.png`} 
-                        alt={brand}
-                        className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                        onError={(e) => {
-                          const img = e.currentTarget;
-                          if (!img.src.includes('ui-avatars')) {
-                            img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(brand)}&background=0A1D3A&color=fff&size=200&font-size=0.3`;
-                          }
-                        }}
-                      />
-                    </div>
-                    <span className="font-bold text-[#0A1D3A] text-center text-sm opacity-80 group-hover:opacity-100 transition-opacity mt-auto">
-                      {brand}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ─── 4. CTA SECTION ─── */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="container-rc relative z-10">
-          <div className="bg-gradient-to-br from-[#051124] to-[#0A1D3A] rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row relative shadow-2xl">
-            
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
-            
-            {/* Left: Mascot Image */}
-            <div className="lg:w-2/5 relative h-[350px] lg:h-auto bg-white flex items-end justify-center z-10">
-              <div className="absolute inset-y-0 -right-12 w-24 bg-white skew-x-[-15deg] hidden lg:block z-0 origin-bottom" />
-              <img loading="lazy" 
-                src="/assets/brand-standards/mascot.webp" 
-                alt="Expert Guide" 
-                className="h-[95%] lg:h-[90%] w-auto object-contain relative z-10 mix-blend-multiply"
-              />
-            </div>
-
-            {/* Right: Content */}
-            <div className="lg:w-3/5 p-10 md:p-16 lg:p-20 flex flex-col justify-center relative z-10">
-              
-              <div className="space-y-8 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2 bg-[#FF6A00]/20 text-[#FF6A00] px-4 py-2 rounded-full text-sm font-bold border border-[#FF6A00]/20">
-                  <MessageSquare className="w-4 h-4" /> Expert Consultation
-                </div>
-                
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.2] tracking-tight">
-                  Need help selecting the right <br className="hidden xl:block"/> materials for your project?
-                </h2>
-                
-                <p className="text-blue-100 text-lg md:text-xl font-light max-w-xl mx-auto lg:mx-0">
-                  Our structural engineers and material experts are here to guide you through our approved standards.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-                  <ContactModal defaultService="Brand Material Request">
-                    <button className="w-full sm:w-auto bg-[#FF6A00] hover:bg-[#E65F00] text-white font-bold py-4 px-10 rounded-full transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_8px_20px_rgba(255,106,0,0.3)] hover:shadow-[0_12px_25px_rgba(255,106,0,0.4)] hover:-translate-y-1">
-                      REQUEST MATERIAL INFO <ArrowRight className="w-5 h-5" />
-                    </button>
-                  </ContactModal>
-                  
-                  <ContactModal defaultService="Brand Standards Consultation">
-                    <button className="w-full sm:w-auto bg-transparent border-2 border-white/30 hover:border-white hover:bg-white hover:text-[#0A1D3A] text-white font-bold py-4 px-10 rounded-full transition-all duration-300 flex items-center justify-center gap-3">
-                      TALK TO AN EXPERT
-                    </button>
-                  </ContactModal>
-                </div>
-              </div>
-
-            </div>
           </div>
-        </div>
-      </section>
-
+        </section>
+        <section className="container mx-auto px-5 sm:px-8 py-14 sm:py-20">
+          <div className="bg-white border border-[#dce4ef] rounded-3xl p-7 sm:p-12 flex flex-col lg:flex-row justify-between gap-7 items-start lg:items-center">
+            <div>
+              <h2 className="font-serif text-3xl sm:text-4xl">
+                Let’s choose what fits your project.
+              </h2>
+              <p className="text-slate-500 mt-3 max-w-xl leading-relaxed">
+                Bring your plans, budget and preferences. We’ll help you put
+                together a clear material specification.
+              </p>
+            </div>
+            <ContactModal defaultService="Brand Standards Consultation">
+              <button className="inline-flex items-center gap-3 bg-[#0B2E59] rounded-full text-white px-6 py-3.5 text-sm font-semibold whitespace-nowrap">
+                Discuss your materials <ArrowRight size={17} />
+              </button>
+            </ContactModal>
+          </div>
+          <p className="text-xs text-slate-500 leading-relaxed mt-6 max-w-4xl flex items-start gap-2">
+            <Check size={14} className="shrink-0 mt-0.5" />
+            Brands shown are material options, not a claim of a formal
+            partnership. Final products, grades and availability are confirmed
+            in your project specification. Manufacturer images and trademarks
+            belong to their respective owners.
+          </p>
+        </section>
+      </main>
       <Footer />
-
-      {/* ─── Category Modal ─── */}
-      <CategoryModal 
-        isOpen={!!activeCategory} 
-        onClose={() => setActiveCategory(null)} 
-        category={activeCategory} 
+      <CategoryModal
+        isOpen={!!detail}
+        onClose={() => setDetail(null)}
+        category={detail?.category ?? null}
+        initialSubcategory={detail?.material}
       />
     </div>
   );

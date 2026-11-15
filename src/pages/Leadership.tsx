@@ -1,25 +1,8 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Check, MessageSquare, Award, ArrowRight, HardHat, Hammer, Ruler, Wrench, Cone, Truck } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Check, MessageSquare, Award, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/sections/Footer";
 import SEO from "@/components/SEO";
-
-const FloatingIcon = ({ icon: Icon, delay, x, y, duration, size = 120 }: any) => (
-  <motion.div
-    initial={{ y: 0, opacity: 0.6 }}
-    animate={{ 
-      y: [0, -40, 0], 
-      rotate: [0, 15, -15, 0],
-      scale: [1, 1.1, 1],
-      opacity: [0.6, 0.9, 0.6]
-    }}
-    transition={{ duration: duration, repeat: Infinity, delay: delay, ease: "easeInOut" }}
-    className="absolute text-[var(--rc-orange)] z-0 pointer-events-none drop-shadow-[0_0_20px_rgba(242,101,34,0.5)]"
-    style={{ left: x, top: y }}
-  >
-    <Icon size={size} strokeWidth={2} />
-  </motion.div>
-);
 
 interface Leader {
   name: string;
@@ -81,9 +64,7 @@ const leaders: Leader[] = [
 ];
 
 export default function Leadership() {
-  const { scrollYProgress } = useScroll();
-  const yOffset = useTransform(scrollYProgress, [0, 1], [0, -400]);
-
+  const reduceMotion = useReducedMotion();
   return (
     <div className="min-h-screen overflow-x-hidden flex flex-col font-sans relative">
       <SEO 
@@ -140,55 +121,30 @@ export default function Leadership() {
       />
       <Navbar />
 
-      {/* Background Image with Premium Gradient Fade */}
-      <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none">
-        <img 
-          src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1920&q=80" 
-          alt="Construction Leadership and Planning"
-          className="w-full h-full object-cover object-[center_20%] opacity-40 mix-blend-luminosity"
-        />
-        <div className="absolute inset-0 bg-[var(--rc-white)]/40 backdrop-blur-[2px]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--rc-white)]/60 to-[var(--rc-white)]" />
-      </div>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#edf3fc_0%,#f8fafc_38%,#ffffff_100%)]" />
 
-      {/* Funny Construction Background Elements */}
-      <motion.div style={{ y: yOffset }} className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <FloatingIcon icon={HardHat} x="5%" y="15%" delay={0} duration={6} size={150} />
-        <FloatingIcon icon={Hammer} x="85%" y="25%" delay={1} duration={7} size={120} />
-        <FloatingIcon icon={Cone} x="8%" y="45%" delay={2} duration={5} size={140} />
-        <FloatingIcon icon={Ruler} x="85%" y="60%" delay={0.5} duration={6.5} size={160} />
-        <FloatingIcon icon={Truck} x="10%" y="80%" delay={1.5} duration={8} size={180} />
-        <FloatingIcon icon={Wrench} x="80%" y="85%" delay={0.8} duration={5.5} size={130} />
-      </motion.div>
-
-      <main className="flex-1 relative z-10 pt-32 pb-32">
+      <main className="relative z-10 flex-1 pb-24 pt-28 sm:pt-36 lg:pt-40">
         <div className="container-rc relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5, y: -50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 150, damping: 15 }}
-            className="text-center mb-24 max-w-4xl mx-auto relative z-10"
+          <motion.header
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative mx-auto mb-14 grid max-w-5xl gap-9 border-b border-[var(--rc-blue)]/15 pb-10 sm:mb-20 sm:pb-14 lg:grid-cols-[1.25fr_1fr] lg:items-center lg:gap-12"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0)_70%)] blur-2xl -z-10 scale-150" />
-            <motion.h1 
-              whileHover={{ scale: 1.05, rotate: -2 }}
-              className="text-6xl lg:text-[7rem] leading-none font-serif italic text-[var(--rc-orange)] drop-shadow-xl mb-6 inline-block cursor-default"
-            >
-              Our Leadership
-            </motion.h1>
-            <p className="text-xl md:text-2xl text-[var(--rc-text)]/80 max-w-3xl mx-auto font-light mb-8">
-              The visionary minds driving engineering precision and architectural excellence.
-            </p>
-            <motion.a
-              href="/contact"
-              whileHover={{ scale: 1.05, rotate: -1 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 md:gap-3 bg-[var(--rc-blue)] text-white px-6 py-3 md:px-10 md:py-5 rounded-full font-bold uppercase tracking-wider text-xs md:text-sm shadow-[0_10px_30px_rgba(10,37,64,0.4)] hover:bg-[var(--rc-orange)] hover:shadow-[0_10px_30px_rgba(242,101,34,0.4)] transition-all"
-            >
-              <span>Book a Consultation</span>
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-            </motion.a>
-          </motion.div>
+            <div>
+              <p className="mb-4 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--rc-orange)]"><span aria-hidden="true" className="h-px w-7 bg-[var(--rc-orange)]" />Our leadership</p>
+              <h1 className="font-serif text-[2.6rem] leading-[1.06] tracking-tight text-[var(--rc-blue)] sm:text-6xl lg:text-[4.4rem]">The people<br /><span className="italic">behind the build.</span></h1>
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-[#5b6c83] sm:text-base">Decades of hands-on experience. One shared commitment to thoughtful design, sound engineering and building well.</p>
+              <a href="/contact" className="mt-6 inline-flex min-h-12 items-center gap-4 rounded-full bg-[var(--rc-blue)] px-6 py-3 text-xs font-semibold text-white transition-colors hover:bg-[#17477e]">Book a consultation<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
+            </div>
+            <nav aria-label="Meet our leadership team" className="grid grid-cols-3 gap-3 sm:gap-5">
+              {leaders.map((leader, index) => <a key={leader.name} href={`#leader-${index}`} className="group flex flex-col items-center text-center">
+                <div className="aspect-[4/5] w-full overflow-hidden rounded-[3rem_3rem_1rem_1rem] border border-[var(--rc-blue)]/10 bg-white shadow-[0_12px_30px_-22px_rgba(11,46,89,0.4)]"><img src={leader.image} alt={leader.name} className="h-full w-full object-cover object-top transition-transform duration-500 motion-safe:group-hover:scale-105" /></div>
+                <span className="mt-3 text-[11px] font-semibold leading-snug text-[var(--rc-blue)] sm:text-xs">{leader.name}</span>
+                <span className="mt-1 text-[9px] leading-snug text-[#6a7b91] sm:text-[10px]">{index === 0 ? "Vision & quality" : index === 1 ? "Engineering & delivery" : "Innovation & growth"}</span>
+              </a>)}
+            </nav>
+          </motion.header>
 
           <div className="flex flex-col gap-24 lg:gap-32 max-w-5xl mx-auto">
             {leaders.map((leader, index) => {
@@ -198,6 +154,8 @@ export default function Leadership() {
               return (
                   <div
                   key={leader.name}
+                  id={`leader-${index}`}
+                  style={{ scrollMarginTop: "110px" }}
                   className={`flex flex-row items-center gap-4 md:gap-12 lg:gap-20 ${
                     isImageRight ? "" : "flex-row-reverse"
                   }`}

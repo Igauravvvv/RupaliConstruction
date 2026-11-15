@@ -44,6 +44,8 @@ export default function CinematicReveal() {
       <img
         ref={imageRef}
         src="/assets/images/cinematic_architecture.webp"
+        loading="lazy"
+        decoding="async"
         alt="Modern Architecture"
         className="absolute inset-0 w-full h-full object-cover object-[center_40%] origin-center opacity-0 scale-100 will-change-transform"
       />

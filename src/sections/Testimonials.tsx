@@ -27,7 +27,7 @@ export default function Testimonials() {
   }));
 
   return (
-    <section className="py-24 lg:py-32 bg-[var(--rc-gray)] relative overflow-hidden">
+    <section className="pt-16 pb-6 sm:pt-20 sm:pb-6 lg:pt-24 lg:pb-6 bg-[var(--rc-gray)] relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-end pointer-events-none opacity-[0.03] translate-x-1/4">
         <img
           src="/logo-icon.webp"
@@ -42,7 +42,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center gap-4 px-4 sm:gap-6"
+          className="flex w-full flex-col items-center gap-4 px-4 sm:gap-6"
         >
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -61,8 +61,8 @@ export default function Testimonials() {
           </p>
 
           {/* Featured Commercial Clients Badge Bar (Gold's Gym, Knowledge Centre, Quick & Stays Hotel) */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-4xl px-2">
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
+          <div aria-label="Featured commercial clients" tabIndex={0} className="mt-4 flex w-full max-w-4xl snap-x snap-mandatory flex-nowrap items-center justify-start gap-3 overflow-x-auto px-1 pb-3 lg:justify-center sm:gap-4">
+            <div className="flex shrink-0 snap-start items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
               <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600 shrink-0">
                 <Dumbbell className="w-4 h-4" />
               </div>
@@ -73,7 +73,7 @@ export default function Testimonials() {
               <span className="text-[10px] font-bold text-amber-500 flex items-center ml-1">★ 5.0</span>
             </div>
 
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
+            <div className="flex shrink-0 snap-start items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
               <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center text-[var(--rc-blue)] shrink-0">
                 <GraduationCap className="w-4 h-4" />
               </div>
@@ -84,12 +84,12 @@ export default function Testimonials() {
               <span className="text-[10px] font-bold text-amber-500 flex items-center ml-1">★ 5.0</span>
             </div>
 
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
+            <div className="flex shrink-0 snap-start items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-gray-200/90 shadow-sm hover:border-[var(--rc-orange)]/40 transition-all">
               <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
                 <Hotel className="w-4 h-4" />
               </div>
               <div className="text-left">
-                <p className="text-xs font-bold text-[var(--rc-dark)] leading-tight">Quick & Stays Hotel</p>
+                <p className="text-xs font-bold text-[var(--rc-dark)] leading-tight">QuickIn Stayz</p>
                 <p className="text-[10px] text-gray-500">Commercial Hospitality</p>
               </div>
               <span className="text-[10px] font-bold text-amber-500 flex items-center ml-1">★ 5.0</span>

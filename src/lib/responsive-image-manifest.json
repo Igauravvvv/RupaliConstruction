@@ -1,0 +1,852 @@
+{
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/duplex-villa-exterior.webp": {
+    "width": 1921,
+    "height": 2400,
+    "bytes": 399648,
+    "variants": [
+      {
+        "src": "/images/responsive/duplex-villa-exterior-c77a1c8b29e3-480.webp",
+        "width": 480,
+        "bytes": 45292
+      },
+      {
+        "src": "/images/responsive/duplex-villa-exterior-c77a1c8b29e3-1280.webp",
+        "width": 1280,
+        "bytes": 171328
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/duplex-villa-carved-wooden-door.webp": {
+    "width": 1597,
+    "height": 2400,
+    "bytes": 183518,
+    "variants": [
+      {
+        "src": "/images/responsive/duplex-villa-carved-wooden-door-e5aace3f4a66-480.webp",
+        "width": 480,
+        "bytes": 28858
+      },
+      {
+        "src": "/images/responsive/duplex-villa-carved-wooden-door-e5aace3f4a66-1280.webp",
+        "width": 1280,
+        "bytes": 94374
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/duplex-villa-rooftop-swings.webp": {
+    "width": 1598,
+    "height": 2400,
+    "bytes": 368796,
+    "variants": [
+      {
+        "src": "/images/responsive/duplex-villa-rooftop-swings-5d422eeb917f-480.webp",
+        "width": 480,
+        "bytes": 50230
+      },
+      {
+        "src": "/images/responsive/duplex-villa-rooftop-swings-5d422eeb917f-1280.webp",
+        "width": 1280,
+        "bytes": 185428
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/duplex-villa-bathroom.webp": {
+    "width": 1800,
+    "height": 2400,
+    "bytes": 224846,
+    "variants": [
+      {
+        "src": "/images/responsive/duplex-villa-bathroom-9532d44f6509-480.webp",
+        "width": 480,
+        "bytes": 27710
+      },
+      {
+        "src": "/images/responsive/duplex-villa-bathroom-9532d44f6509-1280.webp",
+        "width": 1280,
+        "bytes": 101198
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/duplex-villa-pendant-lamps.webp": {
+    "width": 1921,
+    "height": 2400,
+    "bytes": 273058,
+    "variants": [
+      {
+        "src": "/images/responsive/duplex-villa-pendant-lamps-46795076442e-480.webp",
+        "width": 480,
+        "bytes": 31664
+      },
+      {
+        "src": "/images/responsive/duplex-villa-pendant-lamps-46795076442e-1280.webp",
+        "width": 1280,
+        "bytes": 120754
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-entrance.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 330160,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-entrance-fde7e34df363-480.webp",
+        "width": 480,
+        "bytes": 60064
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-entrance-fde7e34df363-1122.webp",
+        "width": 1122,
+        "bytes": 256086
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-reception.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 225380,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-reception-f6bfb6f916c3-480.webp",
+        "width": 480,
+        "bytes": 47460
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-reception-f6bfb6f916c3-1122.webp",
+        "width": 1122,
+        "bytes": 181520
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-exterior.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 351382,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-exterior-ed2d2dbf1a23-480.webp",
+        "width": 480,
+        "bytes": 54926
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-exterior-ed2d2dbf1a23-1122.webp",
+        "width": 1122,
+        "bytes": 278652
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-twin-room.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 209778,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-twin-room-bee88cb72a60-480.webp",
+        "width": 480,
+        "bytes": 29628
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-twin-room-bee88cb72a60-1122.webp",
+        "width": 1122,
+        "bytes": 148344
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-kitchenette.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 97254,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-kitchenette-a7d51848ecd0-480.webp",
+        "width": 480,
+        "bytes": 19148
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-kitchenette-a7d51848ecd0-1122.webp",
+        "width": 1122,
+        "bytes": 69540
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-twin-suite.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 184136,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-twin-suite-f59542657816-480.webp",
+        "width": 480,
+        "bytes": 31072
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-twin-suite-f59542657816-1122.webp",
+        "width": 1122,
+        "bytes": 133322
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-room-interior.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 156482,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-room-interior-8dab84587aa8-480.webp",
+        "width": 480,
+        "bytes": 30892
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-room-interior-8dab84587aa8-1122.webp",
+        "width": 1122,
+        "bytes": 110030
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-room-seating.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 131138,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-room-seating-f44e9757e2d6-480.webp",
+        "width": 480,
+        "bytes": 22838
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-room-seating-f44e9757e2d6-1122.webp",
+        "width": 1122,
+        "bytes": 89538
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-bathroom.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 243166,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-bathroom-ede0ae565fad-480.webp",
+        "width": 480,
+        "bytes": 35790
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-bathroom-ede0ae565fad-1122.webp",
+        "width": 1122,
+        "bytes": 162298
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/quickin-stayz-double-room.webp": {
+    "width": 1122,
+    "height": 1402,
+    "bytes": 201104,
+    "variants": [
+      {
+        "src": "/images/responsive/quickin-stayz-double-room-9d3134579752-480.webp",
+        "width": 480,
+        "bytes": 33820
+      },
+      {
+        "src": "/images/responsive/quickin-stayz-double-room-9d3134579752-1122.webp",
+        "width": 1122,
+        "bytes": 148850
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-exterior.webp": {
+    "width": 1600,
+    "height": 900,
+    "bytes": 142336,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-exterior-593c32a178dd-480.webp",
+        "width": 480,
+        "bytes": 20928
+      },
+      {
+        "src": "/images/responsive/knowledge-center-exterior-593c32a178dd-1280.webp",
+        "width": 1280,
+        "bytes": 74662
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-conference-area.webp": {
+    "width": 1536,
+    "height": 1024,
+    "bytes": 96750,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-conference-area-597472cad032-480.webp",
+        "width": 480,
+        "bytes": 15772
+      },
+      {
+        "src": "/images/responsive/knowledge-center-conference-area-597472cad032-1280.webp",
+        "width": 1280,
+        "bytes": 57066
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-meeting-room.webp": {
+    "width": 2000,
+    "height": 1116,
+    "bytes": 118326,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-meeting-room-72c82ff63ed7-480.webp",
+        "width": 480,
+        "bytes": 12462
+      },
+      {
+        "src": "/images/responsive/knowledge-center-meeting-room-72c82ff63ed7-1280.webp",
+        "width": 1280,
+        "bytes": 46508
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-workstations.webp": {
+    "width": 2000,
+    "height": 1116,
+    "bytes": 143876,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-workstations-8016260c9a5d-480.webp",
+        "width": 480,
+        "bytes": 14326
+      },
+      {
+        "src": "/images/responsive/knowledge-center-workstations-8016260c9a5d-1280.webp",
+        "width": 1280,
+        "bytes": 50086
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-material-library.webp": {
+    "width": 1448,
+    "height": 1086,
+    "bytes": 182162,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-material-library-c27bd1e44f80-480.webp",
+        "width": 480,
+        "bytes": 26892
+      },
+      {
+        "src": "/images/responsive/knowledge-center-material-library-c27bd1e44f80-1280.webp",
+        "width": 1280,
+        "bytes": 103762
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-material-library-aisle.webp": {
+    "width": 1141,
+    "height": 2000,
+    "bytes": 240564,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-material-library-aisle-2fb4eb45778e-480.webp",
+        "width": 480,
+        "bytes": 52716
+      },
+      {
+        "src": "/images/responsive/knowledge-center-material-library-aisle-2fb4eb45778e-1141.webp",
+        "width": 1141,
+        "bytes": 196796
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-material-library-corridor.webp": {
+    "width": 1143,
+    "height": 2000,
+    "bytes": 157852,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-material-library-corridor-e6166a3e12f2-480.webp",
+        "width": 480,
+        "bytes": 47004
+      },
+      {
+        "src": "/images/responsive/knowledge-center-material-library-corridor-e6166a3e12f2-1143.webp",
+        "width": 1143,
+        "bytes": 127344
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-material-display.webp": {
+    "width": 1500,
+    "height": 2000,
+    "bytes": 337476,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-material-display-5aee1f45d1ac-480.webp",
+        "width": 480,
+        "bytes": 45704
+      },
+      {
+        "src": "/images/responsive/knowledge-center-material-display-5aee1f45d1ac-1280.webp",
+        "width": 1280,
+        "bytes": 182580
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-surface-samples.webp": {
+    "width": 1500,
+    "height": 2000,
+    "bytes": 253802,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-surface-samples-8a5fcec8ef20-480.webp",
+        "width": 480,
+        "bytes": 31002
+      },
+      {
+        "src": "/images/responsive/knowledge-center-surface-samples-8a5fcec8ef20-1280.webp",
+        "width": 1280,
+        "bytes": 129024
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-fabric-display.webp": {
+    "width": 1500,
+    "height": 2000,
+    "bytes": 487164,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-fabric-display-c59d3b9b4f6e-480.webp",
+        "width": 480,
+        "bytes": 55260
+      },
+      {
+        "src": "/images/responsive/knowledge-center-fabric-display-c59d3b9b4f6e-1280.webp",
+        "width": 1280,
+        "bytes": 262428
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-display-details.webp": {
+    "width": 2000,
+    "height": 1500,
+    "bytes": 231886,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-display-details-124053a35b46-480.webp",
+        "width": 480,
+        "bytes": 10702
+      },
+      {
+        "src": "/images/responsive/knowledge-center-display-details-124053a35b46-1280.webp",
+        "width": 1280,
+        "bytes": 62422
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-catalogue-library.webp": {
+    "width": 1024,
+    "height": 1536,
+    "bytes": 182964,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-catalogue-library-f602fbf4ecc1-480.webp",
+        "width": 480,
+        "bytes": 43202
+      },
+      {
+        "src": "/images/responsive/knowledge-center-catalogue-library-f602fbf4ecc1-1024.webp",
+        "width": 1024,
+        "bytes": 141686
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-catalogue-displays.webp": {
+    "width": 1536,
+    "height": 1024,
+    "bytes": 151458,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-catalogue-displays-88f7fad979d0-480.webp",
+        "width": 480,
+        "bytes": 22554
+      },
+      {
+        "src": "/images/responsive/knowledge-center-catalogue-displays-88f7fad979d0-1280.webp",
+        "width": 1280,
+        "bytes": 90050
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-catalogue-library-interior.webp": {
+    "width": 1536,
+    "height": 1024,
+    "bytes": 153658,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-catalogue-library-interior-f7685b33bab1-480.webp",
+        "width": 480,
+        "bytes": 22364
+      },
+      {
+        "src": "/images/responsive/knowledge-center-catalogue-library-interior-f7685b33bab1-1280.webp",
+        "width": 1280,
+        "bytes": 90452
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-walk-your-plan.webp": {
+    "width": 1672,
+    "height": 941,
+    "bytes": 135680,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-walk-your-plan-586323d4a646-480.webp",
+        "width": 480,
+        "bytes": 13634
+      },
+      {
+        "src": "/images/responsive/knowledge-center-walk-your-plan-586323d4a646-1280.webp",
+        "width": 1280,
+        "bytes": 61660
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-walkthrough-studio.webp": {
+    "width": 1125,
+    "height": 2000,
+    "bytes": 72356,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-walkthrough-studio-86dedf15815c-480.webp",
+        "width": 480,
+        "bytes": 16756
+      },
+      {
+        "src": "/images/responsive/knowledge-center-walkthrough-studio-86dedf15815c-1125.webp",
+        "width": 1125,
+        "bytes": 60156
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-parent-coworking.webp": {
+    "width": 1448,
+    "height": 1086,
+    "bytes": 221672,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-parent-coworking-38b29cd14841-480.webp",
+        "width": 480,
+        "bytes": 32136
+      },
+      {
+        "src": "/images/responsive/knowledge-center-parent-coworking-38b29cd14841-1280.webp",
+        "width": 1280,
+        "bytes": 134550
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/knowledge-center-kids-play-area.webp": {
+    "width": 1024,
+    "height": 1536,
+    "bytes": 217318,
+    "variants": [
+      {
+        "src": "/images/responsive/knowledge-center-kids-play-area-48af5c33fb3d-480.webp",
+        "width": 480,
+        "bytes": 58756
+      },
+      {
+        "src": "/images/responsive/knowledge-center-kids-play-area-48af5c33fb3d-1024.webp",
+        "width": 1024,
+        "bytes": 175690
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-training-floor.webp": {
+    "width": 800,
+    "height": 374,
+    "bytes": 106504,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-training-floor-191e91708dd4-480.webp",
+        "width": 480,
+        "bytes": 30694
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-training-floor-191e91708dd4-800.webp",
+        "width": 800,
+        "bytes": 88872
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-training-floor-interior.webp": {
+    "width": 800,
+    "height": 1067,
+    "bytes": 67824,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-training-floor-interior-dd32d7a1c2ea-480.webp",
+        "width": 480,
+        "bytes": 26348
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-training-floor-interior-dd32d7a1c2ea-800.webp",
+        "width": 800,
+        "bytes": 54078
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-strength-area.webp": {
+    "width": 544,
+    "height": 960,
+    "bytes": 53094,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-strength-area-90a6c22a9274-480.webp",
+        "width": 480,
+        "bytes": 35546
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-strength-area-90a6c22a9274-544.webp",
+        "width": 544,
+        "bytes": 44238
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-reception.webp": {
+    "width": 544,
+    "height": 960,
+    "bytes": 28322,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-reception-789c729de771-480.webp",
+        "width": 480,
+        "bytes": 19054
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-reception-789c729de771-544.webp",
+        "width": 544,
+        "bytes": 23182
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-entrance-corridor.webp": {
+    "width": 800,
+    "height": 1067,
+    "bytes": 209640,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-entrance-corridor-044d51459cdd-480.webp",
+        "width": 480,
+        "bytes": 58130
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-entrance-corridor-044d51459cdd-800.webp",
+        "width": 800,
+        "bytes": 174334
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-entrance-evening.webp": {
+    "width": 544,
+    "height": 960,
+    "bytes": 62868,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-entrance-evening-da9c35ddf423-480.webp",
+        "width": 480,
+        "bytes": 40352
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-entrance-evening-da9c35ddf423-544.webp",
+        "width": 544,
+        "bytes": 49420
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-lounge-design.webp": {
+    "width": 1182,
+    "height": 599,
+    "bytes": 152048,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-lounge-design-75c552ffff85-480.webp",
+        "width": 480,
+        "bytes": 21656
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-lounge-design-75c552ffff85-1182.webp",
+        "width": 1182,
+        "bytes": 118530
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-cardio-design.webp": {
+    "width": 1178,
+    "height": 613,
+    "bytes": 112566,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-cardio-design-6d8f453c073a-480.webp",
+        "width": 480,
+        "bytes": 20002
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-cardio-design-6d8f453c073a-1178.webp",
+        "width": 1178,
+        "bytes": 84366
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-fitness-floor-design.webp": {
+    "width": 1184,
+    "height": 606,
+    "bytes": 93148,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-fitness-floor-design-a44c4ea597e3-480.webp",
+        "width": 480,
+        "bytes": 16722
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-fitness-floor-design-a44c4ea597e3-1184.webp",
+        "width": 1184,
+        "bytes": 70438
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-strength-floor-design.webp": {
+    "width": 1180,
+    "height": 609,
+    "bytes": 119696,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-strength-floor-design-30df4afd8ab0-480.webp",
+        "width": 480,
+        "bytes": 21908
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-strength-floor-design-30df4afd8ab0-1180.webp",
+        "width": 1180,
+        "bytes": 93040
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-functional-zone-design.webp": {
+    "width": 1177,
+    "height": 598,
+    "bytes": 114164,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-functional-zone-design-9196d4821462-480.webp",
+        "width": 480,
+        "bytes": 18104
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-functional-zone-design-9196d4821462-1177.webp",
+        "width": 1177,
+        "bytes": 88100
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-corridor-design.webp": {
+    "width": 1182,
+    "height": 663,
+    "bytes": 130364,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-corridor-design-d8e2df4528c1-480.webp",
+        "width": 480,
+        "bytes": 18326
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-corridor-design-d8e2df4528c1-1182.webp",
+        "width": 1182,
+        "bytes": 101070
+      }
+    ]
+  },
+  "https://tofmglzhxvdozgnwmvhb.supabase.co/storage/v1/object/public/images/gold-gym-sector-67-washroom-design.webp": {
+    "width": 1180,
+    "height": 607,
+    "bytes": 83860,
+    "variants": [
+      {
+        "src": "/images/responsive/gold-gym-sector-67-washroom-design-fde50b1ace78-480.webp",
+        "width": 480,
+        "bytes": 13904
+      },
+      {
+        "src": "/images/responsive/gold-gym-sector-67-washroom-design-fde50b1ace78-1180.webp",
+        "width": 1180,
+        "bytes": 62854
+      }
+    ]
+  },
+  "/images/services/commercial.webp": {
+    "width": 953,
+    "height": 1400,
+    "bytes": 105964,
+    "variants": [
+      {
+        "src": "/images/responsive/commercial-385258f07184-480.webp",
+        "width": 480,
+        "bytes": 28946
+      },
+      {
+        "src": "/images/responsive/commercial-385258f07184-953.webp",
+        "width": 953,
+        "bytes": 86448
+      }
+    ]
+  },
+  "/images/services/interiors.webp": {
+    "width": 933,
+    "height": 1400,
+    "bytes": 88680,
+    "variants": [
+      {
+        "src": "/images/responsive/interiors-cdb9d966c21a-480.webp",
+        "width": 480,
+        "bytes": 32334
+      },
+      {
+        "src": "/images/responsive/interiors-cdb9d966c21a-933.webp",
+        "width": 933,
+        "bytes": 74960
+      }
+    ]
+  },
+  "/images/services/renovation.webp": {
+    "width": 933,
+    "height": 1400,
+    "bytes": 85432,
+    "variants": [
+      {
+        "src": "/images/responsive/renovation-d4253c907e96-480.webp",
+        "width": 480,
+        "bytes": 24744
+      },
+      {
+        "src": "/images/responsive/renovation-d4253c907e96-933.webp",
+        "width": 933,
+        "bytes": 65254
+      }
+    ]
+  },
+  "/images/services/residential.webp": {
+    "width": 1400,
+    "height": 933,
+    "bytes": 156834,
+    "variants": [
+      {
+        "src": "/images/responsive/residential-9fd1c13890ec-480.webp",
+        "width": 480,
+        "bytes": 23854
+      },
+      {
+        "src": "/images/responsive/residential-9fd1c13890ec-1280.webp",
+        "width": 1280,
+        "bytes": 96426
+      }
+    ]
+  }
+}

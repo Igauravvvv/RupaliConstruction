@@ -50,7 +50,7 @@ export default function FAQ() {
           <div>
             <div className="flex flex-col gap-2" id="faq-list">
               {faqs.map((faq, i) => (
-                <div key={faq.question} className={`${i >= 4 && !showAll ? "hidden sm:block" : ""} border rounded-2xl overflow-hidden transition-colors ${open === i ? "border-[var(--rc-blue)]/20 bg-slate-50" : "border-[var(--rc-border)] bg-white"}`}>
+                <div key={faq.question} className={`${i >= 3 && !showAll ? "hidden" : ""} border rounded-2xl overflow-hidden transition-colors ${open === i ? "border-[var(--rc-blue)]/20 bg-slate-50" : "border-[var(--rc-border)] bg-white"}`}>
                   <button aria-expanded={open === i} aria-controls={`faq-answer-${i}`}
                     onClick={() => setOpen(open === i ? null : i)}
                     className="w-full flex items-center justify-between gap-4 p-4 text-left hover:bg-slate-50 transition-colors">
@@ -64,8 +64,8 @@ export default function FAQ() {
               ))}
             </div>
             <button type="button" aria-expanded={showAll} aria-controls="faq-list"
-              onClick={() => { setShowAll(!showAll); if (showAll && open !== null && open >= 4) setOpen(null); }}
-              className="sm:hidden w-full mt-4 py-3 rounded-full border border-[var(--rc-border)] text-sm font-semibold text-[var(--rc-blue)] hover:bg-slate-50">
+              onClick={() => { setShowAll(!showAll); if (showAll && open !== null && open >= 3) setOpen(null); }}
+              className="w-full mt-4 py-3 rounded-full border border-[var(--rc-border)] text-sm font-semibold text-[var(--rc-blue)] hover:bg-slate-50">
               {showAll ? "Show fewer questions" : `Show all ${faqs.length} questions`}
             </button>
           </div>

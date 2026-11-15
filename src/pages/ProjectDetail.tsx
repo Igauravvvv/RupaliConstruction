@@ -109,7 +109,17 @@ export default function ProjectDetail() {
     (p) => (p as any).slug === slug || p.name.toLowerCase().replace(/\s+/g, '-') === slug
   );
 
-  const activeProject = dbProject || (fallbackMatch ? {
+  const activeProject = dbProject ? (() => {
+    const fallback = fallbackMatch;
+    const hasImages = typeof dbProject.images === "string"
+      ? dbProject.images.trim() && dbProject.images.trim() !== "[]"
+      : Array.isArray(dbProject.images) && dbProject.images.length > 0;
+    return {
+      ...dbProject,
+      coverImage: dbProject.coverImage || fallback?.coverImage || "",
+      images: hasImages ? dbProject.images : fallback?.images || JSON.stringify([fallback?.coverImage].filter(Boolean)),
+    };
+  })() : (fallbackMatch ? {
     id: fallbackMatch.id || 0,
     name: fallbackMatch.name,
     slug: (fallbackMatch as any).slug || slug || "",
